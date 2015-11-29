@@ -1,4 +1,4 @@
-package it.unical.pizzamanager;
+package it.unical.pizzamanager.controllers;
 
 import java.text.DateFormat;
 import java.util.Date;
