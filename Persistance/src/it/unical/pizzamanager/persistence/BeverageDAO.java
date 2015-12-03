@@ -8,7 +8,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-public class BeverageDAO {
+public class BeverageDAO implements BeverageDAOInterface{
 
 	private static SessionFactory factory;
 
@@ -33,7 +33,8 @@ public class BeverageDAO {
 	@SuppressWarnings("unchecked")
 	public List<Beverage> get() {
 		Session session= factory.openSession();
-		List<Beverage> bevereges=session.createSQLQuery("Select *from bevereges").addEntity(Beverage.class).list();
+		List<Beverage> bevereges=session.createSQLQuery("Select *from beverages").addEntity(Beverage.class).list();
+		session.close();
 		return bevereges;
 	}
 }

@@ -1,6 +1,6 @@
 package it.unical.pizzamanager.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +10,12 @@ import org.junit.Test;
 
 public class TestHibernate {
 
-	private BeverageDAO beverage;
+	private static BeverageDAO beverage;
 
-	private List<Beverage> beverages;
+	private static List<Beverage> beverages;
 
 	@BeforeClass
-	public void initDB() {
+	public static void initDB() {
 		beverage=new BeverageDAO();
 		beverages=new ArrayList<Beverage>();
 		for (int i = 0; i < 10; i++) {

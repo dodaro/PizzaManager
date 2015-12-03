@@ -28,8 +28,8 @@ public class Beverage implements Serializable{
 	
 	public Beverage() {
 		code=0;
-		name="";
-		brand="";
+		name="n";
+		brand="n";
 	}
 	
 	public Beverage(int code, String name,String brand){
