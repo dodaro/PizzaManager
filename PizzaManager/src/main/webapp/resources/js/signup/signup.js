@@ -5,5 +5,6 @@ $(function() {
 
 	$("#inputPassword").on("input propertychange", function() {
 		signupController.onPasswordChanged($(this).val());
-	})
+	});
+
 });
