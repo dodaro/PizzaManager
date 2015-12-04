@@ -1,14 +1,29 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
 <html>
 <head>
-	<title>Home</title>
+
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+
+<title>Home</title>
+
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
+	<h1>Welcome to PizzaManager!</h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+	<div>List of users:</div>
+	<c:choose>
+		<c:when test="${users.size() > 0}">
+			<c:forEach var="user" items="${users}">
+				<div>${user.toString()}</div>
+			</c:forEach>
+		</c:when>
+		<c:otherwise>
+			<div>There are no users into the database.</div>
+		</c:otherwise>
+	</c:choose>
+
+	<a href="signup"><button class="btn btn-primary">Sign Up</button></a>
+
 </body>
 </html>

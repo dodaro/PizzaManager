@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.unical.pizzamanager.model.SignUpForm;
+import it.unical.pizzamanager.persistence.DAOFactory;
+import it.unical.pizzamanager.persistence.User;
+import it.unical.pizzamanager.persistence.UserDAO;
 
 @Controller
 public class SignUpController {
@@ -26,7 +29,13 @@ public class SignUpController {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signUp(@ModelAttribute("signUpForm") SignUpForm form) {
-		logger.info("Email: " + form.getEmail() + ", password: " + form.getPassword());
+		logger.info("Adding a new user to the database with email: " + form.getEmail()
+				+ ", password: " + form.getPassword());
+
+		User user = new User(form.getEmail(), form.getPassword());
+		UserDAO dao = DAOFactory.getInstance().getUserDAO();
+
+		dao.create(user);
 
 		return "redirect:/";
 	}
@@ -35,7 +44,7 @@ public class SignUpController {
 	@RequestMapping(value = "/signup/emailTaken", method = RequestMethod.GET)
 	public String isEmailTaken(@RequestParam String email) {
 		logger.info("Request for email " + email);
-		
+
 		boolean taken;
 
 		/* TODO - Input validation is strongly needed here. */
