@@ -1,6 +1,3 @@
-/*C1*/SET SCHEMA SYSTEM_LOBS
-INSERT INTO BLOCKS VALUES(0,2147483647,0)
-COMMIT
-/*C2*/SET SCHEMA PUBLIC
+/*C4*/SET SCHEMA PUBLIC
 drop table beverages if exists
 create table beverages (code integer not null, brand varchar(255) not null, name varchar(255) not null, primary key (code))
