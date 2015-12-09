@@ -11,6 +11,6 @@
 		<property name="show_sql">true</property>
 		<property name="hbm2ddl.auto">create</property>
 
-		<mapping class="it.unical.pizzamanager.persistence.User" />
+		<mapping class="it.unical.pizzamanager.persistence.dto.User" />
 	</session-factory>
 </hibernate-configuration>
