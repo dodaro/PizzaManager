@@ -22,7 +22,7 @@ public class HomeController {
 	public String home(Model model) {
 		logger.info("Home page requested. Loading list of users.");
 
-		UserDAO dao = DAOFactory.getInstance().getUserDAO();
+		UserDAO dao = DAOFactory.get().getUserDAO();
 		List<User> users = dao.get();
 
 		model.addAttribute("users", users);

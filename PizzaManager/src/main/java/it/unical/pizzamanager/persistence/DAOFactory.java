@@ -22,7 +22,7 @@ public class DAOFactory {
 		this.sessionFactory = configuration.buildSessionFactory();
 	}
 
-	public static DAOFactory getInstance() {
+	public static DAOFactory get() {
 		if (instance == null) {
 			instance = new DAOFactory();
 		}
