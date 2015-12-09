@@ -1,4 +1,4 @@
-package it.unical.pizzamanager.persistence;
+package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
 

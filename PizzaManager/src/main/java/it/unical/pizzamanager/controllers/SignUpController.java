@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import it.unical.pizzamanager.model.SignUpForm;
-import it.unical.pizzamanager.persistence.DAOFactory;
-import it.unical.pizzamanager.persistence.User;
-import it.unical.pizzamanager.persistence.UserDAO;
+import it.unical.pizzamanager.persistence.dao.DAOFactory;
+import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.User;
 
 @Controller
 public class SignUpController {

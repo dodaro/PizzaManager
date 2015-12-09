@@ -1,9 +1,11 @@
-package it.unical.pizzamanager.persistence;
+package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+
+import it.unical.pizzamanager.persistence.dto.User;
 
 /*
  * This class is not public since instances of it will be provided by the DAOFactory class.

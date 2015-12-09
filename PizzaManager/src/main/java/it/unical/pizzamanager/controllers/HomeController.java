@@ -9,9 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import it.unical.pizzamanager.persistence.DAOFactory;
-import it.unical.pizzamanager.persistence.User;
-import it.unical.pizzamanager.persistence.UserDAO;
+import it.unical.pizzamanager.persistence.dao.DAOFactory;
+import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.User;
 
 @Controller
 public class HomeController {

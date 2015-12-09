@@ -1,4 +1,4 @@
-package it.unical.pizzamanager.persistence;
+package it.unical.pizzamanager.persistence.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
