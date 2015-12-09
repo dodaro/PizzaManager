@@ -33,7 +33,7 @@ public class SignUpController {
 				+ ", password: " + form.getPassword());
 
 		User user = new User(form.getEmail(), form.getPassword());
-		UserDAO dao = DAOFactory.getInstance().getUserDAO();
+		UserDAO dao = DAOFactory.get().getUserDAO();
 
 		dao.create(user);
 
