@@ -7,68 +7,68 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
-@Table(name="ingredients")
+@Table(name = "ingredients")
+@SequenceGenerator(name = "ingredientsGenerator", sequenceName = "ingredientsSequence", initialValue = 1)
 public class Ingredient implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 7811955001213258947L;
-	
-	public static final String VEGETABLE_TYPE="Vegetable";
-	public static final String MEAT_TYPE="Meat";
-	public static final String FISH_TYPE="Fish";
-	
+
+	public static final String VEGETABLE_TYPE = "Vegetable";
+	public static final String MEAT_TYPE = "Meat";
+	public static final String FISH_TYPE = "Fish";
+
 	@Id
-	@Column(name = "code")
-	private int code;
-	
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredientsGenerator")
+	private Integer id;
+
 	@Column(name = "name", nullable = false)
 	private String name;
-	
-	@Column(name="type")
+
+	@Column(name = "type")
 	private String type;
-	
+
 	@OneToMany(mappedBy = "ingredient", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<PizzaIngredient> pizzaIngredient;
+	private List<RelationPizzaIngredient> pizzaIngredient;
 
-	
 	public Ingredient() {
-		code=0;
-		name="";
-		type=VEGETABLE_TYPE;
-		pizzaIngredient=new ArrayList<>();
-	}
-	
-	public Ingredient(int code,String name, String type){
-		this.code=code;
-		this.name=name;
-		this.type=type;
-		pizzaIngredient=new ArrayList<>();
+		id = DatabaseHandler.NO_ID;
+		name = "";
+		type = VEGETABLE_TYPE;
+		pizzaIngredient = new ArrayList<>();
 	}
 
-	public Ingredient(int code,String name, String type,List<PizzaIngredient> pizzaIngredient){
-		this.code=code;
-		this.name=name;
-		this.type=type;
-		this.pizzaIngredient=pizzaIngredient;
-	}
-	public int getCode() {
-		return code;
+	public Ingredient(String name, String type) {
+		this.id = DatabaseHandler.NO_ID;
+		this.name = name;
+		this.type = type;
+		pizzaIngredient = new ArrayList<>();
 	}
 
-	public void setCode(int code) {
-		this.code = code;
+	public Ingredient(String name, String type, List<RelationPizzaIngredient> pizzaIngredient) {
+		this.id = DatabaseHandler.NO_ID;
+		this.name = name;
+		this.type = type;
+		this.pizzaIngredient = pizzaIngredient;
 	}
+
 
 	public String getName() {
 		return name;
@@ -86,11 +86,19 @@ public class Ingredient implements Serializable {
 		this.type = type;
 	}
 
-	public List<PizzaIngredient> getPizzaIngredient() {
+	public List<RelationPizzaIngredient> getPizzaIngredient() {
 		return pizzaIngredient;
 	}
 
-	public void setPizzaIngredient(List<PizzaIngredient> pizzaIngredient) {
+	public void setPizzaIngredient(List<RelationPizzaIngredient> pizzaIngredient) {
 		this.pizzaIngredient = pizzaIngredient;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

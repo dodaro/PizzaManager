@@ -34,41 +34,44 @@
 	<bean id="beverageDAO" class="it.unical.pizzamanager.persistence.dao.BeverageDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	<bean id="beveragePriceListDAO"
-		class="it.unical.pizzamanager.persistence.dao.BeveragePriceListDAOImpl">
+	<bean id="relationPizzeriaBeverageDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 	<bean id="ingredientDAO"
 		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	<bean id="ingredientPriceListDAO"
-		class="it.unical.pizzamanager.persistence.dao.IngredientPriceListDAOImpl">
+	<bean id="relationPizzeriaIngredientDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaIngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
 	<bean id="menuDAO" class="it.unical.pizzamanager.persistence.dao.MenuDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	<bean id="menuPriceListDAO"
-		class="it.unical.pizzamanager.persistence.dao.MenuPriceListDAOImpl">
+	<bean id="relationPizzeriaMenuDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaMenuDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+	
 	<bean id="offerDAO" class="it.unical.pizzamanager.persistence.dao.OfferDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	<bean id="pizzaPriceListDAO"
-		class="it.unical.pizzamanager.persistence.dao.PizzaPriceListDAOImpl">
+	
+
+	<bean id="relationPizzaIngredientDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzaIngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
-	<bean id="pizzaIngredientDAO"
-		class="it.unical.pizzamanager.persistence.dao.PizzaIngredientDAOImpl">
+	<bean id="orderItemDAO"
+		class="it.unical.pizzamanager.persistence.dao.OrderItemDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-
-	<bean id="pizzaPriceListDAO"
-		class="it.unical.pizzamanager.persistence.dao.PizzaPriceListDAOImpl">
+	
+	<bean id="relationPizzeriaPizzaDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 	

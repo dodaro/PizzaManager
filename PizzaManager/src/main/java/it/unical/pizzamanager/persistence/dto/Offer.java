@@ -5,15 +5,21 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "offers")
+@SequenceGenerator(name = "offersGenerator", sequenceName = "offersSequence", initialValue = 1)
 public class Offer implements Serializable {
 
 	/**
@@ -21,9 +27,11 @@ public class Offer implements Serializable {
 	 */
 	private static final long serialVersionUID = 415331303785623656L;
 
+
 	@Id
-	@Column(name = "code")
-	private int code;
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offersGenerator")
+	private Integer id;
 
 	@Column(name = "discount", nullable = false)
 	private int discount;
@@ -38,31 +46,24 @@ public class Offer implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "menuPriceList")
-	private MenuPriceList menuPriceList;
+	private RelationPizzeriaMenu menuPriceList;
 
 	public Offer() {
-		code = 0;
+		id = DatabaseHandler.NO_ID;
 		discount = 0;
 		beginDate = null;
 		endDate = null;
-		menuPriceList = new MenuPriceList();
+		menuPriceList = new RelationPizzeriaMenu();
 	}
 
-	public Offer(int code, int discount, Date beginDate, Date endDate, MenuPriceList menuPriceList) {
-		this.code = code;
+	public Offer(int discount, Date beginDate, Date endDate, RelationPizzeriaMenu menuPriceList) {
+		this.id = DatabaseHandler.NO_ID;
 		this.discount = discount;
 		this.beginDate = beginDate;
 		this.endDate = endDate;
 		this.menuPriceList = menuPriceList;
 	}
 
-	public int getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
-	}
 
 	public int getDiscount() {
 		return discount;
@@ -88,12 +89,20 @@ public class Offer implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public MenuPriceList getMenuPriceList() {
+	public RelationPizzeriaMenu getMenuPriceList() {
 		return menuPriceList;
 	}
 
-	public void setMenuPriceList(MenuPriceList menuPriceList) {
+	public void setMenuPriceList(RelationPizzeriaMenu menuPriceList) {
 		this.menuPriceList = menuPriceList;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

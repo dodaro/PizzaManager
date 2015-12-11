@@ -35,7 +35,7 @@ public class MenuDAOImpl implements MenuDAO {
 	@Override
 	public List<Menu> get() {
 		Session session = getDatabaseHandler().getSessionFactory().openSession();
-		List<Menu> menus = session.createSQLQuery("Select *from menus").addEntity(Menu.class).list();
+		List<Menu> menus = session.createSQLQuery("Select * from menus").addEntity(Menu.class).list();
 		session.close();
 		return menus;
 	}

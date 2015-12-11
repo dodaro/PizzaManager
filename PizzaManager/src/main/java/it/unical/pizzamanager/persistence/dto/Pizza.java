@@ -7,15 +7,21 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
-@Table(name = "pizze")
+@Table(name = "pizzas")
+@SequenceGenerator(name="pizzasGenerator",sequenceName="pizzasSequence",initialValue=1)
 public class Pizza implements Serializable {
 
 	/**
@@ -26,9 +32,11 @@ public class Pizza implements Serializable {
 	public static final String MAXI = "MAXI";
 	public static final String NORMAL = "NORMAL";
 
+
 	@Id
-	@Column(name = "code")
-	private int code;
+	@Column(name = "id")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pizzasGenerator")
+	private Integer id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -50,18 +58,22 @@ public class Pizza implements Serializable {
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<PizzaIngredient> pizzaIngredient;
+	private List<RelationPizzaIngredient> pizzaIngredient;
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<PizzaPriceList> pizzaPriceList;
+	private List<RelationPizzeriaPizza> pizzaPriceList;
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
+	
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<OrderItem> orderItems;
 
 	public Pizza() {
-		code = 0;
+		id=DatabaseHandler.NO_ID;
 		name = "";
 		preparationTime = 0;
 		celiac = false;
@@ -71,11 +83,12 @@ public class Pizza implements Serializable {
 		pizzaIngredient = new ArrayList<>();
 		menu = new ArrayList<>();
 		pizzaPriceList = new ArrayList<>();
+		orderItems=new ArrayList<>();
 	}
 
 	public Pizza(int code, String name, int preparationTime, boolean celiac, String description, String size,
 			Boolean special) {
-		this.code = code;
+		this.id = DatabaseHandler.NO_ID;
 		this.preparationTime = preparationTime;
 		this.celiac = celiac;
 		this.description = description;
@@ -84,12 +97,13 @@ public class Pizza implements Serializable {
 		this.pizzaIngredient = new ArrayList<>();
 		this.menu = new ArrayList<>();
 		this.pizzaPriceList = new ArrayList<>();
+		this.orderItems=new ArrayList<>();
 	}
 
 	public Pizza(int code, String name, int preparationTime, boolean celiac, String description, String size,
-			Boolean special, ArrayList<PizzaIngredient> pizzaIngredient, ArrayList<Menu> menu,
-			ArrayList<PizzaPriceList> pizzaPriceList) {
-		this.code = code;
+			Boolean special, ArrayList<RelationPizzaIngredient> pizzaIngredient, ArrayList<Menu> menu,
+			ArrayList<RelationPizzeriaPizza> pizzaPriceList,ArrayList<OrderItem> orderItems) {
+		this.id = DatabaseHandler.NO_ID;
 		this.preparationTime = preparationTime;
 		this.celiac = celiac;
 		this.description = description;
@@ -98,14 +112,7 @@ public class Pizza implements Serializable {
 		this.pizzaIngredient = pizzaIngredient;
 		this.menu = menu;
 		this.pizzaPriceList = pizzaPriceList;
-	}
-
-	public int getCode() {
-		return code;
-	}
-
-	public void setCode(int code) {
-		this.code = code;
+		this.orderItems=orderItems;
 	}
 
 	public String getName() {
@@ -148,11 +155,11 @@ public class Pizza implements Serializable {
 		this.size = size;
 	}
 
-	public List<PizzaIngredient> getPizzaIngredient() {
+	public List<RelationPizzaIngredient> getPizzaIngredient() {
 		return pizzaIngredient;
 	}
 
-	public void setPizzaIngredient(List<PizzaIngredient> pizzaIngredient) {
+	public void setPizzaIngredient(List<RelationPizzaIngredient> pizzaIngredient) {
 		this.pizzaIngredient = pizzaIngredient;
 	}
 
@@ -164,12 +171,28 @@ public class Pizza implements Serializable {
 		this.menu = menu;
 	}
 
-	public List<PizzaPriceList> getPizzaPriceList() {
+	public List<RelationPizzeriaPizza> getPizzaPriceList() {
 		return pizzaPriceList;
 	}
 
-	public void setPizzaPriceList(List<PizzaPriceList> pizzaPriceList) {
+	public void setPizzaPriceList(List<RelationPizzeriaPizza> pizzaPriceList) {
 		this.pizzaPriceList = pizzaPriceList;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 
 }

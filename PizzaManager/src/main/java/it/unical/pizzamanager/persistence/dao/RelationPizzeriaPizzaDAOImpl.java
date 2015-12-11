@@ -4,38 +4,38 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.PizzaPriceList;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 
-public class PizzaPriceListDAOImpl implements PizzaPriceListDAO {
+public class RelationPizzeriaPizzaDAOImpl implements RelationPizzeriaPizzaDAO {
 
 	private DatabaseHandler databaseHandler;
 
-	public PizzaPriceListDAOImpl() {
+	public RelationPizzeriaPizzaDAOImpl() {
 		databaseHandler=null;
 	}
 	@Override
-	public void create(PizzaPriceList pizzaPriceList) {
+	public void create(RelationPizzeriaPizza pizzaPriceList) {
 		databaseHandler.create(pizzaPriceList);
 
 	}
 
 	@Override
-	public void delete(PizzaPriceList pizzaPriceList) {
+	public void delete(RelationPizzeriaPizza pizzaPriceList) {
 		databaseHandler.delete(pizzaPriceList);
 
 	}
 
 	@Override
-	public void update(PizzaPriceList pizzaPriceList) {
+	public void update(RelationPizzeriaPizza pizzaPriceList) {
 		databaseHandler.update(pizzaPriceList);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PizzaPriceList> get() {
+	public List<RelationPizzeriaPizza> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<PizzaPriceList> pizzaPriceLists = session.createSQLQuery("Select *from pizzaPriceLists")
-				.addEntity(PizzaPriceList.class).list();
+		List<RelationPizzeriaPizza> pizzaPriceLists = session.createSQLQuery("Select * from pizzeria_pizza_price")
+				.addEntity(RelationPizzeriaPizza.class).list();
 		session.close();
 		return pizzaPriceLists;
 	}

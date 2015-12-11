@@ -4,42 +4,42 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Ingredient;
+import it.unical.pizzamanager.persistence.dto.OrderItem;
 
-public class IngredientDAOImpl implements IngredientDAO {
+public class OrderItemDAOImpl implements OrderItemDAO {
 
 	private DatabaseHandler databaseHandler;
 
-	public IngredientDAOImpl() {
+	public OrderItemDAOImpl() {
 		databaseHandler = null;
 	}
 
 	@Override
-	public void create(Ingredient ingredient) {
-		databaseHandler.create(ingredient);
+	public void create(OrderItem orderItem) {
+		databaseHandler.create(orderItem);
 
 	}
 
 	@Override
-	public void delete(Ingredient ingredient) {
-		databaseHandler.delete(ingredient);
+	public void delete(OrderItem orderItem) {
+		databaseHandler.delete(orderItem);
 
 	}
 
 	@Override
-	public void update(Ingredient ingredient) {
-		databaseHandler.update(ingredient);
+	public void update(OrderItem orderItem) {
+		databaseHandler.update(orderItem);
 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ingredient> get() {
+	public List<OrderItem> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Ingredient> ingredients = session.createSQLQuery("Select * from ingredients").addEntity(Ingredient.class)
+		List<OrderItem> orderItems = session.createSQLQuery("Select * from order_Items").addEntity(OrderItem.class)
 				.list();
 		session.close();
-		return ingredients;
+		return orderItems;
 	}
 
 	public DatabaseHandler getDatabaseHandler() {

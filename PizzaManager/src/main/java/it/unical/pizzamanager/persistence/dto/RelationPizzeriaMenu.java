@@ -7,18 +7,24 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
-@Table(name = "menuPriceLists")
-public class MenuPriceList implements Serializable {
+@Table(name = "pizzeria_menu_price")
+@SequenceGenerator(name="pizzeria_menu_priceGenerator",sequenceName="pizzeria_menu_priceSequence",initialValue=1)
+public class RelationPizzeriaMenu implements Serializable {
 
 	/**
 	 * 
@@ -27,6 +33,7 @@ public class MenuPriceList implements Serializable {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pizzeria_menu_priceGenerator")
 	private int id;
 
 	@ManyToOne
@@ -40,22 +47,22 @@ public class MenuPriceList implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Offer> offers;
 
-	public MenuPriceList() {
-		id = 0;
+	public RelationPizzeriaMenu() {
+		id = DatabaseHandler.NO_ID;
 		menu = new Menu();
 		price = 0;
 		offers = new ArrayList<>();
 	}
 
-	public MenuPriceList(int id, Menu menu, int price) {
-		this.id = id;
+	public RelationPizzeriaMenu(Menu menu, int price) {
+		this.id = DatabaseHandler.NO_ID;
 		this.menu = menu;
 		this.price = price;
 		this.offers = new ArrayList<>();
 	}
 
-	public MenuPriceList(int id, Menu menu, int price, ArrayList<Offer> offers) {
-		this.id = id;
+	public RelationPizzeriaMenu(Menu menu, int price, ArrayList<Offer> offers) {
+		this.id = DatabaseHandler.NO_ID;
 		this.menu = menu;
 		this.price = price;
 		this.offers = offers;

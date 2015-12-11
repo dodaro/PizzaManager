@@ -56,7 +56,7 @@ public class User implements Serializable {
 	
 	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Cart> cart;
+	private Cart cart;
 
 	public User() {
 		this.id = NO_ID;

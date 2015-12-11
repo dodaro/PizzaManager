@@ -35,7 +35,7 @@ public class BeverageDAOImpl implements BeverageDAO {
 	@SuppressWarnings("unchecked")
 	public List<Beverage> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Beverage> bevereges = session.createSQLQuery("Select *from beverages").addEntity(Beverage.class).list();
+		List<Beverage> bevereges = session.createSQLQuery("Select * from beverages").addEntity(Beverage.class).list();
 		session.close();
 		return bevereges;
 	}

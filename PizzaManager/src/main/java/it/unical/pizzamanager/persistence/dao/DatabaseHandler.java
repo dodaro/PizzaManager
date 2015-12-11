@@ -7,6 +7,7 @@ import org.hibernate.Transaction;
 public class DatabaseHandler {
 
 	private SessionFactory sessionFactory;
+	public static final Integer NO_ID=-1;
 	
 	private static enum Operation {
 		CREATE, UPDATE, DELETE

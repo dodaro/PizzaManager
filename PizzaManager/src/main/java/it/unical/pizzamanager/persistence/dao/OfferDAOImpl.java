@@ -35,7 +35,7 @@ public class OfferDAOImpl implements OfferDAO {
 	@Override
 	public List<Offer> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Offer> offers = session.createSQLQuery("Select *from offers").addEntity(Offer.class).list();
+		List<Offer> offers = session.createSQLQuery("Select * from offers").addEntity(Offer.class).list();
 		session.close();
 		return offers;
 	}

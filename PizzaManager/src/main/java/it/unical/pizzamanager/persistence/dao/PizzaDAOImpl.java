@@ -34,7 +34,7 @@ public class PizzaDAOImpl implements PizzaDAO {
 	@Override
 	public List<Pizza> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Pizza> pizze = session.createSQLQuery("Select *from pizze").addEntity(Pizza.class).list();
+		List<Pizza> pizze = session.createSQLQuery("Select * from pizzas").addEntity(Pizza.class).list();
 		session.close();
 		return pizze;
 	}
