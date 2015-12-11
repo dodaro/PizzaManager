@@ -27,7 +27,7 @@ public class HomeController {
 		logger.info("Home page requested. Loading list of users.");
 
 		UserDAO dao = (UserDAO) context.getBean("userDAO");
-		List<User> users = dao.get();
+		List<User> users = dao.getUsers();
 
 		model.addAttribute("users", users);
 
