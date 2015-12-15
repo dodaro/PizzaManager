@@ -50,7 +50,7 @@ public class Menu implements Serializable {
 
 	@OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<OrderItem> orderItems;
+	private List<MenuItem> orderItems;
 
 	public Menu() {
 		id = DatabaseHandler.NO_ID;
@@ -69,7 +69,7 @@ public class Menu implements Serializable {
 	}
 
 	public Menu(Beverage beverage, Pizza pizza, ArrayList<RelationPizzeriaMenu> menuPriceList,
-			ArrayList<OrderItem> orderItems) {
+			ArrayList<MenuItem> orderItems) {
 		this.id = DatabaseHandler.NO_ID;
 		this.beverage = beverage;
 		this.pizza = pizza;
@@ -110,11 +110,11 @@ public class Menu implements Serializable {
 		this.id = id;
 	}
 
-	public List<OrderItem> getOrderItems() {
+	public List<MenuItem> getOrderItems() {
 		return orderItems;
 	}
 
-	public void setOrderItems(List<OrderItem> orderItems) {
+	public void setOrderItems(List<MenuItem> orderItems) {
 		this.orderItems = orderItems;
 	}
 }

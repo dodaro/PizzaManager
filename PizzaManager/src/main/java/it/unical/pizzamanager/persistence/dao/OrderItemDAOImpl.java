@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import com.sun.glass.ui.MenuItem;
+
+import it.unical.pizzamanager.persistence.dto.BeverageItem;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
+import it.unical.pizzamanager.persistence.dto.PizzaItem;
 
 public class OrderItemDAOImpl implements OrderItemDAO {
 
@@ -34,14 +38,31 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrderItem> get() {
-		Session session = databaseHandler.getSessionFactory().openSession();
-		List<OrderItem> orderItems = session.createSQLQuery("Select * from order_Items").addEntity(OrderItem.class)
-				.list();
-		session.close();
-		return orderItems;
+	public List<PizzaItem> getOrderPizza() {
+		Session session=databaseHandler.getSessionFactory().openSession();
+		String queryString = "from PizzaItem";
+		List<PizzaItem> pizzaItems=session.createQuery(queryString).list();
+		return pizzaItems;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BeverageItem> getOrderBeverage() {
+		Session session=databaseHandler.getSessionFactory().openSession();
+		String queryString = "from BeverageItem";
+		List<BeverageItem> beverageItems=session.createQuery(queryString).list();
+		return beverageItems;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MenuItem> getOrderMenu() {
+		Session session=databaseHandler.getSessionFactory().openSession();
+		String queryString = "from MenuItem";
+		List<MenuItem> menuItems=session.createQuery(queryString).list();
+		return menuItems;
+	}
+	
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
 	}
