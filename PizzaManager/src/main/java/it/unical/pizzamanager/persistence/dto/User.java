@@ -78,6 +78,7 @@ public class User implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Pizzeria pizzeria;
 
+
 	public User() {
 		this.id = NO_ID;
 		this.email = "";

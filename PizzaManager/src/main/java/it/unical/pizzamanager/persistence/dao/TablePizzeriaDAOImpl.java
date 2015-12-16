@@ -6,6 +6,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+
 import it.unical.pizzamanager.persistence.dto.RelationTableBookingTablePizzeria;
 import it.unical.pizzamanager.persistence.dto.TablePizzeria;
 

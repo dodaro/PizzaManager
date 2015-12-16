@@ -23,6 +23,7 @@ public class BookingTakeAway extends Booking {
 			ArrayList<RelationTableBookingTablePizzeria> tablebooking, ArrayList<OrderItem> orderItems,
 			Pizzeria pizzeria) {
 		super(date, time, confirmed, person, payment, priority, orderItems, pizzeria);
+
 	}
 
 }

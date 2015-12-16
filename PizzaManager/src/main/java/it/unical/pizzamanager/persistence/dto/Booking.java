@@ -185,6 +185,4 @@ public class Booking implements Serializable{
 		this.pizzeria = pizzeria;
 	}
 
-	
-	
 }

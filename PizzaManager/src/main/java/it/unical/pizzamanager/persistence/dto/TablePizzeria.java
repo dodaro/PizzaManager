@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+
 @Entity
 @Table(name = "tables_pizzeria")
 public class TablePizzeria implements Serializable {

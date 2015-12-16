@@ -112,4 +112,5 @@ public abstract class Feedback implements Serializable {
 	public void setText(String text) {
 		this.text = text;
 	}
+
 }
