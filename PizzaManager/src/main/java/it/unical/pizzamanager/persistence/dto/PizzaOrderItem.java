@@ -7,13 +7,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@DiscriminatorValue("pizzaItem")
-public class PizzaItem extends OrderItem {
+@DiscriminatorValue("pizza")
+public class PizzaOrderItem extends OrderItem {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5083273531033927404L;
+	private static final long serialVersionUID = 8977364851663655249L;
 
 	@ManyToOne
 	@JoinColumn(name = "pizza")
@@ -21,18 +18,25 @@ public class PizzaItem extends OrderItem {
 
 	@Column(name = "modified")
 	private Boolean modified;
-	
-	
-	public PizzaItem() {
+
+	public PizzaOrderItem() {
 		super();
-		modified=false;
-		pizza=new Pizza();
+		pizza = new Pizza();
+		modified = false;
+	}
+
+	public PizzaOrderItem(Pizza pizza, Boolean modified, Double cost) {
+		super(cost);
+		this.pizza = pizza;
+		this.modified = modified;
+	}
+
+	public Pizza getPizza() {
+		return pizza;
 	}
 	
-	public PizzaItem(Pizza pizza,Boolean modified,Double cost) {
-		super(cost);
-		this.modified=modified;
-		this.pizza=pizza;
+	public void setPizza(Pizza pizza) {
+		this.pizza = pizza;
 	}
 
 	public Boolean getModified() {
@@ -42,13 +46,4 @@ public class PizzaItem extends OrderItem {
 	public void setModified(Boolean modified) {
 		this.modified = modified;
 	}
-
-	public Pizza getPizza() {
-		return pizza;
-	}
-
-	public void setPizza(Pizza pizza) {
-		this.pizza = pizza;
-	}
-	
 }

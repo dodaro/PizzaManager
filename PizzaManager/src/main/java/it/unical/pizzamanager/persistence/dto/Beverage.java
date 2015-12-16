@@ -21,18 +21,13 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "beverages")
-@SequenceGenerator(name = "beveragesGenerator", sequenceName = "beveragesSequence", initialValue = 1)
+@SequenceGenerator(name = "beveragesGenerator", sequenceName = "beverages_sequence", initialValue = 1)
 public class Beverage implements Serializable {
 
-	/**
-	 * 
-	 */
-	public static final String MEDIUM_SIZE = "MEDIUM";
-	public static final String SMALL_SIZE = "SMALL";
+	private static final long serialVersionUID = 3542955027496737446L;
 
-	// add sequence on entity , modify name with _ change type to obj change
-	// serial id
-	private static final long serialVersionUID = -4456395642459391534L;
+	public static final String SIZE_SMALL = "small";
+	public static final String SIZE_MEDIUM = "medium";
 
 	@Id
 	@Column(name = "id")
@@ -45,7 +40,7 @@ public class Beverage implements Serializable {
 	@Column(name = "brand", nullable = false, length = 255)
 	private String brand;
 
-	@Column(name = "containerType", nullable = false, length = 255)
+	@Column(name = "container_type", nullable = false, length = 255)
 	private String containerType;
 
 	@Column(name = "size", nullable = false, length = 255)
@@ -64,7 +59,7 @@ public class Beverage implements Serializable {
 
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<BeverageItem> orderItems;
+	private List<BeverageOrderItem> orderItems;
 
 	public Beverage() {
 		id = DatabaseHandler.NO_ID;
@@ -92,7 +87,7 @@ public class Beverage implements Serializable {
 
 	public Beverage(String name, String brand, String containerType, String size, String category,
 			ArrayList<RelationPizzeriaBeverage> beveragePriceList, ArrayList<Menu> menu,
-			ArrayList<BeverageItem> orderItems) {
+			ArrayList<BeverageOrderItem> orderItems) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
 		this.brand = brand;
@@ -101,7 +96,7 @@ public class Beverage implements Serializable {
 		this.category = category;
 		this.beveragePriceList = beveragePriceList;
 		this.menu = menu;
-		this.orderItems=orderItems;
+		this.orderItems = orderItems;
 	}
 
 	public String getContainerType() {
@@ -168,12 +163,11 @@ public class Beverage implements Serializable {
 		this.id = id;
 	}
 
-	public List<BeverageItem> getOrderItems() {
+	public List<BeverageOrderItem> getOrderItems() {
 		return orderItems;
 	}
 
-	public void setOrderItems(List<BeverageItem> orderItems) {
+	public void setOrderItems(List<BeverageOrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
-
 }

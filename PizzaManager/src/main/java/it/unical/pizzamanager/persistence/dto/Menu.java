@@ -23,13 +23,10 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "menus")
-@SequenceGenerator(name = "menusGenerator", sequenceName = "menusSequence", initialValue = 1)
+@SequenceGenerator(name = "menusGenerator", sequenceName = "menus_sequence", initialValue = 1)
 public class Menu implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4303650276870261381L;
+	private static final long serialVersionUID = -305460523112063746L;
 
 	@Id
 	@Column(name = "id")
@@ -50,14 +47,14 @@ public class Menu implements Serializable {
 
 	@OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<MenuItem> orderItems;
+	private List<MenuOrderItem> menuOrderItems;
 
 	public Menu() {
 		id = DatabaseHandler.NO_ID;
 		beverage = new Beverage();
 		pizza = new Pizza();
 		menuPriceList = new ArrayList<>();
-		orderItems = new ArrayList<>();
+		menuOrderItems = new ArrayList<>();
 	}
 
 	public Menu(Beverage beverage, Pizza pizza) {
@@ -65,17 +62,24 @@ public class Menu implements Serializable {
 		this.beverage = beverage;
 		this.pizza = pizza;
 		this.menuPriceList = new ArrayList<>();
-		this.orderItems = new ArrayList<>();
+		this.menuOrderItems = new ArrayList<>();
 	}
 
 	public Menu(Beverage beverage, Pizza pizza, ArrayList<RelationPizzeriaMenu> menuPriceList,
-			ArrayList<MenuItem> orderItems) {
+			ArrayList<MenuOrderItem> orderItems) {
 		this.id = DatabaseHandler.NO_ID;
 		this.beverage = beverage;
 		this.pizza = pizza;
 		this.menuPriceList = menuPriceList;
-		this.orderItems = orderItems;
+		this.menuOrderItems = orderItems;
+	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Beverage getBeverage() {
@@ -102,19 +106,11 @@ public class Menu implements Serializable {
 		this.menuPriceList = menuPriceList;
 	}
 
-	public Integer getId() {
-		return id;
+	public List<MenuOrderItem> getMenuOrderItems() {
+		return menuOrderItems;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public List<MenuItem> getOrderItems() {
-		return orderItems;
-	}
-
-	public void setOrderItems(List<MenuItem> orderItems) {
-		this.orderItems = orderItems;
+	public void setMenuOrderItems(List<MenuOrderItem> menuOrderItems) {
+		this.menuOrderItems = menuOrderItems;
 	}
 }

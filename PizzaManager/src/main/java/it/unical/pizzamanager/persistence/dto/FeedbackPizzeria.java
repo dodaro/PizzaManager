@@ -1,12 +1,12 @@
 package it.unical.pizzamanager.persistence.dto;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "feedbacks_pizzeria")
+@DiscriminatorValue("pizzeria")
 public class FeedbackPizzeria extends Feedback {
 
 	private static final long serialVersionUID = 3624821961920881430L;

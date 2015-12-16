@@ -19,14 +19,10 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "offers")
-@SequenceGenerator(name = "offersGenerator", sequenceName = "offersSequence", initialValue = 1)
+@SequenceGenerator(name = "offersGenerator", sequenceName = "offers_sequence", initialValue = 1)
 public class Offer implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 415331303785623656L;
-
 
 	@Id
 	@Column(name = "id")
@@ -34,7 +30,7 @@ public class Offer implements Serializable {
 	private Integer id;
 
 	@Column(name = "discount", nullable = false)
-	private int discount;
+	private Double discount;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "begin_date", nullable = false)
@@ -45,18 +41,19 @@ public class Offer implements Serializable {
 	private Date endDate;
 
 	@ManyToOne
-	@JoinColumn(name = "menuPriceList")
+	@JoinColumn(name = "menu")
 	private RelationPizzeriaMenu menuPriceList;
 
 	public Offer() {
 		id = DatabaseHandler.NO_ID;
-		discount = 0;
-		beginDate = null;
-		endDate = null;
+		discount = 0.0;
+		beginDate = new Date();
+		endDate = new Date();
 		menuPriceList = new RelationPizzeriaMenu();
 	}
 
-	public Offer(int discount, Date beginDate, Date endDate, RelationPizzeriaMenu menuPriceList) {
+	public Offer(Double discount, Date beginDate, Date endDate,
+			RelationPizzeriaMenu menuPriceList) {
 		this.id = DatabaseHandler.NO_ID;
 		this.discount = discount;
 		this.beginDate = beginDate;
@@ -64,12 +61,19 @@ public class Offer implements Serializable {
 		this.menuPriceList = menuPriceList;
 	}
 
+	public Integer getId() {
+		return id;
+	}
 
-	public int getDiscount() {
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Double getDiscount() {
 		return discount;
 	}
 
-	public void setDiscount(int discount) {
+	public void setDiscount(Double discount) {
 		this.discount = discount;
 	}
 
@@ -96,13 +100,4 @@ public class Offer implements Serializable {
 	public void setMenuPriceList(RelationPizzeriaMenu menuPriceList) {
 		this.menuPriceList = menuPriceList;
 	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 }

@@ -6,27 +6,23 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@DiscriminatorValue("menuItem")
-public class MenuItem extends OrderItem {
+@DiscriminatorValue("menu")
+public class MenuOrderItem extends OrderItem {
 
-	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3680503653087012041L;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "menu")
 	private Menu menu;
-	
-	public MenuItem() {
+
+	public MenuOrderItem() {
 		super();
-		menu=new Menu();
+		menu = new Menu();
 	}
-	
-	public MenuItem(Menu menu,Double cost) {
+
+	public MenuOrderItem(Menu menu, Double cost) {
 		super(cost);
-		this.menu=menu;
+		this.menu = menu;
 	}
 
 	public Menu getMenu() {

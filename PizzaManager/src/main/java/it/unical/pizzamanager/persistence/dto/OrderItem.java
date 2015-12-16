@@ -12,45 +12,41 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "order_Items")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)  
-@DiscriminatorColumn(name="orderType",discriminatorType=DiscriminatorType.STRING)  
-@DiscriminatorValue(value="orderItem")
-@SequenceGenerator(name = "order_ItemsGenerator", sequenceName = "order_ItemsSequence", initialValue = 1)
+@Table(name = "order_items")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "order_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue(value = "order_item")
+@SequenceGenerator(name = "orderItemsGenerator", sequenceName = "order_items_sequence", initialValue = 1)
 public class OrderItem implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2048189882587093175L;
+	private static final long serialVersionUID = -8807690064904416275L;
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_ItemsGenerator")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItemsGenerator")
 	private Integer id;
 
-	
-	@Column(name="cost")
+	@Column(name = "cost")
 	private Double cost;
-	// instead of ha references add a boolean modified and the cost of item ordered so we can get cost of an order directly with a join 
-	// without ask to table price, so ingredient cannot be ordered but a menu or a pizza can be modified cost is evalueted application side and stored in database at purchace time
-	
+	// instead of ha references add a boolean modified and the cost of item ordered so we can get
+	// cost of an order directly with a join
+	// without ask to table price, so ingredient cannot be ordered but a menu or a pizza can be
+	// modified cost is evalueted application side and stored in database at purchace time
+
 	public OrderItem() {
-		id=DatabaseHandler.NO_ID;
-		cost=0.0;
+		id = DatabaseHandler.NO_ID;
+		cost = 0.0;
 	}
 
-	public OrderItem(Double cost){
-		id=DatabaseHandler.NO_ID;
-		this.cost=cost;
+	public OrderItem(Double cost) {
+		id = DatabaseHandler.NO_ID;
+		this.cost = cost;
 	}
 
 	public Integer getId() {

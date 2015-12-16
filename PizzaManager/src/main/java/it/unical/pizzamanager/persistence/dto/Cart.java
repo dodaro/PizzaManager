@@ -1,48 +1,64 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "cart")
-@SequenceGenerator(name = "cartsGenerator", sequenceName = "cartsSequence", initialValue = 1)
+@Table(name = "carts")
+@SequenceGenerator(name = "cartsGenerator", sequenceName = "carts_sequence", initialValue = 1)
 public class Cart implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4993247062854443717L;
-
-
-	@OneToOne
-	@JoinColumn(name = "user")
-	private User user;
+	private static final long serialVersionUID = 2643239163189575110L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cartsGenerator")
 	@Column(name = "id")
 	private Integer id;
 
+	@OneToOne
+	@JoinColumn(name = "user")
+	private User user;
+
+	@OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<OrderItem> orderItems;
+
 	public Cart() {
 		id = DatabaseHandler.NO_ID;
 		user = null;
+		orderItems = new ArrayList<>();
 	}
 
-	public Cart(User user) {
-		super();
+	public Cart(User user, List<OrderItem> orderItems) {
 		this.id = DatabaseHandler.NO_ID;
 		this.user = user;
+		this.orderItems = orderItems;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public User getUser() {
@@ -53,11 +69,11 @@ public class Cart implements Serializable {
 		this.user = user;
 	}
 
-	public Integer getId() {
-		return id;
+	public List<OrderItem> getOrderItems() {
+		return orderItems;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 }
