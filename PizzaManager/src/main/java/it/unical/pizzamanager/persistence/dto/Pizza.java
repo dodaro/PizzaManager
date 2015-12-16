@@ -21,31 +21,27 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "pizzas")
-@SequenceGenerator(name="pizzasGenerator",sequenceName="pizzasSequence",initialValue=1)
+@SequenceGenerator(name = "pizzasGenerator", sequenceName = "pizzas_sequence", initialValue = 1)
 public class Pizza implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6079186121128866192L;
 
-	public static final String MAXI = "MAXI";
-	public static final String NORMAL = "NORMAL";
-
+	public static final String SIZE_NORMAL = "normal";
+	public static final String SIZE_MAXI = "maxi";
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pizzasGenerator")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pizzasGenerator")
 	private Integer id;
 
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Column(name = "preparationTime", nullable = false)
-	private int preparationTime;
+	@Column(name = "preparation_time", nullable = false)
+	private Integer preparationTime;
 
-	@Column(name = "celiac")
-	private boolean celiac;
+	@Column(name = "gluten_free")
+	private boolean glutenFree;
 
 	@Column(name = "description")
 	private String description;
@@ -58,61 +54,54 @@ public class Pizza implements Serializable {
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzaIngredient> pizzaIngredient;
+	private List<RelationPizzaIngredient> pizzaIngredients;
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzeriaPizza> pizzaPriceList;
+	private List<RelationPizzeriaPizza> pizzasPriceList;
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
-	
+
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<PizzaItem> orderItems;
+	private List<PizzaOrderItem> orderItems;
 
 	public Pizza() {
-		id=DatabaseHandler.NO_ID;
+		id = DatabaseHandler.NO_ID;
 		name = "";
 		preparationTime = 0;
-		celiac = false;
+		glutenFree = false;
 		description = "";
-		size = Pizza.MAXI;
+		size = Pizza.SIZE_NORMAL;
 		special = false;
-		pizzaIngredient = new ArrayList<>();
+		pizzaIngredients = new ArrayList<>();
 		menu = new ArrayList<>();
-		pizzaPriceList = new ArrayList<>();
-		orderItems=new ArrayList<>();
+		pizzasPriceList = new ArrayList<>();
+		orderItems = new ArrayList<>();
 	}
 
-	public Pizza(int code, String name, int preparationTime, boolean celiac, String description, String size,
-			Boolean special) {
+	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
+			String size, Boolean special) {
 		this.id = DatabaseHandler.NO_ID;
 		this.preparationTime = preparationTime;
-		this.celiac = celiac;
+		this.glutenFree = glutenFree;
 		this.description = description;
 		this.size = size;
 		this.special = special;
-		this.pizzaIngredient = new ArrayList<>();
+		this.pizzaIngredients = new ArrayList<>();
 		this.menu = new ArrayList<>();
-		this.pizzaPriceList = new ArrayList<>();
-		this.orderItems=new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
 	}
 
-	public Pizza(int code, String name, int preparationTime, boolean celiac, String description, String size,
-			Boolean special, ArrayList<RelationPizzaIngredient> pizzaIngredient, ArrayList<Menu> menu,
-			ArrayList<RelationPizzeriaPizza> pizzaPriceList,ArrayList<PizzaItem> orderItems) {
-		this.id = DatabaseHandler.NO_ID;
-		this.preparationTime = preparationTime;
-		this.celiac = celiac;
-		this.description = description;
-		this.size = size;
-		this.special = special;
-		this.pizzaIngredient = pizzaIngredient;
-		this.menu = menu;
-		this.pizzaPriceList = pizzaPriceList;
-		this.orderItems=orderItems;
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -127,16 +116,16 @@ public class Pizza implements Serializable {
 		return preparationTime;
 	}
 
-	public void setPreparationTime(int preparationTime) {
+	public void setPreparationTime(Integer preparationTime) {
 		this.preparationTime = preparationTime;
 	}
 
-	public boolean isCeliac() {
-		return celiac;
+	public boolean getGlutenFree() {
+		return glutenFree;
 	}
 
-	public void setCeliac(boolean celiac) {
-		this.celiac = celiac;
+	public void setGlutenFree(Boolean glutenFree) {
+		this.glutenFree = glutenFree;
 	}
 
 	public String getDescription() {
@@ -155,12 +144,12 @@ public class Pizza implements Serializable {
 		this.size = size;
 	}
 
-	public List<RelationPizzaIngredient> getPizzaIngredient() {
-		return pizzaIngredient;
+	public List<RelationPizzaIngredient> getPizzaIngredients() {
+		return pizzaIngredients;
 	}
 
-	public void setPizzaIngredient(List<RelationPizzaIngredient> pizzaIngredient) {
-		this.pizzaIngredient = pizzaIngredient;
+	public void setPizzaIngredient(List<RelationPizzaIngredient> pizzaIngredients) {
+		this.pizzaIngredients = pizzaIngredients;
 	}
 
 	public List<Menu> getMenu() {
@@ -171,27 +160,19 @@ public class Pizza implements Serializable {
 		this.menu = menu;
 	}
 
-	public List<RelationPizzeriaPizza> getPizzaPriceList() {
-		return pizzaPriceList;
+	public List<RelationPizzeriaPizza> getPizzasPriceList() {
+		return pizzasPriceList;
 	}
 
-	public void setPizzaPriceList(List<RelationPizzeriaPizza> pizzaPriceList) {
-		this.pizzaPriceList = pizzaPriceList;
+	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzaPriceList) {
+		this.pizzasPriceList = pizzaPriceList;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public List<PizzaItem> getOrderItems() {
+	public List<PizzaOrderItem> getOrderItems() {
 		return orderItems;
 	}
 
-	public void setOrderItems(List<PizzaItem> orderItems) {
+	public void setOrderItems(List<PizzaOrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
 

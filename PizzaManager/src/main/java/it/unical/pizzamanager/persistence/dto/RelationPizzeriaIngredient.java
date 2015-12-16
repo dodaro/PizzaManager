@@ -33,6 +33,10 @@ public class RelationPizzeriaIngredient implements Serializable {
 	@JoinColumn(name = "ingredient")
 	private Ingredient ingredient;
 
+	@ManyToOne
+	@JoinColumn(name = "pizzeria")
+	private Pizzeria pizzeria;
+
 	@Column(name = "price")
 	private int price;
 

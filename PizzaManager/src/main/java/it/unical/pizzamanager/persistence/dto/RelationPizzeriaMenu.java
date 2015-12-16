@@ -40,6 +40,10 @@ public class RelationPizzeriaMenu implements Serializable {
 	@JoinColumn(name = "menu")
 	private Menu menu;
 
+	@ManyToOne
+	@JoinColumn(name = "pizzeria")
+	private Pizzeria pizzeria;
+	
 	@Column(name = "price")
 	private int price;
 
@@ -51,21 +55,24 @@ public class RelationPizzeriaMenu implements Serializable {
 		id = DatabaseHandler.NO_ID;
 		menu = new Menu();
 		price = 0;
+		pizzeria=new Pizzeria();
 		offers = new ArrayList<>();
 	}
 
-	public RelationPizzeriaMenu(Menu menu, int price) {
+	public RelationPizzeriaMenu(Menu menu, int price, Pizzeria pizzeria) {
 		this.id = DatabaseHandler.NO_ID;
 		this.menu = menu;
 		this.price = price;
 		this.offers = new ArrayList<>();
+		this.pizzeria=pizzeria;
 	}
 
-	public RelationPizzeriaMenu(Menu menu, int price, ArrayList<Offer> offers) {
+	public RelationPizzeriaMenu(Menu menu, int price, ArrayList<Offer> offers, Pizzeria pizzeria) {
 		this.id = DatabaseHandler.NO_ID;
 		this.menu = menu;
 		this.price = price;
 		this.offers = offers;
+		this.pizzeria=pizzeria;
 	}
 
 	public int getId() {
@@ -98,5 +105,13 @@ public class RelationPizzeriaMenu implements Serializable {
 
 	public void setOffers(List<Offer> offers) {
 		this.offers = offers;
+	}
+
+	public Pizzeria getPizzeria() {
+		return pizzeria;
+	}
+
+	public void setPizzeria(Pizzeria pizzeria) {
+		this.pizzeria = pizzeria;
 	}
 }

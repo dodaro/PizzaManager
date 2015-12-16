@@ -1,23 +1,29 @@
 package it.unical.pizzamanager.persistence.dto;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "feedback")
-public class Feedback implements Serializable {
+@Table(name = "feedbacks")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+public abstract class Feedback implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7166272043751535111L;
+	private static final long serialVersionUID = 788082246358843418L;
+
+	private static final int NO_ID = -1;
 
 	@ManyToOne
 	@JoinColumn(name = "user")
@@ -25,40 +31,38 @@ public class Feedback implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "codice")
-	private Integer codice;
+	@Column(name = "id")
+	private Integer id;
 
-	@Column(name = "qualityRating", nullable = false)
+	@Column(name = "quality_rating", nullable = false)
 	private Integer qualityRating;
-	
-	@Column(name = "fastnessRating", nullable = false)
+
+	@Column(name = "fastness_rating", nullable = false)
 	private Integer fastnessRating;
-	
+
+	@Column(name = "hospitality_rating", nullable = false)
+	private Integer hospitalityRating;
+
 	@Column(name = "text", nullable = false)
 	private String text;
-	
-	@Column(name = "hospitalRating", nullable = false)
-	private String hospitalRating;
-	
-	public Feedback()
-	{
-		codice=0;
-		qualityRating=0;
-		fastnessRating=0;
-		text="";
-		hospitalRating="";
-		user=null;
+
+	public Feedback() {
+		id = NO_ID;
+		user = new User();
+		qualityRating = 0;
+		fastnessRating = 0;
+		hospitalityRating = 0;
+		text = "";
 	}
 
-	public Feedback(User user, Integer codice, Integer qualityRating, Integer fastnessRating, String text,
-			String hospitalRating) {
-		super();
+	public Feedback(User user, Integer qualityRating, Integer fastnessRating,
+			Integer hospitalityRating, String text) {
+		this.id = NO_ID;
 		this.user = user;
-		this.codice = codice;
 		this.qualityRating = qualityRating;
 		this.fastnessRating = fastnessRating;
 		this.text = text;
-		this.hospitalRating = hospitalRating;
+		this.hospitalityRating = hospitalityRating;
 	}
 
 	public User getUser() {
@@ -69,12 +73,12 @@ public class Feedback implements Serializable {
 		this.user = user;
 	}
 
-	public Integer getCodice() {
-		return codice;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setCodice(Integer codice) {
-		this.codice = codice;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getQualityRating() {
@@ -93,6 +97,14 @@ public class Feedback implements Serializable {
 		this.fastnessRating = fastnessRating;
 	}
 
+	public Integer getHospitalityRating() {
+		return hospitalityRating;
+	}
+
+	public void setHospitalityRating(Integer hospitalityRating) {
+		this.hospitalityRating = hospitalityRating;
+	}
+
 	public String getText() {
 		return text;
 	}
@@ -100,13 +112,4 @@ public class Feedback implements Serializable {
 	public void setText(String text) {
 		this.text = text;
 	}
-
-	public String getHospitalRating() {
-		return hospitalRating;
-	}
-
-	public void setHospitalRating(String hospitalRating) {
-		this.hospitalRating = hospitalRating;
-	}
-	
 }

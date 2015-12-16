@@ -21,17 +21,14 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "ingredients")
-@SequenceGenerator(name = "ingredientsGenerator", sequenceName = "ingredientsSequence", initialValue = 1)
+@SequenceGenerator(name = "ingredientsGenerator", sequenceName = "ingredients_sequence", initialValue = 1)
 public class Ingredient implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7811955001213258947L;
+	private static final long serialVersionUID = 2041182307938465963L;
 
-	public static final String VEGETABLE_TYPE = "Vegetable";
-	public static final String MEAT_TYPE = "Meat";
-	public static final String FISH_TYPE = "Fish";
+	public static final String TYPE_VEGETABLE = "vegetable";
+	public static final String TYPE_MEAT = "meat";
+	public static final String TYPE_FISH = "fish";
 
 	@Id
 	@Column(name = "id")
@@ -48,10 +45,15 @@ public class Ingredient implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzaIngredient> pizzaIngredient;
 
+	/*
+	 * It seems to be no need for a RelationPizzeriaIngredient list, since it's unlikely we want to
+	 * pull from an ingredient all pizzerias using that ingredient.
+	 */
+
 	public Ingredient() {
 		id = DatabaseHandler.NO_ID;
 		name = "";
-		type = VEGETABLE_TYPE;
+		type = TYPE_VEGETABLE;
 		pizzaIngredient = new ArrayList<>();
 	}
 
@@ -69,6 +71,13 @@ public class Ingredient implements Serializable {
 		this.pizzaIngredient = pizzaIngredient;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;
@@ -92,13 +101,5 @@ public class Ingredient implements Serializable {
 
 	public void setPizzaIngredient(List<RelationPizzaIngredient> pizzaIngredient) {
 		this.pizzaIngredient = pizzaIngredient;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 }

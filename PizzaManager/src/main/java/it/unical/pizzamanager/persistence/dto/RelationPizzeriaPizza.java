@@ -33,6 +33,10 @@ public class RelationPizzeriaPizza implements Serializable {
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;
 
+	@ManyToOne
+	@JoinColumn(name = "pizzeria")
+	private Pizzeria pizzeria;
+
 	@Column(name = "price")
 	private int price;
 
@@ -40,12 +44,14 @@ public class RelationPizzeriaPizza implements Serializable {
 		id = DatabaseHandler.NO_ID;
 		pizza = new Pizza();
 		price = 0;
+		pizzeria = new Pizzeria();
 	}
 
-	public RelationPizzeriaPizza(Pizza pizza, int price) {
+	public RelationPizzeriaPizza(Pizzeria pizzeria, Pizza pizza, int price) {
 		this.id = DatabaseHandler.NO_ID;
 		this.pizza = pizza;
 		this.price = price;
+		this.pizzeria = pizzeria;
 	}
 
 	public int getId() {
@@ -70,5 +76,13 @@ public class RelationPizzeriaPizza implements Serializable {
 
 	public void setPrice(int price) {
 		this.price = price;
+	}
+
+	public Pizzeria getPizzeria() {
+		return pizzeria;
+	}
+
+	public void setPizzeria(Pizzeria pizzeria) {
+		this.pizzeria = pizzeria;
 	}
 }

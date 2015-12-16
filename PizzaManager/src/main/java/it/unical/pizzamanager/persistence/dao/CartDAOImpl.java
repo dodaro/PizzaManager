@@ -32,7 +32,7 @@ public class CartDAOImpl implements CartDAO {
 	public Cart getCart() {
 		Session session = databaseHandler.getSessionFactory().openSession();
 
-		Cart cart = (Cart) session.createSQLQuery("SELECT * FROM cart").addEntity(Cart.class);
+		Cart cart = (Cart) session.createSQLQuery("SELECT * FROM carts").addEntity(Cart.class);
 				
 		session.close();
 		return cart;

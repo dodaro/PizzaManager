@@ -15,29 +15,35 @@ import javax.persistence.Table;
 @Table(name = "favourites")
 public class Favourites implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7166272043751535111L;
+	private static final long serialVersionUID = -4706169428132813837L;
+
+	private static final int NO_ID = -1;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Integer id;
 
 	@ManyToOne
 	@JoinColumn(name = "user")
 	private User user;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "codice")
-	private Integer codice;
-
-
 	public Favourites() {
-		codice = 0;
-		user=null;
+		id = NO_ID;
+		user = new User();
 	}
 
-	public Favourites(Integer codice, User user) {
-		this.codice = codice;
+	public Favourites(User user) {
+		this.id = NO_ID;
 		this.user = user;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public User getUser() {
@@ -46,18 +52,5 @@ public class Favourites implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-
-	public Integer getCodice() {
-		return codice;
-	}
-
-	public void setCodice(Integer codice) {
-		this.codice = codice;
-	}
-
-	@Override
-	public String toString() {
-		return user.toString() + " - " + codice + " - ";
 	}
 }
