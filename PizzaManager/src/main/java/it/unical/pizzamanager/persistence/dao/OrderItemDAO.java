@@ -2,8 +2,8 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import com.sun.glass.ui.MenuItem;
 import it.unical.pizzamanager.persistence.dto.BeverageItem;
+import it.unical.pizzamanager.persistence.dto.MenuItem;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaItem;
 
