@@ -18,15 +18,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-
 @Entity
 @Table(name = "tables_pizzeria")
 public class TablePizzeria implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2946713211562844890L;
+
 	private static final int NO_ID = -1;
 
 	@Id

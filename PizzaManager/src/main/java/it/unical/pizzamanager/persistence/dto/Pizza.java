@@ -52,19 +52,19 @@ public class Pizza implements Serializable {
 	@Column(name = "special", nullable = false)
 	private boolean special;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzaIngredient> pizzaIngredients;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaPizza> pizzasPriceList;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
 

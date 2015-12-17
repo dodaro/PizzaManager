@@ -22,7 +22,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "pizzeria_menu_price")
+@Table(name = "pizzeria_menu")
 @SequenceGenerator(name="pizzeria_menu_priceGenerator",sequenceName="pizzeria_menu_priceSequence",initialValue=1)
 public class RelationPizzeriaMenu implements Serializable {
 
@@ -47,7 +47,7 @@ public class RelationPizzeriaMenu implements Serializable {
 	@Column(name = "price")
 	private int price;
 
-	@OneToMany(mappedBy = "menuPriceList", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "menuPriceList", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Offer> offers;
 

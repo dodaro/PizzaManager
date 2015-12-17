@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "pizzeria_pizza_price")
+@Table(name = "pizzeria_pizza")
 @SequenceGenerator(name = "pizzeria_pizza_priceGenerator", sequenceName = "pizzeria_pizza_priceSequence", initialValue = 1)
 public class RelationPizzeriaPizza implements Serializable {
 

@@ -2,12 +2,20 @@ package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "pizzeria_beverage_price")
+@Table(name = "pizzeria_beverage")
 @SequenceGenerator(name="pizzeria_beverageGenerator",sequenceName="pizzeria_beverageSequence",initialValue=1)
 public class RelationPizzeriaBeverage implements Serializable{
 

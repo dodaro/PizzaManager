@@ -41,7 +41,7 @@ public class Ingredient implements Serializable {
 	@Column(name = "type")
 	private String type;
 
-	@OneToMany(mappedBy = "ingredient", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzaIngredient> pizzaIngredient;
 

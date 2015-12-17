@@ -41,11 +41,11 @@ public class Menu implements Serializable {
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;
 
-	@OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaMenu> menuPriceList;
 
-	@OneToMany(mappedBy = "menu", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<MenuOrderItem> menuOrderItems;
 

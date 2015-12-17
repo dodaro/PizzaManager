@@ -16,9 +16,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @DiscriminatorValue("booking_table") 
 public class BookingTablePizzeria extends Booking{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1611802959380912382L;
 	
 	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)

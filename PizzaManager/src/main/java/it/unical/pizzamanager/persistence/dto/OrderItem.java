@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -32,6 +34,14 @@ public class OrderItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItemsGenerator")
 	private Integer id;
 
+	@ManyToOne
+	@JoinColumn(name = "booking")
+	private Booking booking;
+
+	@ManyToOne
+	@JoinColumn(name = "cart")
+	private Cart cart;
+
 	@Column(name = "cost")
 	private Double cost;
 	// instead of ha references add a boolean modified and the cost of item ordered so we can get
@@ -42,11 +52,15 @@ public class OrderItem implements Serializable {
 	public OrderItem() {
 		id = DatabaseHandler.NO_ID;
 		cost = 0.0;
+		booking = null;
+		cart = null;
 	}
 
 	public OrderItem(Double cost) {
 		id = DatabaseHandler.NO_ID;
 		this.cost = cost;
+		booking = null;
+		cart = null;
 	}
 
 	public Integer getId() {
@@ -63,5 +77,21 @@ public class OrderItem implements Serializable {
 
 	public void setCost(Double cost) {
 		this.cost = cost;
+	}
+
+	public Booking getBooking() {
+		return booking;
+	}
+
+	public void setBooking(Booking booking) {
+		this.booking = booking;
+	}
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 }

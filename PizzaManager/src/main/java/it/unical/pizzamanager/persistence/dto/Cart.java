@@ -37,7 +37,7 @@ public class Cart implements Serializable {
 	@JoinColumn(name = "user")
 	private User user;
 
-	@OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<OrderItem> orderItems;
 

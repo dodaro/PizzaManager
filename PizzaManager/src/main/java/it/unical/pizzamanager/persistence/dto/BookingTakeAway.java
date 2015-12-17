@@ -10,9 +10,6 @@ import javax.persistence.Entity;
 @DiscriminatorValue("booking_takeAway")
 public class BookingTakeAway extends Booking {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2403428020672529065L;
 
 	public BookingTakeAway() {

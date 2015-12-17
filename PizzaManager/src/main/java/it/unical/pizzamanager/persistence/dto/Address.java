@@ -1,14 +1,30 @@
 package it.unical.pizzamanager.persistence.dto;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Embeddable
+@Entity
+@Table(name = "addresses")
 public class Address {
 
 	private static final int NO_NUMBER = -1;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Integer id;
+	
+	@Column(name = "street")
 	private String street;
-	private int number;
+	
+	@Column(name = "number")
+	private Integer number;
+	
+	@Column(name = "city")
 	private String city;
 
 	public Address() {

@@ -49,15 +49,15 @@ public class Beverage implements Serializable {
 	@Column(name = "category", nullable = false, length = 255)
 	private String category;
 
-	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaBeverage> beveragePriceList;
 
-	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
 
-	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BeverageOrderItem> orderItems;
 
