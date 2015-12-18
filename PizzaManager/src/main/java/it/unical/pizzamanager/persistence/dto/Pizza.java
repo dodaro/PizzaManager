@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -69,7 +72,27 @@ public class Pizza implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
 
+	@ElementCollection
+	@CollectionTable(name = "images", joinColumns = @JoinColumn(name = "pizza_id") )
+	private List<Image> images;
+
 	public Pizza() {
+		id = DatabaseHandler.NO_ID;
+		name = "";
+		preparationTime = 0;
+		glutenFree = false;
+		description = "";
+		size = PizzaSize.NORMAL;
+		special = false;
+		pizzaIngredients = new ArrayList<>();
+		menu = new ArrayList<>();
+		pizzasPriceList = new ArrayList<>();
+		orderItems = new ArrayList<>();
+		images = new ArrayList<>();
+	}
+
+	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
+			PizzaSize size, Boolean special) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = "";
 		this.preparationTime = 0;
@@ -81,6 +104,7 @@ public class Pizza implements Serializable {
 		this.menu = new ArrayList<>();
 		this.pizzasPriceList = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
+		this.images = new ArrayList<>();
 	}
 
 	public Pizza(String name) {
@@ -95,21 +119,24 @@ public class Pizza implements Serializable {
 		this.menu = new ArrayList<>();
 		this.pizzasPriceList = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
+		this.images = new ArrayList<>();
 	}
 
-	public Pizza(String name, Integer preparationTime, Boolean glutenFree, String description,
-			PizzaSize size, Boolean special) {
+	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
+			PizzaSize size, Boolean special, List<RelationPizzaIngredient> pizzaIngredients,
+			List<Menu> menu, List<RelationPizzeriaPizza> pizzasPriceList,
+			List<PizzaOrderItem> orderItems, List<Image> images) {
 		this.id = DatabaseHandler.NO_ID;
-		this.name = name;
 		this.preparationTime = preparationTime;
 		this.glutenFree = glutenFree;
 		this.description = description;
 		this.size = size;
 		this.special = special;
-		this.pizzaIngredients = new ArrayList<>();
-		this.menu = new ArrayList<>();
-		this.pizzasPriceList = new ArrayList<>();
-		this.orderItems = new ArrayList<>();
+		this.pizzaIngredients = pizzaIngredients;
+		this.menu = menu;
+		this.pizzasPriceList = pizzasPriceList;
+		this.orderItems = orderItems;
+		this.images = images;
 	}
 
 	public Integer getId() {
@@ -190,6 +217,14 @@ public class Pizza implements Serializable {
 
 	public void setOrderItems(List<PizzaOrderItem> orderItems) {
 		this.orderItems = orderItems;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 }

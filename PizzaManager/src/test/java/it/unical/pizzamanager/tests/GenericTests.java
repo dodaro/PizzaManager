@@ -129,7 +129,8 @@ public class GenericTests {
 
 	public void createPizzas(PizzaDAO pizzaDAO) {
 		Pizza capricciosa = new Pizza("Capricciosa");
-		Pizza margherita = new Pizza("Margherita", 3, false, "", PizzaSize.MAXI, false);
+		Pizza margherita = new Pizza("Margherita", 3, false, "MargheritaDescription",
+				PizzaSize.MAXI, false);
 		pizzaDAO.create(capricciosa);
 		pizzaDAO.create(margherita);
 	}
