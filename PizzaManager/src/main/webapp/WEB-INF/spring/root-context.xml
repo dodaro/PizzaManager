@@ -31,50 +31,10 @@
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
-	<bean id="beverageDAO" class="it.unical.pizzamanager.persistence.dao.BeverageDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	<bean id="relationPizzeriaBeverageDAO"
-		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	<bean id="ingredientDAO"
-		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	<bean id="relationPizzeriaIngredientDAO"
-		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaIngredientDAOImpl">
+	<bean id="customerDAO" class="it.unical.pizzamanager.persistence.dao.CustomerDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
-	<bean id="menuDAO" class="it.unical.pizzamanager.persistence.dao.MenuDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	<bean id="relationPizzeriaMenuDAO"
-		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaMenuDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	
-	<bean id="offerDAO" class="it.unical.pizzamanager.persistence.dao.OfferDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	
-
-	<bean id="relationPizzaIngredientDAO"
-		class="it.unical.pizzamanager.persistence.dao.RelationPizzaIngredientDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-
-	<bean id="orderItemDAO"
-		class="it.unical.pizzamanager.persistence.dao.OrderItemDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	
-	<bean id="relationPizzeriaPizzaDAO"
-		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />

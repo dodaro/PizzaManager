@@ -11,25 +11,21 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * Persons are people who bought something from some pizzeria but may or may not have an account on
  * the system (persons with an account are Users).
  */
 @Entity
-@Table(name = "persons")
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SequenceGenerator(name = "personsGenerator", sequenceName = "persons_sequence", initialValue = 1)
-public class Person implements Serializable {
+public abstract class Person implements Serializable {
 
-	private static final long serialVersionUID = -4360747605867009890L;
+	private static final long serialVersionUID = 1812329632392004600L;
 
 	private static final int NO_ID = -1;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "personsGenerator")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private Integer id;
 
@@ -39,7 +35,11 @@ public class Person implements Serializable {
 	@Column(name = "last_name")
 	private String lastName;
 
-	@OneToOne
+	/*
+	 * L'annotazione @Cascade serve in modo che, se una persona ha un Address impostato, non bisogna
+	 * salvare appositamente prima l'address prima di salvare la persona.
+	 */
+	@OneToOne(optional = true)
 	@JoinColumn(name = "address")
 	private Address address;
 
@@ -54,11 +54,19 @@ public class Person implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
+	public Person(String firstName, String lastName, String phoneNumber) {
+		this.id = NO_ID;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = null;
+		this.phoneNumber = phoneNumber;
+	}
+
 	public Person() {
 		id = NO_ID;
 		firstName = "";
 		lastName = "";
-		address = new Address();
+		address = null;
 		phoneNumber = "";
 	}
 

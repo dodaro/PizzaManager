@@ -95,7 +95,7 @@ public class Booking implements Serializable {
 		this.date = new Date();
 		this.time = new Date();
 		this.confirmed = new Boolean(false);
-		this.person = new Person();
+		this.person = new Customer();
 		this.payment = new Payment();
 		this.priority = DEFAULT_PRIORITY;
 		this.orderItems = new ArrayList<OrderItem>();

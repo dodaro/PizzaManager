@@ -5,9 +5,6 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Favourites;
-import it.unical.pizzamanager.persistence.dto.Feedback;
-import it.unical.pizzamanager.persistence.dto.Payment;
 import it.unical.pizzamanager.persistence.dto.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -71,36 +68,6 @@ public class UserDAOImpl implements UserDAO {
 		// }
 		session.close();
 		return user;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Payment> getPayments(User user) {
-		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Payment> payments = (List<Payment>) session
-				.createQuery("from Payment p where user = " + user.getId()).list();
-		session.close();
-		return payments;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Feedback> getFeedbacks(User user) {
-		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Feedback> feedback = (List<Feedback>) session
-				.createQuery("from Feedback p where user =" + user.getId()).list();
-		session.close();
-		return feedback;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<Favourites> getFavourites(User user) {
-		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Favourites> favourites = (List<Favourites>) session
-				.createQuery("from Favourites p where user =" + user.getId()).list();
-		session.close();
-		return favourites;
 	}
 
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {

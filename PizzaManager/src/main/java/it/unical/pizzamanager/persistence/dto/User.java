@@ -22,7 +22,7 @@ public class User extends Person {
 	@Column(name = "email", length = 255, unique = true, nullable = false)
 	private String email;
 
-	@Column(name = "password", length = 255, unique = true, nullable = false)
+	@Column(name = "password", length = 255, nullable = false)
 	private String password;
 
 	@Column(name = "last_location", length = 255)
@@ -61,7 +61,7 @@ public class User extends Person {
 	}
 
 	public User(String email, String password) {
-		super("", "", new Address(), "");
+		super("", "", null, "");
 		this.email = email;
 		this.password = password;
 		this.lastLocation = "";
