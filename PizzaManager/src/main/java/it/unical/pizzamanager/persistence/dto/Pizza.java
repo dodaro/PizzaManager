@@ -22,7 +22,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
-
 @Entity
 @Table(name = "pizzas")
 @SequenceGenerator(name = "pizzasGenerator", sequenceName = "pizzas_sequence", initialValue = 1)
@@ -30,8 +29,9 @@ public class Pizza implements Serializable {
 
 	private static final long serialVersionUID = 6079186121128866192L;
 
-	public static final String SIZE_NORMAL = "normal";
-	public static final String SIZE_MAXI = "maxi";
+	public enum PizzaSize {
+		NORMAL, MAXI
+	}
 
 	@Id
 	@Column(name = "id")
@@ -51,7 +51,7 @@ public class Pizza implements Serializable {
 	private String description;
 
 	@Column(name = "size", nullable = false)
-	private String size;
+	private PizzaSize size;
 
 	@Column(name = "special", nullable = false)
 	private boolean special;
@@ -71,10 +71,10 @@ public class Pizza implements Serializable {
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
-	
+
 	@ElementCollection
-	@CollectionTable(name="images", joinColumns=@JoinColumn(name="pizza_id"))
-	private List<Image> images; 
+	@CollectionTable(name = "images", joinColumns = @JoinColumn(name = "pizza_id") )
+	private List<Image> images;
 
 	public Pizza() {
 		id = DatabaseHandler.NO_ID;
@@ -82,45 +82,63 @@ public class Pizza implements Serializable {
 		preparationTime = 0;
 		glutenFree = false;
 		description = "";
-		size = Pizza.SIZE_NORMAL;
+		size = PizzaSize.NORMAL;
 		special = false;
 		pizzaIngredients = new ArrayList<>();
 		menu = new ArrayList<>();
 		pizzasPriceList = new ArrayList<>();
 		orderItems = new ArrayList<>();
-		images=new ArrayList<>();
+		images = new ArrayList<>();
 	}
 
 	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
-			String size, Boolean special) {
+			PizzaSize size, Boolean special) {
 		this.id = DatabaseHandler.NO_ID;
-		this.preparationTime = preparationTime;
-		this.glutenFree = glutenFree;
-		this.description = description;
-		this.size = size;
-		this.special = special;
+		this.name = "";
+		this.preparationTime = 0;
+		this.glutenFree = false;
+		this.description = "";
+		this.size = PizzaSize.NORMAL;
+		this.special = false;
 		this.pizzaIngredients = new ArrayList<>();
 		this.menu = new ArrayList<>();
 		this.pizzasPriceList = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
-		this.images=new ArrayList<>();
+		this.images = new ArrayList<>();
+	}
+
+	public Pizza(String name) {
+		this.id = DatabaseHandler.NO_ID;
+		this.name = name;
+		this.preparationTime = 0;
+		this.glutenFree = false;
+		this.description = "";
+		this.size = PizzaSize.NORMAL;
+		this.special = false;
+		this.pizzaIngredients = new ArrayList<>();
+		this.menu = new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
+		this.images = new ArrayList<>();
 	}
 
 	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
-			String size, Boolean special, List<RelationPizzaIngredient> pizzaIngredients, List<Menu> menu, List<RelationPizzeriaPizza> pizzasPriceList, List<PizzaOrderItem> orderItems, List<Image> images) {
+			PizzaSize size, Boolean special, List<RelationPizzaIngredient> pizzaIngredients,
+			List<Menu> menu, List<RelationPizzeriaPizza> pizzasPriceList,
+			List<PizzaOrderItem> orderItems, List<Image> images) {
 		this.id = DatabaseHandler.NO_ID;
 		this.preparationTime = preparationTime;
 		this.glutenFree = glutenFree;
 		this.description = description;
 		this.size = size;
 		this.special = special;
-		this.pizzaIngredients =pizzaIngredients;
+		this.pizzaIngredients = pizzaIngredients;
 		this.menu = menu;
 		this.pizzasPriceList = pizzasPriceList;
 		this.orderItems = orderItems;
-		this.images=images;
+		this.images = images;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
@@ -161,11 +179,11 @@ public class Pizza implements Serializable {
 		this.description = description;
 	}
 
-	public String getSize() {
+	public PizzaSize getSize() {
 		return size;
 	}
 
-	public void setSize(String size) {
+	public void setSize(PizzaSize size) {
 		this.size = size;
 	}
 

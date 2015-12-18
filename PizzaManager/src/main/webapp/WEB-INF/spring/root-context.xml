@@ -27,11 +27,15 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean id="userDAO" class="it.unical.pizzamanager.persistence.dao.UserDAOImpl">
+	<bean id="customerDAO" class="it.unical.pizzamanager.persistence.dao.CustomerDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
-	<bean id="customerDAO" class="it.unical.pizzamanager.persistence.dao.CustomerDAOImpl">
+	<bean id="pizzaDAO" class="it.unical.pizzamanager.persistence.dao.PizzaDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+
+	<bean id="userDAO" class="it.unical.pizzamanager.persistence.dao.UserDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
