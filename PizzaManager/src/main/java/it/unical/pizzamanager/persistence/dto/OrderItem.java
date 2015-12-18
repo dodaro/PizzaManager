@@ -25,7 +25,7 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 @DiscriminatorColumn(name = "order_type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue(value = "order_item")
 @SequenceGenerator(name = "orderItemsGenerator", sequenceName = "order_items_sequence", initialValue = 1)
-public class OrderItem implements Serializable {
+public abstract class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = -8807690064904416275L;
 

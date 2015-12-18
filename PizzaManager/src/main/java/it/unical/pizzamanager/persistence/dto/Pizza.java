@@ -26,8 +26,9 @@ public class Pizza implements Serializable {
 
 	private static final long serialVersionUID = 6079186121128866192L;
 
-	public static final String SIZE_NORMAL = "normal";
-	public static final String SIZE_MAXI = "maxi";
+	public enum PizzaSize {
+		NORMAL, MAXI
+	}
 
 	@Id
 	@Column(name = "id")
@@ -47,7 +48,7 @@ public class Pizza implements Serializable {
 	private String description;
 
 	@Column(name = "size", nullable = false)
-	private String size;
+	private PizzaSize size;
 
 	@Column(name = "special", nullable = false)
 	private boolean special;
@@ -69,22 +70,37 @@ public class Pizza implements Serializable {
 	private List<PizzaOrderItem> orderItems;
 
 	public Pizza() {
-		id = DatabaseHandler.NO_ID;
-		name = "";
-		preparationTime = 0;
-		glutenFree = false;
-		description = "";
-		size = Pizza.SIZE_NORMAL;
-		special = false;
-		pizzaIngredients = new ArrayList<>();
-		menu = new ArrayList<>();
-		pizzasPriceList = new ArrayList<>();
-		orderItems = new ArrayList<>();
+		this.id = DatabaseHandler.NO_ID;
+		this.name = "";
+		this.preparationTime = 0;
+		this.glutenFree = false;
+		this.description = "";
+		this.size = PizzaSize.NORMAL;
+		this.special = false;
+		this.pizzaIngredients = new ArrayList<>();
+		this.menu = new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
 	}
 
-	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
-			String size, Boolean special) {
+	public Pizza(String name) {
 		this.id = DatabaseHandler.NO_ID;
+		this.name = name;
+		this.preparationTime = 0;
+		this.glutenFree = false;
+		this.description = "";
+		this.size = PizzaSize.NORMAL;
+		this.special = false;
+		this.pizzaIngredients = new ArrayList<>();
+		this.menu = new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
+	}
+
+	public Pizza(String name, Integer preparationTime, Boolean glutenFree, String description,
+			PizzaSize size, Boolean special) {
+		this.id = DatabaseHandler.NO_ID;
+		this.name = name;
 		this.preparationTime = preparationTime;
 		this.glutenFree = glutenFree;
 		this.description = description;
@@ -136,11 +152,11 @@ public class Pizza implements Serializable {
 		this.description = description;
 	}
 
-	public String getSize() {
+	public PizzaSize getSize() {
 		return size;
 	}
 
-	public void setSize(String size) {
+	public void setSize(PizzaSize size) {
 		this.size = size;
 	}
 
