@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -77,8 +79,15 @@ public class Pizzeria implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<TablePizzeria> tables;
 
-	// table;
+	@OneToMany(mappedBy="pizzeria",fetch=FetchType.LAZY)
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	private List<Booking> bookings;
 
+	
+	@ElementCollection
+	@CollectionTable(name="images", joinColumns=@JoinColumn(name="pizzeria_id"))
+	private List<Image> images; 
+	
 	public Pizzeria() {
 		id = DatabaseHandler.NO_ID;
 		name = "";
@@ -93,6 +102,8 @@ public class Pizzeria implements Serializable {
 		ingredientPriceLists = new ArrayList<>();
 		feedbacks = new ArrayList<>();
 		tables = new ArrayList<>();
+		bookings=new ArrayList<>();
+		images=new ArrayList<>();
 
 	}
 
@@ -110,6 +121,8 @@ public class Pizzeria implements Serializable {
 		this.ingredientPriceLists = new ArrayList<>();
 		this.feedbacks = new ArrayList<>();
 		this.tables = new ArrayList<>();
+		this.bookings=new ArrayList<>();
+		this.images=new ArrayList<>();
 	}
 
 	public Pizzeria(String name, String email, String description, String phoneNumber,
@@ -117,7 +130,7 @@ public class Pizzeria implements Serializable {
 			List<RelationPizzeriaBeverage> beveragePriceLists,
 			List<RelationPizzeriaPizza> pizzaPriceLists,
 			List<RelationPizzeriaIngredient> ingredientPriceLists, List<FeedbackPizzeria> feedbacks,
-			List<TablePizzeria> tables) {
+			List<TablePizzeria> tables, List<Booking> bookings, List<Image> images) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
 		this.email = email;
@@ -131,6 +144,8 @@ public class Pizzeria implements Serializable {
 		this.ingredientPriceLists = ingredientPriceLists;
 		this.feedbacks = feedbacks;
 		this.tables = tables;
+		this.bookings=bookings;
+		this.images=images;
 	}
 
 	public int getId() {
@@ -235,6 +250,22 @@ public class Pizzeria implements Serializable {
 
 	public void setTables(List<TablePizzeria> tables) {
 		this.tables = tables;
+	}
+
+	public List<Booking> getBookings() {
+		return bookings;
+	}
+
+	public void setBookings(List<Booking> bookings) {
+		this.bookings = bookings;
+	}
+
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
 	}
 
 }
