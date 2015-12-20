@@ -12,5 +12,7 @@ public interface IngredientDAO {
 
 	public void update(Ingredient ingredient);
 
-	public List<Ingredient> get();
+	public Ingredient get(String name);
+
+	public List<Ingredient> getAll();
 }

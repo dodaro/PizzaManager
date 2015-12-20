@@ -27,7 +27,14 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
+	<!-- Keep DAO beans in alphabetical order for clarity. -->
+
 	<bean id="customerDAO" class="it.unical.pizzamanager.persistence.dao.CustomerDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+
+	<bean id="ingredientDAO"
+		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
@@ -45,5 +52,4 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
-
 </beans>

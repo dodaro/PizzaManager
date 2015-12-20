@@ -26,49 +26,43 @@ public class Ingredient implements Serializable {
 
 	private static final long serialVersionUID = 2041182307938465963L;
 
-	public static final String TYPE_VEGETABLE = "vegetable";
-	public static final String TYPE_MEAT = "meat";
-	public static final String TYPE_FISH = "fish";
+	public enum IngredientType {
+		VEGETABLE, MEAT, FISH, CHEESE, NO_TYPE
+	}
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ingredientsGenerator")
 	private Integer id;
 
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", unique = true, nullable = false)
 	private String name;
 
-	@Column(name = "type")
-	private String type;
+	@Column(name = "type", nullable = false)
+	private IngredientType type;
 
 	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzaIngredient> pizzaIngredient;
+	private List<RelationPizzaIngredient> ingredientOf;
 
 	/*
-	 * It seems to be no need for a RelationPizzeriaIngredient list, since it's unlikely we want to
-	 * pull from an ingredient all pizzerias using that ingredient.
+	 * It seems to be no need for a RelationPizzeriaIngredient list, since it's
+	 * unlikely we want to pull from an ingredient all pizzerias using that
+	 * ingredient.
 	 */
 
 	public Ingredient() {
 		id = DatabaseHandler.NO_ID;
 		name = "";
-		type = TYPE_VEGETABLE;
-		pizzaIngredient = new ArrayList<>();
+		type = IngredientType.NO_TYPE;
+		ingredientOf = new ArrayList<>();
 	}
 
-	public Ingredient(String name, String type) {
+	public Ingredient(String name, IngredientType type) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
 		this.type = type;
-		pizzaIngredient = new ArrayList<>();
-	}
-
-	public Ingredient(String name, String type, List<RelationPizzaIngredient> pizzaIngredient) {
-		this.id = DatabaseHandler.NO_ID;
-		this.name = name;
-		this.type = type;
-		this.pizzaIngredient = pizzaIngredient;
+		ingredientOf = new ArrayList<>();
 	}
 
 	public Integer getId() {
@@ -87,19 +81,19 @@ public class Ingredient implements Serializable {
 		this.name = name;
 	}
 
-	public String getType() {
+	public IngredientType getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(IngredientType type) {
 		this.type = type;
 	}
 
-	public List<RelationPizzaIngredient> getPizzaIngredient() {
-		return pizzaIngredient;
+	public List<RelationPizzaIngredient> getIngredientOf() {
+		return ingredientOf;
 	}
 
-	public void setPizzaIngredient(List<RelationPizzaIngredient> pizzaIngredient) {
-		this.pizzaIngredient = pizzaIngredient;
+	public void setIngredientOf(List<RelationPizzaIngredient> pizzaIngredient) {
+		this.ingredientOf = pizzaIngredient;
 	}
 }

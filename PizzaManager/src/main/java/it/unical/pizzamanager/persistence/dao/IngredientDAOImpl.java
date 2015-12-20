@@ -2,6 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.Ingredient;
@@ -32,12 +33,21 @@ public class IngredientDAOImpl implements IngredientDAO {
 
 	}
 
+	@Override
+	public Ingredient get(String name) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from Ingredient where name = :name");
+		query.setParameter("name", name);
+		Ingredient ingredient = (Ingredient) query.uniqueResult();
+		session.close();
+		return ingredient;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Ingredient> get() {
+	public List<Ingredient> getAll() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Ingredient> ingredients = session.createSQLQuery("Select * from ingredients").addEntity(Ingredient.class)
-				.list();
+		List<Ingredient> ingredients = session.createQuery("from Ingredient").list();
 		session.close();
 		return ingredients;
 	}
