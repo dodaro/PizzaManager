@@ -1,75 +1,28 @@
-package it.unical.pizzamanager.tests;
+package it.unical.pizzamanager.populator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 
-import it.unical.pizzamanager.persistence.dao.CustomerDAO;
 import it.unical.pizzamanager.persistence.dao.IngredientDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
-import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Customer;
 import it.unical.pizzamanager.persistence.dto.Ingredient;
-import it.unical.pizzamanager.persistence.dto.Ingredient.IngredientType;
 import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
-import it.unical.pizzamanager.persistence.dto.User;
 
-public class TestUtils {
+public class PizzaPopulator extends Populator {
 
-	public static void populateDatabase(ApplicationContext context) {
-		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		if (userDAO.getAll().isEmpty()) {
-			createUsers(userDAO);
-		}
+	public PizzaPopulator(ApplicationContext context) {
+		super(context);
+	}
 
-		CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-		if (customerDAO.getAll().isEmpty()) {
-			createCustomers(customerDAO);
-		}
-
+	@Override
+	protected void populate() {
 		IngredientDAO ingredientDAO = (IngredientDAO) context.getBean("ingredientDAO");
-		if (ingredientDAO.getAll().isEmpty()) {
-			createIngredients(ingredientDAO);
-		}
-
 		PizzaDAO pizzaDAO = (PizzaDAO) context.getBean("pizzaDAO");
-		if (pizzaDAO.getAll().isEmpty()) {
-			createPizzas(pizzaDAO, ingredientDAO);
-		}
-	}
 
-	private static void createUsers(UserDAO userDAO) {
-		for (int i = 1; i <= 10; i++) {
-			userDAO.create(new User("email" + i, "password" + i));
-		}
-	}
-
-	private static void createCustomers(CustomerDAO customerDAO) {
-		/*
-		 * Da 11 a 20 così, ad esempio, il Customer con id 13 avrà firstName
-		 * "firstName13", poiché gli id sono condivisi tra User e Customer.
-		 */
-		for (int i = 11; i <= 20; i++) {
-			customerDAO.create(new Customer("firstName" + i, "lastName" + i, "phoneNumber" + i));
-		}
-	}
-
-	private static void createIngredients(IngredientDAO ingredientDAO) {
-		Ingredient mozzarella = new Ingredient("Mozzarella", IngredientType.CHEESE);
-		Ingredient tomato = new Ingredient("Tomato", IngredientType.VEGETABLE);
-		Ingredient ham = new Ingredient("Cooked Ham", IngredientType.MEAT);
-		Ingredient sausage = new Ingredient("Sausage", IngredientType.MEAT);
-
-		ingredientDAO.create(mozzarella);
-		ingredientDAO.create(tomato);
-		ingredientDAO.create(ham);
-		ingredientDAO.create(sausage);
-	}
-
-	private static void createPizzas(PizzaDAO pizzaDAO, IngredientDAO ingredientDAO) {
 		Pizza margherita = new Pizza("Margherita", 4, false, "MargheritaDescription",
 				PizzaSize.NORMAL, false);
 		Pizza cardinale = new Pizza("Cardinale", 5, false, "CardinaleDescription", PizzaSize.MAXI,

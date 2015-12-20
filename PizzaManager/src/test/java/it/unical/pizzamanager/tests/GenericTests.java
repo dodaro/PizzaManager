@@ -2,7 +2,6 @@ package it.unical.pizzamanager.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +21,6 @@ public class GenericTests {
 
 	@Autowired
 	private ApplicationContext context;
-
-	@Before
-	public void init() {
-		TestUtils.populateDatabase(context);
-	}
 
 	@Test
 	public void numberOfUsers() {

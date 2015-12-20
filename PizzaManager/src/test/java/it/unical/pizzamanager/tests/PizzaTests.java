@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,6 @@ public class PizzaTests {
 
 	@Autowired
 	private ApplicationContext context;
-
-	@Before
-	public void init() {
-		TestUtils.populateDatabase(context);
-	}
 
 	@Test
 	public void numberOfPizzas() {
