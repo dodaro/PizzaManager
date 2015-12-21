@@ -102,6 +102,18 @@ public abstract class Booking implements Serializable {
 		this.orderItems = new ArrayList<>();
 	}
 
+	public Booking(Date date, Date time, Boolean confirmed, Integer priority) {
+		this.id = DatabaseHandler.NO_ID;
+		this.date = date;
+		this.time = time;
+		this.confirmed = confirmed;
+		this.priority = priority;
+		this.user = null;
+		this.pizzeria = null;
+		this.payment = null;
+		this.orderItems = new ArrayList<>();
+	}
+
 	public Integer getId() {
 		return id;
 	}

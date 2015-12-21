@@ -1,5 +1,7 @@
 package it.unical.pizzamanager.persistence.dto;
 
+import java.util.Date;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -11,5 +13,9 @@ public class BookingTakeAway extends Booking {
 
 	public BookingTakeAway() {
 		super();
+	}
+
+	public BookingTakeAway(Date date, Date time, Boolean confirmed, Integer priority) {
+		super(date, time, confirmed, priority);
 	}
 }

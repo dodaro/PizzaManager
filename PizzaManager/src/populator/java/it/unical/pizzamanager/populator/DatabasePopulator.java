@@ -46,5 +46,6 @@ public class DatabasePopulator {
 		traceFile.delete();
 
 		new DatabasePopulator().populateDatabase();
+		System.out.println("Done.");
 	}
 }
