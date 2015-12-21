@@ -1,6 +1,5 @@
 package it.unical.pizzamanager.persistence.dto;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,54 +8,24 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
-
 @Entity
 @Table(name = "pizzerias")
-@SequenceGenerator(name = "pizzeriasGenerator", sequenceName = "pizzerias_sequence", initialValue = 1)
-public class Pizzeria implements Serializable {
+public class Pizzeria extends Account {
 
 	private static final long serialVersionUID = -5327142814488664848L;
-
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pizzeriasGenerator")
-	private int id;
 
 	@Column(name = "name")
 	private String name;
 
-	@Column(name = "email")
-	private String email;
-
-	@Column(name = "description")
-	private String description;
-
-	@OneToOne
-	@JoinColumn(name = "address")
-	@Cascade(value = CascadeType.SAVE_UPDATE)
-	private Address address;
-
 	@Column(name = "phoneNumber")
 	private String phoneNumber;
-
-	@OneToOne
-	@JoinColumn(name = "user")
-	private User user;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -80,7 +49,7 @@ public class Pizzeria implements Serializable {
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<TablePizzeria> tables;
+	private List<PizzeriaTable> tables;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -91,32 +60,9 @@ public class Pizzeria implements Serializable {
 	private List<Image> images;
 
 	public Pizzeria() {
-		id = DatabaseHandler.NO_ID;
-		name = "";
-		email = "";
-		description = "";
-		phoneNumber = "";
-		address = new Address();
-		user = new User();
-		beveragesPriceList = new ArrayList<>();
-		pizzasPriceList = new ArrayList<>();
-		menusPriceList = new ArrayList<>();
-		ingredientsPriceList = new ArrayList<>();
-		feedbacks = new ArrayList<>();
-		tables = new ArrayList<>();
-		bookings = new ArrayList<>();
-		images = new ArrayList<>();
-	}
-
-	public Pizzeria(String name, String email, String description, Address address,
-			String phoneNumber, User user) {
-		this.id = DatabaseHandler.NO_ID;
-		this.name = name;
-		this.email = email;
-		this.description = description;
-		this.phoneNumber = phoneNumber;
-		this.address = address;
-		this.user = user;
+		super();
+		this.name = "";
+		this.phoneNumber = "";
 		this.beveragesPriceList = new ArrayList<>();
 		this.pizzasPriceList = new ArrayList<>();
 		this.menusPriceList = new ArrayList<>();
@@ -127,12 +73,18 @@ public class Pizzeria implements Serializable {
 		this.images = new ArrayList<>();
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public Pizzeria(String email, String password, String name, String phoneNumber) {
+		super(email, password);
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.beveragesPriceList = new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.menusPriceList = new ArrayList<>();
+		this.ingredientsPriceList = new ArrayList<>();
+		this.feedbacks = new ArrayList<>();
+		this.tables = new ArrayList<>();
+		this.bookings = new ArrayList<>();
+		this.images = new ArrayList<>();
 	}
 
 	public String getName() {
@@ -143,44 +95,12 @@ public class Pizzeria implements Serializable {
 		this.name = name;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
-	}
-
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public List<RelationPizzeriaBeverage> getBeveragesPriceList() {
@@ -223,11 +143,11 @@ public class Pizzeria implements Serializable {
 		this.feedbacks = feedbacks;
 	}
 
-	public List<TablePizzeria> getTables() {
+	public List<PizzeriaTable> getTables() {
 		return tables;
 	}
 
-	public void setTables(List<TablePizzeria> tables) {
+	public void setTables(List<PizzeriaTable> tables) {
 		this.tables = tables;
 	}
 

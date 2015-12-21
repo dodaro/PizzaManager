@@ -20,12 +20,6 @@ public class FeedbackPizza extends Feedback {
 		this.pizza = new Pizza();
 	}
 
-	public FeedbackPizza(User user, Integer qualityRating, Integer fastnessRating,
-			Integer hospitalityRating, String text, Pizza pizza) {
-		super(user, qualityRating, fastnessRating, hospitalityRating, text);
-		this.pizza = pizza;
-	}
-
 	public Pizza getPizza() {
 		return pizza;
 	}

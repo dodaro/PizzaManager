@@ -9,24 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "pizzeria_ingredient")
-@SequenceGenerator(name = "pizzeria_ingredient_priceGenerator", sequenceName = "pizzeria_ingredient_priceSequence", initialValue = 1)
 public class RelationPizzeriaIngredient implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -5615124192655120058L;
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pizzeria_ingredient_priceGenerator")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
 	@ManyToOne
@@ -38,18 +33,13 @@ public class RelationPizzeriaIngredient implements Serializable {
 	private Pizzeria pizzeria;
 
 	@Column(name = "price")
-	private int price;
+	private Double price;
 
 	public RelationPizzeriaIngredient() {
-		id = DatabaseHandler.NO_ID;
-		ingredient = new Ingredient();
-		price = 0;
-	}
-
-	public RelationPizzeriaIngredient(Ingredient ingredient, int price) {
 		this.id = DatabaseHandler.NO_ID;
-		this.ingredient = ingredient;
-		this.price = price;
+		this.ingredient = null;
+		this.pizzeria = null;
+		this.price = 0.0;
 	}
 
 	public int getId() {
@@ -60,19 +50,27 @@ public class RelationPizzeriaIngredient implements Serializable {
 		this.id = id;
 	}
 
-	public int getPrice() {
-		return price;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
 	public Ingredient getIngredient() {
 		return ingredient;
 	}
 
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
+	}
+
+	public Pizzeria getPizzeria() {
+		return pizzeria;
+	}
+
+	public void setPizzeria(Pizzeria pizzeria) {
+		this.pizzeria = pizzeria;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
 	}
 }

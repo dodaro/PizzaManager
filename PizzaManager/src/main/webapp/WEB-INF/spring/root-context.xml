@@ -17,7 +17,7 @@
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
-				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.hbm2ddl.auto">create</prop>
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
@@ -28,10 +28,6 @@
 	</bean>
 
 	<!-- Keep DAO beans in alphabetical order for clarity. -->
-
-	<bean id="customerDAO" class="it.unical.pizzamanager.persistence.dao.CustomerDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
 
 	<bean id="ingredientDAO"
 		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
@@ -49,7 +45,7 @@
 	<bean id="userDAO" class="it.unical.pizzamanager.persistence.dao.UserDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	
+
 	<bean id="bookingDAO" class="it.unical.pizzamanager.persistence.dao.BookingDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>

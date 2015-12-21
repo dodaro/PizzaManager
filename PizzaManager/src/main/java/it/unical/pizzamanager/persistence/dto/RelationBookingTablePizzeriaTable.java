@@ -14,10 +14,10 @@ import javax.persistence.Table;
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "payments")
-public class Payment implements Serializable {
+@Table(name = "tablebooking_tablepizzeria")
+public class RelationBookingTablePizzeriaTable implements Serializable {
 
-	private static final long serialVersionUID = 7166272043751535111L;
+	private static final long serialVersionUID = -3428771534570201572L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,19 +26,16 @@ public class Payment implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "booking")
-	private Booking booking;
+	private BookingPizzeriaTable booking;
 
-	@Column(name = "saved", nullable = false)
-	private Boolean saved;
+	@ManyToOne
+	@JoinColumn(name = "pizzeriaTable")
+	private PizzeriaTable pizzeriaTable;
 
-	@Column(name = "paid", nullable = false)
-	private Boolean paid;
-
-	public Payment() {
-		id = DatabaseHandler.NO_ID;
-		booking = null;
-		saved = false;
-		paid = false;
+	public RelationBookingTablePizzeriaTable() {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeriaTable = new PizzeriaTable();
+		this.booking = new BookingPizzeriaTable();
 	}
 
 	public Integer getId() {
@@ -49,27 +46,19 @@ public class Payment implements Serializable {
 		this.id = id;
 	}
 
-	public Booking getBooking() {
+	public BookingPizzeriaTable getBooking() {
 		return booking;
 	}
 
-	public void setBooking(Booking booking) {
+	public void setBooking(BookingPizzeriaTable booking) {
 		this.booking = booking;
 	}
 
-	public boolean getSaved() {
-		return saved;
+	public PizzeriaTable getPizzeriaTable() {
+		return pizzeriaTable;
 	}
 
-	public void setSaved(Boolean saved) {
-		this.saved = saved;
-	}
-
-	public boolean getPaid() {
-		return paid;
-	}
-
-	public void setPaid(Boolean paid) {
-		this.paid = paid;
+	public void setPizzeriaTable(PizzeriaTable table) {
+		this.pizzeriaTable = table;
 	}
 }

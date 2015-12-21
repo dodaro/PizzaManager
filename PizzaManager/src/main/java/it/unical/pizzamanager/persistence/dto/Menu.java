@@ -1,7 +1,6 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -18,8 +17,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "menus")
@@ -48,31 +45,6 @@ public class Menu implements Serializable {
 	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<MenuOrderItem> menuOrderItems;
-
-	public Menu() {
-		id = DatabaseHandler.NO_ID;
-		beverage = new Beverage();
-		pizza = new Pizza();
-		menuPriceList = new ArrayList<>();
-		menuOrderItems = new ArrayList<>();
-	}
-
-	public Menu(Beverage beverage, Pizza pizza) {
-		this.id = DatabaseHandler.NO_ID;
-		this.beverage = beverage;
-		this.pizza = pizza;
-		this.menuPriceList = new ArrayList<>();
-		this.menuOrderItems = new ArrayList<>();
-	}
-
-	public Menu(Beverage beverage, Pizza pizza, ArrayList<RelationPizzeriaMenu> menuPriceList,
-			ArrayList<MenuOrderItem> orderItems) {
-		this.id = DatabaseHandler.NO_ID;
-		this.beverage = beverage;
-		this.pizza = pizza;
-		this.menuPriceList = menuPriceList;
-		this.menuOrderItems = orderItems;
-	}
 
 	public Integer getId() {
 		return id;

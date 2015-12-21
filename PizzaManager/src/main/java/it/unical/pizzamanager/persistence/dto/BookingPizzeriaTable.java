@@ -1,7 +1,6 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -14,32 +13,24 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @DiscriminatorValue("booking_table")
-public class BookingTablePizzeria extends Booking {
+public class BookingPizzeriaTable extends Booking {
 
 	private static final long serialVersionUID = -1611802959380912382L;
 
 	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationTableBookingTablePizzeria> tableBooking;
+	private List<RelationBookingTablePizzeriaTable> tableBooking;
 
-	public BookingTablePizzeria() {
+	public BookingPizzeriaTable() {
 		super();
-		this.tableBooking = new ArrayList<RelationTableBookingTablePizzeria>();
-
+		this.tableBooking = new ArrayList<RelationBookingTablePizzeriaTable>();
 	}
 
-	public BookingTablePizzeria(Date date, Date time, Boolean confirmed, Person person,
-			Payment payment, Integer priority, ArrayList<OrderItem> orderItems, Pizzeria pizzeria,
-			ArrayList<RelationTableBookingTablePizzeria> tablebooking) {
-		super(date, time, confirmed, person, payment, priority, orderItems, pizzeria);
-		this.tableBooking = tablebooking;
-	}
-
-	public List<RelationTableBookingTablePizzeria> getTableBooking() {
+	public List<RelationBookingTablePizzeriaTable> getTableBooking() {
 		return tableBooking;
 	}
 
-	public void setTableBooking(List<RelationTableBookingTablePizzeria> tableBooking) {
+	public void setTableBooking(List<RelationBookingTablePizzeriaTable> tableBooking) {
 		this.tableBooking = tableBooking;
 	}
 

@@ -29,12 +29,6 @@ public class BeverageOrderItem extends OrderItem {
 		temperature = BeverageTemperature.COLD;
 	}
 
-	public BeverageOrderItem(Beverage beverage, BeverageTemperature temperature, Double cost) {
-		super(cost);
-		this.beverage = beverage;
-		this.temperature = temperature;
-	}
-
 	public Beverage getBeverage() {
 		return beverage;
 	}

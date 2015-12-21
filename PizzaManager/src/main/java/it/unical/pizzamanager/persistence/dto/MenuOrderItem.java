@@ -17,12 +17,7 @@ public class MenuOrderItem extends OrderItem {
 
 	public MenuOrderItem() {
 		super();
-		menu = new Menu();
-	}
-
-	public MenuOrderItem(Menu menu, Double cost) {
-		super(cost);
-		this.menu = menu;
+		menu = null;
 	}
 
 	public Menu getMenu() {

@@ -11,7 +11,6 @@ import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
-import it.unical.pizzamanager.persistence.dao.CustomerDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
@@ -26,11 +25,5 @@ public class GenericTests {
 	public void numberOfUsers() {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		assertEquals(10, userDAO.getAll().size());
-	}
-
-	@Test
-	public void numberOfCustomers() {
-		CustomerDAO customerDAO = (CustomerDAO) context.getBean("customerDAO");
-		assertEquals(10, customerDAO.getAll().size());
 	}
 }

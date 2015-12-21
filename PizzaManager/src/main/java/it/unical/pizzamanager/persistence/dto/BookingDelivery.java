@@ -1,6 +1,5 @@
 package it.unical.pizzamanager.persistence.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,16 +26,8 @@ public class BookingDelivery extends Booking {
 
 	public BookingDelivery() {
 		super();
-		this.deliveryAddress = new Address();
+		this.deliveryAddress = null;
 		this.estimatedDeliveryTime = new Date();
-	}
-
-	public BookingDelivery(Date date, Date time, Boolean confirmed, Person person, Payment payment,
-			Integer priority, Date estimatedDeliveryTime, Address deliveryAddress,
-			ArrayList<OrderItem> orderItems, Pizzeria pizzeria) {
-		super(date, time, confirmed, person, payment, priority, orderItems, pizzeria);
-		this.deliveryAddress = deliveryAddress;
-		this.estimatedDeliveryTime = estimatedDeliveryTime;
 	}
 
 	public Date getEstimatedDeliveryTime() {
@@ -47,11 +38,11 @@ public class BookingDelivery extends Booking {
 		this.estimatedDeliveryTime = estimatedDeliveryTime;
 	}
 
-	public Address getAddressToDelivery() {
+	public Address getDeliveryAddress() {
 		return deliveryAddress;
 	}
 
-	public void setAddressToDelivery(Address addressToDelivery) {
-		this.deliveryAddress = addressToDelivery;
+	public void setDeliveryAddress(Address deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
 }

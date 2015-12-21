@@ -1,17 +1,17 @@
 package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
-import it.unical.pizzamanager.persistence.dto.RelationTableBookingTablePizzeria;
+import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
 
 public interface RelationTableBookingTablePizzeriaDAO {
 	
-	public void create(RelationTableBookingTablePizzeria table_booking);
+	public void create(RelationBookingTablePizzeriaTable table_booking);
 	
-	public void delete(RelationTableBookingTablePizzeria table_booking);
+	public void delete(RelationBookingTablePizzeriaTable table_booking);
 	
-	public void update(RelationTableBookingTablePizzeria table_booking);
+	public void update(RelationBookingTablePizzeriaTable table_booking);
 	
-	public List<RelationTableBookingTablePizzeria> getRelationTableBookingTablePizzeriaList();
+	public List<RelationBookingTablePizzeriaTable> getRelationTableBookingTablePizzeriaList();
 	
 	/*
 	 * 

@@ -7,7 +7,7 @@ import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingTablePizzeria;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 
 public class BookingDAOImpl implements BookingDAO {
@@ -55,13 +55,13 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<BookingTablePizzeria> getOnlyBookingTablePizzeriaList() {
+	public List<BookingPizzeriaTable> getOnlyBookingTablePizzeriaList() {
 		// TODO Auto-generated method stub
 		Session session = databaseHandler.getSessionFactory().openSession();
 
 		String queryString = "from Booking where type = 'booking_table'";
 		Query query = session.createQuery(queryString);
-		List<BookingTablePizzeria> bookings = (List<BookingTablePizzeria>) query.list();
+		List<BookingPizzeriaTable> bookings = (List<BookingPizzeriaTable>) query.list();
 		session.close();
 		return bookings;
 	}

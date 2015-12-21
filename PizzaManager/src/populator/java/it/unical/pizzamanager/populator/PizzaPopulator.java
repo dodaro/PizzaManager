@@ -9,7 +9,6 @@ import it.unical.pizzamanager.persistence.dao.IngredientDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dto.Ingredient;
 import it.unical.pizzamanager.persistence.dto.Pizza;
-import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
 
 public class PizzaPopulator extends Populator {
@@ -23,12 +22,9 @@ public class PizzaPopulator extends Populator {
 		IngredientDAO ingredientDAO = (IngredientDAO) context.getBean("ingredientDAO");
 		PizzaDAO pizzaDAO = (PizzaDAO) context.getBean("pizzaDAO");
 
-		Pizza margherita = new Pizza("Margherita", 4, false, "MargheritaDescription",
-				PizzaSize.NORMAL, false);
-		Pizza cardinale = new Pizza("Cardinale", 5, false, "CardinaleDescription", PizzaSize.MAXI,
-				false);
-		Pizza calabrese = new Pizza("Calabrese", 5, false, "CalabreseDescription", PizzaSize.MAXI,
-				false);
+		Pizza margherita = new Pizza("Margherita", "MargheritaDescription", false);
+		Pizza cardinale = new Pizza("Cardinale", "CardinaleDescription", false);
+		Pizza calabrese = new Pizza("Calabrese", "CalabreseDescription", false);
 
 		Ingredient mozzarella = ingredientDAO.get("Mozzarella");
 		Ingredient tomato = ingredientDAO.get("Tomato");
@@ -49,18 +45,9 @@ public class PizzaPopulator extends Populator {
 		calabreseIngredients.add(new RelationPizzaIngredient(calabrese, mozzarella));
 		calabreseIngredients.add(new RelationPizzaIngredient(calabrese, sausage));
 
-		/*
-		 * Bisognerebbe prima salvare nel database gli oggetti
-		 * RelationPizzaIngredient (quindi avere una DAO apposita), e solo in
-		 * seguito chiamare setPizzaIngredient. Tramite l'annotazione @Cascade
-		 * per le relazioni evitiamo il problema e scriviamo meno codice.
-		 * 
-		 * L'uso si potrebbe estendere anche alle entità non-relazioni.
-		 */
-
-		margherita.setPizzaIngredient(margheritaIngredients);
-		cardinale.setPizzaIngredient(cardinaleIngredients);
-		calabrese.setPizzaIngredient(calabreseIngredients);
+		margherita.setPizzaIngredients(margheritaIngredients);
+		cardinale.setPizzaIngredients(cardinaleIngredients);
+		calabrese.setPizzaIngredients(calabreseIngredients);
 
 		pizzaDAO.create(cardinale);
 		pizzaDAO.create(margherita);

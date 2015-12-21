@@ -4,7 +4,7 @@ package it.unical.pizzamanager.persistence.dao;
 import java.util.List;
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingTablePizzeria;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 
 public interface BookingDAO {
@@ -19,7 +19,7 @@ public interface BookingDAO {
 	
 	public List<Booking> getBookingList();
 	
-	public List<BookingTablePizzeria> getOnlyBookingTablePizzeriaList();
+	public List<BookingPizzeriaTable> getOnlyBookingTablePizzeriaList();
 	
 	public List<BookingTakeAway> getOnlyBookingTakeAwayList();
 	

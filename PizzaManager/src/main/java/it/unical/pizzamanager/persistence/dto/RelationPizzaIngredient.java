@@ -9,21 +9,19 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "pizza_ingredient")
-@SequenceGenerator(name = "pizza_IngredientGenerator", sequenceName = "pizza_IngredientSequence", initialValue = 1)
 public class RelationPizzaIngredient implements Serializable {
 
 	private static final long serialVersionUID = 656149294073781552L;
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pizza_IngredientGenerator")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@ManyToOne
@@ -36,21 +34,21 @@ public class RelationPizzaIngredient implements Serializable {
 
 	public RelationPizzaIngredient() {
 		id = DatabaseHandler.NO_ID;
-		pizza = new Pizza();
-		ingredient = new Ingredient();
+		pizza = null;
+		ingredient = null;
 	}
 
 	public RelationPizzaIngredient(Pizza pizza, Ingredient ingredient) {
-		this.id = DatabaseHandler.NO_ID;
+		id = DatabaseHandler.NO_ID;
 		this.pizza = pizza;
 		this.ingredient = ingredient;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

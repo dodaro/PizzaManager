@@ -2,19 +2,19 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.TablePizzeria;
+import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
 
-public interface TablePizzeriaDAO {
+public interface PizzeriaTableDAO {
 	
-	public void create(TablePizzeria table);
+	public void create(PizzeriaTable table);
 	
-	public void delete(TablePizzeria table);
+	public void delete(PizzeriaTable table);
 	
-	public void update(TablePizzeria table);
+	public void update(PizzeriaTable table);
 	
-	public TablePizzeria get(Integer idTable);
+	public PizzeriaTable get(Integer idTable);
 	
-	public List<TablePizzeria> getAllTablesList();
+	public List<PizzeriaTable> getAllTablesList();
 	
 	//QUESTE INFORMAZIONI POSSONO ESSERE RICAVATE DALL'ENTITÀ PIZZERIA IN QUANTO ESSA POSSIEDE LA LISTA DEI PROPRI TAVOLI
 	//ATTENDIAMO DODARO

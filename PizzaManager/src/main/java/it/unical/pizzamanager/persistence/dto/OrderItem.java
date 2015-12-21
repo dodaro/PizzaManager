@@ -5,7 +5,6 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -23,9 +22,8 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 @Table(name = "order_items")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "order_type", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue(value = "order_item")
 @SequenceGenerator(name = "orderItemsGenerator", sequenceName = "order_items_sequence", initialValue = 1)
-public class OrderItem implements Serializable {
+public abstract class OrderItem implements Serializable {
 
 	private static final long serialVersionUID = -8807690064904416275L;
 
@@ -50,17 +48,10 @@ public class OrderItem implements Serializable {
 	// modified cost is evalueted application side and stored in database at purchace time
 
 	public OrderItem() {
-		id = DatabaseHandler.NO_ID;
-		cost = 0.0;
-		booking = null;
-		cart = null;
-	}
-
-	public OrderItem(Double cost) {
-		id = DatabaseHandler.NO_ID;
-		this.cost = cost;
-		booking = null;
-		cart = null;
+		this.id = DatabaseHandler.NO_ID;
+		this.booking = null;
+		this.cart = null;
+		this.cost = 0.0;
 	}
 
 	public Integer getId() {
@@ -69,14 +60,6 @@ public class OrderItem implements Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public Double getCost() {
-		return cost;
-	}
-
-	public void setCost(Double cost) {
-		this.cost = cost;
 	}
 
 	public Booking getBooking() {
@@ -93,5 +76,13 @@ public class OrderItem implements Serializable {
 
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+
+	public Double getCost() {
+		return cost;
+	}
+
+	public void setCost(Double cost) {
+		this.cost = cost;
 	}
 }

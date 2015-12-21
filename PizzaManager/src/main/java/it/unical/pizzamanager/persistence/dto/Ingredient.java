@@ -27,7 +27,7 @@ public class Ingredient implements Serializable {
 	private static final long serialVersionUID = 2041182307938465963L;
 
 	public enum IngredientType {
-		VEGETABLE, MEAT, FISH, CHEESE, NO_TYPE
+		VEGETABLE, MEAT, FISH, CHEESE, NOT_SPECIFIED
 	}
 
 	@Id
@@ -46,15 +46,14 @@ public class Ingredient implements Serializable {
 	private List<RelationPizzaIngredient> ingredientOf;
 
 	/*
-	 * It seems to be no need for a RelationPizzeriaIngredient list, since it's
-	 * unlikely we want to pull from an ingredient all pizzerias using that
-	 * ingredient.
+	 * It seems to be no need for a RelationPizzeriaIngredient list, since it's unlikely we want to
+	 * pull from an ingredient all pizzerias using that ingredient.
 	 */
 
 	public Ingredient() {
 		id = DatabaseHandler.NO_ID;
 		name = "";
-		type = IngredientType.NO_TYPE;
+		type = IngredientType.NOT_SPECIFIED;
 		ingredientOf = new ArrayList<>();
 	}
 

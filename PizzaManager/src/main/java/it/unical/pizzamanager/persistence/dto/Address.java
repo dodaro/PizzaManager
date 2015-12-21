@@ -9,9 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -29,23 +26,17 @@ public class Address {
 	@Column(name = "number")
 	private Integer number;
 
-	@Column(name = "city", nullable = false)
+	@Column(name = "city")
 	private String city;
 
-	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY, optional = true)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Person person;
+	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+	private Account account;
 
 	public Address() {
 		this.street = "";
 		this.number = NO_NUMBER;
 		this.city = "";
-	}
-
-	public Address(String street, int number, String city) {
-		this.street = street;
-		this.number = number;
-		this.city = city;
+		this.account = null;
 	}
 
 	public String getStreet() {
@@ -70,5 +61,13 @@ public class Address {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 }

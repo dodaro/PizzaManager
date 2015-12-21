@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "feedbacks")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -22,8 +24,6 @@ import javax.persistence.Table;
 public abstract class Feedback implements Serializable {
 
 	private static final long serialVersionUID = 788082246358843418L;
-
-	private static final int NO_ID = -1;
 
 	@ManyToOne
 	@JoinColumn(name = "user")
@@ -37,32 +37,14 @@ public abstract class Feedback implements Serializable {
 	@Column(name = "quality_rating", nullable = false)
 	private Integer qualityRating;
 
-	@Column(name = "fastness_rating", nullable = false)
-	private Integer fastnessRating;
-
-	@Column(name = "hospitality_rating", nullable = false)
-	private Integer hospitalityRating;
-
-	@Column(name = "text", nullable = false)
-	private String text;
+	@Column(name = "comment")
+	private String comment;
 
 	public Feedback() {
-		id = NO_ID;
-		user = new User();
-		qualityRating = 0;
-		fastnessRating = 0;
-		hospitalityRating = 0;
-		text = "";
-	}
-
-	public Feedback(User user, Integer qualityRating, Integer fastnessRating,
-			Integer hospitalityRating, String text) {
-		this.id = NO_ID;
-		this.user = user;
-		this.qualityRating = qualityRating;
-		this.fastnessRating = fastnessRating;
-		this.text = text;
-		this.hospitalityRating = hospitalityRating;
+		this.id = DatabaseHandler.NO_ID;
+		this.user = null;
+		this.qualityRating = 0;
+		this.comment = "";
 	}
 
 	public User getUser() {
@@ -89,27 +71,11 @@ public abstract class Feedback implements Serializable {
 		this.qualityRating = qualityRating;
 	}
 
-	public Integer getFastnessRating() {
-		return fastnessRating;
+	public String getComment() {
+		return comment;
 	}
 
-	public void setFastnessRating(Integer fastnessRating) {
-		this.fastnessRating = fastnessRating;
-	}
-
-	public Integer getHospitalityRating() {
-		return hospitalityRating;
-	}
-
-	public void setHospitalityRating(Integer hospitalityRating) {
-		this.hospitalityRating = hospitalityRating;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

@@ -21,26 +21,14 @@ public class PizzaOrderItem extends OrderItem {
 
 	public PizzaOrderItem() {
 		super();
-		pizza = new Pizza();
-		modified = false;
-	}
-
-	//questo costruttore aggiunto da davide solo per fare alcune prove
-	public PizzaOrderItem(Boolean modified, Double cost) {
-		super(cost);
-		this.modified = modified;
-	}
-	
-	public PizzaOrderItem(Pizza pizza, Boolean modified, Double cost) {
-		super(cost);
-		this.pizza = pizza;
-		this.modified = modified;
+		this.pizza = null;
+		this.modified = false;
 	}
 
 	public Pizza getPizza() {
 		return pizza;
 	}
-	
+
 	public void setPizza(Pizza pizza) {
 		this.pizza = pizza;
 	}

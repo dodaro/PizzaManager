@@ -1,5 +1,6 @@
 package it.unical.pizzamanager.persistence.dto;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -15,15 +16,15 @@ public class FeedbackPizzeria extends Feedback {
 	@JoinColumn(name = "pizzeria")
 	private Pizzeria pizzeria;
 
+	@Column(name = "fastness_rating", nullable = false)
+	private Integer fastnessRating;
+
+	@Column(name = "hospitality_rating", nullable = false)
+	private Integer hospitalityRating;
+
 	public FeedbackPizzeria() {
 		super();
 		this.pizzeria = new Pizzeria();
-	}
-
-	public FeedbackPizzeria(User user, Integer qualityRating, Integer fastnessRating,
-			Integer hospitalityRating, String text, Pizzeria pizzeria) {
-		super(user, qualityRating, fastnessRating, hospitalityRating, text);
-		this.pizzeria = pizzeria;
 	}
 
 	public Pizzeria getPizzeria() {
@@ -32,5 +33,21 @@ public class FeedbackPizzeria extends Feedback {
 
 	public void setPizzeria(Pizzeria pizzeria) {
 		this.pizzeria = pizzeria;
+	}
+
+	public Integer getFastnessRating() {
+		return fastnessRating;
+	}
+
+	public void setFastnessRating(Integer fastnessRating) {
+		this.fastnessRating = fastnessRating;
+	}
+
+	public Integer getHospitalityRating() {
+		return hospitalityRating;
+	}
+
+	public void setHospitalityRating(Integer hospitalityRating) {
+		this.hospitalityRating = hospitalityRating;
 	}
 }

@@ -1,5 +1,6 @@
 package it.unical.pizzamanager.populator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,10 @@ public class DatabasePopulator {
 	private void initPopulators() {
 
 		/*
-		 * Add every new populator here. Be careful to put them in the right
-		 * order.
+		 * Add every new populator here. Be careful to put them in the right order.
 		 */
 
-		populators.add(new PersonPopulator(context));
+		populators.add(new UserPopulator(context));
 		populators.add(new IngredientPopulator(context));
 		populators.add(new PizzaPopulator(context));
 		populators.add(new PizzeriaPopulator(context));
@@ -37,6 +37,14 @@ public class DatabasePopulator {
 	}
 
 	public static void main(String[] args) {
+		/*
+		 * Delete the existing database.
+		 */
+		File databaseFile = new File("database.mv.db");
+		File traceFile = new File("database.trace.db");
+		databaseFile.delete();
+		traceFile.delete();
+
 		new DatabasePopulator().populateDatabase();
 	}
 }
