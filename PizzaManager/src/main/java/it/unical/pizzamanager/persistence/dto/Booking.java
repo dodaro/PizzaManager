@@ -63,7 +63,7 @@ public class Booking implements Serializable {
 	// colui che effettua la prenotazione, e può essere una persona(che telefona e prenota) o un
 	// utente
 	@ManyToOne
-	@JoinColumn(name = "person")
+	@JoinColumn(name = "person", nullable = true)
 	private Person person;
 
 	// il pagamento può essere null nel momento in cui non è stato effettuato (relazione 0_to_1)
@@ -84,7 +84,7 @@ public class Booking implements Serializable {
 	private List<OrderItem> orderItems;
 
 	@ManyToOne
-	@JoinColumn(name = "pizzeria")
+	@JoinColumn(name = "pizzeria", nullable = true)
 	private Pizzeria pizzeria;
 
 	// TODO preparationTime and bill vengono ricavate tramite procedure o funzioni al momento in cui
@@ -102,6 +102,21 @@ public class Booking implements Serializable {
 		this.pizzeria = new Pizzeria();
 	}
 
+	//costruttore utile ai fini di un esempietto
+	public Booking(Integer priority) {
+		this.id = NO_ID;
+		this.date = new Date();
+		this.time = new Date();
+		this.confirmed = true;
+		this.person = null;
+		this.payment = null;
+		this.priority = priority;
+		this.orderItems = null;
+		this.pizzeria = null;
+
+	}
+	
+	
 	public Booking(Date date, Date time, Boolean confirmed, Person person, Payment payment,
 			Integer priority, ArrayList<OrderItem> orderItems, Pizzeria pizzeria) {
 		this.id = NO_ID;
@@ -187,4 +202,6 @@ public class Booking implements Serializable {
 	public void setPizzeria(Pizzeria pizzeria) {
 		this.pizzeria = pizzeria;
 	}
+	
+	
 }

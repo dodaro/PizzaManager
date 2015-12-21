@@ -17,10 +17,10 @@ public class BookingDelivery extends Booking {
 	private static final long serialVersionUID = -8241567483648220533L;
 
 	@Temporal(TemporalType.TIME)
-	@Column(name = "estimated_delivery_time", nullable = false)
+	@Column(name = "estimated_delivery_time")
 	private Date estimatedDeliveryTime;
 
-	@Column(name = "address_delivery", nullable = false)
+	@Column(name = "address_delivery")
 	private String addressToDelivery;
 
 	public BookingDelivery() {

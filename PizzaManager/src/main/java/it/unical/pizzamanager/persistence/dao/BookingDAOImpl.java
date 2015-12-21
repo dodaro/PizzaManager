@@ -17,6 +17,8 @@ public class BookingDAOImpl implements BookingDAO{
 
 	private DatabaseHandler databaseHandler;
 	
+	
+	
 	public BookingDAOImpl() {
 		// TODO Auto-generated constructor stub
 		this.databaseHandler=null;
@@ -53,7 +55,10 @@ public class BookingDAOImpl implements BookingDAO{
 		
 		String queryString = "from Booking";
 		Query query = session.createQuery(queryString);
-		List<Booking> bookings = (List<Booking>) query.list();		
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
 		session.close();
 		return bookings;
 	}
@@ -80,7 +85,8 @@ public class BookingDAOImpl implements BookingDAO{
 		
 		String queryString = "from Booking where type = 'booking_takeAway'";
 		Query query = session.createQuery(queryString);
-		List<BookingTakeAway> bookings = (List<BookingTakeAway>) query.list();		
+		List<BookingTakeAway> bookings = (List<BookingTakeAway>) query.list();
+		
 		session.close();
 		return bookings;
 	}
@@ -95,6 +101,15 @@ public class BookingDAOImpl implements BookingDAO{
 		List<BookingDelivery> bookings = (List<BookingDelivery>) query.list();		
 		session.close();
 		return bookings;
+	}
+	
+	
+	
+	public DatabaseHandler getDatabaseHandler() {
+		return databaseHandler;
+	}
+	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+		this.databaseHandler = databaseHandler;
 	}
 
 //TODO nel caso in cui DODARO dice che servono quei metodi mi basta sostituire order con booking nelle sottostanti funzioni
@@ -184,4 +199,6 @@ public class BookingDAOImpl implements BookingDAO{
 //		session.close();
 //		return orders;
 //	}
+	
+	
 }

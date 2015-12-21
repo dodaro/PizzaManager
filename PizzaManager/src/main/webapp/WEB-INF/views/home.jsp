@@ -24,6 +24,7 @@
 	</c:choose>
 
 	<a href="signup"><button class="btn btn-primary">Sign Up</button></a>
+	<a href="pizzeriabooking"><button class="btn btn-primary">pizzeria</button></a>
 
 </body>
 </html>

@@ -15,6 +15,10 @@ public class BookingTakeAway extends Booking {
 	public BookingTakeAway() {
 		super();
 	}
+	
+	public BookingTakeAway(Integer priority) {
+		super(priority);
+	}
 
 	public BookingTakeAway(Date date, Date time, Boolean confirmed, Person person, Payment payment, Integer priority,
 			ArrayList<RelationTableBookingTablePizzeria> tablebooking, ArrayList<OrderItem> orderItems,

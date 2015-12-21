@@ -38,6 +38,10 @@
 	<bean id="userDAO" class="it.unical.pizzamanager.persistence.dao.UserDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+	
+	<bean id="bookingDAO" class="it.unical.pizzamanager.persistence.dao.BookingDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
