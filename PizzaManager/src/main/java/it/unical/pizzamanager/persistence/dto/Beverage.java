@@ -26,8 +26,17 @@ public class Beverage implements Serializable {
 
 	private static final long serialVersionUID = 3542955027496737446L;
 
-	public static final String SIZE_SMALL = "small";
-	public static final String SIZE_MEDIUM = "medium";
+	public enum BeverageSize {
+		SMALL, MEDIUM, LARGE
+	}
+
+	public enum BeverageContainer {
+		BOTTLE, CAN, GLASS
+	}
+
+	public enum BeverageType {
+		BEER, WINE, WATER, SODA
+	}
 
 	@Id
 	@Column(name = "id")
@@ -40,23 +49,33 @@ public class Beverage implements Serializable {
 	@Column(name = "brand", nullable = false, length = 255)
 	private String brand;
 
-	@Column(name = "container_type", nullable = false, length = 255)
-	private String containerType;
+	@Column(name = "container", nullable = false)
+	private BeverageContainer container;
 
-	@Column(name = "size", nullable = false, length = 255)
-	private String size;
+	@Column(name = "size", nullable = false)
+	private BeverageSize size;
 
-	@Column(name = "category", nullable = false, length = 255)
-	private String category;
+	@Column(name = "type", nullable = false)
+	private BeverageType type;
 
+	/**
+	 * How much the beverage costs in each pizzeria which sells it.
+	 * Coincidentally, list of the pizzerias who sell this beverage.
+	 */
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaBeverage> beveragePriceList;
 
+	/**
+	 * Menus to which the beverage belongs.
+	 */
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
 
+	/**
+	 * OrderItems which contain a beverage.
+	 */
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BeverageOrderItem> orderItems;
@@ -65,62 +84,33 @@ public class Beverage implements Serializable {
 		id = DatabaseHandler.NO_ID;
 		name = "";
 		brand = "";
-		containerType = "";
-		size = "";
-		category = "";
+		container = BeverageContainer.BOTTLE;
+		size = BeverageSize.MEDIUM;
+		type = BeverageType.WATER;
 		beveragePriceList = new ArrayList<RelationPizzeriaBeverage>();
 		menu = new ArrayList<>();
 		orderItems = new ArrayList<>();
 	}
 
-	public Beverage(String name, String brand, String containerType, String size, String category) {
+	public Beverage(String name, String brand, BeverageContainer container, BeverageSize size,
+			BeverageType type) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
 		this.brand = brand;
-		this.containerType = containerType;
+		this.container = container;
 		this.size = size;
-		this.category = category;
+		this.type = type;
 		this.beveragePriceList = new ArrayList<>();
 		this.menu = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
 	}
 
-	public Beverage(String name, String brand, String containerType, String size, String category,
-			ArrayList<RelationPizzeriaBeverage> beveragePriceList, ArrayList<Menu> menu,
-			ArrayList<BeverageOrderItem> orderItems) {
-		this.id = DatabaseHandler.NO_ID;
-		this.name = name;
-		this.brand = brand;
-		this.containerType = containerType;
-		this.size = size;
-		this.category = category;
-		this.beveragePriceList = beveragePriceList;
-		this.menu = menu;
-		this.orderItems = orderItems;
+	public Integer getId() {
+		return id;
 	}
 
-	public String getContainerType() {
-		return containerType;
-	}
-
-	public void setContainerType(String containerType) {
-		this.containerType = containerType;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -139,6 +129,30 @@ public class Beverage implements Serializable {
 		this.brand = brand;
 	}
 
+	public BeverageContainer getContainer() {
+		return container;
+	}
+
+	public void setContainer(BeverageContainer container) {
+		this.container = container;
+	}
+
+	public BeverageSize getSize() {
+		return size;
+	}
+
+	public void setSize(BeverageSize size) {
+		this.size = size;
+	}
+
+	public BeverageType getType() {
+		return type;
+	}
+
+	public void setType(BeverageType type) {
+		this.type = type;
+	}
+
 	public List<RelationPizzeriaBeverage> getBeveragePriceList() {
 		return beveragePriceList;
 	}
@@ -153,14 +167,6 @@ public class Beverage implements Serializable {
 
 	public void setMenu(List<Menu> menu) {
 		this.menu = menu;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public List<BeverageOrderItem> getOrderItems() {

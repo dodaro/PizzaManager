@@ -7,7 +7,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
-@DiscriminatorValue("booking_takeAway")
+@DiscriminatorValue("booking_takeaway")
 public class BookingTakeAway extends Booking {
 
 	private static final long serialVersionUID = 2403428020672529065L;
@@ -24,7 +24,5 @@ public class BookingTakeAway extends Booking {
 			ArrayList<RelationTableBookingTablePizzeria> tablebooking, ArrayList<OrderItem> orderItems,
 			Pizzeria pizzeria) {
 		super(date, time, confirmed, person, payment, priority, orderItems, pizzeria);
-
 	}
-
 }

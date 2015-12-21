@@ -8,7 +8,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,24 +27,21 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "booking")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
-@DiscriminatorValue(value = "bookingSimple")
-@SequenceGenerator(name = "BookingSequence", sequenceName = "booking_seq", allocationSize = 1)
-public class Booking implements Serializable {
-	// bisogna provare a rendere Booking astratta(dato che lo è) per vedere se la single table
-	// funziona ugualmente..non credo però
+@SequenceGenerator(name = "bookingSequence", sequenceName = "booking_sequence", allocationSize = 1)
+public abstract class Booking implements Serializable {
 
 	private static final long serialVersionUID = 7661901592703829148L;
 
-	private static final int NO_ID = -1;
-	private static final int DEFAULT_PRIORITY = 0;
+	private static final int PRIORITY_DEFAULT = 0;
 
-	// corrispective sql --> CREATE SEQUENCE my_seq START WITH 1 INCREMENT BY 1;
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BookingSequence")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookingSequence")
 	@Column(name = "id")
 	private Integer id;
 
@@ -53,6 +49,10 @@ public class Booking implements Serializable {
 	@Column(name = "date", nullable = false)
 	private Date date;
 
+	/*
+	 * FIXME - Non abbiamo realmente bisogno di un altro attributo time: l'ora è
+	 * già inclusa in un oggetto Date.
+	 */
 	@Temporal(TemporalType.TIME)
 	@Column(name = "time", nullable = false)
 	private Date time;
@@ -60,21 +60,24 @@ public class Booking implements Serializable {
 	@Column(name = "confirmed", nullable = false)
 	private Boolean confirmed;
 
-	// colui che effettua la prenotazione, e può essere una persona(che telefona e prenota) o un
+	// colui che effettua la prenotazione, e può essere una persona(che telefona
+	// e prenota) o un
 	// utente
 	@ManyToOne
 	@JoinColumn(name = "person", nullable = true)
 	private Person person;
 
-	// il pagamento può essere null nel momento in cui non è stato effettuato (relazione 0_to_1)
-	@OneToOne
-	@JoinColumn(name = "payment", nullable = true)
+	// il pagamento può essere null nel momento in cui non è stato effettuato
+	// (relazione 0_to_1)
+	@OneToOne(optional = true)
+	@JoinColumn(name = "payment")
 	private Payment payment;
 
 	/*
-	 * finchè una prenotazione non è stata confermata il campo priority deve avere un valore di
-	 * default. nel momento in cui però una prenotazione viene effettuata bisogna calcolare la
-	 * priorità in base all'orario ed alla modalità di prenotazione.
+	 * finchè una prenotazione non è stata confermata il campo priority deve
+	 * avere un valore di default. nel momento in cui però una prenotazione
+	 * viene effettuata bisogna calcolare la priorità in base all'orario ed alla
+	 * modalità di prenotazione.
 	 */
 	@Column(name = "priority", nullable = false)
 	private Integer priority;
@@ -87,17 +90,18 @@ public class Booking implements Serializable {
 	@JoinColumn(name = "pizzeria", nullable = true)
 	private Pizzeria pizzeria;
 
-	// TODO preparationTime and bill vengono ricavate tramite procedure o funzioni al momento in cui
+	// TODO preparationTime and bill vengono ricavate tramite procedure o
+	// funzioni al momento in cui
 	// ci servono
 
 	public Booking() {
-		this.id = NO_ID;
+		this.id = DatabaseHandler.NO_ID;
 		this.date = new Date();
 		this.time = new Date();
-		this.confirmed = new Boolean(false);
+		this.confirmed = false;
 		this.person = new Customer();
 		this.payment = new Payment();
-		this.priority = DEFAULT_PRIORITY;
+		this.priority = PRIORITY_DEFAULT;
 		this.orderItems = new ArrayList<OrderItem>();
 		this.pizzeria = new Pizzeria();
 	}
@@ -119,7 +123,7 @@ public class Booking implements Serializable {
 	
 	public Booking(Date date, Date time, Boolean confirmed, Person person, Payment payment,
 			Integer priority, ArrayList<OrderItem> orderItems, Pizzeria pizzeria) {
-		this.id = NO_ID;
+		this.id = DatabaseHandler.NO_ID;
 		this.date = date;
 		this.time = time;
 		this.confirmed = confirmed;
@@ -128,7 +132,6 @@ public class Booking implements Serializable {
 		this.priority = priority;
 		this.orderItems = orderItems;
 		this.pizzeria = pizzeria;
-
 	}
 
 	public Integer getId() {

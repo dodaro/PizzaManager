@@ -1,0 +1,29 @@
+The DatabasePopulator is a place to store all the code we use to populate the database.
+The database file (database.mv.db) is stored into the repository and there's no need to populate it
+every time we start the application as we did before. By the way, I think it's useful to have some
+code ready to populate it from scratch using all Hibernate goodies for any time it could be needed.
+
+You can find the database populator in the folder src/populator/java. You can run it normally as a
+java application since the DatabasePopulator class has a main method.
+
+The DatabasePopulator class is the main class. Its purpose is to store a list of all the
+populators, and call the populate() method of every populator when it's started.
+
+Every time you want to create and use a new populator, follow these steps:
+
+	1. Create a new populator class (for example, "MyPopulator") that extends Populator.
+	2. The MyPopulator class must implement the populate() method: put here the code to populate the
+		database (or obviously part of it).
+	3. Go into the DatabasePopulator, and modify the initPopulators method to add a new instance
+		of the MyPopulator class in the list of the populators.
+		
+		IMPORTANT: Populators will be executed in the order in which they're added to the list:
+		if your populator depends on other populators (for example, the PizzaPopulator expects
+		some ingredients to already be into the database) manage the execution order accordingly.
+	
+	4. Delete the existing database files if you want to start from scratch (this is advised).
+	5. Run the DatabasePopulator class.
+	
+For any doubt, refer to the existing populators.
+
+Danilo

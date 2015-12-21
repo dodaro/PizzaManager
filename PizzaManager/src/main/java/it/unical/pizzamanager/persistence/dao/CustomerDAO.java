@@ -14,5 +14,5 @@ public interface CustomerDAO {
 
 	public Customer get(Integer id);
 
-	public List<Customer> getAllCustomers();
+	public List<Customer> getAll();
 }

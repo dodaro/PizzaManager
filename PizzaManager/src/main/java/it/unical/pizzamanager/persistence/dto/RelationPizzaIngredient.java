@@ -16,18 +16,14 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "pizza_ingredient")
-@SequenceGenerator(name="pizza_IngredientGenerator",sequenceName="pizza_IngredientSequence",initialValue=1)
+@SequenceGenerator(name = "pizza_IngredientGenerator", sequenceName = "pizza_IngredientSequence", initialValue = 1)
 public class RelationPizzaIngredient implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 656149294073781552L;
-
 
 	@Id
 	@Column(name = "id")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="pizza_IngredientGenerator")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pizza_IngredientGenerator")
 	private Integer id;
 
 	@ManyToOne
@@ -39,46 +35,38 @@ public class RelationPizzaIngredient implements Serializable {
 	private Ingredient ingredient;
 
 	public RelationPizzaIngredient() {
-		id=DatabaseHandler.NO_ID;
-		pizza=new Pizza();
-		ingredient=new Ingredient();
-	}
-	
-
-	public RelationPizzaIngredient(Pizza pizza,Ingredient ingredient) {
-		this.id=DatabaseHandler.NO_ID;
-		this.pizza=pizza;
-		this.ingredient=ingredient;
+		id = DatabaseHandler.NO_ID;
+		pizza = new Pizza();
+		ingredient = new Ingredient();
 	}
 
+	public RelationPizzaIngredient(Pizza pizza, Ingredient ingredient) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizza = pizza;
+		this.ingredient = ingredient;
+	}
 
 	public int getId() {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public Pizza getPizza() {
 		return pizza;
 	}
 
-
 	public void setPizza(Pizza pizza) {
 		this.pizza = pizza;
 	}
-
 
 	public Ingredient getIngredient() {
 		return ingredient;
 	}
 
-
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
 	}
-	
 }

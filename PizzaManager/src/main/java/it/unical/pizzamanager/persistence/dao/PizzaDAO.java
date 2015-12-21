@@ -2,6 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import it.unical.pizzamanager.persistence.dto.Ingredient.IngredientType;
 import it.unical.pizzamanager.persistence.dto.Pizza;
 
 public interface PizzaDAO {
@@ -12,5 +13,11 @@ public interface PizzaDAO {
 
 	public void update(Pizza pizza);
 
-	public List<Pizza> getAllPizzas();
+	Pizza get(Integer id);
+
+	List<Pizza> getByName(String name);
+
+	public List<Pizza> getAll();
+
+	public List<Pizza> getByIngredientType(IngredientType type);
 }

@@ -31,7 +31,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Customer> getAllCustomers() {
+	public List<Customer> getAll() {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		List<Customer> customers = session.createQuery("from Customer").list();
 		session.close();

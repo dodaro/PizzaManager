@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -44,7 +46,7 @@ public class Pizza implements Serializable {
 	@Column(name = "preparation_time", nullable = false)
 	private Integer preparationTime;
 
-	@Column(name = "gluten_free")
+	@Column(name = "gluten_free", nullable = false)
 	private boolean glutenFree;
 
 	@Column(name = "description")
@@ -58,10 +60,12 @@ public class Pizza implements Serializable {
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzaIngredient> pizzaIngredients;
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaPizza> pizzasPriceList;
 
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
@@ -94,49 +98,17 @@ public class Pizza implements Serializable {
 	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
 			PizzaSize size, Boolean special) {
 		this.id = DatabaseHandler.NO_ID;
-		this.name = "";
-		this.preparationTime = 0;
-		this.glutenFree = false;
-		this.description = "";
-		this.size = PizzaSize.NORMAL;
-		this.special = false;
-		this.pizzaIngredients = new ArrayList<>();
-		this.menu = new ArrayList<>();
-		this.pizzasPriceList = new ArrayList<>();
-		this.orderItems = new ArrayList<>();
-		this.images = new ArrayList<>();
-	}
-
-	public Pizza(String name) {
-		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
-		this.preparationTime = 0;
-		this.glutenFree = false;
-		this.description = "";
-		this.size = PizzaSize.NORMAL;
-		this.special = false;
-		this.pizzaIngredients = new ArrayList<>();
-		this.menu = new ArrayList<>();
-		this.pizzasPriceList = new ArrayList<>();
-		this.orderItems = new ArrayList<>();
-		this.images = new ArrayList<>();
-	}
-
-	public Pizza(String name, int preparationTime, Boolean glutenFree, String description,
-			PizzaSize size, Boolean special, List<RelationPizzaIngredient> pizzaIngredients,
-			List<Menu> menu, List<RelationPizzeriaPizza> pizzasPriceList,
-			List<PizzaOrderItem> orderItems, List<Image> images) {
-		this.id = DatabaseHandler.NO_ID;
 		this.preparationTime = preparationTime;
 		this.glutenFree = glutenFree;
 		this.description = description;
 		this.size = size;
 		this.special = special;
-		this.pizzaIngredients = pizzaIngredients;
-		this.menu = menu;
-		this.pizzasPriceList = pizzasPriceList;
-		this.orderItems = orderItems;
-		this.images = images;
+		this.menu = new ArrayList<>();
+		this.pizzaIngredients = new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
+		this.images = new ArrayList<>();
 	}
 
 	public Integer getId() {
@@ -226,5 +198,4 @@ public class Pizza implements Serializable {
 	public void setImages(List<Image> images) {
 		this.images = images;
 	}
-
 }

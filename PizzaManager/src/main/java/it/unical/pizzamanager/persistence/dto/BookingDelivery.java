@@ -1,12 +1,13 @@
 package it.unical.pizzamanager.persistence.dto;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,19 +21,21 @@ public class BookingDelivery extends Booking {
 	@Column(name = "estimated_delivery_time")
 	private Date estimatedDeliveryTime;
 
-	@Column(name = "address_delivery")
-	private String addressToDelivery;
+	@OneToOne
+	@JoinColumn(name = "delivery_address")
+	private Address deliveryAddress;
 
 	public BookingDelivery() {
 		super();
-		this.addressToDelivery = "";
+		this.deliveryAddress = new Address();
 		this.estimatedDeliveryTime = new Date();
 	}
 
-	public BookingDelivery(Date date, Date time, Boolean confirmed, Person person, Payment payment, Integer priority,
-			Date estimatedDeliveryTime, String addressToDelivery, ArrayList<OrderItem> orderItems, Pizzeria pizzeria) {
+	public BookingDelivery(Date date, Date time, Boolean confirmed, Person person, Payment payment,
+			Integer priority, Date estimatedDeliveryTime, Address deliveryAddress,
+			ArrayList<OrderItem> orderItems, Pizzeria pizzeria) {
 		super(date, time, confirmed, person, payment, priority, orderItems, pizzeria);
-		this.addressToDelivery = addressToDelivery;
+		this.deliveryAddress = deliveryAddress;
 		this.estimatedDeliveryTime = estimatedDeliveryTime;
 	}
 
@@ -44,11 +47,11 @@ public class BookingDelivery extends Booking {
 		this.estimatedDeliveryTime = estimatedDeliveryTime;
 	}
 
-	public String getAddressToDelivery() {
-		return addressToDelivery;
+	public Address getAddressToDelivery() {
+		return deliveryAddress;
 	}
 
-	public void setAddressToDelivery(String addressToDelivery) {
-		this.addressToDelivery = addressToDelivery;
+	public void setAddressToDelivery(Address addressToDelivery) {
+		this.deliveryAddress = addressToDelivery;
 	}
 }

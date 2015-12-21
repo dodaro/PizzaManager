@@ -11,9 +11,8 @@ public class BeverageDAOImpl implements BeverageDAO {
 	private DatabaseHandler databaseHandler;
 
 	public BeverageDAOImpl() {
-		databaseHandler=null;
+		databaseHandler = null;
 	}
-
 
 	@Override
 	public void create(Beverage beverage) {
@@ -23,28 +22,27 @@ public class BeverageDAOImpl implements BeverageDAO {
 	@Override
 	public void delete(Beverage beverage) {
 		databaseHandler.delete(beverage);
-		
+
 	}
 
 	@Override
 	public void update(Beverage beverage) {
 		databaseHandler.update(beverage);
-		
+
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Beverage> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<Beverage> bevereges = session.createSQLQuery("Select * from beverages").addEntity(Beverage.class).list();
+		List<Beverage> bevereges = session.createSQLQuery("Select * from beverages")
+				.addEntity(Beverage.class).list();
 		session.close();
 		return bevereges;
 	}
 
-
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
 	}
-
 
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;

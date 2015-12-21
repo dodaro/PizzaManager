@@ -29,7 +29,7 @@ public class Address {
 	@Column(name = "number")
 	private Integer number;
 
-	@Column(name = "city")
+	@Column(name = "city", nullable = false)
 	private String city;
 
 	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY, optional = true)

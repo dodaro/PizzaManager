@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -46,6 +48,7 @@ public class Pizzeria implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "address")
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private Address address;
 
 	@Column(name = "phoneNumber")
@@ -57,19 +60,19 @@ public class Pizzeria implements Serializable {
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzeriaBeverage> beveragePriceLists;
+	private List<RelationPizzeriaBeverage> beveragesPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzeriaPizza> pizzaPriceLists;
+	private List<RelationPizzeriaPizza> pizzasPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzeriaMenu> menuPriceLists;
+	private List<RelationPizzeriaMenu> menusPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<RelationPizzeriaIngredient> ingredientPriceLists;
+	private List<RelationPizzeriaIngredient> ingredientsPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -79,15 +82,14 @@ public class Pizzeria implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<TablePizzeria> tables;
 
-	@OneToMany(mappedBy="pizzeria",fetch=FetchType.LAZY)
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Booking> bookings;
 
-	
 	@ElementCollection
-	@CollectionTable(name="images", joinColumns=@JoinColumn(name="pizzeria_id"))
-	private List<Image> images; 
-	
+	@CollectionTable(name = "images", joinColumns = @JoinColumn(name = "pizzeria_id") )
+	private List<Image> images;
+
 	public Pizzeria() {
 		id = DatabaseHandler.NO_ID;
 		name = "";
@@ -96,41 +98,18 @@ public class Pizzeria implements Serializable {
 		phoneNumber = "";
 		address = new Address();
 		user = new User();
-		beveragePriceLists = new ArrayList<>();
-		pizzaPriceLists = new ArrayList<>();
-		menuPriceLists = new ArrayList<>();
-		ingredientPriceLists = new ArrayList<>();
+		beveragesPriceList = new ArrayList<>();
+		pizzasPriceList = new ArrayList<>();
+		menusPriceList = new ArrayList<>();
+		ingredientsPriceList = new ArrayList<>();
 		feedbacks = new ArrayList<>();
 		tables = new ArrayList<>();
-		bookings=new ArrayList<>();
-		images=new ArrayList<>();
-
+		bookings = new ArrayList<>();
+		images = new ArrayList<>();
 	}
 
-	public Pizzeria(String name, String email, String description, String phoneNumber, User user) {
-		this.id = DatabaseHandler.NO_ID;
-		this.name = name;
-		this.email = email;
-		this.description = description;
-		this.phoneNumber = phoneNumber;
-		this.address = new Address();
-		this.user = user;
-		this.beveragePriceLists = new ArrayList<>();
-		this.pizzaPriceLists = new ArrayList<>();
-		this.menuPriceLists = new ArrayList<>();
-		this.ingredientPriceLists = new ArrayList<>();
-		this.feedbacks = new ArrayList<>();
-		this.tables = new ArrayList<>();
-		this.bookings=new ArrayList<>();
-		this.images=new ArrayList<>();
-	}
-
-	public Pizzeria(String name, String email, String description, String phoneNumber,
-			Address address, User user, List<RelationPizzeriaMenu> menuPriceLists,
-			List<RelationPizzeriaBeverage> beveragePriceLists,
-			List<RelationPizzeriaPizza> pizzaPriceLists,
-			List<RelationPizzeriaIngredient> ingredientPriceLists, List<FeedbackPizzeria> feedbacks,
-			List<TablePizzeria> tables, List<Booking> bookings, List<Image> images) {
+	public Pizzeria(String name, String email, String description, Address address,
+			String phoneNumber, User user) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
 		this.email = email;
@@ -138,14 +117,14 @@ public class Pizzeria implements Serializable {
 		this.phoneNumber = phoneNumber;
 		this.address = address;
 		this.user = user;
-		this.beveragePriceLists = beveragePriceLists;
-		this.pizzaPriceLists = pizzaPriceLists;
-		this.menuPriceLists = menuPriceLists;
-		this.ingredientPriceLists = ingredientPriceLists;
-		this.feedbacks = feedbacks;
-		this.tables = tables;
-		this.bookings=bookings;
-		this.images=images;
+		this.beveragesPriceList = new ArrayList<>();
+		this.pizzasPriceList = new ArrayList<>();
+		this.menusPriceList = new ArrayList<>();
+		this.ingredientsPriceList = new ArrayList<>();
+		this.feedbacks = new ArrayList<>();
+		this.tables = new ArrayList<>();
+		this.bookings = new ArrayList<>();
+		this.images = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -204,36 +183,36 @@ public class Pizzeria implements Serializable {
 		this.user = user;
 	}
 
-	public List<RelationPizzeriaBeverage> getBeveragePriceLists() {
-		return beveragePriceLists;
+	public List<RelationPizzeriaBeverage> getBeveragesPriceList() {
+		return beveragesPriceList;
 	}
 
-	public void setBeveragePriceLists(List<RelationPizzeriaBeverage> beveragePriceLists) {
-		this.beveragePriceLists = beveragePriceLists;
+	public void setBeveragesPriceList(List<RelationPizzeriaBeverage> beveragesPriceList) {
+		this.beveragesPriceList = beveragesPriceList;
 	}
 
-	public List<RelationPizzeriaPizza> getPizzaPriceLists() {
-		return pizzaPriceLists;
+	public List<RelationPizzeriaPizza> getPizzasPriceList() {
+		return pizzasPriceList;
 	}
 
-	public void setPizzaPriceLists(List<RelationPizzeriaPizza> pizzaPriceLists) {
-		this.pizzaPriceLists = pizzaPriceLists;
+	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {
+		this.pizzasPriceList = pizzasPriceList;
 	}
 
-	public List<RelationPizzeriaMenu> getMenuPriceLists() {
-		return menuPriceLists;
+	public List<RelationPizzeriaMenu> getMenusPriceList() {
+		return menusPriceList;
 	}
 
-	public void setMenuPriceLists(List<RelationPizzeriaMenu> menuPriceLists) {
-		this.menuPriceLists = menuPriceLists;
+	public void setMenusPriceList(List<RelationPizzeriaMenu> menusPriceList) {
+		this.menusPriceList = menusPriceList;
 	}
 
-	public List<RelationPizzeriaIngredient> getIngredientPriceLists() {
-		return ingredientPriceLists;
+	public List<RelationPizzeriaIngredient> getIngredientsPriceList() {
+		return ingredientsPriceList;
 	}
 
-	public void setIngredientPriceLists(List<RelationPizzeriaIngredient> ingredientPriceLists) {
-		this.ingredientPriceLists = ingredientPriceLists;
+	public void setIngredientsPriceList(List<RelationPizzeriaIngredient> ingredientsPriceList) {
+		this.ingredientsPriceList = ingredientsPriceList;
 	}
 
 	public List<FeedbackPizzeria> getFeedbacks() {
@@ -267,5 +246,4 @@ public class Pizzeria implements Serializable {
 	public void setImages(List<Image> images) {
 		this.images = images;
 	}
-
 }
