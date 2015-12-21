@@ -16,7 +16,7 @@ import it.unical.pizzamanager.persistence.dto.User;
 
 @Controller
 public class HomeController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
@@ -32,6 +32,11 @@ public class HomeController {
 		model.addAttribute("users", users);
 
 		return "home";
+	}
+
+	@RequestMapping(value = "/select2", method = RequestMethod.GET)
+	public String select2() {
+		return "select2test";
 	}
 
 }
