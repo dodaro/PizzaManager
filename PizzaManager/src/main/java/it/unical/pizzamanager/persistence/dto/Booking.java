@@ -108,7 +108,7 @@ public abstract class Booking implements Serializable {
 
 	//costruttore utile ai fini di un esempietto
 	public Booking(Integer priority) {
-		this.id = NO_ID;
+		this.id = DatabaseHandler.NO_ID;
 		this.date = new Date();
 		this.time = new Date();
 		this.confirmed = true;
