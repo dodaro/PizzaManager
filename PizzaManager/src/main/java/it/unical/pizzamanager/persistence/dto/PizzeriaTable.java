@@ -66,7 +66,7 @@ public class PizzeriaTable implements Serializable {
 		this.minSits = 0;
 		this.maxSits = 0;
 		this.available = true;
-		this.bookings = new ArrayList<>();
+		this.bookings = new ArrayList<RelationBookingTablePizzeriaTable>();
 		this.pizzeria = null;
 	}
 

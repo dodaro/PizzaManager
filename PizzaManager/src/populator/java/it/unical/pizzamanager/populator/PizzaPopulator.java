@@ -31,16 +31,16 @@ public class PizzaPopulator extends Populator {
 		Ingredient cookedHam = ingredientDAO.get("Cooked Ham");
 		Ingredient sausage = ingredientDAO.get("Sausage");
 
-		List<RelationPizzaIngredient> margheritaIngredients = new ArrayList<>();
+		List<RelationPizzaIngredient> margheritaIngredients = new ArrayList<RelationPizzaIngredient>();
 		margheritaIngredients.add(new RelationPizzaIngredient(margherita, tomato));
 		margheritaIngredients.add(new RelationPizzaIngredient(margherita, mozzarella));
 
-		List<RelationPizzaIngredient> cardinaleIngredients = new ArrayList<>();
+		List<RelationPizzaIngredient> cardinaleIngredients = new ArrayList<RelationPizzaIngredient>();
 		cardinaleIngredients.add(new RelationPizzaIngredient(cardinale, tomato));
 		cardinaleIngredients.add(new RelationPizzaIngredient(cardinale, mozzarella));
 		cardinaleIngredients.add(new RelationPizzaIngredient(cardinale, cookedHam));
 
-		List<RelationPizzaIngredient> calabreseIngredients = new ArrayList<>();
+		List<RelationPizzaIngredient> calabreseIngredients = new ArrayList<RelationPizzaIngredient>();
 		calabreseIngredients.add(new RelationPizzaIngredient(calabrese, tomato));
 		calabreseIngredients.add(new RelationPizzaIngredient(calabrese, mozzarella));
 		calabreseIngredients.add(new RelationPizzaIngredient(calabrese, sausage));
@@ -49,6 +49,8 @@ public class PizzaPopulator extends Populator {
 		cardinale.setPizzaIngredients(cardinaleIngredients);
 		calabrese.setPizzaIngredients(calabreseIngredients);
 
+		//manca il set della pizzeria a cui la pizza appartiene
+		
 		pizzaDAO.create(cardinale);
 		pizzaDAO.create(margherita);
 		pizzaDAO.create(calabrese);

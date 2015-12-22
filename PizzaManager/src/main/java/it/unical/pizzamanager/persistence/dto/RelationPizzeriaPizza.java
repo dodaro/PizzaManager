@@ -61,7 +61,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.pizzaSize = PizzaSize.NORMAL;
 		this.preparationTime = 0.0;
 		this.glutenFree = false;
-		this.images = new ArrayList<>();
+		this.images = new ArrayList<Image>();
 	}
 
 	public int getId() {

@@ -14,7 +14,7 @@ public class DatabasePopulator {
 
 	public DatabasePopulator() {
 		context = new ClassPathXmlApplicationContext("file:**/WEB-INF/spring/root-context.xml");
-		populators = new ArrayList<>();
+		populators = new ArrayList<Populator>();
 		initPopulators();
 	}
 

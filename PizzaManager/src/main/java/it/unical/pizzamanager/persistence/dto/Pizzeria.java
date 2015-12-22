@@ -63,28 +63,28 @@ public class Pizzeria extends Account {
 		super();
 		this.name = "";
 		this.phoneNumber = "";
-		this.beveragesPriceList = new ArrayList<>();
-		this.pizzasPriceList = new ArrayList<>();
-		this.menusPriceList = new ArrayList<>();
-		this.ingredientsPriceList = new ArrayList<>();
-		this.feedbacks = new ArrayList<>();
-		this.tables = new ArrayList<>();
-		this.bookings = new ArrayList<>();
-		this.images = new ArrayList<>();
+		this.beveragesPriceList = new ArrayList<RelationPizzeriaBeverage>();
+		this.pizzasPriceList = new ArrayList<RelationPizzeriaPizza>();
+		this.menusPriceList = new ArrayList<RelationPizzeriaMenu>();
+		this.ingredientsPriceList = new ArrayList<RelationPizzeriaIngredient>();
+		this.feedbacks = new ArrayList<FeedbackPizzeria>();
+		this.tables = new ArrayList<PizzeriaTable>();
+		this.bookings = new ArrayList<Booking>();
+		this.images = new ArrayList<Image>();
 	}
 
 	public Pizzeria(String email, String password, String name, String phoneNumber) {
 		super(email, password);
 		this.name = name;
 		this.phoneNumber = phoneNumber;
-		this.beveragesPriceList = new ArrayList<>();
-		this.pizzasPriceList = new ArrayList<>();
-		this.menusPriceList = new ArrayList<>();
-		this.ingredientsPriceList = new ArrayList<>();
-		this.feedbacks = new ArrayList<>();
-		this.tables = new ArrayList<>();
-		this.bookings = new ArrayList<>();
-		this.images = new ArrayList<>();
+		this.beveragesPriceList = new ArrayList<RelationPizzeriaBeverage>();
+		this.pizzasPriceList = new ArrayList<RelationPizzeriaPizza>();
+		this.menusPriceList = new ArrayList<RelationPizzeriaMenu>();
+		this.ingredientsPriceList = new ArrayList<RelationPizzeriaIngredient>();
+		this.feedbacks = new ArrayList<FeedbackPizzeria>();
+		this.tables = new ArrayList<PizzeriaTable>();
+		this.bookings = new ArrayList<Booking>();
+		this.images = new ArrayList<Image>();
 	}
 
 	public String getName() {

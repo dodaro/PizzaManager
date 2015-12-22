@@ -99,7 +99,7 @@ public abstract class Booking implements Serializable {
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
-		this.orderItems = new ArrayList<>();
+		this.orderItems = new ArrayList<OrderItem>();
 	}
 
 	public Booking(Date date, Date time, Boolean confirmed, Integer priority) {
@@ -111,7 +111,7 @@ public abstract class Booking implements Serializable {
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
-		this.orderItems = new ArrayList<>();
+		this.orderItems = new ArrayList<OrderItem>();
 	}
 
 	public Integer getId() {

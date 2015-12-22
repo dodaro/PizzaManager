@@ -44,7 +44,7 @@ public class Cart implements Serializable {
 	public Cart() {
 		id = DatabaseHandler.NO_ID;
 		user = null;
-		orderItems = new ArrayList<>();
+		orderItems = new ArrayList<OrderItem>();
 	}
 
 	public Integer getId() {

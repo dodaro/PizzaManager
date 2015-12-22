@@ -33,8 +33,8 @@ public class User extends Account {
 	public User() {
 		super();
 		this.cart = null;
-		this.bookings = new ArrayList<>();
-		this.feedbacks = new ArrayList<>();
+		this.bookings = new ArrayList<Booking>();
+		this.feedbacks = new ArrayList<Feedback>();
 	}
 
 	public User(String email, String password) {

@@ -24,7 +24,7 @@ public class PizzaTests {
 
 	@Autowired
 	private ApplicationContext context;
-
+	
 	@Test
 	public void numberOfPizzas() {
 		PizzaDAO pizzaDAO = (PizzaDAO) context.getBean("pizzaDAO");
