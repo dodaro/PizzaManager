@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 
@@ -33,6 +35,7 @@ public class RelationPizzeriaPizza implements Serializable {
 	@JoinColumn(name = "pizzeria")
 	private Pizzeria pizzeria;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;
@@ -64,6 +67,18 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.images = new ArrayList<Image>();
 	}
 
+	public RelationPizzeriaPizza(Pizzeria pizzeria, Pizza pizza, Double price, PizzaSize pizzaSize,
+			Double preparationTime, Boolean glutenFree) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeria = pizzeria;
+		this.pizza = pizza;
+		this.price = price;
+		this.pizzaSize = pizzaSize;
+		this.preparationTime = preparationTime;
+		this.glutenFree = glutenFree;
+		this.images = new ArrayList<Image>();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -80,10 +95,12 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.pizzeria = pizzeria;
 	}
 
+	@JsonIgnore
 	public Pizza getPizza() {
 		return pizza;
 	}
 
+	@JsonIgnore
 	public void setPizza(Pizza pizza) {
 		this.pizza = pizza;
 	}

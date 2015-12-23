@@ -1,7 +1,6 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -18,8 +17,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
@@ -48,34 +45,30 @@ public class Pizza implements Serializable {
 	@Column(name = "special", nullable = false)
 	private boolean special;
 
-	
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
 
-	
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzaIngredient> pizzaIngredients;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaPizza> pizzasPriceList;
 
-	//IL PROBLEMA PER I JSON SONO LE RELAZIONI molti a molti
-	//IL CONTROLLER VA IN LOOP NON APPENA PROVA A MAPPARE LA RELAZIONE molti a molti DI UN OGGETTO
-	//inoltre la versione di jackson deve essere 2.4.3
-	//nella 2.5 non funziona il jsonignore
-	
+	// IL PROBLEMA PER I JSON SONO LE RELAZIONI molti a molti
+	// IL CONTROLLER VA IN LOOP NON APPENA PROVA A MAPPARE LA RELAZIONE molti a molti DI UN OGGETTO
+	// inoltre la versione di jackson deve essere 2.4.3
+	// nella 2.5 non funziona il jsonignore
+
 	/*
-	 * RISOLTO: il problema è sull'elemento riflessivo della relazione molti a molti,
-	 * ovvero in questo caso sulla relazione RelationPizzaIngredient ho dovuto ignorare la colonna stessa Pizza
-	 * perchpè altrimenti va in loop su se stesso
+	 * RISOLTO: il problema è sull'elemento riflessivo della relazione molti a molti, ovvero in
+	 * questo caso sulla relazione RelationPizzaIngredient ho dovuto ignorare la colonna stessa
+	 * Pizza perchpè altrimenti va in loop su se stesso
 	 */
-	
-	
+
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
@@ -134,42 +127,34 @@ public class Pizza implements Serializable {
 		this.special = special;
 	}
 
-
 	public List<RelationPizzaIngredient> getPizzaIngredients() {
 		return pizzaIngredients;
 	}
 
-	
 	public void setPizzaIngredients(List<RelationPizzaIngredient> pizzaIngredients) {
 		this.pizzaIngredients = pizzaIngredients;
 	}
 
-	@JsonIgnore
 	public List<RelationPizzeriaPizza> getPizzasPriceList() {
 		return pizzasPriceList;
 	}
 
-	@JsonIgnore
 	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {
 		this.pizzasPriceList = pizzasPriceList;
 	}
 
-	
 	public List<Menu> getMenu() {
 		return menu;
 	}
-
 
 	public void setMenu(List<Menu> menu) {
 		this.menu = menu;
 	}
 
-	
 	public List<PizzaOrderItem> getOrderItems() {
 		return orderItems;
 	}
 
-	
 	public void setOrderItems(List<PizzaOrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}

@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -33,6 +35,7 @@ public class Pizzeria extends Account {
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaPizza> pizzasPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)

@@ -26,8 +26,8 @@ public class DatabasePopulator {
 
 		populators.add(new UserPopulator(context));
 		populators.add(new IngredientPopulator(context));
-		populators.add(new PizzaPopulator(context));
 		populators.add(new PizzeriaPopulator(context));
+		populators.add(new PizzaPopulator(context));
 	}
 
 	private void populateDatabase() {
