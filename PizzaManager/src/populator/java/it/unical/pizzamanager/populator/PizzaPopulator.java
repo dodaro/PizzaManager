@@ -100,7 +100,7 @@ public class PizzaPopulator extends Populator {
 		pizzaDAO.create(diavola);
 		pizzaDAO.create(ortolana);
 
-		// Aggiunta delle pizze alle pizzerie.
+		// Add pizzas to pizzerias.
 
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		List<Pizzeria> pizzerias = pizzeriaDAO.getAll();
@@ -174,6 +174,5 @@ public class PizzaPopulator extends Populator {
 		pizzeriaDAO.update(pizzeria2);
 		pizzeriaDAO.update(pizzeria3);
 		pizzeriaDAO.update(pizzeria4);
-
 	}
 }

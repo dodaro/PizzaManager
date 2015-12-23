@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "beverages")
 @SequenceGenerator(name = "beveragesGenerator", sequenceName = "beverages_sequence", initialValue = 1)
@@ -24,15 +27,15 @@ public class Beverage implements Serializable {
 	private static final long serialVersionUID = 3542955027496737446L;
 
 	public enum BeverageSize {
-		SMALL, MEDIUM, LARGE
+		SMALL, MEDIUM, LARGE, NOT_SPECIFIED
 	}
 
 	public enum BeverageContainer {
-		BOTTLE, CAN, DRAFT /* Alla spina */
+		BOTTLE, CAN, DRAFT /* Alla spina */, NOT_SPECIFIED
 	}
 
 	public enum BeverageType {
-		BEER, WINE, WATER, SODA
+		BEER, WINE, WATER, SODA, NOT_SPECIFIED
 	}
 
 	@Id
@@ -68,7 +71,7 @@ public class Beverage implements Serializable {
 	 */
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Menu> menu;
+	private List<Menu> menus;
 
 	/**
 	 * OrderItems which contain a beverage.
@@ -76,6 +79,31 @@ public class Beverage implements Serializable {
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BeverageOrderItem> orderItems;
+
+	public Beverage() {
+		this.id = DatabaseHandler.NO_ID;
+		this.name = "";
+		this.brand = "";
+		this.container = BeverageContainer.NOT_SPECIFIED;
+		this.size = BeverageSize.NOT_SPECIFIED;
+		this.type = BeverageType.NOT_SPECIFIED;
+		this.beveragePriceList = new ArrayList<>();
+		this.menus = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
+	}
+
+	public Beverage(String name, String brand, BeverageContainer container, BeverageSize size,
+			BeverageType type) {
+		this.id = DatabaseHandler.NO_ID;
+		this.name = name;
+		this.brand = brand;
+		this.container = container;
+		this.size = size;
+		this.type = type;
+		this.beveragePriceList = new ArrayList<>();
+		this.menus = new ArrayList<>();
+		this.orderItems = new ArrayList<>();
+	}
 
 	public Integer getId() {
 		return id;
@@ -134,11 +162,11 @@ public class Beverage implements Serializable {
 	}
 
 	public List<Menu> getMenu() {
-		return menu;
+		return menus;
 	}
 
 	public void setMenu(List<Menu> menu) {
-		this.menu = menu;
+		this.menus = menu;
 	}
 
 	public List<BeverageOrderItem> getOrderItems() {

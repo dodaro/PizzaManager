@@ -80,6 +80,7 @@ public abstract class Booking implements Serializable {
 	// (relazione 0_to_1)
 	@OneToOne
 	@JoinColumn(name = "payment")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Payment payment;
 
 	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)

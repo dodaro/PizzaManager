@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "tablebooking_tablepizzeria")
+@Table(name = "bookingtable_pizzeriatable")
 public class RelationBookingTablePizzeriaTable implements Serializable {
 
 	private static final long serialVersionUID = -3428771534570201572L;

@@ -29,6 +29,14 @@
 
 	<!-- Keep DAO beans in alphabetical order for clarity. -->
 
+	<bean id="beverageDAO" class="it.unical.pizzamanager.persistence.dao.BeverageDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+
+	<bean id="bookingDAO" class="it.unical.pizzamanager.persistence.dao.BookingDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+
 	<bean id="ingredientDAO"
 		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
@@ -43,10 +51,6 @@
 	</bean>
 
 	<bean id="userDAO" class="it.unical.pizzamanager.persistence.dao.UserDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-
-	<bean id="bookingDAO" class="it.unical.pizzamanager.persistence.dao.BookingDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
