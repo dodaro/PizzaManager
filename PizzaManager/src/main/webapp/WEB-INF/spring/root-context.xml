@@ -49,6 +49,14 @@
 	<bean id="bookingDAO" class="it.unical.pizzamanager.persistence.dao.BookingDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+	
+	<bean id="beverageDAO" class="it.unical.pizzamanager.persistence.dao.BeverageDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+	
+	<bean id="menuDAO" class="it.unical.pizzamanager.persistence.dao.MenuDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">

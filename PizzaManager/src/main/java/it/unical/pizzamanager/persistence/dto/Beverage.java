@@ -13,8 +13,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
 @Table(name = "beverages")
@@ -61,6 +65,7 @@ public class Beverage implements Serializable {
 	 */
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaBeverage> beveragePriceList;
 
 	/**
@@ -77,6 +82,12 @@ public class Beverage implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BeverageOrderItem> orderItems;
 
+	
+	public Beverage() {
+		this.id = DatabaseHandler.NO_ID;
+	}
+	
+	
 	public Integer getId() {
 		return id;
 	}

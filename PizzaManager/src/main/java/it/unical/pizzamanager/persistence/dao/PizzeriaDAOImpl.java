@@ -35,6 +35,16 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		Query query = session.createQuery("from Pizzeria where id = :id");
 		Pizzeria pizzeria = (Pizzeria) query.uniqueResult();
+		
+		pizzeria.getBeveragesPriceList().size();
+		pizzeria.getBookings().size();
+		pizzeria.getFeedbacks().size();
+		pizzeria.getImages().size();
+		pizzeria.getIngredientsPriceList().size();
+		pizzeria.getMenusPriceList().size();
+		pizzeria.getPizzasPriceList().size();
+		pizzeria.getTables().size();
+		
 		session.close();
 		return pizzeria;
 	}
@@ -44,6 +54,17 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 	public List<Pizzeria> getAll() {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		List<Pizzeria> pizzerias = session.createQuery("from Pizzeria").list();
+		for (Pizzeria pizzeria : pizzerias) {
+			pizzeria.getBeveragesPriceList().size();
+			pizzeria.getBookings().size();
+			pizzeria.getFeedbacks().size();
+			pizzeria.getImages().size();
+			pizzeria.getIngredientsPriceList().size();
+			pizzeria.getMenusPriceList().size();
+			pizzeria.getPizzasPriceList().size();
+			pizzeria.getTables().size();
+		}
+		
 		session.close();
 		return pizzerias;
 	}

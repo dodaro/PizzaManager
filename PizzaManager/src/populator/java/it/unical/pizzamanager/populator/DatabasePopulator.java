@@ -26,7 +26,10 @@ public class DatabasePopulator {
 
 		populators.add(new UserPopulator(context));
 		populators.add(new IngredientPopulator(context));
+		
+		//prima si creano le pizze
 		populators.add(new PizzaPopulator(context));
+		//poi la pizzaria creata si assegna a se stessa le pizze create al passo precedente
 		populators.add(new PizzeriaPopulator(context));
 	}
 

@@ -59,7 +59,6 @@ public class Pizza implements Serializable {
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzaIngredient> pizzaIngredients;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaPizza> pizzasPriceList;
@@ -144,12 +143,11 @@ public class Pizza implements Serializable {
 		this.pizzaIngredients = pizzaIngredients;
 	}
 
-	@JsonIgnore
 	public List<RelationPizzeriaPizza> getPizzasPriceList() {
 		return pizzasPriceList;
 	}
 
-	@JsonIgnore
+	
 	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {
 		this.pizzasPriceList = pizzasPriceList;
 	}
