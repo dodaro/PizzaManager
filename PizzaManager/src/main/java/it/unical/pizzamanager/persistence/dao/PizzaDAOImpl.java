@@ -58,18 +58,6 @@ public class PizzaDAOImpl implements PizzaDAO {
 	public List<Pizza> getAll() {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		List<Pizza> pizzas = (List<Pizza>) session.createQuery("from Pizza").list();
-		if(pizzas!=null){
-			for (Pizza pizza : pizzas) {
-				if(pizza.getMenu() != null)
-					System.out.println(pizza.getMenu().size());
-				if(pizza.getOrderItems()  != null)
-					System.out.println(pizza.getOrderItems().size());
-				if(pizza.getPizzaIngredients()  != null)
-					System.out.println(pizza.getPizzaIngredients().size());
-				if(pizza.getPizzasPriceList()  != null)
-					System.out.println(pizza.getPizzasPriceList().size());
-			}
-		}
 		session.close();
 		return pizzas;
 	}
@@ -78,10 +66,9 @@ public class PizzaDAOImpl implements PizzaDAO {
 	@Override
 	public List<Pizza> getByIngredientType(IngredientType type) {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		Query query = session.createQuery(
-				"select pizza from Pizza as pizza " +
-				"join pizza.pizzaIngredients as pizzaIngredients " +
-				"where pizzaIngredients.ingredient.type = :type");
+		Query query = session.createQuery("select pizza from Pizza as pizza "
+				+ "join pizza.pizzaIngredients as pizzaIngredients "
+				+ "where pizzaIngredients.ingredient.type = :type");
 		query.setParameter("type", type);
 		List<Pizza> pizzas = (List<Pizza>) query.list();
 		session.close();

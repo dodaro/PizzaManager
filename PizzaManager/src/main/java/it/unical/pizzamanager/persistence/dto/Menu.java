@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -18,6 +19,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "menus")
 @SequenceGenerator(name = "menusGenerator", sequenceName = "menus_sequence", initialValue = 1)
@@ -31,12 +34,12 @@ public class Menu implements Serializable {
 	private Integer id;
 
 	@ManyToOne
-	@JoinColumn(name = "beverage")
-	private Beverage beverage;
-
-	@ManyToOne
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;
+
+	@ManyToOne
+	@JoinColumn(name = "beverage")
+	private Beverage beverage;
 
 	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -45,6 +48,22 @@ public class Menu implements Serializable {
 	@OneToMany(mappedBy = "menu", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<MenuOrderItem> menuOrderItems;
+
+	public Menu() {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizza = null;
+		this.beverage = null;
+		this.menuPriceList = new ArrayList<>();
+		this.menuOrderItems = new ArrayList<>();
+	}
+
+	public Menu(Pizza pizza, Beverage beverage) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizza = pizza;
+		this.beverage = beverage;
+		this.menuPriceList = new ArrayList<>();
+		this.menuOrderItems = new ArrayList<>();
+	}
 
 	public Integer getId() {
 		return id;

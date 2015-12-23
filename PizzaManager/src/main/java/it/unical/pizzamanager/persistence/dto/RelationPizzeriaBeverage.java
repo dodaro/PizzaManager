@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "pizzeria_beverage")
 public class RelationPizzeriaBeverage implements Serializable {
@@ -20,18 +22,32 @@ public class RelationPizzeriaBeverage implements Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-
-	@ManyToOne
-	@JoinColumn(name = "beverage")
-	private Beverage beverage;
+	private Integer id;
 
 	@ManyToOne
 	@JoinColumn(name = "pizzeria")
 	private Pizzeria pizzeria;
 
+	@ManyToOne
+	@JoinColumn(name = "beverage")
+	private Beverage beverage;
+
 	@Column(name = "price")
-	private int price;
+	private Double price;
+
+	public RelationPizzeriaBeverage() {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeria = null;
+		this.beverage = null;
+		this.price = 0.0;
+	}
+
+	public RelationPizzeriaBeverage(Pizzeria pizzeria, Beverage beverage, Double price) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeria = pizzeria;
+		this.beverage = beverage;
+		this.price = price;
+	}
 
 	public int getId() {
 		return id;
@@ -57,11 +73,11 @@ public class RelationPizzeriaBeverage implements Serializable {
 		this.pizzeria = pizzeria;
 	}
 
-	public int getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 }

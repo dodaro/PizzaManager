@@ -67,6 +67,18 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.images = new ArrayList<Image>();
 	}
 
+	public RelationPizzeriaPizza(Pizzeria pizzeria, Pizza pizza, Double price, PizzaSize pizzaSize,
+			Double preparationTime, Boolean glutenFree) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeria = pizzeria;
+		this.pizza = pizza;
+		this.price = price;
+		this.pizzaSize = pizzaSize;
+		this.preparationTime = preparationTime;
+		this.glutenFree = glutenFree;
+		this.images = new ArrayList<Image>();
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -87,6 +99,7 @@ public class RelationPizzeriaPizza implements Serializable {
 	public Pizza getPizza() {
 		return pizza;
 	}
+
 	@JsonIgnore
 	public void setPizza(Pizza pizza) {
 		this.pizza = pizza;

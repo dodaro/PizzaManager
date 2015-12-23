@@ -18,12 +18,25 @@ public class IngredientPopulator extends Populator {
 
 		Ingredient mozzarella = new Ingredient("Mozzarella", IngredientType.CHEESE);
 		Ingredient tomato = new Ingredient("Tomato", IngredientType.VEGETABLE);
-		Ingredient ham = new Ingredient("Cooked Ham", IngredientType.MEAT);
+		Ingredient cookedHam = new Ingredient("Cooked Ham", IngredientType.MEAT);
 		Ingredient sausage = new Ingredient("Sausage", IngredientType.MEAT);
+		Ingredient zucchini = new Ingredient("Zucchini", IngredientType.VEGETABLE);
+		Ingredient eggplant = new Ingredient("Eggplant", IngredientType.VEGETABLE);
+		Ingredient olives = new Ingredient("Olives", IngredientType.VEGETABLE);
+		Ingredient mushrooms = new Ingredient("Mushrooms", IngredientType.VEGETABLE);
+		Ingredient artichokes = new Ingredient("Artichokes", IngredientType.VEGETABLE);
+		Ingredient pepper = new Ingredient("Pepper", IngredientType.VEGETABLE);
 
 		ingredientDAO.create(mozzarella);
 		ingredientDAO.create(tomato);
-		ingredientDAO.create(ham);
+		ingredientDAO.create(cookedHam);
 		ingredientDAO.create(sausage);
+		ingredientDAO.create(zucchini);
+		ingredientDAO.create(eggplant);
+		ingredientDAO.create(olives);
+		ingredientDAO.create(mushrooms);
+		ingredientDAO.create(artichokes);
+		ingredientDAO.create(pepper);
+
 	}
 }

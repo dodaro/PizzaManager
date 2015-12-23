@@ -12,5 +12,5 @@ public interface MenuDAO {
 
 	public void update(Menu menu);
 
-	public List<Menu> get();
+	public List<Menu> getAll();
 }

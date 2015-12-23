@@ -13,6 +13,7 @@ public class MenuDAOImpl implements MenuDAO {
 	public MenuDAOImpl() {
 		setDatabaseHandler(null);
 	}
+
 	@Override
 	public void create(Menu menu) {
 		getDatabaseHandler().create(menu);
@@ -33,15 +34,17 @@ public class MenuDAOImpl implements MenuDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Menu> get() {
+	public List<Menu> getAll() {
 		Session session = getDatabaseHandler().getSessionFactory().openSession();
-		List<Menu> menus = session.createSQLQuery("Select * from menus").addEntity(Menu.class).list();
+		List<Menu> menus = session.createQuery("from Menu").list();
 		session.close();
 		return menus;
 	}
+
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
 	}
+
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
 	}

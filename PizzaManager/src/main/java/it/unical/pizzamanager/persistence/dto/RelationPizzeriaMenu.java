@@ -42,6 +42,13 @@ public class RelationPizzeriaMenu implements Serializable {
 		this.price = 0.0;
 	}
 
+	public RelationPizzeriaMenu(Pizzeria pizzeria, Menu menu, Double price) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeria = pizzeria;
+		this.menu = menu;
+		this.price = price;
+	}
+
 	public Integer getId() {
 		return id;
 	}
