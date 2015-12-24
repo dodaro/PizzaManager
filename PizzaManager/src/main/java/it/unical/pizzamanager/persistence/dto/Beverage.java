@@ -21,8 +21,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
-import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
-
 @Entity
 @Table(name = "beverages")
 @SequenceGenerator(name = "beveragesGenerator", sequenceName = "beverages_sequence", initialValue = 1)
@@ -109,12 +107,6 @@ public class Beverage implements Serializable {
 		this.menus = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
 	}
-
-	
-	public Beverage() {
-		this.id = DatabaseHandler.NO_ID;
-	}
-	
 	
 	public Integer getId() {
 		return id;

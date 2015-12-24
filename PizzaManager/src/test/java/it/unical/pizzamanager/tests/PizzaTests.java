@@ -28,7 +28,7 @@ public class PizzaTests {
 	@Test
 	public void numberOfPizzas() {
 		PizzaDAO pizzaDAO = (PizzaDAO) context.getBean("pizzaDAO");
-		assertEquals(3, pizzaDAO.getAll().size());
+		assertEquals(7, pizzaDAO.getAll().size());
 	}
 
 	@Test
@@ -46,6 +46,6 @@ public class PizzaTests {
 			System.out.println(pizza.getName());
 		}
 
-		assertEquals(2, pizzasWithMeat.size());
+		assertEquals(4, pizzasWithMeat.size());
 	}
 }

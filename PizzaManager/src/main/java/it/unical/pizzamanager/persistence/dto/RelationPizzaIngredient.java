@@ -21,7 +21,6 @@ public class RelationPizzaIngredient implements Serializable {
 
 	private static final long serialVersionUID = 656149294073781552L;
 
-	
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,8 +31,7 @@ public class RelationPizzaIngredient implements Serializable {
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;
 
-	
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "ingredient")
 	private Ingredient ingredient;
@@ -49,27 +47,29 @@ public class RelationPizzaIngredient implements Serializable {
 		this.pizza = pizza;
 		this.ingredient = ingredient;
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	@JsonIgnore
 	public Pizza getPizza() {
 		return pizza;
 	}
-	@JsonIgnore
+
 	public void setPizza(Pizza pizza) {
 		this.pizza = pizza;
 	}
-	
+
+	@JsonIgnore
 	public Ingredient getIngredient() {
 		return ingredient;
 	}
-	
+
 	public void setIngredient(Ingredient ingredient) {
 		this.ingredient = ingredient;
 	}

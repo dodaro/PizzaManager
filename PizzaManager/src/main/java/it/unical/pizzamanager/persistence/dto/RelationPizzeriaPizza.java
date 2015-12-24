@@ -31,6 +31,7 @@ public class RelationPizzeriaPizza implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizzeria")
 	private Pizzeria pizzeria;
@@ -87,6 +88,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public Pizzeria getPizzeria() {
 		return pizzeria;
 	}
@@ -100,7 +102,6 @@ public class RelationPizzeriaPizza implements Serializable {
 		return pizza;
 	}
 
-	@JsonIgnore
 	public void setPizza(Pizza pizza) {
 		this.pizza = pizza;
 	}

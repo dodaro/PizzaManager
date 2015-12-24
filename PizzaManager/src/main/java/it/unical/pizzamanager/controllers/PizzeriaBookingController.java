@@ -27,7 +27,6 @@ public class PizzeriaBookingController {
 	@Autowired
 	private WebApplicationContext context;
 
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/pizzeriabooking", method = RequestMethod.GET)
 	public String pizzeriaBooking(Model model) {
 		logger.info("Home page requested. Loading list of users.");
