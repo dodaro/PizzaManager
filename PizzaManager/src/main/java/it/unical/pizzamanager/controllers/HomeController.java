@@ -33,10 +33,4 @@ public class HomeController {
 
 		return "home";
 	}
-
-	@RequestMapping(value = "/select2", method = RequestMethod.GET)
-	public String select2() {
-		return "select2test";
-	}
-
 }

@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
@@ -24,10 +26,12 @@ public class RelationBookingTablePizzeriaTable implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "booking")
 	private BookingPizzeriaTable booking;
 
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizzeriaTable")
 	private PizzeriaTable pizzeriaTable;
@@ -46,6 +50,7 @@ public class RelationBookingTablePizzeriaTable implements Serializable {
 		this.id = id;
 	}
 
+	@JsonIgnore
 	public BookingPizzeriaTable getBooking() {
 		return booking;
 	}
@@ -54,6 +59,7 @@ public class RelationBookingTablePizzeriaTable implements Serializable {
 		this.booking = booking;
 	}
 
+	@JsonIgnore
 	public PizzeriaTable getPizzeriaTable() {
 		return pizzeriaTable;
 	}

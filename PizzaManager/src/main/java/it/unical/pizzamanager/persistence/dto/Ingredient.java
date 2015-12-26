@@ -17,8 +17,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
@@ -43,7 +41,6 @@ public class Ingredient implements Serializable {
 	@Column(name = "type", nullable = false)
 	private IngredientType type;
 
-	@JsonIgnore
 	@OneToMany(mappedBy = "ingredient", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzaIngredient> ingredientOf;
@@ -91,12 +88,10 @@ public class Ingredient implements Serializable {
 		this.type = type;
 	}
 
-	@JsonIgnore
 	public List<RelationPizzaIngredient> getIngredientOf() {
 		return ingredientOf;
 	}
 
-	@JsonIgnore
 	public void setIngredientOf(List<RelationPizzaIngredient> pizzaIngredient) {
 		this.ingredientOf = pizzaIngredient;
 	}
