@@ -45,16 +45,19 @@ public class Pizza implements Serializable {
 	@Column(name = "special", nullable = false)
 	private boolean special;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
+	//TODO: convertire in lazy e sistemare il dao
+	//vado di fretta per testare le jsp --> by David
+	
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<Menu> menu;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzaIngredient> pizzaIngredients;
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzeriaPizza> pizzasPriceList;
 
@@ -66,10 +69,10 @@ public class Pizza implements Serializable {
 	/*
 	 * RISOLTO: il problema è sull'elemento riflessivo della relazione molti a molti, ovvero in
 	 * questo caso sulla relazione RelationPizzaIngredient ho dovuto ignorare la colonna stessa
-	 * Pizza perchpè altrimenti va in loop su se stesso
+	 * Pizza perchè altrimenti va in loop su se stesso
 	 */
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
 

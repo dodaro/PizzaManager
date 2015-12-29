@@ -17,6 +17,11 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import it.unical.pizzamanager.controllers.PizzeriaSerializer;
+
+@JsonSerialize(using = PizzeriaSerializer.class)
 @Entity
 @Table(name = "pizzerias")
 public class Pizzeria extends Account {
@@ -28,7 +33,7 @@ public class Pizzeria extends Account {
 
 	@Column(name = "phoneNumber")
 	private String phoneNumber;
-
+	
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
