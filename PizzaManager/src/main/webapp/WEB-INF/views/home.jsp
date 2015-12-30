@@ -10,6 +10,8 @@
 
 <title>Home</title>
 
+<meta name="viewport" content="width=device-width" />
+
 </head>
 <body>
 	<jsp:include page="includes/navbar.jsp" />
@@ -24,7 +26,7 @@
 			<c:choose>
 				<c:when test="${users.size() > 0}">
 					<c:forEach var="user" items="${users}">
-						<div>${user.toString()}</div>
+						<div>${user.email}</div>
 					</c:forEach>
 				</c:when>
 				<c:otherwise>
