@@ -1,0 +1,3 @@
+- Put CSS rules applied to every page into the common.css file. Include it in every page, if needed.
+
+- Include the navbar into each page if needed, with the line:
