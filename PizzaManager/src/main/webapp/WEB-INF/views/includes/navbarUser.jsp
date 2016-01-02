@@ -32,13 +32,13 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<span class="glyphicon glyphicon-user button-glyphicon"></span>
-						User
+						${user.email}
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Profile</a></li>
 						<li class="divider"></li>
-						<li><a href="#">Log out</a></li>
+						<li><a href="/logout">Log out</a></li>
 					</ul>
 				</li>
 			</ul>

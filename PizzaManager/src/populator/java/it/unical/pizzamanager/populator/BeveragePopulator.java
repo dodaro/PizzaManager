@@ -1,7 +1,5 @@
 package it.unical.pizzamanager.populator;
 
-
-import org.springframework.context.ApplicationContext;
 import java.util.ArrayList;
 import java.util.List;
 

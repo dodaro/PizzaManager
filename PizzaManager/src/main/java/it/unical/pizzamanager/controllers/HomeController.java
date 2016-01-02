@@ -2,6 +2,8 @@ package it.unical.pizzamanager.controllers;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,7 @@ public class HomeController {
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Model model) {
+	public String home(Model model, HttpSession session) {
 		logger.info("Home page requested. Loading list of users.");
 
 		UserDAO dao = (UserDAO) context.getBean("userDAO");
@@ -31,6 +33,20 @@ public class HomeController {
 
 		model.addAttribute("users", users);
 
+		setNavbar(model, session);
+
 		return "home";
+	}
+
+	/*
+	 * È opportuno inserire questo controllo qui piuttosto che nella view per rispettare il pattern
+	 * MVC? È questo il modo migliore per implementarlo?
+	 */
+	private void setNavbar(Model model, HttpSession session) {
+		if (LoginController.isLoggedIn(session)) {
+			model.addAttribute("navbar", "navbarUser");
+		} else {
+			model.addAttribute("navbar", "navbarLogin");
+		}
 	}
 }
