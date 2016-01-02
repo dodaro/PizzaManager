@@ -13,7 +13,6 @@
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/signup.css" />
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Sign Up to Pizza Manager</title>
@@ -24,12 +23,12 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-2"></div>
-			<div class="col-md-8">
+			<div class="col-md-7">
 				<div class="card">
 					<h2>Sign up to Pizza Manager!</h2>
 					<form:form action="signup" method="post" modelAttribute="signUpForm">
 						<div class="row js-email-container">
-							<div class="col-md-5">
+							<div class="col-md-5 input-container">
 								<div class="form-group has-feedback js-email-form">
 									<form:input type="text" path="email" class="form-control js-email-input"
 										placeholder="Email" />
@@ -39,14 +38,14 @@
 							</div>
 							<div class="col-md-7">
 								<div class="message hint visible">Insert your email.</div>
-								<div class="message valid">Email is ok.</div>
+								<div class="message valid">Email seems ok.</div>
 								<div class="message validating">Validating...</div>
 								<div class="message taken">An user with this email already exists.</div>
 								<div class="message error">Invalid email.</div>
 							</div>
 						</div>
 						<div class="row js-password-container">
-							<div class="col-md-5">
+							<div class="col-md-5 input-container">
 								<div class="form-group has-feedback js-password-form">
 									<form:input type="text" path="password" class="form-control js-password-input"
 										placeholder="Password" />
@@ -62,7 +61,6 @@
 					</form:form>
 				</div>
 			</div>
-			<div class="col-md-2"></div>
 		</div>
 	</div>
 </body>

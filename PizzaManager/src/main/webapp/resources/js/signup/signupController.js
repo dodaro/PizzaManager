@@ -116,14 +116,14 @@ var signupController = function() {
 
 		/*
 		 * If the loader is shown, validation is occurring, so the right message
-		 * must be shown as well
+		 * must be shown as well.
 		 */
 		if (showLoader) {
 			$object.find(".loader").show();
 			$object.find(".message.validating").addClass("visible");
 		} else {
 			$object.find(".loader").hide();
-			object.find(".message.hint").addClass("visible");
+			$object.find(".message.hint").addClass("visible");
 		}
 	}
 
