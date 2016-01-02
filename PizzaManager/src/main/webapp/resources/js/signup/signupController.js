@@ -1,6 +1,6 @@
 var signupController = function() {
 
-	var validationDelay = 750;
+	var validationDelay = 500;
 	var emailTimeout;
 
 	/*
@@ -14,6 +14,13 @@ var signupController = function() {
 
 		var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return regex.test(email);
+	};
+
+	/*
+	 * Validates password, just checking for its length.
+	 */
+	var validatePassword = function(password) {
+		return password.length >= 8
 	};
 
 	/*
@@ -40,25 +47,33 @@ var signupController = function() {
 	 * Processes the response of the server after the sendEmailRequest method.
 	 */
 	var processEmailResponse = function(data) {
-		$inputEmailContainer = $("#inputEmailContainer");
+		var $emailContainer = $(".js-email-container");
 
 		if (data.taken) {
-			setValidationError($inputEmailContainer);
+			setValidationError($emailContainer, "taken");
 		} else {
-			setValidationSuccess($inputEmailContainer);
+			setValidationSuccess($emailContainer);
 		}
 	};
 
 	/*
-	 * Sets the validation state of the email form field to "error".
+	 * Sets the validation state of a form field to "error". Takes as an
+	 * argument the class of the message to show.
 	 */
-	var setValidationError = function($object) {
-		$object.removeClass("has-success");
-		$object.addClass("has-error");
+	var setValidationError = function($object, messageClass) {
+		var $formGroup = $object.find(".form-group");
+		$formGroup.removeClass("has-success");
+		$formGroup.addClass("has-error");
 
-		$glyphicon = $object.find(".glyphicon");
+		var $glyphicon = $object.find(".glyphicon");
 		$glyphicon.removeClass("glyphicon-ok");
 		$glyphicon.addClass("glyphicon-remove");
+
+		var $currentMessage = $object.find(".message.visible");
+		var $newMessage = $object.find(".message." + messageClass);
+
+		$currentMessage.removeClass("visible");
+		$newMessage.addClass("visible");
 
 		$object.find(".loader").hide();
 	};
@@ -67,12 +82,18 @@ var signupController = function() {
 	 * Sets the validation state of the email form field to "success".
 	 */
 	var setValidationSuccess = function($object) {
-		$object.removeClass("has-error");
-		$object.addClass("has-success");
+		var $formGroup = $object.find(".form-group");
+		$formGroup.removeClass("has-error");
+		$formGroup.addClass("has-success");
 
-		$glyphicon = $object.find(".glyphicon");
+		var $glyphicon = $object.find(".glyphicon");
 		$glyphicon.removeClass("glyphicon-remove");
 		$glyphicon.addClass("glyphicon-ok");
+
+		var $validMessage = $object.find(".message.valid");
+		var $currentMessage = $object.find(".message.visible");
+		$currentMessage.removeClass("visible");
+		$validMessage.addClass("visible");
 
 		$object.find(".loader").hide();
 	};
@@ -82,17 +103,27 @@ var signupController = function() {
 	 * loading icon if showLoader is true, or hide it if showLoader is false.
 	 */
 	var clearValidationState = function($object, showLoader) {
-		$object.removeClass("has-success");
-		$object.removeClass("has-error");
+		var $formGroup = $object.find(".form-group");
+		$formGroup.removeClass("has-success");
+		$formGroup.removeClass("has-error");
 
-		$glyphicon = $object.find(".glyphicon");
+		var $glyphicon = $object.find(".glyphicon");
 		$glyphicon.removeClass("glyphicon-ok");
 		$glyphicon.removeClass("glyphicon-remove");
 
+		var $currentMessage = $object.find(".message.visible");
+		$currentMessage.removeClass("visible");
+
+		/*
+		 * If the loader is shown, validation is occurring, so the right message
+		 * must be shown as well
+		 */
 		if (showLoader) {
 			$object.find(".loader").show();
+			$object.find(".message.validating").addClass("visible");
 		} else {
 			$object.find(".loader").hide();
+			object.find(".message.hint").addClass("visible");
 		}
 	}
 
@@ -106,18 +137,18 @@ var signupController = function() {
 		 */
 		onEmailChanged : function(email) {
 			clearTimeout(emailTimeout);
-			$inputEmailContainer = $("#inputEmailContainer");
+			var $emailContainer = $(".js-email-container");
 
 			if (email.length == 0) {
-				clearValidationState($inputEmailContainer, true);
+				clearValidationState($emailContainer, false);
 			} else if (validateEmail(email)) {
-				clearValidationState($inputEmailContainer, true);
-				console.log("Email ok.")
+				clearValidationState($emailContainer, true);
+				console.log("Email ok, sending request.")
 				emailTimeout = setTimeout(function() {
 					sendEmailRequest(email);
 				}, validationDelay);
 			} else {
-				setValidationError($inputEmailContainer);
+				setValidationError($emailContainer, "error");
 			}
 		},
 
@@ -126,7 +157,17 @@ var signupController = function() {
 		 * check for its validity.
 		 */
 		onPasswordChanged : function(password) {
+			var $passwordContainer = $(".js-password-container");
+
 			console.log("Password changed in " + password);
+
+			if (password.length == 0) {
+				clearValidationState($passwordContainer, false);
+			} else if (validatePassword(password)) {
+				setValidationSuccess($passwordContainer);
+			} else {
+				setValidationError($passwordContainer, "error");
+			}
 		}
 	};
 }();

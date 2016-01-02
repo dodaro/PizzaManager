@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
+import it.unical.pizzamanager.model.LogInForm;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.User;
 
@@ -28,12 +29,17 @@ public class HomeController {
 	public String home(Model model, HttpSession session) {
 		logger.info("Home page requested. Loading list of users.");
 
+		setNavbar(model, session);
+
+		if (!LogInController.isLoggedIn(session)) {
+			return "index";
+		}
+
 		UserDAO dao = (UserDAO) context.getBean("userDAO");
 		List<User> users = dao.getAll();
 
 		model.addAttribute("users", users);
 
-		setNavbar(model, session);
 
 		return "home";
 	}
@@ -43,10 +49,11 @@ public class HomeController {
 	 * MVC? È questo il modo migliore per implementarlo?
 	 */
 	private void setNavbar(Model model, HttpSession session) {
-		if (LoginController.isLoggedIn(session)) {
+		if (LogInController.isLoggedIn(session)) {
 			model.addAttribute("navbar", "navbarUser");
 		} else {
 			model.addAttribute("navbar", "navbarLogin");
+			model.addAttribute("logInForm", new LogInForm());
 		}
 	}
 }

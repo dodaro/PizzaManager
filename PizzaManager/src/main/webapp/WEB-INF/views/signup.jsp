@@ -5,10 +5,12 @@
 <html>
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="resources/js/signup/signup.js"></script>
 <script type="text/javascript" src="resources/js/signup/signupController.js"></script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/signup.css" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -17,24 +19,51 @@
 <title>Sign Up to Pizza Manager</title>
 </head>
 <body>
-	<div id="container">
-		<div id="header"></div>
-		<div id="content">
-		<h2>Sign up to Pizza Manager!</h2>
-			<form:form id="signUpForm" action="signup" method="post" commandName="signUpForm">
-				<div id="inputEmailContainer" class="form-group has-feedback">
-					<form:input type="text" path="email" id="inputEmail" class="form-control" placeholder="Email" />
-					<span class="glyphicon form-control-feedback"></span>
-					<img class="loader form-control-feedback" src="resources/img/loader.gif" />
+	<jsp:include page="includes/navbarLogin.jsp" />
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8">
+				<div class="card">
+					<h2>Sign up to Pizza Manager!</h2>
+					<form:form action="signup" method="post" modelAttribute="signUpForm">
+						<div class="row js-email-container">
+							<div class="col-md-5">
+								<div class="form-group has-feedback js-email-form">
+									<form:input type="text" path="email" class="form-control js-email-input"
+										placeholder="Email" />
+									<span class="glyphicon form-control-feedback"></span>
+									<img class="loader form-control-feedback" src="resources/img/loader.gif" />
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="message hint visible">Insert your email.</div>
+								<div class="message valid">Email is ok.</div>
+								<div class="message validating">Validating...</div>
+								<div class="message taken">An user with this email already exists.</div>
+								<div class="message error">Invalid email.</div>
+							</div>
+						</div>
+						<div class="row js-password-container">
+							<div class="col-md-5">
+								<div class="form-group has-feedback js-password-form">
+									<form:input type="text" path="password" class="form-control js-password-input"
+										placeholder="Password" />
+									<span class="glyphicon form-control-feedback"></span>
+								</div>
+							</div>
+							<div class="col-md-7">
+								<div class="message hint visible">Your password must be at least 8 characters long.</div>
+								<div class="message valid">Password is ok.</div>
+								<div class="message error">Your password must be at least 8 characters long.</div>
+							</div>
+						</div>
+					</form:form>
 				</div>
-				<div class="form-group">
-					<form:input type="text" path="password" id="inputPassword" class="form-control"
-						placeholder="Password" />
-				</div>
-				<button type="submit" class="btn btn-primary">Sign Up</button>
-			</form:form>
+			</div>
+			<div class="col-md-2"></div>
 		</div>
-		<div id="footer"></div>
 	</div>
 </body>
 </html>

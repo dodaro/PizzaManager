@@ -19,7 +19,7 @@ public class UserPopulator extends Populator {
 	private void createUsers() {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		for (int i = 1; i <= 10; i++) {
-			userDAO.create(new User("email" + i, "password" + i));
+			userDAO.create(new User("mail" + i + "@mail.com", "password" + i));
 		}
 	}
 }

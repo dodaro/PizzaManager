@@ -1,9 +1,9 @@
 $(function() {
-	$("#inputEmail").on("input propertychange", function() {
+	$(".js-email-input").on("input propertychange", function() {
 		signupController.onEmailChanged($(this).val());
 	});
 
-	$("#inputPassword").on("input propertychange", function() {
+	$(".js-password-input").on("input propertychange", function() {
 		signupController.onPasswordChanged($(this).val());
 	});
 

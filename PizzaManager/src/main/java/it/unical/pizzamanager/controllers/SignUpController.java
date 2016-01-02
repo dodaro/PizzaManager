@@ -49,12 +49,13 @@ public class SignUpController {
 	public String isEmailTaken(@RequestParam String email) {
 		logger.info("Request for email " + email);
 
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		boolean taken;
 
 		/* TODO - Input validation is strongly needed here. */
 
-		/* TODO - A database query is needed here. */
-		taken = email.equals("a@a.a");
+		User user = userDAO.get(email);
+		taken = user != null && user.getEmail().equals(email);
 
 		/*
 		 * Return a JSON objects with fields "email" and "taken" (true/false).
