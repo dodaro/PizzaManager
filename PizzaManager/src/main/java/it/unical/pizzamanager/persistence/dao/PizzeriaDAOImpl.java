@@ -35,16 +35,22 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		Query query = session.createQuery("from Pizzeria where id = :id");
 		query.setParameter("id", id);
-		Pizzeria pizzeria = (Pizzeria) query.uniqueResult();
 
-		pizzeria.getBeveragesPriceList().size();
-		pizzeria.getBookings().size();
-		pizzeria.getFeedbacks().size();
-		pizzeria.getImages().size();
-		pizzeria.getIngredientsPriceList().size();
-		pizzeria.getMenusPriceList().size();
-		pizzeria.getPizzasPriceList().size();
-		pizzeria.getTables().size();
+		Pizzeria pizzeria = (Pizzeria) query.uniqueResult();
+		init(pizzeria);
+
+		session.close();
+		return pizzeria;
+	}
+
+	@Override
+	public Pizzeria get(String email) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from Pizzeria where email = :email");
+		query.setParameter("email", email);
+
+		Pizzeria pizzeria = (Pizzeria) query.uniqueResult();
+		init(pizzeria);
 
 		session.close();
 		return pizzeria;
@@ -57,18 +63,22 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 		List<Pizzeria> pizzerias = session.createQuery("from Pizzeria").list();
 
 		for (Pizzeria pizzeria : pizzerias) {
-			pizzeria.getBeveragesPriceList().size();
-			pizzeria.getBookings().size();
-			pizzeria.getFeedbacks().size();
-			pizzeria.getImages().size();
-			pizzeria.getIngredientsPriceList().size();
-			pizzeria.getMenusPriceList().size();
-			pizzeria.getPizzasPriceList().size();
-			pizzeria.getTables().size();
+			init(pizzeria);
 		}
 
 		session.close();
 		return pizzerias;
+	}
+
+	private void init(Pizzeria pizzeria) {
+		pizzeria.getBeveragesPriceList().size();
+		pizzeria.getBookings().size();
+		pizzeria.getFeedbacks().size();
+		pizzeria.getImages().size();
+		pizzeria.getIngredientsPriceList().size();
+		pizzeria.getMenusPriceList().size();
+		pizzeria.getPizzasPriceList().size();
+		pizzeria.getTables().size();
 	}
 
 	public DatabaseHandler getDatabaseHandler() {

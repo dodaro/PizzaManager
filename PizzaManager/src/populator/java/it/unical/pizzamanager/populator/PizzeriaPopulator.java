@@ -15,11 +15,10 @@ public class PizzeriaPopulator extends Populator {
 	protected void populate() {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 
-
 		// From 11 to 15 to make it consistent with ids, since Users will take ids from 1 to 10.
-		for (int i = 11; i <= 15; i++) {
-			Pizzeria pizzeria = new Pizzeria("email" + i, "password" + i, "name" + i,
-					"phoneNumber" + i);
+		for (int i = 11; i <= 20; i++) {
+			Pizzeria pizzeria = new Pizzeria("mail" + i + "@mail.com", "password" + i,
+					"PizzeriaName" + i, "PizzeriaPhone" + i);
 			pizzeriaDAO.create(pizzeria);
 		}
 	}
