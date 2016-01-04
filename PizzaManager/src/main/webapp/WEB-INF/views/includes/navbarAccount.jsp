@@ -32,7 +32,10 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<span class="glyphicon glyphicon-user button-glyphicon"></span>
-						${user.email}
+						
+						<!-- One will be empty and won't be printed. -->
+						${user.email} ${pizzeria.email}
+						
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">

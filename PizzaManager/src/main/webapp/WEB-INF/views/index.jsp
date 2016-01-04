@@ -23,6 +23,11 @@
 		</div>
 		<div class="card">
 			<div>This is the index. If you see this you're not logged in.</div>
+			<div>If you use the default populator, ids from 1 to 10 are users, while ids from 11 to 20
+				are pizzerias.</div>
+			<div>Use "mail4@mail.com" as email and "password4" to login as the user with id 4.</div>
+			<div>Use "mail15@mail.com" as email and "password15" to login as the pizzeria with id 15.</div>
+			<div>Once logged in, you'll see the home for that particular account.</div>
 		</div>
 	</div>
 </body>

@@ -14,5 +14,7 @@ public interface PizzeriaDAO {
 
 	Pizzeria get(Integer id);
 
+	Pizzeria get(String email);
+
 	public List<Pizzeria> getAll();
 }

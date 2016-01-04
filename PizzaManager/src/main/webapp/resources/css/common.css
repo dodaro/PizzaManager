@@ -8,6 +8,21 @@ body {
 	background-color: #D4E3E9;
 }
 
+/*
+ * This rule removes the padding from Bootstrap columns.
+ */
+[class^=col-xs], [class^=col-md] {
+	padding: 0;
+}
+
+/*
+ * This rule removes the negative left and right margin from Bootstrap rows.
+ */
+.row {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .button-login {
 	margin-left: 8px;
 }
