@@ -1,23 +1,27 @@
+@CHARSET "UTF-8";
+
 @import url("navbar.css");
 
-/*
- * This rule moves the content of the body down to make place for the navbar.
- */
+html {
+	/*
+	 * Scrollbar is always visible to prevent page from shifting to the left when the scrollbar is
+	 * shown.
+	 */
+	overflow-y: scroll;
+}
+
 body {
+	/* This rule moves the content of the body down to make place for the navbar. */
 	padding-top: 51px;
 	background-color: #D4E3E9;
 }
 
-/*
- * This rule removes the padding from Bootstrap columns.
- */
+/* This rule removes the padding from Bootstrap columns. */
 [class^=col-xs], [class^=col-md] {
 	padding: 0;
 }
 
-/*
- * This rule removes the negative left and right margin from Bootstrap rows.
- */
+/* This rule removes the negative left and right margin from Bootstrap rows. */
 .row {
 	margin-left: 0;
 	margin-right: 0;

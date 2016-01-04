@@ -1,33 +1,10 @@
 @CHARSET "UTF-8";
 
-.select2.select2-container{
+.select2.select2-container {
 	width: auto !important;
-	display:block;
+	display: block;
 }
 
-#container{	
-	background: #FFFFFF;
-	margin: auto auto;
-	width: 960px;
-	/*height: 984px;*/
-}
-
-#header{	
-	background: #F0F0F0;
-	height: 200px;
-	background-image: url("../images/unical.png");
-}
-
-#wrapper{
-	background: #d2d0d2;	
-}
-
-#footer{ 
-	background: #838283;
-	height: 50px;
-	text-indent: 10px;
-}
-
-#hidden{
+#hidden {
 	display: none;
 }
