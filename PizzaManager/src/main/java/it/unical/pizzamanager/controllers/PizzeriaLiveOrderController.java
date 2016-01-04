@@ -1,5 +1,6 @@
 package it.unical.pizzamanager.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.deser.BeanDeserializerFactory;
@@ -29,9 +32,12 @@ import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.MenuDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizza;
+import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 
 @Controller
@@ -55,16 +61,40 @@ public class PizzeriaLiveOrderController {
 		
 		PizzeriaDAO pizzeriaDao=(PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria=pizzeriaDao.getAll().get(0);
-		
-		
-
-		
-		
 		//model.addAttribute("pizzasList", pizzas);
 		//model.addAttribute("beveragesList", beverages);
 		//model.addAttribute("menusList", menus);
 		model.addAttribute("pizzeria", pizzeria);
 		return "pizzerialiveorder";
+	}
+	
+	@RequestMapping(value = "/pizzerialiveorderConferme", method = RequestMethod.POST)
+	public @ResponseBody String confermeLiveOrder(Model model, @RequestParam ("pizzas") String json1,@RequestParam ("beverages") String json2) {
+		logger.info("Live order confermed");
+		System.out.println(json1);
+		System.out.println(json2);
+		//REDIRECT TO BOOKING
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			JsonNode actualObj = mapper.readTree(json1);
+			System.out.println(actualObj.get(0).get("pizza").toString());
+			
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		/*PizzaOrderItem pizza=new PizzaOrderItem();
+		BeverageOrderItem beverage= new BeverageOrderItem();
+		BookingPizzeriaTable booking= new BookingPizzeriaTable();*/
+		
+		String a="{ciao:io}";
+		return a;
 	}
 	
 	@RequestMapping(value = "/pizzerialiveorderPizzas", method = RequestMethod.GET)
@@ -87,41 +117,6 @@ public class PizzeriaLiveOrderController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return pizzeria;
-		
 	}
-	
-
-//	@RequestMapping(value = "/pizzerialiveorderPizzas", method = RequestMethod.GET)
-//	public @ResponseBody Pizzeria processAJAXRequest(HttpServletRequest request, Model model) throws JsonProcessingException {
-		
-		/*BeanDeserializerModifier modifier = new BeanDeserializerModifierForIgnorables(Pizzeria.class, "beveragesPriceList","pizzasPriceList","menusPriceList","ingredientsPriceList","feedbacks","tables","bookings");
-		DeserializerFactory dFactory = BeanDeserializerFactory.instance.withDeserializerModifier(modifier);
-		ObjectMapper mapper = new ObjectMapper(null, null, new DefaultDeserializationContext.Impl(dFactory));
-		System.out.println("Properties settate");
-		//PizzaDAO dao = (PizzaDAO) context.getBean("pizzaDAO");
-		
-		PizzeriaDAO pizzeriaDao=(PizzeriaDAO) context.getBean("pizzeriaDAO");
-		Pizzeria pizzeria=pizzeriaDao.getAll().get(0);
-		//return "{ 'ciao':'gay'}";
-		return pizzeria;*/
-		
-		/*BeanDeserializerModifier modifier = new BeanDeserializerModifierForIgnorables(Pizza.class, "pizzaIngredients","menu","pizzasPriceList","orderItems");
-		DeserializerFactory dFactory = BeanDeserializerFactory.instance.withDeserializerModifier(modifier);
-		ObjectMapper mapper = new ObjectMapper(null, null, new DefaultDeserializationContext.Impl(dFactory));
-		
-		System.out.println("Properties settate");
-		PizzaDAO dao = (PizzaDAO) context.getBean("pizzaDAO");
-		List<Pizza> pizze=dao.getAll();
-		
-		ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-		String json = ow.writeValueAsString(pizze);
-		
-		//String s=mapper.writeValueAsString(pizze);
-		
-		return json;*/
-//	}
-	
 }

@@ -128,13 +128,15 @@ var Pizza=(function(){
 	
 	Pizza.prototype.toString = function() {
 		var tostring= this.self.name +" "+ this.self.size +" "+ this.self.glutenFree+" - code: "+this.self.code+ '\n' +"INGR ADD:";
-		for (var int = 0; int < this.self.ingredientsAdded.length; int++) {
-			tostring+=this.self.ingredientsAdded[int].text+", ";
-		}
+		if(this.self.ingredientsAdded!=undefined)
+			for (var int = 0; int < this.self.ingredientsAdded.length; int++) {
+				tostring+=this.self.ingredientsAdded[int].text+", ";
+			}
 		tostring+="\n"+"INGR REM:";
-		for (var int = 0; int < this.self.ingredientsRemoved.length; int++) {
-			tostring+=this.self.ingredientsRemoved[int].text+", ";
-		}
+		if(this.self.ingredientsRemoved!=undefined)
+			for (var int = 0; int < this.self.ingredientsRemoved.length; int++) {
+				tostring+=this.self.ingredientsRemoved[int].text+", ";
+			}
 		
 		return tostring;
 		
@@ -142,17 +144,23 @@ var Pizza=(function(){
 	
 	Pizza.prototype.toStringIngredientsAdded = function() {
 		var tostring="";
-		for (var int = 0; int < this.self.ingredientsAdded.length; int++) {
-			tostring+=this.self.ingredientsAdded[int].text+", ";
-		}
+		if(this.self.ingredientsAdded!=undefined)
+			for (var int = 0; int < this.self.ingredientsAdded.length; int++) {
+				tostring+=this.self.ingredientsAdded[int].text;
+				if(int<(this.self.ingredientsAdded.length)-1)
+					tostring+=', ';
+			}
 		return tostring;
 	};
 	
 	Pizza.prototype.toStringIngredientsRemoved = function() {
 		var tostring="";
-		for (var int = 0; int < this.self.ingredientsRemoved.length; int++) {
-			tostring+=this.self.ingredientsRemoved[int].text+", ";
-		}
+		if(this.self.ingredientsRemoved!=undefined)
+			for (var int = 0; int < this.self.ingredientsRemoved.length; int++) {
+				tostring+=this.self.ingredientsRemoved[int].text;
+				if(int<(this.self.ingredientsRemoved.length)-1)
+					tostring+=', ';
+			}
 		return tostring;
 	};
 	
