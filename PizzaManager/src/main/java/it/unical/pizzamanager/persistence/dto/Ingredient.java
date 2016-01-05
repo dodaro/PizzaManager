@@ -45,9 +45,13 @@ public class Ingredient implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationPizzaIngredient> ingredientOf;
 
+	@OneToMany(mappedBy="ingredient",fetch=FetchType.LAZY)
+	@OnDelete(action=OnDeleteAction.CASCADE)
+	private List<RelationPizzaOrderItemIngredient> pizzaOrderItemIngredients;
 	/*
 	 * It seems to be no need for a RelationPizzeriaIngredient list, since it's unlikely we want to
 	 * pull from an ingredient all pizzerias using that ingredient.
+	 * Onesto.
 	 */
 
 	public Ingredient() {
@@ -55,13 +59,15 @@ public class Ingredient implements Serializable {
 		name = "";
 		type = IngredientType.NOT_SPECIFIED;
 		ingredientOf = new ArrayList<RelationPizzaIngredient>();
+		pizzaOrderItemIngredients=new ArrayList<RelationPizzaOrderItemIngredient>();
 	}
 
 	public Ingredient(String name, IngredientType type) {
 		this.id = DatabaseHandler.NO_ID;
 		this.name = name;
 		this.type = type;
-		ingredientOf = new ArrayList<RelationPizzaIngredient>();
+		this.ingredientOf = new ArrayList<RelationPizzaIngredient>();
+		this.pizzaOrderItemIngredients=new ArrayList<RelationPizzaOrderItemIngredient>();
 	}
 
 	public Integer getId() {
@@ -94,5 +100,13 @@ public class Ingredient implements Serializable {
 
 	public void setIngredientOf(List<RelationPizzaIngredient> pizzaIngredient) {
 		this.ingredientOf = pizzaIngredient;
+	}
+
+	public List<RelationPizzaOrderItemIngredient> getPizzaOrderItemIngredients() {
+		return pizzaOrderItemIngredients;
+	}
+
+	public void setPizzaOrderItemIngredients(List<RelationPizzaOrderItemIngredient> pizzaOrderItemIngredients) {
+		this.pizzaOrderItemIngredients = pizzaOrderItemIngredients;
 	}
 }

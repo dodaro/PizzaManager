@@ -32,6 +32,9 @@ public abstract class OrderItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItemsGenerator")
 	private Integer id;
 
+	@Column (name="number")
+	private int number;
+	
 	@ManyToOne
 	@JoinColumn(name = "booking")
 	private Booking booking;
@@ -49,6 +52,7 @@ public abstract class OrderItem implements Serializable {
 
 	public OrderItem() {
 		this.id = DatabaseHandler.NO_ID;
+		this.number=0;
 		this.booking = null;
 		this.cart = null;
 		this.cost = 0.0;
@@ -84,5 +88,13 @@ public abstract class OrderItem implements Serializable {
 
 	public void setCost(Double cost) {
 		this.cost = cost;
+	}
+
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
 	}
 }
