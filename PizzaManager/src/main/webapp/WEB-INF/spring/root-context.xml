@@ -66,11 +66,6 @@
 		class="it.unical.pizzamanager.persistence.dao.PizzaIngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-
-	<bean id="pizzaPriceListDAO"
-		class="it.unical.pizzamanager.persistence.dao.PizzaPriceListDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
 	
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">

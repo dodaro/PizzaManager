@@ -26,12 +26,12 @@ public class HomeController {
 	public String home(Model model) {
 		logger.info("Home page requested. Loading list of users.");
 
-		UserDAO dao = (UserDAO) context.getBean("userDAO");
-		List<User> users = dao.get();
+		//UserDAO dao = (UserDAO) context.getBean("userDAO");
+		//List<User> users = dao.get();
 
-		model.addAttribute("users", users);
+		//model.addAttribute("users", users);
 
-		return "home";
+		return "redirect:/user";
 	}
 
 }

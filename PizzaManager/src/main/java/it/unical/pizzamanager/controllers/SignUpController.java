@@ -36,7 +36,7 @@ public class SignUpController {
 		logger.info("Adding a new user to the database with email: " + form.getEmail()
 				+ ", password: " + form.getPassword());
 
-		User user = new User(form.getEmail(), form.getPassword());
+		User user = new User(form.getEmail(), form.getPassword(),form.getEmail());
 		UserDAO dao = (UserDAO) context.getBean("userDAO");
 
 		dao.create(user);
