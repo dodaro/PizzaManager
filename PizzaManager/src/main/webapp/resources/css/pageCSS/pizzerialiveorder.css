@@ -1,0 +1,26 @@
+@CHARSET "UTF-8";
+
+.select2-container {
+	display: block !important;
+}
+
+div.buttonPizzaControls {
+	align: left;
+}
+
+.counter {
+	width: 10%;
+}
+
+.incrementable {
+	margin: 5%;
+}
+
+td.details-control {
+	background: url('../../images/details_open.png') no-repeat center center;
+}
+
+tr.shown td.details-control {
+	background: url('../../images/details_close.png') no-repeat center
+		center;
+}

@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 public class DatabaseHandler {
+	
+	public final static int NO_ID=-1;
 
 	private SessionFactory sessionFactory;
 	
