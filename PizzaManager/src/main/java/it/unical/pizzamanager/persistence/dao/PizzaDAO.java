@@ -13,4 +13,8 @@ public interface PizzaDAO {
 	public void update(Pizza pizza);
 
 	public List<Pizza> get();
+
+	public List<Pizza> getAll();
+
+	public List<Pizza> getByName(String string);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -46,5 +47,11 @@ public class UserDAOImpl implements UserDAO {
 	
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
+	}
+
+	@Override
+	public List<RelationPizzeriaPizza> getAll() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

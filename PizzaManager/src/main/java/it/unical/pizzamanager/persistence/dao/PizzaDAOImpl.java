@@ -44,5 +44,15 @@ public class PizzaDAOImpl implements PizzaDAO {
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
 	}
+	@Override
+	public List<Pizza> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<Pizza> getByName(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

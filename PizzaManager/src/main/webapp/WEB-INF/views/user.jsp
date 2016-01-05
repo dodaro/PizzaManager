@@ -7,32 +7,19 @@
 <html>
 <head>
 <title>Title</title>
-<link rel="stylesheet" type="text/css"
-	href="/resources/css/bootstrap.css">
-<link rel="stylesheet" type="text/css"
-	href="/resources/css/bootstrap-theme.css">
-<script src="/resources/js/bootstrap.js"></script>
-<script src="/resources/js/jquery.js"></script>
+<script type="text/javascript" src="resources/js/jquery.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.js"></script>
 
+<link rel="stylesheet" type="text/css"
+	href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<meta name="viewport" content="width=device-width" />
 </head>
 
 <body>
-	<div id="header">
-		<div id="imageHeader">
-			<img class="imageHeader" src="/resources/img/dowload.jpg"></img>
-		</div>
-		<div id="navigationBar">
-			<nav class="navbar navbar-inverse">
-				<div class="container-fluid">
-					<ul class="nav navbar-nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#">Cart</a></li>
-					</ul>
-				</div>
-			</nav>
 
-		</div>
-	</div>
+	<jsp:include page="includes/navbarAccount.jsp" />
+
 	<div id="mainPage" class="row">
 		<div id="dropdownMenu" class="col-xs-3">
 			<div class="panel-group">
