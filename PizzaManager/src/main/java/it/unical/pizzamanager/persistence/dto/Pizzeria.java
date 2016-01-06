@@ -51,6 +51,7 @@ public class Pizzeria extends Account {
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaIngredient> ingredientsPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)

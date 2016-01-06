@@ -1,9 +1,17 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <script type="text/javascript">
+
+	/*Identificativi universali:
+		-Bevande: id(per ora corrispondono agli id del database, l'ideale è fare una crittografia degli id del database, ed usare quelli localmente)
+		-Menu: id
+		-Ingredienti: nome
+		-Pizze: nome + nome ingredienti
+	*/
+	
 	//TODO: aggiungere variabile costante per indicare gli indici di una colonna: es posizioneIdNumber
 	//così da fare data[posizione..] al posto di data[5]
-
+	
 	//VARIABILI GLOBALI
 	var pizzeFromServer;//è la lista delle pizze, con i suoi ingredienti basilari, fornite dalla pizzeria e che risiedono sul database
 	var beverageFromServer;//è la lista di tutte le bevande fornite dalla pizzeria e che risiedono sul database
@@ -15,10 +23,15 @@
 	var codeBeverage = 0;
 	var dropDownList;
 
-	$(document)
-			.ready(
-					function() {
-
+	$(document).ready(function() {
+		
+		if(communicator.bookingToEdit!== undefined){
+			//RICHIAMARE IL MAPPING
+			
+			//Eliminare subito l'oggetto dal communicator
+			communicator.bookingToEdit=undefined;
+		}
+		
 						//creazione SELECT2
 						$(".js-example-basic-single").select2();
 						$(".js-example-basic-multiple").select2();
@@ -28,21 +41,19 @@
 						$("#removeButtonPizza").prop('disabled', true);
 						$("#removeButtonBeverage").prop('disabled', true);
 						//listener che ad ogni selezione della pizza carica tutti i suoi ingredienti
-						$('#pizzaList.js-example-basic-single')
-								.on('select2-loaded', function(e) {
-									dropDownList = e.items.results;
-								})
-								.on(
-										'select2-selected',
-										function(e) {
-											//console.log("ho selezionato:");console.log($("#pizzaList.js-example-basic-single").select2('data'));
-											loadIngredientsForPizza($(
-													"#pizzaList.js-example-basic-single")
-													.select2('data').text);
-										});
+						$('#pizzaList.js-example-basic-single').on('select2-loaded', function(e) {
+								dropDownList = e.items.results;
+						}).on(
+								'select2-selected',
+								function(e) {
+									//console.log("ho selezionato:");console.log($("#pizzaList.js-example-basic-single").select2('data'));
+									loadIngredientsForPizza($(
+											"#pizzaList.js-example-basic-single")
+											.select2('data').text);
+							});
 
 						tablePizza = $('#resumeTablePizza').DataTable({
-							"scrollY" : "350px",
+							"scrollY" : "320px",
 							"scrollCollapse" : true,
 							"paging" : false,
 							columns : [ {
@@ -88,8 +99,7 @@
 						tableBeverage.columns(5).visible(false);
 
 						/*PIZZA: Add listener per aggiungere i dettagli di una riga*/
-						$('#resumeTablePizza tbody').on('click',
-								'td.details-control', function() {
+						$('#resumeTablePizza tbody').on('click','td.details-control', function() {
 									//il closest mi da il primo parent che matcha con 'tr'
 									//$(this) in questo caso è il td su cui si ha cliccato
 									var tr = $(this).closest('tr');
@@ -114,22 +124,11 @@
 								});
 
 						/*SOLO PIZZA: Listener che selezione la riga e carica i dati del selezionato*/
-						$('#resumeTablePizza tbody')
-								.on(
-										'click',
-										'tr',
-										function() {
-
+						$('#resumeTablePizza tbody').on('click','tr',function() {
 											if ($(this).hasClass('selected')
-													&& tablePizza.row(this)
-															.data() != undefined
+													&& tablePizza.row(this).data() != undefined
 													&& ($(this).hasClass("odd")
-															|| $(this)
-																	.hasClass(
-																			"odd") || $(
-															this).hasClass(
-															"even"))) {
-												console.log();
+													|| $(this).hasClass("odd") || $(this).hasClass("even"))) {
 												$(this).removeClass('selected');
 												$("#editButtonPizza").prop(
 														'disabled', true);
@@ -174,11 +173,7 @@
 										});
 
 						/*Listener che selezione la riga e carica i dati del selezionato*/
-						$('#resumeTableBeverage tbody')
-								.on(
-										'click',
-										'tr',
-										function() {
+						$('#resumeTableBeverage tbody').on('click','tr',function() {
 
 											if ($(this).hasClass('selected')
 													&& tableBeverage.row(this)
@@ -330,6 +325,10 @@
 
 	/*************** FUNZIONI UTILITA SOLO PER PIZZA *****************************************************************************************************************/
 
+	var mappingBookingToPizzaListAndTable = function(){
+		
+	}
+	
 	var extractPizzas = function() {
 
 		var orderPizzas = new Array();
@@ -435,12 +434,8 @@
 
 		//se sto modificando un ordine già esistente
 		if (editing === true) {
-			console
-					.log($('#resumeTablePizza tbody > tr.odd.selected,tr.even.selected'));
-			var code = tablePizza
-					.row(
-							$('#resumeTablePizza tbody > tr.odd.selected,tr.even.selected'))
-					.data()[5];
+			console.log($('#resumeTablePizza tbody > tr.odd.selected,tr.even.selected'));
+			var code = tablePizza.row($('#resumeTablePizza tbody > tr.odd.selected,tr.even.selected')).data()[5];
 			console.log(code);
 			pizza.setCode(code);
 
@@ -467,8 +462,7 @@
 								+ tablePizza.row(int).data())
 
 						for (var int2 = 0; int2 < tablePizza.rows().count(); int2++) {
-							console.log(tablePizza.row(int2).data()[5] + "=="
-									+ rows[int][5])
+							console.log(tablePizza.row(int2).data()[5] + "=="+ rows[int][5])
 							if (tablePizza.row(int2).data()[5] == rows[int][5]) {
 								tablePizza.row(int2).remove().draw(false);
 							}
@@ -674,16 +668,6 @@
 
 				string += '</table>';
 				return string;
-				/*return '<table class="attacable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'
-				+ '<tr>'
-				+ '<td>Ingredients added:</td>'
-				+ '<td>'+pizzaList[j].toStringIngredientsAdded()+'</td>'
-				+ '</tr>'
-				+ '<tr>'
-				+ '<td>Ingredients removed:</td>'
-				+ '<td>'+pizzaList[j].toStringIngredientsRemoved()+'</td>'
-				+ '</tr>'
-				+ '</table>';*/
 			}
 		}
 
@@ -897,6 +881,46 @@
 	}
 </script>
 
+
+<div class="row">
+     <div class='col-xs-8'>
+     	<div class="form-group">
+		    <label for="bookingNameInput">Nome del prenotante(tradurre in inglese)</label>
+		    <input type="text" class="form-control" id="bookingNameInput" placeholder="Name">
+	 	</div>
+         <div class="form-group">
+         	<label for="datetimepicker1">Booking date and hour</label>
+             <div class='input-group date' id='datetimepicker1'>
+                 <input type='text' class="form-control" />
+                 <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                 </span>
+             </div>
+         </div>
+         <div class="form-group">
+		    <label for="bookingAddresInput">Address to delivery(in caso di delivery booking)</label>
+		    <input type="text" class="form-control" id="bookingNameInput" placeholder="Name">
+	 	</div>
+	 	<div class="form-group">
+	 		<label for="tables">Select table(in caso di prenotazione in pizzeria)</label>
+		    <select id="tables" class="form-control">
+			  <option>1</option>
+			  <option>2</option>
+			  <option>3</option>
+			  <option>4</option>
+			  <option>5</option>
+			</select>
+	 	</div>
+         
+         
+     </div>
+     <script type="text/javascript">
+         $(function () {
+             $('#datetimepicker1').datetimepicker();
+         });
+     </script>
+</div>
+<hr>
 <div class="row">
 	<div class="col-xs-8">
 		<table id="resumeTablePizza" class="display">
@@ -913,7 +937,7 @@
 		</table>
 	</div>
 	<div class="col-xs-4">
-		<div id="pizzas">
+		<div id="pizzas" class="itemControls">
 			<div id="pizzaControls">
 				<h4>Pizza:</h4>
 				<div>
@@ -933,25 +957,29 @@
 				</div>
 
 				<div>
-					<h5>Gluten:</h5>
-					<div id="glutenButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
-						<label class="btn btn-primary active"> <input type="radio" name="options" value="yes"
-							id="option1" autocomplete="off" checked> Yes
-						</label> <label class="btn btn-primary"> <input type="radio" name="options" value="no"
-							id="option2" autocomplete="off"> No
-						</label>
+					<div class="pizzaButtons">
+						<h5>Gluten:</h5>
+						<div id="glutenButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
+							<label class="btn btn-primary active"> <input type="radio" name="options" value="yes"
+								id="option1" autocomplete="off" checked> Yes
+							</label> <label class="btn btn-primary"> <input type="radio" name="options" value="no"
+								id="option2" autocomplete="off"> No
+							</label>
+						</div>
+					</div>
+					<div class="pizzaButtons"> 
+						<h5>Size:</h5>
+						<div id="sizeButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
+							<label class="btn btn-primary active"> <input type="radio" name="options" value="s"
+								id="option11" autocomplete="off" checked> S
+							</label> <label class="btn btn-primary"> <input type="radio" name="options" value="m"
+								id="option22" autocomplete="off"> M
+							</label> <label class="btn btn-primary"> <input type="radio" name="options" value="l"
+								id="option33" autocomplete="off"> L
+							</label>
+						</div>
 					</div>
 
-					<h5>Size:</h5>
-					<div id="sizeButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
-						<label class="btn btn-primary active"> <input type="radio" name="options" value="s"
-							id="option11" autocomplete="off" checked> S
-						</label> <label class="btn btn-primary"> <input type="radio" name="options" value="m"
-							id="option22" autocomplete="off"> M
-						</label> <label class="btn btn-primary"> <input type="radio" name="options" value="l"
-							id="option33" autocomplete="off"> L
-						</label>
-					</div>
 
 					<h5>Add ingredients:</h5>
 					<select id="addIngredients" class="js-example-basic-multiple" multiple="multiple">
@@ -968,7 +996,7 @@
 					</div>
 
 					<button id="confermeButtonPizza" type="submit" class="btn btn-default"
-						onclick="resolvePizza(false)">Conferme</button>
+						onclick="resolvePizza(false)">Add Pizza</button>
 					<button id="editButtonPizza" type="submit" class="btn btn-default" onclick="resolvePizza(true)">Update</button>
 					<button id="removeButtonPizza" type="submit" class="btn btn-default"
 						onclick="removeItem('pizza')">Remove</button>
@@ -994,15 +1022,11 @@
 		</table>
 	</div>
 	<div class="col-xs-4">
-		<div id="beverages">
+		<div id="beverages" class="itemControls">
 			<h4>Beverage:</h4>
 			<div>
 				<select id="beverageList" class="js-example-basic-single">
 					<option value="notSelectable">Select Beverage</option>
-					<!--  <optgroup label="Swedish Cars">
-													
-											<option value="BIRRA">Cosenza</option>	
-										</optgroup>-->
 				</select>
 			</div>
 			<div id="beverageControls">
@@ -1014,7 +1038,7 @@
 				</div>
 
 				<button id="confermeButtonBeverage" type="submit" class="btn btn-default"
-					onclick="resolveBeverage(false)">Conferme</button>
+					onclick="resolveBeverage(false)">Add Beverage</button>
 				<button id="editButtonBeverage" type="submit" class="btn btn-default"
 					onclick="resolveBeverage(true)">Update</button>
 				<button id="removeButtonBeverage" type="submit" class="btn btn-default"

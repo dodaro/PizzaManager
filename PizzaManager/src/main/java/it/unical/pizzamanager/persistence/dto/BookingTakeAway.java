@@ -5,6 +5,11 @@ import java.util.Date;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import it.unical.pizzamanager.persistence.dto.serializer.BookingTakeAwaySerializer;
+
+@JsonSerialize(using = BookingTakeAwaySerializer.class)
 @Entity
 @DiscriminatorValue("booking_takeaway")
 public class BookingTakeAway extends Booking {

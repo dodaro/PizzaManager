@@ -33,7 +33,7 @@ public abstract class OrderItem implements Serializable {
 	private Integer id;
 
 	@Column (name="number")
-	private int number;
+	private Integer number;
 	
 	@ManyToOne
 	@JoinColumn(name = "booking")
@@ -90,11 +90,11 @@ public abstract class OrderItem implements Serializable {
 		this.cost = cost;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 }

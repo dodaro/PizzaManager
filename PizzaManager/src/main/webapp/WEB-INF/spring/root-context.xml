@@ -49,6 +49,10 @@
 	<bean id="menuDAO" class="it.unical.pizzamanager.persistence.dao.MenuDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+	
+	<bean id="orderItemDAO" class="it.unical.pizzamanager.persistence.dao.OrderItemDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
 
 	<bean id="pizzaDAO" class="it.unical.pizzamanager.persistence.dao.PizzaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />

@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -18,6 +20,11 @@ import org.hibernate.annotations.OnDeleteAction;
 @DiscriminatorValue("pizza")
 public class PizzaOrderItem extends OrderItem {
 
+	public final static String YES="yes";
+	public final static String NO="no";
+	public final static String SMALL="s";
+	public final static String MEDIUM="m";
+	public final static String LARGE="l";
 	private static final long serialVersionUID = 8977364851663655249L;
 
 	@ManyToOne
@@ -27,8 +34,15 @@ public class PizzaOrderItem extends OrderItem {
 	@Column(name = "modified")
 	private Boolean modified;
 	
-	@OneToMany(mappedBy = "pizzaOrderItem", fetch = FetchType.LAZY)
+	@Column(name = "glutenFree")
+	private String glutenFree;
+	
+	@Column(name = "size")
+	private String size;
+	
+	@OneToMany(mappedBy = "pizzaOrderItem", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients;
 
 	public PizzaOrderItem() {
@@ -52,6 +66,22 @@ public class PizzaOrderItem extends OrderItem {
 
 	public void setModified(Boolean modified) {
 		this.modified = modified;
+	}
+	
+	public String getGlutenFree() {
+		return glutenFree;
+	}
+
+	public void setGlutenFree(String gluten) {
+		this.glutenFree = gluten;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
 	}
 
 	public List<RelationPizzaOrderItemIngredient> getPizzaOrderIngredients() {
