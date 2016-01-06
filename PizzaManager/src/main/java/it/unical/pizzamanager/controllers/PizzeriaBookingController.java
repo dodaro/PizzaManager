@@ -1,6 +1,5 @@
 package it.unical.pizzamanager.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
 
 @Controller
 public class PizzeriaBookingController {
@@ -32,7 +30,7 @@ public class PizzeriaBookingController {
 		logger.info("Home page requested. Loading list of users.");
 
 		// ogni qualvolta si riavvia l'applicazione il database viene azzerato
-		BookingDAO bookingDAO= (BookingDAO) context.getBean("bookingDAO"); 
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
 		model.addAttribute("bookings", bookings);
 

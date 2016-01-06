@@ -3,10 +3,14 @@ var pizzeriaTable = function() {
 		init : function() {
 			$('#tables-table').DataTable({
 				paging: false,
-				ajax: "/pizzeria/tablesList",
+				ajax: {
+					url:"/pizzeria/tablesList",
+					dataSrc : '',
+				},
 				columns: [
 				    { 'data': 'number' },
-				    { 'data': 'minSits' }
+				    { 'data': 'minSits' },
+				    { 'data': 'maxSits' }
 				]
 			});
 		}

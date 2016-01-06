@@ -13,15 +13,15 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.model.LogInForm;
 import it.unical.pizzamanager.persistence.dao.AccountDAO;
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Account;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
 public class LogInController {
-
-	public static final String SESSION_ATTRIBUTE_USER = "user";
-	public static final String SESSION_ATTRIBUTE_PIZZERIA = "pizzeria";
 
 	private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
 
@@ -36,16 +36,17 @@ public class LogInController {
 
 		if (account != null && account.getPassword().equals(form.getPassword())) {
 			/*
-			 * Check if the account is a User or a Pizzeria.
+			 * Check if the account is a User or a Pizzeria. We also need to retrieve the full User
+			 * or the full Pizzeria before storing it into the session.
 			 */
 			if (account instanceof User) {
-				User user = (User) account;
-				session.setAttribute(SESSION_ATTRIBUTE_USER, user);
-				logger.info("The account is a User");
+				UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+				User user = userDAO.get(account.getId());
+				SessionUtils.storeUserInSession(session, user);
 			} else if (account instanceof Pizzeria) {
-				Pizzeria pizzeria = (Pizzeria) account;
-				session.setAttribute(SESSION_ATTRIBUTE_PIZZERIA, pizzeria);
-				logger.info("The account is a Pizzeria");
+				PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+				Pizzeria pizzeria = pizzeriaDAO.get(account.getId());
+				SessionUtils.storePizzeriaInSession(session, pizzeria);
 			}
 		} else {
 			logger.info("Login failed");
@@ -56,19 +57,7 @@ public class LogInController {
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
-		session.invalidate();
+		SessionUtils.clearSession(session);
 		return "redirect:/";
-	}
-
-	public static boolean isLoggedIn(HttpSession session) {
-		return isUser(session) || isPizzeria(session);
-	}
-
-	public static boolean isPizzeria(HttpSession session) {
-		return session.getAttribute(SESSION_ATTRIBUTE_PIZZERIA) != null;
-	}
-
-	public static boolean isUser(HttpSession session) {
-		return session.getAttribute(SESSION_ATTRIBUTE_USER) != null;
 	}
 }

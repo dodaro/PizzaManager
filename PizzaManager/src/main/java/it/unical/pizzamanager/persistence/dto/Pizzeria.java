@@ -19,7 +19,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import it.unical.pizzamanager.controllers.PizzeriaSerializer;
+import it.unical.pizzamanager.serializers.PizzeriaSerializer;
 
 @JsonSerialize(using = PizzeriaSerializer.class)
 @Entity
