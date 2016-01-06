@@ -39,14 +39,14 @@ public class PizzeriaTable implements Serializable {
 	private Integer number;
 
 	// show the actual table sits number
-	@Column(name = "sits", nullable = false)
-	private Integer sits;
+	@Column(name = "seats", nullable = false)
+	private Integer seats;
 
-	@Column(name = "min_sits", nullable = false)
-	private Integer minSits;
+	@Column(name = "min_seats", nullable = false)
+	private Integer minSeats;
 
-	@Column(name = "max_sits", nullable = false)
-	private Integer maxSits;
+	@Column(name = "max_seats", nullable = false)
+	private Integer maxSeats;
 
 	@Column(name = "available", nullable = false)
 	private Boolean available;
@@ -62,21 +62,21 @@ public class PizzeriaTable implements Serializable {
 	public PizzeriaTable() {
 		this.id = DatabaseHandler.NO_ID;
 		this.number = NO_NUMBER;
-		this.sits = 0;
-		this.minSits = 0;
-		this.maxSits = 0;
+		this.seats = 0;
+		this.minSeats = 0;
+		this.maxSeats = 0;
 		this.available = true;
 		this.bookings = new ArrayList<RelationBookingTablePizzeriaTable>();
 		this.pizzeria = null;
 	}
 
-	public PizzeriaTable(Integer number, Integer minSits, Integer maxSits, Pizzeria pizzeria) {
+	public PizzeriaTable(Integer number, Integer minSeats, Integer maxSeats, Pizzeria pizzeria) {
 		this.id = DatabaseHandler.NO_ID;
 		this.number = number;
-		this.sits = 0;
-		this.minSits = minSits;
-		this.maxSits = maxSits;
-		this.available = false;
+		this.seats = 0;
+		this.minSeats = minSeats;
+		this.maxSeats = maxSeats;
+		this.available = true;
 		this.bookings = new ArrayList<>();
 		this.pizzeria = pizzeria;
 	}
@@ -97,28 +97,28 @@ public class PizzeriaTable implements Serializable {
 		this.number = number;
 	}
 
-	public Integer getSits() {
-		return sits;
+	public Integer getSeats() {
+		return seats;
 	}
 
-	public void setSits(Integer sits) {
-		this.sits = sits;
+	public void setSeats(Integer seats) {
+		this.seats = seats;
 	}
 
-	public Integer getMinSits() {
-		return minSits;
+	public Integer getMinSeats() {
+		return minSeats;
 	}
 
-	public void setMinSits(Integer minSits) {
-		this.minSits = minSits;
+	public void setMinSeats(Integer minSeats) {
+		this.minSeats = minSeats;
 	}
 
-	public Integer getMaxSits() {
-		return maxSits;
+	public Integer getMaxSeats() {
+		return maxSeats;
 	}
 
-	public void setMaxSits(Integer maxSits) {
-		this.maxSits = maxSits;
+	public void setMaxSeats(Integer maxSeats) {
+		this.maxSeats = maxSeats;
 	}
 
 	public Boolean getAvailable() {

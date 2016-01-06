@@ -18,6 +18,7 @@
 
 <!-- Scripts for tables management -->
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaTable.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTableController.js"></script>
 
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
@@ -44,11 +45,14 @@
 <link rel="stylesheet" type="text/css" href="resources/css/select2.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/select2-bootstrap.css" />
 
+<link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/homePizzeria.css" />
+
+<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTable.css" />
+
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
 
-<link rel="stylesheet" type="text/css" href="resources/css/common.css" />
-<link rel="stylesheet" type="text/css" href="resources/css/homePizzeria.css" />
 
 <title>${pizzeria.name}</title>
 
