@@ -9,6 +9,10 @@
 <script type="text/javascript" src="resources/js/select2.js"></script>
 <script type="text/javascript" src="resources/js/underscore.js"></script>
 
+<script type="text/javascript" src="resources/js/moment.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
+
 <!-- Home scripts. -->
 <script type="text/javascript" src="resources/js/pizzeria/homePizzeria.js"></script>
 
@@ -18,7 +22,19 @@
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
 
+<!-- PER DANILO: DECIDI TU DOVE METTERE QUESTO SCRIPT -->
+<script type="text/javascript">
+	/*VARIABILE CHE SERVE PER METTERE IN COMUNICAZIONE LE VARIE .jsp
+	 USIAMOLO COME UNA STANDARD HASHTABLE(GIÀ LO È DI PER SE), a cui si aggiunge un oggetto da comunicare ad un altra jsp
+	 RICORDATE però di rimuovere subito l'oggetto aggiunta una volta che non serve più.
+	 Prim di agginugere un oggetto controllate che la parola chiave che volete inserire non sia già presente dentro l'hash
+	 perchè non bisogna mai sovrascrivere qualcosa di già esistente.
+	 */
+	communicator = new Object();
+</script>
+
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap-datepicker.css" />
 
 <link rel="stylesheet" type="text/css" href="resources/css/jquery.dataTables.css" />
 
@@ -27,6 +43,7 @@
 
 <link rel="stylesheet" type="text/css" href="resources/css/select2.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/select2-bootstrap.css" />
+
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
 
@@ -52,9 +69,10 @@
 						<li><a href="#">Beverage</a></li>
 						<li><a href="#">Menu</a></li>
 						<li><a href="#">Table Booking</a></li>
-						<li><a href="#">Take Away Booking</a></li>
+						<li data-content="pizzeriabooking"><a href="#">Take Away Booking</a></li>
 						<li><a href="#">Delivery Booking</a></li>
-						<li data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
+						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
+						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
 						<li><a href="#">Live Restaurant</a></li>
 						<li><a href="#">Kitchen</a></li>
 						<li><a href="#">Statistics</a></li>

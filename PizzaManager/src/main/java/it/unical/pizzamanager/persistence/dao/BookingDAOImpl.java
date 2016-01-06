@@ -46,6 +46,9 @@ public class BookingDAOImpl implements BookingDAO {
 		String queryString = "from Booking";
 		Query query = session.createQuery(queryString);
 		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
 
 		session.close();
 		return bookings;

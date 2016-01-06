@@ -32,12 +32,8 @@ public class PizzeriaBookingController {
 		logger.info("Home page requested. Loading list of users.");
 
 		// ogni qualvolta si riavvia l'applicazione il database viene azzerato
-		BookingDAO dao = (BookingDAO) context.getBean("bookingDAO");
-		// dao.create(new BookingTakeAway(3));
-		List<Booking> bookings = (List<Booking>) dao.getBookingList();
-		System.out.println("Elemento");
-		System.out.println(bookings.get(0));
-
+		BookingDAO bookingDAO= (BookingDAO) context.getBean("bookingDAO"); 
+		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
 		model.addAttribute("bookings", bookings);
 
 		return "pizzeriabooking";
@@ -45,17 +41,9 @@ public class PizzeriaBookingController {
 
 	@RequestMapping(value = "/pizzeriabookingAjax", method = RequestMethod.GET)
 	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model) {
-		BookingDAO dao = (BookingDAO) context.getBean("bookingDAO");
-		// System.out.println(firstname);
-		// System.out.println(lastname);
-		// Process the request
-		// Prepare the response string
-		List<Booking> bookings = (List<Booking>) dao.getBookingList();
-		for (int i = 0; i < bookings.size(); i++) {
-			List<OrderItem> list = new ArrayList<OrderItem>();
-			// list.add(new PizzaOrderItem(true, 20.00));
-			bookings.get(0).setOrderItems(list);
-		}
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
+		System.out.println(bookings.get(0).getDate());
 		return bookings;
 	}
 

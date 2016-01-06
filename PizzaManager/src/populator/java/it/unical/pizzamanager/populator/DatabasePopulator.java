@@ -25,11 +25,12 @@ public class DatabasePopulator {
 		 */
 
 		populators.add(new UserPopulator(context));
-		populators.add(new IngredientPopulator(context));
 		populators.add(new PizzeriaPopulator(context));
+		populators.add(new IngredientPopulator(context));
 		populators.add(new PizzaPopulator(context));
 		populators.add(new BeveragePopulator(context));
 		populators.add(new MenuPopulator(context));
+		populators.add(new BookingPopulator(context));
 	}
 
 	private void populateDatabase() {

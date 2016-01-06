@@ -57,5 +57,30 @@ public class RelationPizzaOrderItemIngredient {
 	public void setPizzaOrderItem(PizzaOrderItem pizzaOrderItem) {
 		this.pizzaOrderItem = pizzaOrderItem;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Ingredient getIngredient() {
+		return ingredient;
+	}
+
+	public void setIngredient(Ingredient ingredient) {
+		this.ingredient = ingredient;
+	}
+
+	public String getAdditive() {
+		return additive;
+	}
+
+	public void setAdditive(String additive) {
+		this.additive = additive;
+	}
+	
 	
 }

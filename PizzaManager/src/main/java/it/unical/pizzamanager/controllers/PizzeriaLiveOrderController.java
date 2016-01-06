@@ -1,6 +1,8 @@
 package it.unical.pizzamanager.controllers;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +53,7 @@ public class PizzeriaLiveOrderController {
 	@RequestMapping(value = "/pizzerialiveorder", method = RequestMethod.GET)
 	public String pizzeriaLiveOrder(Model model) {
 		logger.info("Live order requested");
-
+		System.out.println("richiesta pagina live order "+LocalTime.now());
 		//ogni qualvolta si riavvia l'applicazione il database viene azzerato
 		//PizzaDAO pizzaDao = (PizzaDAO) context.getBean("pizzaDAO");
 		//BeverageDAO beverageDao = (BeverageDAO) context.getBean("beverageDAO");
@@ -99,10 +101,10 @@ public class PizzeriaLiveOrderController {
 	
 	@RequestMapping(value = "/pizzerialiveorderPizzas", method = RequestMethod.GET)
 	public @ResponseBody Pizzeria processAJAXRequest(HttpServletRequest request, Model model) {
-		
+		logger.info("Ajax request pizzeria");
 		PizzeriaDAO pizzeriaDao=(PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria=pizzeriaDao.getAll().get(0);
-		System.out.println("arrivato qui");
+		System.out.println("richiesta pizza "+LocalTime.now());
 		
 		ObjectMapper mapper = new ObjectMapper();
 		 

@@ -45,6 +45,13 @@ public class RelationPizzeriaIngredient implements Serializable {
 		this.pizzeria = null;
 		this.price = 0.0;
 	}
+	
+	public RelationPizzeriaIngredient(Pizzeria pizzeria,Ingredient ingredient, Double price) {
+		this.id = DatabaseHandler.NO_ID;
+		this.ingredient = ingredient;
+		this.pizzeria = pizzeria;
+		this.price = price;
+	}
 
 	public int getId() {
 		return id;
