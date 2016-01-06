@@ -33,7 +33,7 @@ public class PizzeriaTable implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-	// la coppia pizzeria-numero dovrebbe essere unique..come facciamo?????
+	// FIXME - la coppia pizzeria-numero dovrebbe essere unique..come facciamo?????
 	// controlliamo lato client?
 	@Column(name = "number", nullable = false)
 	private Integer number;
@@ -68,6 +68,17 @@ public class PizzeriaTable implements Serializable {
 		this.available = true;
 		this.bookings = new ArrayList<RelationBookingTablePizzeriaTable>();
 		this.pizzeria = null;
+	}
+
+	public PizzeriaTable(Integer number, Integer minSits, Integer maxSits, Pizzeria pizzeria) {
+		this.id = DatabaseHandler.NO_ID;
+		this.number = number;
+		this.sits = 0;
+		this.minSits = minSits;
+		this.maxSits = maxSits;
+		this.available = false;
+		this.bookings = new ArrayList<>();
+		this.pizzeria = pizzeria;
 	}
 
 	public Integer getId() {

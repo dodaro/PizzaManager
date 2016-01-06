@@ -8,17 +8,26 @@
 <script type="text/javascript" src="resources/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="resources/js/select2.js"></script>
 <script type="text/javascript" src="resources/js/underscore.js"></script>
-<script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
 
+<!-- Home scripts. -->
 <script type="text/javascript" src="resources/js/pizzeria/homePizzeria.js"></script>
+
+<!-- Scripts for tables management -->
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTable.js"></script>
+
+<!-- Scripts for the live order tool -->
+<script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 
 <link rel="stylesheet" type="text/css" href="resources/css/jquery.dataTables.css" />
+
+<!-- This will break the page and it's most likely not needed. -->
 <!-- <link rel="stylesheet" type="text/css" href="resources/css/dataTables.css" /> -->
+
 <link rel="stylesheet" type="text/css" href="resources/css/select2.css" />
-<link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/select2-bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
 
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -38,7 +47,7 @@
 				<div class="card">
 					<ul class="nav nav-pills nav-stacked">
 						<!-- <li class="active"><a href="#">Home</a></li> -->
-						<li><a href="#">Table</a></li>
+						<li data-content="pizzeriaTable"><a href="#">Manage tables</a></li>
 						<li><a href="#">Pizza</a></li>
 						<li><a href="#">Beverage</a></li>
 						<li><a href="#">Menu</a></li>

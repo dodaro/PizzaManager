@@ -58,6 +58,11 @@
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
+	<bean id="pizzeriaTableDAO"
+		class="it.unical.pizzamanager.persistence.dao.PizzeriaTableDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+
 	<bean id="userDAO" class="it.unical.pizzamanager.persistence.dao.UserDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>

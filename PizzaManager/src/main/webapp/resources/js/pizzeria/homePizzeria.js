@@ -5,7 +5,8 @@ $(function() {
 		var contentToLoad = $clickedElement.data('content');
 
 		$('#content').load(contentToLoad, function() {
-			$clickedElement.addClass("active");
+			$('.nav-pills .active').removeClass('active');
+			$clickedElement.addClass('active');
 		});
 	});
 });
