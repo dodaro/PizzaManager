@@ -19,8 +19,6 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
@@ -70,24 +68,14 @@ public class Beverage implements Serializable {
 	//TODO: convertire EAGER in LAZY e sistemare il dao, non toccate il jsonIgnore
 		//vado di fretta per testare le jsp --> by David
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaBeverage> beveragePriceList;
 
 	/**
-	 * Menus to which the beverage belongs.
-	 */
-	@JsonIgnore
-	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Menu> menus;
-
-	/**
 	 * OrderItems which contain a beverage.
 	 */
-	@JsonIgnore
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BeverageOrderItem> orderItems;
@@ -100,7 +88,6 @@ public class Beverage implements Serializable {
 		this.size = BeverageSize.NOT_SPECIFIED;
 		this.type = BeverageType.NOT_SPECIFIED;
 		this.beveragePriceList = new ArrayList<>();
-		this.menus = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
 	}
 
@@ -113,7 +100,6 @@ public class Beverage implements Serializable {
 		this.size = size;
 		this.type = type;
 		this.beveragePriceList = new ArrayList<>();
-		this.menus = new ArrayList<>();
 		this.orderItems = new ArrayList<>();
 	}
 	
@@ -165,7 +151,6 @@ public class Beverage implements Serializable {
 		this.type = type;
 	}
 
-	@JsonIgnore
 	public List<RelationPizzeriaBeverage> getBeveragePriceList() {
 		return beveragePriceList;
 	}
@@ -174,16 +159,6 @@ public class Beverage implements Serializable {
 		this.beveragePriceList = beveragePriceList;
 	}
 
-	@JsonIgnore
-	public List<Menu> getMenu() {
-		return menus;
-	}
-
-	public void setMenu(List<Menu> menu) {
-		this.menus = menu;
-	}
-	
-	@JsonIgnore
 	public List<BeverageOrderItem> getOrderItems() {
 		return orderItems;
 	}

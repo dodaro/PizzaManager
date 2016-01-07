@@ -5,7 +5,6 @@ import java.util.List;
 import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.MenuOrderItem;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
@@ -51,15 +50,6 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 		String queryString = "from BeverageItem";
 		List<BeverageOrderItem> beverageItems = session.createQuery(queryString).list();
 		return beverageItems;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<MenuOrderItem> getOrderMenu() {
-		Session session = databaseHandler.getSessionFactory().openSession();
-		String queryString = "from MenuItem";
-		List<MenuOrderItem> menuItems = session.createQuery(queryString).list();
-		return menuItems;
 	}
 
 	public DatabaseHandler getDatabaseHandler() {

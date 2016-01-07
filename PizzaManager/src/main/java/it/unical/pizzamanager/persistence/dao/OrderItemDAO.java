@@ -3,7 +3,6 @@ package it.unical.pizzamanager.persistence.dao;
 import java.util.List;
 
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.MenuOrderItem;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
@@ -18,7 +17,4 @@ public interface OrderItemDAO {
 	public List<PizzaOrderItem> getOrderPizza();
 
 	public List<BeverageOrderItem> getOrderBeverage();
-
-	public List<MenuOrderItem> getOrderMenu();
-
 }
