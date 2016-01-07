@@ -17,11 +17,11 @@
 	<jsp:include page="includes/navbarAccount.jsp" />
 
 	<div class="container">
-		<div class="card">
+		<div class="bubble">
 			<div>Welcome to PizzaManager!</div>
-			<div>This is a card. Use cards as containers to display content.</div>
+			<div>This is a bubble. Use bubbles as containers to display content.</div>
 		</div>
-		<div class="card">
+		<div class="bubble">
 			<div>This is the home for a user.</div>
 		</div>
 	</div>

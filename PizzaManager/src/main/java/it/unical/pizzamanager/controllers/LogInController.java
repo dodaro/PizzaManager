@@ -42,11 +42,11 @@ public class LogInController {
 			if (account instanceof User) {
 				UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 				User user = userDAO.get(account.getId());
-				SessionUtils.storeUserInSession(session, user);
+				SessionUtils.storeUserIdInSession(session, user);
 			} else if (account instanceof Pizzeria) {
 				PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 				Pizzeria pizzeria = pizzeriaDAO.get(account.getId());
-				SessionUtils.storePizzeriaInSession(session, pizzeria);
+				SessionUtils.storePizzeriaIdInSession(session, pizzeria);
 			}
 		} else {
 			logger.info("Login failed");

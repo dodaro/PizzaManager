@@ -39,9 +39,15 @@
 				</div>
 			</form>
 			<div class="buttons-container col-sm-offset-1 col-sm-11">
-				<button class="btn btn-primary button-add"><span class="glyphicon glyphicon-plus"></span> Add</button>
-				<button class="btn btn-success button-update"><span class="glyphicon glyphicon-refresh"></span> Update</button>
-				<button class="btn btn-danger button-delete"><span class="glyphicon glyphicon-remove"></span> Delete</button>
+				<button class="btn btn-primary button-add">
+					<span class="glyphicon glyphicon-plus"></span> Add
+				</button>
+				<button class="btn btn-success button-update">
+					<span class="glyphicon glyphicon-refresh"></span> Update
+				</button>
+				<button class="btn btn-danger button-delete">
+					<span class="glyphicon glyphicon-remove"></span> Delete
+				</button>
 			</div>
 		</div>
 	</div>

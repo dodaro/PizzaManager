@@ -1,4 +1,4 @@
-package it.unical.pizzamanager.persistence.dto.serializer;
+package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
 
