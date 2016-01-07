@@ -17,11 +17,11 @@
 	<jsp:include page="includes/navbarLogin.jsp" />
 
 	<div class="container">
-		<div class="card">
+		<div class="bubble">
 			<div>Welcome to PizzaManager!</div>
-			<div>This is a card. Use cards as containers to display content.</div>
+			<div>This is a bubble. Use bubbles as containers to display content.</div>
 		</div>
-		<div class="card">
+		<div class="bubble">
 			<div>This is the index. If you see this you're not logged in.</div>
 			<div>If you use the default populator, ids from 1 to 10 are users, while ids from 11 to 20
 				are pizzerias.</div>

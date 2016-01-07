@@ -30,6 +30,7 @@
 	<jsp:include page="includes/navbarAccount.jsp" />
 
 	<div class="container">
+
 		<div class="row">
 			<div class="col-xs-2">
 				<div class="card">
@@ -73,8 +74,8 @@
   			<div class="col-sm-offset-2">Location:</div>
   			
  		</div>
-		</div>
-	</div>
+</div>
+</div>
 	</div>
 </body>
 </html>

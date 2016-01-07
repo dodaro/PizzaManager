@@ -50,10 +50,6 @@ public class Pizza implements Serializable {
 	
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Menu> menu;
-
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzaIngredient> pizzaIngredients;
 
@@ -81,7 +77,6 @@ public class Pizza implements Serializable {
 		this.name = "";
 		this.description = "";
 		this.special = false;
-		this.menu = null;
 		this.pizzaIngredients = null;
 		this.pizzasPriceList = null;
 		this.orderItems = null;
@@ -92,7 +87,6 @@ public class Pizza implements Serializable {
 		this.name = name;
 		this.description = description;
 		this.special = special;
-		this.menu = null;
 		this.pizzaIngredients = null;
 		this.pizzasPriceList = null;
 		this.orderItems = null;
@@ -142,17 +136,8 @@ public class Pizza implements Serializable {
 		return pizzasPriceList;
 	}
 
-
 	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {
 		this.pizzasPriceList = pizzasPriceList;
-	}
-
-	public List<Menu> getMenu() {
-		return menu;
-	}
-
-	public void setMenu(List<Menu> menu) {
-		this.menu = menu;
 	}
 
 	public List<PizzaOrderItem> getOrderItems() {

@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import it.unical.pizzamanager.persistence.dto.serializer.BookingTakeAwaySerializer;
+import it.unical.pizzamanager.serializers.BookingTakeAwaySerializer;
 
 @JsonSerialize(using = BookingTakeAwaySerializer.class)
 @Entity

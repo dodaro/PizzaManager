@@ -24,7 +24,7 @@
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-7">
-				<div class="card">
+				<div class="bubble">
 					<h2>Sign up to Pizza Manager!</h2>
 					<form:form action="signup" method="post" modelAttribute="signUpForm">
 						<div class="row js-email-container">

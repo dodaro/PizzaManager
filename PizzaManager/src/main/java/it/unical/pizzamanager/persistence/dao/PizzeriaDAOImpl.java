@@ -76,7 +76,6 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 		pizzeria.getFeedbacks().size();
 		pizzeria.getImages().size();
 		pizzeria.getIngredientsPriceList().size();
-		pizzeria.getMenusPriceList().size();
 		pizzeria.getPizzasPriceList().size();
 		pizzeria.getTables().size();
 	}

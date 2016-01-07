@@ -1,4 +1,4 @@
-package it.unical.pizzamanager.persistence.dto.serializer;
+package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
 
@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.Menu;
-import it.unical.pizzamanager.persistence.dto.MenuOrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
 public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
@@ -18,7 +16,6 @@ public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
 	@Override
 	public void serialize(BookingTakeAway booking, JsonGenerator jgen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
-		System.out.println("SONO STATO INVOCATO");
 		// TODO Auto-generated method stub
 		jgen.writeStartObject();
 			//jgen.writeStringField("name", booking.getUser().getEmail());//TODO QUI MI SERVE UN NOME, SPECIE SE SI TRATTA DI UNA PRENOTAZIONE DI UN NON UTENTE
@@ -73,17 +70,6 @@ public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
 							jgen.writeObjectField("beverage",beveragebooking.getBeverage());
 						jgen.writeEndObject();
 						
-					}
-				}
-			jgen.writeEndArray();
-			jgen.writeArrayFieldStart("menus");
-				for (int i = 0; i < booking.getOrderItems().size(); i++) {
-					if(booking.getOrderItems().get(i) instanceof MenuOrderItem){
-						MenuOrderItem menu=(MenuOrderItem)booking.getOrderItems().get(i);
-						jgen.writeStartObject();
-							//aggiungere numero di istanze ordinate per questo item
-							jgen.writeObjectField("menu", menu.getMenu());
-						jgen.writeEndObject();
 					}
 				}
 			jgen.writeEndArray();

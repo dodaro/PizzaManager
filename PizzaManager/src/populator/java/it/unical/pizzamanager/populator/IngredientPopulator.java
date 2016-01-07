@@ -8,10 +8,9 @@ import org.springframework.context.ApplicationContext;
 import it.unical.pizzamanager.persistence.dao.IngredientDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Ingredient;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaIngredient;
 import it.unical.pizzamanager.persistence.dto.Ingredient.IngredientType;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaIngredient;
 
 public class IngredientPopulator extends Populator {
 
@@ -44,7 +43,7 @@ public class IngredientPopulator extends Populator {
 		ingredientDAO.create(mushrooms);
 		ingredientDAO.create(artichokes);
 		ingredientDAO.create(pepper);
-		
+
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		List<Pizzeria> pizzerias = pizzeriaDAO.getAll();
 
@@ -61,18 +60,18 @@ public class IngredientPopulator extends Populator {
 		priceList0.add(new RelationPizzeriaIngredient(pizzeria0, mushrooms, 2.0));
 		priceList0.add(new RelationPizzeriaIngredient(pizzeria0, artichokes, 3.0));
 		priceList0.add(new RelationPizzeriaIngredient(pizzeria0, pepper, 0.4));
-		
+
 		pizzeria0.setIngredientsPriceList(priceList0);
-//		pizzeria1.setIngredientsPriceList(priceList1);
-//		pizzeria2.setIngredientsPriceList(priceList2);
-//		pizzeria3.setIngredientsPriceList(priceList3);
-//		pizzeria4.setIngredientsPriceList(priceList4);
+		// pizzeria1.setIngredientsPriceList(priceList1);
+		// pizzeria2.setIngredientsPriceList(priceList2);
+		// pizzeria3.setIngredientsPriceList(priceList3);
+		// pizzeria4.setIngredientsPriceList(priceList4);
 
 		pizzeriaDAO.update(pizzeria0);
-//		pizzeriaDAO.update(pizzeria1);
-//		pizzeriaDAO.update(pizzeria2);
-//		pizzeriaDAO.update(pizzeria3);
-//		pizzeriaDAO.update(pizzeria4);
+		// pizzeriaDAO.update(pizzeria1);
+		// pizzeriaDAO.update(pizzeria2);
+		// pizzeriaDAO.update(pizzeria3);
+		// pizzeriaDAO.update(pizzeria4);
 
 	}
 }

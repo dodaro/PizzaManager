@@ -18,8 +18,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+import it.unical.pizzamanager.serializers.PizzeriaTableSerializer;
+
+@JsonSerialize(using = PizzeriaTableSerializer.class)
 @Entity
 @Table(name = "pizzeria_tables")
 public class PizzeriaTable implements Serializable {

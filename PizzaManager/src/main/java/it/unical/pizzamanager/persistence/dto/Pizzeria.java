@@ -47,11 +47,6 @@ public class Pizzeria extends Account {
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
-	private List<RelationPizzeriaMenu> menusPriceList;
-
-	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaIngredient> ingredientsPriceList;
 
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
@@ -76,7 +71,6 @@ public class Pizzeria extends Account {
 		this.phoneNumber = "";
 		this.beveragesPriceList = new ArrayList<RelationPizzeriaBeverage>();
 		this.pizzasPriceList = new ArrayList<RelationPizzeriaPizza>();
-		this.menusPriceList = new ArrayList<RelationPizzeriaMenu>();
 		this.ingredientsPriceList = new ArrayList<RelationPizzeriaIngredient>();
 		this.feedbacks = new ArrayList<FeedbackPizzeria>();
 		this.tables = new ArrayList<PizzeriaTable>();
@@ -90,7 +84,6 @@ public class Pizzeria extends Account {
 		this.phoneNumber = phoneNumber;
 		this.beveragesPriceList = new ArrayList<RelationPizzeriaBeverage>();
 		this.pizzasPriceList = new ArrayList<RelationPizzeriaPizza>();
-		this.menusPriceList = new ArrayList<RelationPizzeriaMenu>();
 		this.ingredientsPriceList = new ArrayList<RelationPizzeriaIngredient>();
 		this.feedbacks = new ArrayList<FeedbackPizzeria>();
 		this.tables = new ArrayList<PizzeriaTable>();
@@ -128,14 +121,6 @@ public class Pizzeria extends Account {
 
 	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {
 		this.pizzasPriceList = pizzasPriceList;
-	}
-
-	public List<RelationPizzeriaMenu> getMenusPriceList() {
-		return menusPriceList;
-	}
-
-	public void setMenusPriceList(List<RelationPizzeriaMenu> menusPriceList) {
-		this.menusPriceList = menusPriceList;
 	}
 
 	public List<RelationPizzeriaIngredient> getIngredientsPriceList() {

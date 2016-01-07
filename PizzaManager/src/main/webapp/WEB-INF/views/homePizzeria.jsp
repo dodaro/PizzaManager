@@ -18,7 +18,6 @@
 
 <!-- Scripts for tables management -->
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaTable.js"></script>
-<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTableController.js"></script>
 
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
@@ -65,7 +64,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-2">
-				<div class="card">
+				<div class="bubble">
 					<ul class="nav nav-pills nav-stacked">
 						<!-- <li class="active"><a href="#">Home</a></li> -->
 						<li data-content="pizzeriaTable"><a href="#">Manage tables</a></li>
@@ -84,7 +83,7 @@
 				</div>
 			</div>
 			<div id="wrapper" class="col-xs-10">
-				<div class="card">
+				<div class="bubble">
 					<div id="content">Home Pizzeria ${pizzeria.name}</div>
 				</div>
 			</div>
