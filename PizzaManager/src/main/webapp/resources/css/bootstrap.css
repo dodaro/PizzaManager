@@ -1144,6 +1144,9 @@ img {
 .img-circle {
   border-radius: 50%;
 }
+.image {
+ margin: 15px 0;
+}
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
