@@ -20,26 +20,28 @@ import org.hibernate.annotations.OnDeleteAction;
 @DiscriminatorValue("pizza")
 public class PizzaOrderItem extends OrderItem {
 
-	public final static String YES="yes";
-	public final static String NO="no";
-	public final static String SMALL="s";
-	public final static String MEDIUM="m";
-	public final static String LARGE="l";
+	public final static String YES = "yes";
+	public final static String NO = "no";
+	public final static String SMALL = "s";
+	public final static String MEDIUM = "m";
+	public final static String LARGE = "l";
 	private static final long serialVersionUID = 8977364851663655249L;
 
+	// mantengo il nome dell'attributo cmq sia un oggetto RelationPizzeriaPizza
+	// è una pizza con il prezzo e la pizzeria dove viene prodotta
 	@ManyToOne
-	@JoinColumn(name = "pizza")
-	private Pizza pizza;
+	@JoinColumn(name = "pizzeria_pizza")
+	private RelationPizzeriaPizza pizzeria_pizza;
 
 	@Column(name = "modified")
 	private Boolean modified;
-	
+
 	@Column(name = "glutenFree")
 	private String glutenFree;
-	
+
 	@Column(name = "size")
 	private String size;
-	
+
 	@OneToMany(mappedBy = "pizzaOrderItem", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
@@ -47,17 +49,17 @@ public class PizzaOrderItem extends OrderItem {
 
 	public PizzaOrderItem() {
 		super();
-		this.pizza = null;
+		this.pizzeria_pizza = null;
 		this.modified = false;
-		this.pizzaOrderIngredients=new ArrayList<>();
+		this.pizzaOrderIngredients = new ArrayList<>();
 	}
 
-	public Pizza getPizza() {
-		return pizza;
+	public RelationPizzeriaPizza getPizzeria_pizza() {
+		return pizzeria_pizza;
 	}
 
-	public void setPizza(Pizza pizza) {
-		this.pizza = pizza;
+	public void setPizzeria_pizza(RelationPizzeriaPizza pizzeria_pizza) {
+		this.pizzeria_pizza = pizzeria_pizza;
 	}
 
 	public Boolean getModified() {
@@ -67,7 +69,7 @@ public class PizzaOrderItem extends OrderItem {
 	public void setModified(Boolean modified) {
 		this.modified = modified;
 	}
-	
+
 	public String getGlutenFree() {
 		return glutenFree;
 	}
@@ -91,4 +93,5 @@ public class PizzaOrderItem extends OrderItem {
 	public void setPizzaOrderIngredients(List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients) {
 		this.pizzaOrderIngredients = pizzaOrderIngredients;
 	}
+
 }

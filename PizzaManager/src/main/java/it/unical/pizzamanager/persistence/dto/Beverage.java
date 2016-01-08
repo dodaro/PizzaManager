@@ -73,12 +73,7 @@ public class Beverage implements Serializable {
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaBeverage> beveragePriceList;
 
-	/**
-	 * OrderItems which contain a beverage.
-	 */
-	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<BeverageOrderItem> orderItems;
+	//rimosse beverageorderitems
 
 	public Beverage() {
 		this.id = DatabaseHandler.NO_ID;
@@ -88,7 +83,6 @@ public class Beverage implements Serializable {
 		this.size = BeverageSize.NOT_SPECIFIED;
 		this.type = BeverageType.NOT_SPECIFIED;
 		this.beveragePriceList = new ArrayList<>();
-		this.orderItems = new ArrayList<>();
 	}
 
 	public Beverage(String name, String brand, BeverageContainer container, BeverageSize size,
@@ -100,7 +94,6 @@ public class Beverage implements Serializable {
 		this.size = size;
 		this.type = type;
 		this.beveragePriceList = new ArrayList<>();
-		this.orderItems = new ArrayList<>();
 	}
 	
 	public Integer getId() {
@@ -157,13 +150,5 @@ public class Beverage implements Serializable {
 
 	public void setBeveragePriceList(List<RelationPizzeriaBeverage> beveragePriceList) {
 		this.beveragePriceList = beveragePriceList;
-	}
-
-	public List<BeverageOrderItem> getOrderItems() {
-		return orderItems;
-	}
-
-	public void setOrderItems(List<BeverageOrderItem> orderItems) {
-		this.orderItems = orderItems;
 	}
 }
