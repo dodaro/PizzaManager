@@ -8,15 +8,19 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.BookingDelivery;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
-public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
+public class BookingSerializer extends JsonSerializer<Booking>{
 
 	@Override
-	public void serialize(BookingTakeAway booking, JsonGenerator jgen, SerializerProvider arg2)
+	public void serialize(Booking booking, JsonGenerator jgen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
-		// TODO Auto-generated method stub
+		
+		
 		jgen.writeStartObject();
 			//jgen.writeStringField("name", booking.getUser().getEmail());//TODO QUI MI SERVE UN NOME, SPECIE SE SI TRATTA DI UNA PRENOTAZIONE DI UN NON UTENTE
 			jgen.writeStringField("date", booking.getDate().toString());
@@ -26,14 +30,28 @@ public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
 				jgen.writeBooleanField("payment", booking.getPayment().getPaid());
 			else
 				jgen.writeBooleanField("payment",false);
-			jgen.writeStringField("type", "takeAway");
+			
+			if(booking instanceof BookingTakeAway)
+				jgen.writeStringField("type", "takeAway");
+			else if(booking instanceof BookingDelivery){
+				BookingDelivery b=(BookingDelivery)booking;
+				jgen.writeStringField("type", "delivery");
+				jgen.writeStringField("address", b.getDeliveryAddress().toString());
+				//TIME TO DELIVERY?
+			}
+			else if(booking instanceof BookingPizzeriaTable){
+				BookingPizzeriaTable b=(BookingPizzeriaTable)booking;
+				jgen.writeStringField("type", "table");
+				jgen.writeObjectField("table", b.getTableBooking());
+			}
+			
+		
 			jgen.writeArrayFieldStart("pizzas");
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof PizzaOrderItem){
 						PizzaOrderItem pizzabooking=(PizzaOrderItem)booking.getOrderItems().get(i);
-						System.out.println(pizzabooking.getPizza().getName());
+	
 						jgen.writeStartObject();
-							//aggiungere numero di istanze ordinate per questo item
 							jgen.writeStringField("name",pizzabooking.getPizza().getName());
 							jgen.writeStringField("gluten",pizzabooking.getGlutenFree());
 							jgen.writeStringField("size",pizzabooking.getSize());
@@ -66,7 +84,6 @@ public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
 					if(booking.getOrderItems().get(i) instanceof BeverageOrderItem){
 						BeverageOrderItem beveragebooking=(BeverageOrderItem)booking.getOrderItems().get(i);
 						jgen.writeStartObject();
-							//aggiungere numero di istanze ordinate per questo item
 							jgen.writeObjectField("beverage",beveragebooking.getBeverage());
 						jgen.writeEndObject();
 						
@@ -101,13 +118,6 @@ public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
 					id:..
 					tutti i campi
 				} --> crittografato
-			}],
-			menus:[{
-				number: 21 -->numero di menu ordinati per questa tipologia
-				menu:{
-					id:..
-					tutti i campi
-				} --> crittografato
 			}]
 		}
 	 * */
@@ -115,7 +125,5 @@ public class BookingTakeAwaySerializer extends JsonSerializer<BookingTakeAway>{
 }
 
 /*COSE DA GESTIRE:
-1)pizze modificate -ingredienti aggiunti o rimossi, attualmente il database non lo gestisce
-2)il nome del prenotatore nel caso si tratti di una prenotazione che non è fatta da un utente
-3)all'ordine va aggiunto il numero di pezzi ordinati per quello specifico item
+1)il nome del prenotatore nel caso si tratti di una prenotazione che non è fatta da un utente
 */
