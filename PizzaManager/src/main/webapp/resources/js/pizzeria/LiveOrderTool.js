@@ -7,6 +7,7 @@ var LiveOrderTool = function(){
 		-Pizze: nome + nome ingredienti
 	*/
 	
+	
 	var pizzeFromServer;//è la lista delle pizze, con i suoi ingredienti basilari, fornite dalla pizzeria e che risiedono sul database
 	var beverageFromServer;//è la lista di tutte le bevande fornite dalla pizzeria e che risiedono sul database
 	var pizzeriaIngredients;//è la lista di tutti gli ingredienti di cui è fornita la pizzeria
@@ -22,13 +23,6 @@ var LiveOrderTool = function(){
 	var columnNumber = 4;
 
 	var initLiveTool = function(){
-		
-		if(communicator.bookingToEdit!== undefined){
-			//RICHIAMARE IL MAPPING
-			
-			//Eliminare subito l'oggetto dal communicator
-			communicator.bookingToEdit=undefined;
-		}
 		
 			//datepicker
 			$('#datetimepicker1').datetimepicker();
@@ -100,6 +94,23 @@ var LiveOrderTool = function(){
 						console.log(pizzeFromServer);
 						//popolazione beverage
 						createBeverage(beverageFromServer);
+						
+						//
+						if(communicator.bookingToEdit!== undefined){
+							//RICHIAMARE IL MAPPING
+							var bookingToEdit=communicator.bookingToEdit;
+							var List= mapping(bookingToEdit);
+							//settare le pizze
+							for (var int = 0; int < List.length; int++) {
+								resolvePizza(false,List[int]);
+							}
+							//settare le bevande
+							//settare le intestazioni 
+							
+							//Eliminare subito l'oggetto dal communicator
+							communicator.bookingToEdit=undefined;
+						}
+						
 					},
 					error : function(data, status, er) {
 						alert("error: " + data + " status: "
@@ -311,9 +322,44 @@ var LiveOrderTool = function(){
 
 	/*************** FUNZIONI UTILITA SOLO PER PIZZA *****************************************************************************************************************/
 
-	var mappingBookingToPizzaListAndTable = function(){
+	var mapping= function(bookingToEdit){
 		
+		var list=new Array();
+		listPizzasBooking=bookingToEdit.pizzas;
+		for (var int = 0; int < listPizzasBooking.length; int++) {
+			var pizzaFromBooking = listPizzasBooking[int];
+			var pizza= new Pizza();
+			pizza.setName(pizzaFromBooking.name);
+			pizza.setSize(pizzaFromBooking.size);
+			pizza.setGlutenFree(pizzaFromBooking.gluten);
+			var ingredientsToAdd=pizzaFromBooking.ingredientsAdded;
+			var ingredientsToRemove=pizzaFromBooking.ingredientsRemoved;
+			if (ingredientsToAdd.length > 0 || ingredientsToRemove.length > 0) {
+				pizza.setEdited(true);
+				for (var int1 = 0; int1 < ingredientsToAdd.length; int1++) {
+					pizza.getIngredientsAdded().push({
+						//id : ingredientsToAdd[int1].id,
+						id:int1,
+						//text : ingredientsToAdd[int1].text
+						text : ingredientsToAdd[int1]
+					});
+				}
+				for (var int2 = 0; int2 < ingredientsToRemove.length; int2++) {
+					pizza.getIngredientsRemoved().push({
+						//id : ingredientsToRemove[int2].id,
+						id:int2,
+						//text : ingredientsToRemove[int2].text
+						text : ingredientsToAdd[int2]
+					});
+				}
+			}	
+			list.push(pizza);
+			console.log('ho mappato');console.log(pizza);
+		}
+		return list;
 	}
+	
+	
 	
 	var extractPizzas = function() {
 
@@ -376,41 +422,54 @@ var LiveOrderTool = function(){
 		}
 	}
 
-	var resolvePizza = function(editing) {
-
-		var namePizzaSelected = $("#pizzaList.js-example-basic-single").select2("data").text;
-		if (namePizzaSelected == "Select Pizza") {
-			$('#myModal').modal('show');
-			return;
-		}
+	var resolvePizza = function(editing,pizzaFromBooking) {
 
 		var pizza = new Pizza();
 		console.log(namePizzaSelected)
-		var pizzaNumber = $('#counterPizza').val();
-		var ingredientsToAdd = $('#addIngredients.js-example-basic-multiple').select2("data");
-		var ingredientsToRemove = $('#removeIngredients.js-example-basic-multiple').select2("data");
-		pizza.setGlutenFree($('#glutenButtons .active > input').val());
-		pizza.setSize($('#sizeButtons .active > input').val());
-		pizza.setName(namePizzaSelected);
-
-		if (ingredientsToAdd.length > 0 || ingredientsToRemove.length > 0) {
-			pizza.setEdited(true);
-			for (var int1 = 0; int1 < ingredientsToAdd.length; int1++) {
-				pizza.getIngredientsAdded().push({
-					id : ingredientsToAdd[int1].id,
-					text : ingredientsToAdd[int1].text
-				});
+		var pizzaNumber;
+		var ingredientsToAdd;
+		var ingredientsToRemove;
+		
+		if(pizzaFromBooking===undefined){
+			
+			var namePizzaSelected = $("#pizzaList.js-example-basic-single").select2("data").text;
+			if (namePizzaSelected == "Select Pizza") {
+				$('#myModal').modal('show');
+				return;
 			}
-			for (var int2 = 0; int2 < ingredientsToRemove.length; int2++) {
-				pizza.getIngredientsRemoved().push({
-					id : ingredientsToRemove[int2].id,
-					text : ingredientsToRemove[int2].text
-				});
-			}
+			
+			pizzaNumber = $('#counterPizza').val();
+			ingredientsToAdd = $('#addIngredients.js-example-basic-multiple').select2("data");
+			ingredientsToRemove = $('#removeIngredients.js-example-basic-multiple').select2("data");
+			
+			console.log(ingredientsToAdd);
+			pizza.setGlutenFree($('#glutenButtons .active > input').val());
+			pizza.setSize($('#sizeButtons .active > input').val());
+			pizza.setName(namePizzaSelected);
+			
+			if (ingredientsToAdd.length > 0 || ingredientsToRemove.length > 0) {
+				pizza.setEdited(true);
+				for (var int1 = 0; int1 < ingredientsToAdd.length; int1++) {
+					pizza.getIngredientsAdded().push({
+						id : ingredientsToAdd[int1].id,
+						text : ingredientsToAdd[int1].text
+					});
+				}
+				for (var int2 = 0; int2 < ingredientsToRemove.length; int2++) {
+					pizza.getIngredientsRemoved().push({
+						id : ingredientsToRemove[int2].id,
+						text : ingredientsToRemove[int2].text
+					});
+				}
+			}	
+		}
+		else{
+			pizza=pizzaFromBooking;
+			console.log(pizza);
 		}
 		
-
 		//se sto modificando un ordine già esistente
+		console.log(editing);
 		if (editing === true) {
 			var code = tablePizza.row($('#resumeTablePizza tbody > tr.odd.selected,tr.even.selected')).data()[columnId];
 			pizza.setCode(code);
@@ -452,9 +511,13 @@ var LiveOrderTool = function(){
 		}
 		//se invece sto creando una nuova pizza o se già esisteva la stessa di quella creata allora gli sto aggiungendo numeri al contatore
 		else {
+			console.log(pizzaList);
 			var code = checkPizzaExistence(pizza);
+			console.log(code);
 			//se ritorno -1 la pizza ancora non esiste, per cui ne creo una nuova
 			if (code === -1) {
+				
+				
 				pizza.setCode(codePizza);
 				//generazione nuovo codice unico (meglio trovare un modo alternativo per produrre codici univoci XD)
 				codePizza++;
@@ -527,11 +590,12 @@ var LiveOrderTool = function(){
 		console.log("STO AGGIUNGENDO:  " + pizza.toString());
 		pizzaList.push(pizza);
 
+		var n=new String(number);
 		tablePizza.row.add([ "",
 		                     pizza.getName(),
 		                     pizza.getGlutenFree(),
 		                     pizza.getSize(),
-		                     number.toString(),
+		                     n.toString(),
 		                     pizza.getCode() ]).draw(false);
 
 		//FACCIAMO scrollare la scroll fino alla nuova riga aggiunta
@@ -577,8 +641,7 @@ var LiveOrderTool = function(){
 						var equal = false;
 						for (var int2 = 0; int2 < pizzaList[i]
 								.getIngredientsRemoved().length; int2++) {
-							if (ingredient === pizzaList[i]
-									.getIngredientsRemoved()[int2].text)
+							if (ingredient === pizzaList[i].getIngredientsRemoved()[int2].text)
 								equal = true;
 						}
 
@@ -586,7 +649,7 @@ var LiveOrderTool = function(){
 							equalRemoved = false;//continue;
 					}
 					if (equalAdded === true && equalRemoved === true) {
-						//console.log("stessi ingredienti e stessi nomi")						
+						console.log("stessi ingredienti e stessi nomi")						
 						return pizzaList[i].getCode();
 					}
 
