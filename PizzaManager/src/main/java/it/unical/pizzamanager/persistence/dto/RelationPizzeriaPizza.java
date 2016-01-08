@@ -8,12 +8,17 @@ import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -57,6 +62,11 @@ public class RelationPizzeriaPizza implements Serializable {
 	@CollectionTable(name = "images", joinColumns = @JoinColumn(name = "pizza_images") )
 	private List<Image> images;
 
+	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private List<PizzaOrderItem> orderItems;
+	
+	
 	public RelationPizzeriaPizza() {
 		this.id = DatabaseHandler.NO_ID;
 		this.pizzeria = null;
@@ -66,6 +76,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.preparationTime = 0.0;
 		this.glutenFree = false;
 		this.images = new ArrayList<Image>();
+		this.orderItems=new ArrayList<>();
 	}
 
 	public RelationPizzeriaPizza(Pizzeria pizzeria, Pizza pizza, Double price, PizzaSize pizzaSize,
@@ -78,6 +89,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.preparationTime = preparationTime;
 		this.glutenFree = glutenFree;
 		this.images = new ArrayList<Image>();
+		this.orderItems=new ArrayList<>();
 	}
 
 	public int getId() {
@@ -144,5 +156,13 @@ public class RelationPizzeriaPizza implements Serializable {
 
 	public void setImages(List<Image> images) {
 		this.images = images;
+	}
+
+	public List<PizzaOrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<PizzaOrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 }

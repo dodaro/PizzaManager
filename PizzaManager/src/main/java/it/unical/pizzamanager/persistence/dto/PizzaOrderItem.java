@@ -20,26 +20,28 @@ import org.hibernate.annotations.OnDeleteAction;
 @DiscriminatorValue("pizza")
 public class PizzaOrderItem extends OrderItem {
 
-	public final static String YES="yes";
-	public final static String NO="no";
-	public final static String SMALL="s";
-	public final static String MEDIUM="m";
-	public final static String LARGE="l";
+	public final static String YES = "yes";
+	public final static String NO = "no";
+	public final static String SMALL = "s";
+	public final static String MEDIUM = "m";
+	public final static String LARGE = "l";
 	private static final long serialVersionUID = 8977364851663655249L;
 
+	// mantengo il nome dell'attributo cmq sia un oggetto RelationPizzeriaPizza
+	// è una pizza con il prezzo e la pizzeria dove viene prodotta
 	@ManyToOne
 	@JoinColumn(name = "pizza")
-	private Pizza pizza;
+	private RelationPizzeriaPizza pizza;
 
 	@Column(name = "modified")
 	private Boolean modified;
-	
+
 	@Column(name = "glutenFree")
 	private String glutenFree;
-	
+
 	@Column(name = "size")
 	private String size;
-	
+
 	@OneToMany(mappedBy = "pizzaOrderItem", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
@@ -49,14 +51,14 @@ public class PizzaOrderItem extends OrderItem {
 		super();
 		this.pizza = null;
 		this.modified = false;
-		this.pizzaOrderIngredients=new ArrayList<>();
+		this.pizzaOrderIngredients = new ArrayList<>();
 	}
 
-	public Pizza getPizza() {
+	public RelationPizzeriaPizza getPizza() {
 		return pizza;
 	}
 
-	public void setPizza(Pizza pizza) {
+	public void setPizza(RelationPizzeriaPizza pizza) {
 		this.pizza = pizza;
 	}
 
@@ -67,7 +69,7 @@ public class PizzaOrderItem extends OrderItem {
 	public void setModified(Boolean modified) {
 		this.modified = modified;
 	}
-	
+
 	public String getGlutenFree() {
 		return glutenFree;
 	}

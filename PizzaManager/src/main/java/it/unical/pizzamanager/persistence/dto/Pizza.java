@@ -68,9 +68,7 @@ public class Pizza implements Serializable {
 	 * Pizza perchè altrimenti va in loop su se stesso
 	 */
 
-	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<PizzaOrderItem> orderItems;
+	// rimossi gli order items
 
 	public Pizza() {
 		this.id = DatabaseHandler.NO_ID;
@@ -79,7 +77,6 @@ public class Pizza implements Serializable {
 		this.special = false;
 		this.pizzaIngredients = null;
 		this.pizzasPriceList = null;
-		this.orderItems = null;
 	}
 
 	public Pizza(String name, String description, Boolean special) {
@@ -89,7 +86,6 @@ public class Pizza implements Serializable {
 		this.special = special;
 		this.pizzaIngredients = null;
 		this.pizzasPriceList = null;
-		this.orderItems = null;
 	}
 
 	public Integer getId() {
@@ -138,13 +134,5 @@ public class Pizza implements Serializable {
 
 	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {
 		this.pizzasPriceList = pizzasPriceList;
-	}
-
-	public List<PizzaOrderItem> getOrderItems() {
-		return orderItems;
-	}
-
-	public void setOrderItems(List<PizzaOrderItem> orderItems) {
-		this.orderItems = orderItems;
 	}
 }
