@@ -49,8 +49,8 @@ public class RelationPizzeriaBeverage implements Serializable {
 	/**
 	 * OrderItems which contain a beverage.
 	 */
-	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.CASCADE)
+	@OneToMany(mappedBy = "pizzeria_beverage", fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private List<BeverageOrderItem> orderItems;
 	
 	public RelationPizzeriaBeverage() {

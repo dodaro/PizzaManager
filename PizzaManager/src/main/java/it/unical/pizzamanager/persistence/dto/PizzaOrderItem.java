@@ -30,8 +30,8 @@ public class PizzaOrderItem extends OrderItem {
 	// mantengo il nome dell'attributo cmq sia un oggetto RelationPizzeriaPizza
 	// è una pizza con il prezzo e la pizzeria dove viene prodotta
 	@ManyToOne
-	@JoinColumn(name = "pizza")
-	private RelationPizzeriaPizza pizza;
+	@JoinColumn(name = "pizzeria_pizza")
+	private RelationPizzeriaPizza pizzeria_pizza;
 
 	@Column(name = "modified")
 	private Boolean modified;
@@ -49,17 +49,17 @@ public class PizzaOrderItem extends OrderItem {
 
 	public PizzaOrderItem() {
 		super();
-		this.pizza = null;
+		this.pizzeria_pizza = null;
 		this.modified = false;
 		this.pizzaOrderIngredients = new ArrayList<>();
 	}
 
-	public RelationPizzeriaPizza getPizza() {
-		return pizza;
+	public RelationPizzeriaPizza getPizzeria_pizza() {
+		return pizzeria_pizza;
 	}
 
-	public void setPizza(RelationPizzeriaPizza pizza) {
-		this.pizza = pizza;
+	public void setPizzeria_pizza(RelationPizzeriaPizza pizzeria_pizza) {
+		this.pizzeria_pizza = pizzeria_pizza;
 	}
 
 	public Boolean getModified() {
@@ -93,4 +93,5 @@ public class PizzaOrderItem extends OrderItem {
 	public void setPizzaOrderIngredients(List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients) {
 		this.pizzaOrderIngredients = pizzaOrderIngredients;
 	}
+
 }

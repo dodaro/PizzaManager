@@ -52,14 +52,14 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 						PizzaOrderItem pizzabooking=(PizzaOrderItem)booking.getOrderItems().get(i);
 	
 						jgen.writeStartObject();
-							jgen.writeStringField("name",pizzabooking.getPizza().getName());
+							jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getName());
 							jgen.writeStringField("gluten",pizzabooking.getGlutenFree());
 							jgen.writeStringField("size",pizzabooking.getSize());
 							jgen.writeStringField("number",pizzabooking.getNumber().toString());
 							jgen.writeArrayFieldStart("ingredientsBase");
 							//booking.getpizza() ti restituisce la relationPizzeriaPizza, facendo .getPizza() hai la pizza....
-							for (int j = 0; j < pizzabooking.getPizza().getPizzaIngredients().size(); j++) {
-								jgen.writeString(pizzabooking.getPizza().getPizzaIngredients().get(j).getIngredient().getName());
+							for (int j = 0; j < pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().size(); j++) {
+								jgen.writeString(pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getName());
 							}
 							jgen.writeEndArray();
 							jgen.writeArrayFieldStart("ingredientsAdded");
@@ -85,7 +85,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 					if(booking.getOrderItems().get(i) instanceof BeverageOrderItem){
 						BeverageOrderItem beveragebooking=(BeverageOrderItem)booking.getOrderItems().get(i);
 						jgen.writeStartObject();
-							jgen.writeObjectField("beverage",beveragebooking.getBeverage());
+							jgen.writeObjectField("beverage",beveragebooking.getPizzeria_beverage().getBeverage());
 						jgen.writeEndObject();
 						
 					}

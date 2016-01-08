@@ -18,26 +18,28 @@ public class BeverageOrderItem extends OrderItem {
 
 	// come per la pizza
 	@ManyToOne
-	@JoinColumn(name = "beverage")
-	private RelationPizzeriaBeverage beverage;
+	@JoinColumn(name = "pizzeria_beverage")
+	private RelationPizzeriaBeverage pizzeria_beverage;
 
 	@Column(name = "temperature")
 	private BeverageTemperature temperature;
 
 	public BeverageOrderItem() {
 		super();
-		beverage = new RelationPizzeriaBeverage();
+		pizzeria_beverage = new RelationPizzeriaBeverage();
 		temperature = BeverageTemperature.COLD;
 	}
 
-	public RelationPizzeriaBeverage getBeverage() {
-		return beverage;
+	
+	public RelationPizzeriaBeverage getPizzeria_beverage() {
+		return pizzeria_beverage;
 	}
 
-	public void setBeverage(RelationPizzeriaBeverage beverage) {
-		this.beverage = beverage;
-	}
 
+	public void setPizzeria_beverage(RelationPizzeriaBeverage pizzeria_beverage) {
+		this.pizzeria_beverage = pizzeria_beverage;
+	}
+	
 	public BeverageTemperature getTemperature() {
 		return temperature;
 	}
@@ -45,4 +47,5 @@ public class BeverageOrderItem extends OrderItem {
 	public void setTemperature(BeverageTemperature temperature) {
 		this.temperature = temperature;
 	}
+
 }
