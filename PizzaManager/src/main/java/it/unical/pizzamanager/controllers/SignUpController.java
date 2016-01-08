@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.model.SignUpForm;
+import it.unical.pizzamanager.forms.SignUpForm;
+import it.unical.pizzamanager.persistence.dao.AccountDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.Account;
 import it.unical.pizzamanager.persistence.dto.User;
 
 @Controller
@@ -43,19 +45,19 @@ public class SignUpController {
 
 		return "redirect:/";
 	}
-
+	
 	@ResponseBody
 	@RequestMapping(value = "/signup/emailTaken", method = RequestMethod.GET)
 	public String isEmailTaken(@RequestParam String email) {
 		logger.info("Request for email " + email);
 
-		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		AccountDAO accountDAO = (AccountDAO) context.getBean("accountDAO");
 		boolean taken;
 
 		/* TODO - Input validation is strongly needed here. */
 
-		User user = userDAO.get(email);
-		taken = user != null && user.getEmail().equals(email);
+		Account account = accountDAO.get(email);
+		taken = account != null && account.getEmail().equals(email);
 
 		/*
 		 * Return a JSON objects with fields "email" and "taken" (true/false).

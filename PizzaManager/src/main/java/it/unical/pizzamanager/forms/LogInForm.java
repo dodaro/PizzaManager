@@ -1,4 +1,4 @@
-package it.unical.pizzamanager.model;
+package it.unical.pizzamanager.forms;
 
 public class LogInForm {
 

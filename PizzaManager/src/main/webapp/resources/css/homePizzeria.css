@@ -3,3 +3,7 @@
 #wrapper {
 	padding-left: 15px;
 }
+
+#login-error {
+	margin-bottom: 25px;
+}

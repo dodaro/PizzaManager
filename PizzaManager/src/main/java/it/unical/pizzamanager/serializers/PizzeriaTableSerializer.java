@@ -16,6 +16,7 @@ public class PizzeriaTableSerializer extends JsonSerializer<PizzeriaTable> {
 			throws IOException, JsonProcessingException {
 
 		jgen.writeStartObject();
+		jgen.writeNumberField("id", table.getId());
 		jgen.writeNumberField("number", table.getNumber());
 		jgen.writeNumberField("seats", table.getSeats());
 		jgen.writeNumberField("minSeats", table.getMinSeats());

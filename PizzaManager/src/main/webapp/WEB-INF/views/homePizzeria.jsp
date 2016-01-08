@@ -17,7 +17,7 @@
 <script type="text/javascript" src="resources/js/pizzeria/homePizzeria.js"></script>
 
 <!-- Scripts for tables management -->
-<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTable.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTableManager.js"></script>
 
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
@@ -47,7 +47,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/homePizzeria.css" />
 
-<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTable.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTableManager.css" />
 
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
@@ -67,7 +67,7 @@
 				<div class="bubble">
 					<ul class="nav nav-pills nav-stacked">
 						<!-- <li class="active"><a href="#">Home</a></li> -->
-						<li data-content="pizzeriaTable"><a href="#">Manage tables</a></li>
+						<li data-content="pizzeriaTableManager"><a href="#">Manage tables</a></li>
 						<li><a href="#">Pizza</a></li>
 						<li><a href="#">Beverage</a></li>
 						<li><a href="#">Menu</a></li>

@@ -39,13 +39,13 @@
 				</div>
 			</form>
 			<div class="buttons-container col-sm-offset-1 col-sm-11">
-				<button class="btn btn-primary button-add">
+				<button class="btn btn-primary button-add" disabled>
 					<span class="glyphicon glyphicon-plus"></span> Add
 				</button>
-				<button class="btn btn-success button-update">
+				<button class="btn btn-success button-update" disabled>
 					<span class="glyphicon glyphicon-refresh"></span> Update
 				</button>
-				<button class="btn btn-danger button-delete">
+				<button class="btn btn-danger button-delete" disabled>
 					<span class="glyphicon glyphicon-remove"></span> Delete
 				</button>
 			</div>
@@ -54,5 +54,5 @@
 </div>
 
 <script type="text/javascript">
-	pizzeriaTable.init();
+	pizzeriaTableManager.init();
 </script>

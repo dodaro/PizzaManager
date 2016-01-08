@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.model.PizzeriaTableForm;
+import it.unical.pizzamanager.forms.PizzeriaTableForm;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaTableDAO;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
@@ -22,23 +22,24 @@ import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
-public class PizzeriaTableController {
+public class PizzeriaTableManagerController {
 
-	private static final Logger logger = LoggerFactory.getLogger(PizzeriaTableController.class);
+	private static final Logger logger = LoggerFactory
+			.getLogger(PizzeriaTableManagerController.class);
 
 	@Autowired
 	private WebApplicationContext context;
 
-	@RequestMapping(value = "/pizzeriaTable", method = RequestMethod.GET)
+	@RequestMapping(value = "/pizzeriaTableManager", method = RequestMethod.GET)
 	public String pizzeriaTable(HttpSession session) {
 		if (!SessionUtils.isPizzeria(session)) {
-			// FIXME This is not what we want.
-			return "redirect:/";
+			return "homeLogInError";
+		} else {
+			return "pizzeriaTableManager";
 		}
-
-		return "pizzeriaTable";
 	}
 
+	/* Controller to add, update or delete tables. */
 	@ResponseBody
 	@RequestMapping(value = "/pizzeria/tables", method = RequestMethod.POST)
 	public String performAction(HttpSession session, @ModelAttribute PizzeriaTableForm form) {
@@ -100,9 +101,8 @@ public class PizzeriaTableController {
 	private String updateTable(Pizzeria pizzeria, PizzeriaTableForm form) {
 		List<PizzeriaTable> tables = pizzeria.getTables();
 
-		/* Only update the table if the pizzeria has already a table with the same number. */
 		for (PizzeriaTable table : tables) {
-			if (table.getNumber() == form.getNumber()) {
+			if (table.getId() == form.getId()) {
 				doUpdate(table, form);
 				return buildJsonResponse(true, form);
 			}
@@ -140,8 +140,8 @@ public class PizzeriaTableController {
 			return "{\"success\" : false}";
 		}
 
-		return "{\"success\" : " + success + ", \"number\" : " + form.getNumber()
-				+ ", \"minSeats\" : " + form.getMinSeats() + ", \"maxSeats\" : "
+		return "{\"success\" : " + success + ", \"id\" : " + form.getId() + ", \"number\" : "
+				+ form.getNumber() + ",\"minSeats\" : " + form.getMinSeats() + ", \"maxSeats\" : "
 				+ form.getMaxSeats() + "}";
 	}
 }
