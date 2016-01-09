@@ -89,12 +89,19 @@ pizzeriaTableManager = function() {
 					id : rowData.id,
 					number : rowData.number,
 					minSeats : rowData.minSeats,
-					maxSeats : rowData.maxSeats
+					maxSeats : rowData.maxSeats,
+					available : 'Yes'
 				}).draw();
 			},
 
 			editRow : function(rowData) {
 				var $row = getRowByTableId(rowData.id);
+
+				/*
+				 * Just copy the old value for available, since there's no way
+				 * to edit it here.
+				 */
+				rowData.available = $dataTable.row($row).data().available;
 
 				if ($row != undefined) {
 					$dataTable.row($row).data(rowData).draw();
