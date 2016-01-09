@@ -32,6 +32,8 @@ pizzeriaTableManager = function() {
 						'data' : 'minSeats'
 					}, {
 						'data' : 'maxSeats'
+					}, {
+						'data' : 'available'
 					} ]
 				});
 			},
