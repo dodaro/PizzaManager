@@ -32,14 +32,14 @@ var signupController = function() {
 		$.ajax({
 			type : "get",
 			url : "signup/emailTaken",
+			dataType : "json",
 			data : {
 				email : email
 			},
 			success : function(data) {
 				console.log("Response success.");
 				processEmailResponse(data);
-			},
-			dataType : "json"
+			}
 		});
 	};
 

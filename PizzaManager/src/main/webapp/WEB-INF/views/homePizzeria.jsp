@@ -17,10 +17,14 @@
 <script type="text/javascript" src="resources/js/pizzeria/homePizzeria.js"></script>
 
 <!-- Scripts for tables management -->
-<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTable.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaTableManager.js"></script>
 
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/LiveOrderTool.js"></script>
+
+<!-- Scripts for the booking -->
+<script type="text/javascript" src="resources/js/pizzeria/Booking.js"></script>
 
 <!-- PER DANILO: DECIDI TU DOVE METTERE QUESTO SCRIPT -->
 <script type="text/javascript">
@@ -47,7 +51,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/homePizzeria.css" />
 
-<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTable.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTableManager.css" />
 
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
@@ -64,16 +68,13 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-2">
-				<div class="bubble">
+				<div class="bubble" id="leftSideBar" >
 					<ul class="nav nav-pills nav-stacked">
 						<!-- <li class="active"><a href="#">Home</a></li> -->
-						<li data-content="pizzeriaTable"><a href="#">Manage tables</a></li>
+						<li data-content="pizzeriaTableManager"><a href="#">Manage tables</a></li>
 						<li><a href="#">Pizza</a></li>
 						<li><a href="#">Beverage</a></li>
-						<li><a href="#">Menu</a></li>
-						<li><a href="#">Table Booking</a></li>
-						<li data-content="pizzeriabooking"><a href="#">Take Away Booking</a></li>
-						<li><a href="#">Delivery Booking</a></li>
+						<li data-content="pizzeriabooking"><a href="#">Booking</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
 						<li><a href="#">Live Restaurant</a></li>

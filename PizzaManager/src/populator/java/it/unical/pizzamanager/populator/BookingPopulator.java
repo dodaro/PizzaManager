@@ -30,7 +30,7 @@ public class BookingPopulator extends Populator {
 
 		PizzaOrderItem pizzaOrder1 = new PizzaOrderItem();
 		// MANCA L'UTENTE O IL NOME DI CHI HA PRENOTATO
-		pizzaOrder1.setPizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(0).getPizza());
+		pizzaOrder1.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(0));
 		pizzaOrder1.setModified(false);
 		pizzaOrder1.setNumber(3);
 		pizzaOrder1.setGlutenFree(PizzaOrderItem.NO);
@@ -38,7 +38,7 @@ public class BookingPopulator extends Populator {
 		order.create(pizzaOrder1);
 
 		PizzaOrderItem pizzaOrder2 = new PizzaOrderItem();
-		pizzaOrder2.setPizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(1).getPizza());
+		pizzaOrder2.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(1));
 		pizzaOrder2.setModified(true);
 		pizzaOrder2.setNumber(2);
 		pizzaOrder2.setGlutenFree(PizzaOrderItem.YES);

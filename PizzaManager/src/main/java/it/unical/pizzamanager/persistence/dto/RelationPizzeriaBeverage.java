@@ -1,15 +1,22 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,11 +46,19 @@ public class RelationPizzeriaBeverage implements Serializable {
 	@Column(name = "price")
 	private Double price;
 
+	/**
+	 * OrderItems which contain a beverage.
+	 */
+	@OneToMany(mappedBy = "pizzeria_beverage", fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	private List<BeverageOrderItem> orderItems;
+	
 	public RelationPizzeriaBeverage() {
 		this.id = DatabaseHandler.NO_ID;
 		this.pizzeria = null;
 		this.beverage = null;
 		this.price = 0.0;
+		this.orderItems=new ArrayList<>();
 	}
 
 	public RelationPizzeriaBeverage(Pizzeria pizzeria, Beverage beverage, Double price) {
@@ -51,6 +66,7 @@ public class RelationPizzeriaBeverage implements Serializable {
 		this.pizzeria = pizzeria;
 		this.beverage = beverage;
 		this.price = price;
+		this.orderItems=new ArrayList<>();
 	}
 
 	public int getId() {
@@ -85,5 +101,13 @@ public class RelationPizzeriaBeverage implements Serializable {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public List<BeverageOrderItem> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<BeverageOrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 }

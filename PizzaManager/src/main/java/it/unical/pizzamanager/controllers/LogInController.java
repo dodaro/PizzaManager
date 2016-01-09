@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.model.LogInForm;
+import it.unical.pizzamanager.forms.LogInForm;
 import it.unical.pizzamanager.persistence.dao.AccountDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;

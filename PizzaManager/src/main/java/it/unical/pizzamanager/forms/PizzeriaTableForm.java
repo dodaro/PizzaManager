@@ -1,25 +1,20 @@
-package it.unical.pizzamanager.model;
+package it.unical.pizzamanager.forms;
 
 public class PizzeriaTableForm {
 
 	private String action;
 
+	private int id;
 	private int number;
 	private int minSeats;
 	private int maxSeats;
 
 	public PizzeriaTableForm() {
 		this.action = "";
+		this.id = -1;
 		this.number = -1;
 		this.minSeats = -1;
 		this.maxSeats = -1;
-	}
-
-	public PizzeriaTableForm(String action, int number, int minSeats, int maxSeats) {
-		this.action = action;
-		this.number = number;
-		this.minSeats = minSeats;
-		this.maxSeats = maxSeats;
 	}
 
 	public String getAction() {
@@ -28,6 +23,14 @@ public class PizzeriaTableForm {
 
 	public void setAction(String action) {
 		this.action = action;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getNumber() {
