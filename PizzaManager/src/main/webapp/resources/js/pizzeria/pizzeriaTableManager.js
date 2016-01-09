@@ -3,6 +3,18 @@ pizzeriaTableManager = function() {
 	table = function() {
 		var $dataTable;
 
+		var getRowByTableId = function(tableId) {
+			var $rows = $dataTable.$('tr');
+
+			for (var i = 0; i < $rows.length; i++) {
+				var $row = $rows.eq(i);
+				var rowData = $dataTable.row($row).data();
+				if (rowData.id == tableId) {
+					return $row;
+				}
+			}
+		};
+
 		return {
 			initDataTable : function() {
 				$dataTable = $('#pizzeria-table #tables-table').DataTable({
@@ -13,6 +25,8 @@ pizzeriaTableManager = function() {
 						dataSrc : '',
 					},
 					columns : [ {
+						// 'data' : 'id'
+						// }, {
 						'data' : 'number'
 					}, {
 						'data' : 'minSeats'
@@ -27,7 +41,27 @@ pizzeriaTableManager = function() {
 			},
 
 			getSelectedRow : function() {
-				return $('#pizzeria-table #tables-table tr.selected');
+				var $selectedRow = $('#pizzeria-table #tables-table tr.selected');
+
+				/*
+				 * This method returns undefined to be consistent with the other
+				 * getRow methods.
+				 */
+				if ($selectedRow.length > 0) {
+					return $selectedRow;
+				}
+			},
+
+			getRowByTableNumber : function(tableNumber) {
+				var $rows = $dataTable.$('tr');
+
+				for (var i = 0; i < $rows.length; i++) {
+					var $row = $rows.eq(i);
+					var rowData = $dataTable.row($row).data();
+					if (rowData.number == tableNumber) {
+						return $row;
+					}
+				}
 			},
 
 			containsTableNumber : function(tableNumber) {
@@ -46,6 +80,31 @@ pizzeriaTableManager = function() {
 
 			clearRowSelection : function() {
 				$('#pizzeria-table #tables-table tr.selected').removeClass('selected');
+			},
+
+			addRow : function(rowData) {
+				$dataTable.row.add({
+					id : rowData.id,
+					number : rowData.number,
+					minSeats : rowData.minSeats,
+					maxSeats : rowData.maxSeats
+				}).draw();
+			},
+
+			editRow : function(rowData) {
+				var $row = getRowByTableId(rowData.id);
+
+				if ($row != undefined) {
+					$dataTable.row($row).data(rowData).draw();
+				}
+			},
+
+			deleteRow : function(rowData) {
+				var $row = getRowByTableId(rowData.id);
+
+				if ($row != undefined) {
+					$dataTable.row($row).remove().draw();
+				}
 			}
 		}
 	}();
@@ -68,12 +127,18 @@ pizzeriaTableManager = function() {
 				}
 			},
 
-			setUpdateDeleteButtonsEnabled : function(enabled) {
+			setUpdateButtonEnabled : function(enabled) {
 				if (enabled) {
 					$("#pizzeria-table .button-update").removeAttr("disabled");
-					$("#pizzeria-table .button-delete").removeAttr("disabled");
 				} else {
 					$("#pizzeria-table .button-update").attr("disabled", "disabled");
+				}
+			},
+
+			setDeleteButtonEnabled : function(enabled) {
+				if (enabled) {
+					$("#pizzeria-table .button-delete").removeAttr("disabled");
+				} else {
 					$("#pizzeria-table .button-delete").attr("disabled", "disabled");
 				}
 			},
@@ -124,17 +189,29 @@ pizzeriaTableManager = function() {
 	}();
 
 	/**
+	 * Returns true if the form and the selected row contain the same number,
+	 * same minSeats and same maxSeats.
+	 */
+	var formDataEqualsSelectedRowData = function() {
+		var formData = form.getFormData();
+		var $selectedRow = table.getSelectedRow();
+
+		if ($selectedRow != undefined) {
+			var rowData = table.getRowData($selectedRow);
+			return formData.number == rowData.number && formData.minSeats == rowData.minSeats
+					&& formData.maxSeats == rowData.maxSeats;
+		}
+
+		return false;
+	}
+
+	/**
 	 * Validates the data in the form: returns true if the form contains a valid
 	 * table that can be added, false otherwise.
 	 * 
 	 * This function also manages highlighting of wrong fields, if any.
 	 */
 	var canAdd = function() {
-		/* Check if no row is selected. */
-		if (table.getSelectedRow().length > 0) {
-			return false;
-		}
-
 		/* Check if all the form fields are filled. */
 		if (!form.isFilled()) {
 			return false;
@@ -166,14 +243,57 @@ pizzeriaTableManager = function() {
 		return true;
 	}
 
+	var canUpdate = function() {
+		/* Check if all the form fields are filled. */
+		if (!form.isFilled()) {
+			return false;
+		}
+
+		/*
+		 * Check if minSeats <= maxSeats and vice versa. Form data can safely be
+		 * retrieved since at this point we're sure the form is filled.
+		 */
+		var formData = form.getFormData();
+		if (formData.minSeats > formData.maxSeats) {
+			form.setSeatsFieldsHighlighted(true);
+			return false;
+		}
+
+		/*
+		 * Check if the user is trying to update a table assigning a number
+		 * which already belongs to another table.
+		 */
+		var formData = form.getFormData();
+		var $rowByNumber = table.getRowByTableNumber(formData.number);
+		if ($rowByNumber != undefined && !table.isRowSelected($rowByNumber)) {
+			form.setNumberFieldHighlighted(true);
+			return false;
+		}
+
+		/* Form is ok, remove existing highlighting */
+		form.setNumberFieldHighlighted(false);
+		form.setSeatsFieldsHighlighted(false);
+
+		/*
+		 * If the form and the selected row contain the same data the update
+		 * would be redundant, but this doesn't involve highlighting at all but
+		 * update is forbidden anyway in this case.
+		 */
+		if (formDataEqualsSelectedRowData()) {
+			return false;
+		}
+
+		return true;
+	}
+
 	var getDataForRequest = function() {
 		var data = new Object();
 		var $selectedRow = table.getSelectedRow();
 
-		if ($selectedRow.length) {
+		if ($selectedRow != undefined) {
 			data.id = table.getRowData($selectedRow).id;
 		} else {
-			data.id = null;
+			data.id = -1;
 		}
 
 		var formData = form.getFormData();
@@ -183,10 +303,6 @@ pizzeriaTableManager = function() {
 		data.maxSeats = formData.maxSeats;
 
 		return data;
-	}
-
-	var processResponse = function(response) {
-		console.log("Response: " + response);
 	}
 
 	/**
@@ -204,6 +320,7 @@ pizzeriaTableManager = function() {
 		$.ajax({
 			method : 'post',
 			url : '/pizzeria/tables',
+			dataType : 'json',
 			data : {
 				action : action,
 				id : data.id,
@@ -212,45 +329,78 @@ pizzeriaTableManager = function() {
 				maxSeats : data.maxSeats
 			},
 			success : function(response) {
+				console.log(response);
 				onSuccess(response);
 			}
 		});
 	};
+
+	var clearAll = function() {
+		form.clearForm();
+		table.clearRowSelection();
+		form.setAddButtonEnabled(false);
+		form.setUpdateButtonEnabled(false);
+		form.setDeleteButtonEnabled(false);
+	}
 
 	var onRowClick = function($row) {
 		if (table.isRowSelected($row)) {
 			table.clearRowSelection();
 			form.clearForm();
 			form.setAddButtonEnabled(false);
-			form.setUpdateDeleteButtonsEnabled(false);
+			form.setUpdateButtonEnabled(false);
+			form.setDeleteButtonEnabled(false);
 		} else {
 			var rowData = table.getRowData($row);
 			table.selectRow($row);
 			form.fillForm(rowData);
 			form.setAddButtonEnabled(false);
-			form.setUpdateDeleteButtonsEnabled(true);
+			form.setUpdateButtonEnabled(false);
+			form.setDeleteButtonEnabled(true);
 		}
+
+		form.setNumberFieldHighlighted(false);
+		form.setSeatsFieldsHighlighted(false);
 	}
 
 	var onInputChange = function() {
-		form.setAddButtonEnabled(canAdd());
+		var $selectedRow = table.getSelectedRow();
+
+		/*
+		 * If a row is selected, check if canEdit, else check if canAdd. Enable
+		 * or disable the buttons accordingly.
+		 */
+		if ($selectedRow != undefined) {
+			form.setUpdateButtonEnabled(canUpdate());
+		} else {
+			form.setAddButtonEnabled(canAdd());
+		}
+
+		/*
+		 * Delete button is always disabled unless the form AND the selected
+		 * table contain the same data.
+		 */
+		form.setDeleteButtonEnabled(formDataEqualsSelectedRowData());
 	}
 
 	var addTable = function() {
-		sendRequest('add', getDataForRequest(), function(data) {
-			console.log(data);
+		sendRequest('add', getDataForRequest(), function(response) {
+			table.addRow(response);
+			clearAll();
 		});
 	}
 
-	var updateTable = function() {
-		sendRequest('update', getDataForRequest(), function(data) {
-			console.log(data);
+	var updateTable = function($tableRow) {
+		sendRequest('update', getDataForRequest(), function(response) {
+			table.editRow(response);
+			clearAll();
 		});
 	}
 
-	var deleteTable = function() {
-		sendRequest('delete', getDataForRequest(), function(data) {
-			console.log(data);
+	var deleteTable = function($tableRow) {
+		sendRequest('delete', getDataForRequest(), function(response) {
+			table.deleteRow(response);
+			clearAll();
 		});
 	}
 
@@ -269,11 +419,13 @@ pizzeriaTableManager = function() {
 		});
 
 		$('#pizzeria-table .button-update').on('click', function() {
-			updateTable();
+			var $tableRow = table.getSelectedRow();
+			updateTable($tableRow);
 		});
 
 		$('#pizzeria-table .button-delete').on('click', function() {
-			deleteTable();
+			var $tableRow = table.getSelectedRow();
+			deleteTable($tableRow);
 		});
 	}
 

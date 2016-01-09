@@ -95,6 +95,16 @@ public class PizzeriaTableManagerController {
 				form.getMaxSeats(), pizzeria);
 		pizzeriaTableDAO.create(table);
 
+		/* We need to provide the id of the table that has just been added to the view. */
+
+		List<PizzeriaTable> updatedTables = pizzeriaTableDAO.getTablesOfPizzeria(pizzeria);
+
+		for (PizzeriaTable updatedTable : updatedTables) {
+			if (updatedTable.getNumber() == form.getNumber()) {
+				form.setId(updatedTable.getId());
+			}
+		}
+
 		return buildJsonResponse(true, form);
 	}
 
@@ -141,7 +151,7 @@ public class PizzeriaTableManagerController {
 		}
 
 		return "{\"success\" : " + success + ", \"id\" : " + form.getId() + ", \"number\" : "
-				+ form.getNumber() + ",\"minSeats\" : " + form.getMinSeats() + ", \"maxSeats\" : "
+				+ form.getNumber() + ", \"minSeats\" : " + form.getMinSeats() + ", \"maxSeats\" : "
 				+ form.getMaxSeats() + "}";
 	}
 }

@@ -6,6 +6,7 @@
 			<table id="tables-table" class="display">
 				<thead>
 					<tr>
+						<!-- <th>Table id</th> -->
 						<th>Table number</th>
 						<th>Minimum seats</th>
 						<th>Maximum seats</th>
