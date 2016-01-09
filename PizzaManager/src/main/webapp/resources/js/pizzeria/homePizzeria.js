@@ -4,7 +4,7 @@ $(function() {
 		var $clickedElement = $(this);
 		var contentToLoad = $clickedElement.data('content');
 
-		$('#content').load(contentToLoad, function() {
+		$('#content').load(contentToLoad, function(data) {
 			$('.nav-pills .active').removeClass('active');
 			$clickedElement.addClass('active');
 		});
