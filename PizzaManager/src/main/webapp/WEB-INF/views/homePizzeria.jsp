@@ -18,6 +18,7 @@
 
 <!-- Scripts for tables management -->
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaTableManager.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaPizzaManager.js"></script>
 
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
@@ -51,7 +52,7 @@
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/homePizzeria.css" />
 
-<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTableManager.css" />
+<!-- <link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTableManager.css" /> -->
 
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
@@ -72,7 +73,7 @@
 					<ul class="nav nav-pills nav-stacked">
 						<!-- <li class="active"><a href="#">Home</a></li> -->
 						<li data-content="pizzeriaTableManager"><a href="#">Manage tables</a></li>
-						<li><a href="#">Pizza</a></li>
+						<li data-content="pizzeriaPizzaManager"><a href="#">Manage pizzas</a></li>
 						<li><a href="#">Beverage</a></li>
 						<li data-content="pizzeriabooking"><a href="#">Booking</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->

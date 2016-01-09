@@ -28,7 +28,17 @@ public class Pizza implements Serializable {
 	private static final long serialVersionUID = 6079186121128866192L;
 
 	public enum PizzaSize {
-		NORMAL, MAXI
+		NORMAL("Normal"), MAXI("Maxi");
+
+		private String string;
+
+		PizzaSize(String string) {
+			this.string = string;
+		}
+
+		public String getString() {
+			return string;
+		}
 	}
 
 	@Id
@@ -45,9 +55,9 @@ public class Pizza implements Serializable {
 	@Column(name = "special", nullable = false)
 	private boolean special;
 
-	//TODO: convertire in lazy e sistemare il dao
-	//vado di fretta per testare le jsp --> by David
-	
+	// TODO: convertire in lazy e sistemare il dao
+	// vado di fretta per testare le jsp --> by David
+
 	@OneToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
