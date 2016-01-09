@@ -1,6 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div class="row">
      <div class='col-xs-8'>
+	     <div class="row">
+			 TakeAway:           
+              <input type="radio" value="takeAway" name="radio1" checked class="switch-radio1" data-on-label="TakeAway" data-off-label="NO">
+             Delivery:
+              <input type="radio" value="delivery" name="radio1" class="switch-radio1" data-on-label="Delivery" data-off-label="NO">
+             Table:
+              <input type="radio" value="table" name="radio1" class="switch-radio1" data-on-label="Table" data-off-label="NO">
+          </div>
+     
      	<div class="form-group">
 		    <label for="bookingNameInput">Nome del prenotante(tradurre in inglese)</label>
 		    <input type="text" class="form-control" id="bookingNameInput" placeholder="Name">
@@ -16,7 +25,7 @@
          </div>
          <div class="form-group">
 		    <label for="bookingAddresInput">Address to delivery(in caso di delivery booking)</label>
-		    <input type="text" class="form-control" id="bookingNameInput" placeholder="Name">
+		    <input type="text" class="form-control" id="bookingAddressInput" placeholder="Name">
 	 	</div>
 	 	<div class="form-group">
 	 		<label for="tables">Select table(in caso di prenotazione in pizzeria)</label>

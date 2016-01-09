@@ -8,9 +8,11 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.BeverageDAO;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
@@ -52,9 +54,21 @@ public class BookingPopulator extends Populator {
 				pizzaOrder2));
 		pizzaOrder2.setPizzaOrderIngredients(ingredientsAdded);
 
+		BeverageOrderItem beverageOrder1 = new BeverageOrderItem();
+		beverageOrder1.setPizzeria_beverage(pizzeriaDAO.getAll().get(0).getBeveragesPriceList().get(0));
+		beverageOrder1.setNumber(4);
+		order.create(beverageOrder1);
+		
+		BeverageOrderItem beverageOrder2 = new BeverageOrderItem();
+		beverageOrder2.setPizzeria_beverage(pizzeriaDAO.getAll().get(0).getBeveragesPriceList().get(1));
+		beverageOrder2.setNumber(1);
+		order.create(beverageOrder2);
+		
 		List<OrderItem> orderItems = new ArrayList<>();
 		orderItems.add(pizzaOrder1);
 		orderItems.add(pizzaOrder2);
+		orderItems.add(beverageOrder1);
+		orderItems.add(beverageOrder2);
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -72,8 +86,12 @@ public class BookingPopulator extends Populator {
 			bookingDAO.create(b);
 			pizzaOrder1.setBooking(b);
 			pizzaOrder2.setBooking(b);
+			beverageOrder1.setBooking(b);
+			beverageOrder2.setBooking(b);
 			order.update(pizzaOrder1);
 			order.update(pizzaOrder2);
+			order.update(beverageOrder1);
+			order.update(beverageOrder2);
 
 		} catch (ParseException e) {
 			e.printStackTrace();

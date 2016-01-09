@@ -1,21 +1,20 @@
 var LiveOrderTool = function(){
-	
-
 	/*Identificativi universali:
 		-Bevande: id(per ora corrispondono agli id del database, l'ideale è fare una crittografia degli id del database, ed usare quelli localmente)
-		-Ingredienti: nome
+		-Ingredienti: id 
 		-Pizze: nome + nome ingredienti
 	*/
 	
-	
 	var pizzeFromServer;//è la lista delle pizze, con i suoi ingredienti basilari, fornite dalla pizzeria e che risiedono sul database
 	var beverageFromServer;//è la lista di tutte le bevande fornite dalla pizzeria e che risiedono sul database
-	var pizzeriaIngredients;//è la lista di tutti gli ingredienti di cui è fornita la pizzeria
+	var pizzeriaIngredientsFromServer;//è la lista di tutti gli ingredienti di cui è fornita la pizzeria
 	
 	var pizzaList = new Array();//è la lista delle pizze ordinate dal client
 	var beverageList = new Array();//è la lista delle bevande  ordinate dal client
 	
+	//VIEW
 	var tablePizza, tableBeverage;//tabelle
+	//Id generator
 	var codePizza = 0;//l'id delle pizze viene generato al momento, è un id valido localmente in quanto le pizze create non esistono sul database  
 	
 	//costanti
@@ -29,6 +28,8 @@ var LiveOrderTool = function(){
 			//creazione SELECT2
 			$(".js-example-basic-single").select2();
 			$(".js-example-basic-multiple").select2();
+			//creazione bootsrap-switch
+			$(".switch-radio1").bootstrapSwitch();
 			//proprietà bottoni di modifica disabilitati al caricamento della pagina
 			setControlButtons("pizza", false, true, true);
 			setControlButtons("beverage", false, true, true);
@@ -37,7 +38,7 @@ var LiveOrderTool = function(){
 				"scrollY" : "320px",
 				"scrollCollapse" : true,
 				"paging" : false,
-				columns : [ {
+				columns : [{
 					"className" : 'details-control',
 					"orderable" : false,
 					"data" : null,
@@ -87,25 +88,28 @@ var LiveOrderTool = function(){
 					url : "/pizzerialiveorderPizzas",
 					type : 'GET',
 					success : function(pizzeria) {
-						console.log(pizzeria);
+
+						//init From server
 						pizzeFromServer = pizzeria.pizzas;
 						beverageFromServer = pizzeria.beverages;
-						pizzeriaIngredients = pizzeria.allPizzeriaIngredients;
-						console.log(pizzeFromServer);
+						pizzeriaIngredientsFromServer = pizzeria.allPizzeriaIngredients;
+						//popolazione pizzas: fatta con SPRING
 						//popolazione beverage
 						createBeverage(beverageFromServer);
 						
-						//
+						//se la pagina è stata invocata per modificare un booking
 						if(communicator.bookingToEdit!== undefined){
-							//RICHIAMARE IL MAPPING
+							
 							var bookingToEdit=communicator.bookingToEdit;
-							var List= mapping(bookingToEdit);
-							//settare le pizze
-							for (var int = 0; int < List.length; int++) {
-								resolvePizza(false,List[int]);
+							for (var int = 0; int < bookingToEdit.pizzas.length; int++) {
+								var pizzaPostMapping= mapping(bookingToEdit.pizzas[int]);
+								resolvePizza(false,pizzaPostMapping,bookingToEdit.pizzas[int].number);
 							}
-							//settare le bevande
+							for (var int2 = 0; int2 < bookingToEdit.beverages.length; int2++) {
+								resolveBeverage(false,bookingToEdit.beverages[int2]);
+							}
 							//settare le intestazioni 
+							
 							
 							//Eliminare subito l'oggetto dal communicator
 							communicator.bookingToEdit=undefined;
@@ -132,8 +136,6 @@ var LiveOrderTool = function(){
 
 			var tr = $(this).closest('tr');
 			var row = tablePizza.row(tr);
-			//TODO: mi prendo dalla riga selezionata la pizza, e verifico se possiede ingredienti aggiunti
-			//o rimossi
 			if (row.child.isShown()) {
 				row.child.remove();
 				tr.removeClass('shown');
@@ -180,9 +182,14 @@ var LiveOrderTool = function(){
 			counterItem('counterPizza','i');
 		});
 		
+		$('.switch-radio1').on('switchChange.bootstrapSwitch', function(event, state) {
+			  console.log(this.value); // DOM element
+			  checkTypeBooking(this.value);
+			});
+		
 		//Listener che selezione la riga e carica i dati del selezionato
 		$('#resumeTablePizza tbody').on('click','tr',function() {
-			if ($(this).hasClass('selected') && tablePizza.row(this).data() != undefined && ($(this).hasClass("odd") || $(this).hasClass("odd") || $(this).hasClass("even"))) {
+			if ($(this).hasClass('selected') && tablePizza.row(this).data() != undefined && ($(this).hasClass("odd") || $(this).hasClass("even"))) {
 				
 				$(this).removeClass('selected');
 				setControlButtons("pizza", false, true, true);
@@ -194,13 +201,12 @@ var LiveOrderTool = function(){
 				tablePizza.$('tr.selected').removeClass('selected');
 				$(this).addClass('selected');
 				setControlButtons("pizza", true, false, false);
-				//load value relative to the selected row
+	
 				var code = tablePizza.row($(this)).data()[columnId];
 				var number = tablePizza.row($(this)).data()[columnNumber];
 				for (var j = 0; j < pizzaList.length; j++) {
 						if (pizzaList[j].getCode() == code) {
-							var pizzaCurrent = pizzaList[j];
-							loadInfoForPizzaControls(pizzaCurrent,number);
+							loadInfoForPizzaControls( pizzaList[j],number);
 						}
 					}
 				}//end else if
@@ -209,7 +215,7 @@ var LiveOrderTool = function(){
 		/*Listener che selezione la riga e carica i dati del selezionato*/
 		$('#resumeTableBeverage tbody').on('click','tr',function() {
 
-			if($(this).hasClass('selected') && tableBeverage.row(this).data() != undefined && ($(this).hasClass("odd")|| $(this).hasClass("odd") || $(this).hasClass("even"))) {
+			if($(this).hasClass('selected') && tableBeverage.row(this).data() != undefined && ($(this).hasClass("odd")||  $(this).hasClass("even"))) {
 								
 				$(this).removeClass('selected');
 				setControlButtons("beverage", false, true, true);
@@ -218,12 +224,23 @@ var LiveOrderTool = function(){
 			} 
 			else if (!$(this).hasClass('selected') && tableBeverage.row(this).data() != undefined && ($(this).hasClass("odd") || $(this).hasClass("even"))) {
 								
-				tablePizza.$('tr.selected').removeClass('selected');
+				tableBeverage.$('tr.selected').removeClass('selected');
 				$(this).addClass('selected');
 				setControlButtons("beverage", true, false, false);
 				var number = tableBeverage.row($(this)).data()[columnNumber];
+				var id = tableBeverage.row($(this)).data()[columnId];
+				
+				//setting controlsBeverage
 				$('#counterBeverage').val(number);
-
+				for (var int = 0; int < beverageFromServer.length; int++) {
+					if(beverageFromServer[int].id==id){
+						var string=beverageFromServer[int].brand+" "+beverageFromServer[int].name+" - "+beverageFromServer[int].container+" - size:"+beverageFromServer[int].size;
+						$("#beverageList.js-example-basic-single").select2('data', {
+							id: "idBev_"+id,
+							text : string
+						});						
+					}
+				}
 			}//end else if
 		});
 
@@ -257,6 +274,21 @@ var LiveOrderTool = function(){
 		});
 	}
 
+	var checkTypeBooking = function(type){
+		if(type=="delivery"){
+			$("#tables").prop("disabled",true);
+			$("#bookingAddressInput").prop("disabled",false);
+		}
+		else if(type=="takeAway"){
+			$("#tables").prop("disabled",true);
+			$("#bookingAddressInput").prop("disabled",true);
+		}
+		else if(type=="table"){
+			$("#tables").prop("disabled",false);
+			$("#bookingAddressInput").prop("disabled",true);
+		}
+	}
+	
 	var removeItem = function(type) {
 		
 		if (type === "pizza") {
@@ -322,12 +354,9 @@ var LiveOrderTool = function(){
 
 	/*************** FUNZIONI UTILITA SOLO PER PIZZA *****************************************************************************************************************/
 
-	var mapping= function(bookingToEdit){
+	var mapping= function(pizzaFromBooking){
 		
-		var list=new Array();
-		listPizzasBooking=bookingToEdit.pizzas;
-		for (var int = 0; int < listPizzasBooking.length; int++) {
-			var pizzaFromBooking = listPizzasBooking[int];
+	
 			var pizza= new Pizza();
 			pizza.setName(pizzaFromBooking.name);
 			pizza.setSize(pizzaFromBooking.size);
@@ -338,25 +367,19 @@ var LiveOrderTool = function(){
 				pizza.setEdited(true);
 				for (var int1 = 0; int1 < ingredientsToAdd.length; int1++) {
 					pizza.getIngredientsAdded().push({
-						//id : ingredientsToAdd[int1].id,
-						id:int1,
-						//text : ingredientsToAdd[int1].text
-						text : ingredientsToAdd[int1]
+						id : ingredientsToAdd[int1].id,
+						text : ingredientsToAdd[int1].name
 					});
 				}
 				for (var int2 = 0; int2 < ingredientsToRemove.length; int2++) {
 					pizza.getIngredientsRemoved().push({
-						//id : ingredientsToRemove[int2].id,
-						id:int2,
-						//text : ingredientsToRemove[int2].text
-						text : ingredientsToAdd[int2]
+						id : ingredientsToRemove[int2].id,
+						text : ingredientsToRemove[int2].name
 					});
 				}
 			}	
-			list.push(pizza);
 			console.log('ho mappato');console.log(pizza);
-		}
-		return list;
+		return pizza;
 	}
 	
 	
@@ -365,7 +388,6 @@ var LiveOrderTool = function(){
 
 		var orderPizzas = new Array();
 		var rows = tablePizza.rows().data();
-		//console.log(tablePizza.rows().count());
 		for (var int = 0; int < tablePizza.rows().count(); int++) {
 			var dataRow = rows[int];
 			for (var int2 = 0; int2 < pizzaList.length; int2++) {
@@ -402,30 +424,42 @@ var LiveOrderTool = function(){
 		$("#removeIngredients.js-example-basic-multiple > option").remove();
 		for (var int = 0; int < pizzeFromServer.length; int++) {
 			if (pizzeFromServer[int].name == pizzaName) {
-				//appendiamo la differenza tra tutti gli ingredienti della pizzeria e quelli della pizza, ovvero gli ingredienti aggiungibili alla pizza
-				var difference = _.difference(pizzeriaIngredients,
-						pizzeFromServer[int].ingredients);
+				
+				var difference=new Array();
+				for (var int2 = 0; int2 < pizzeriaIngredientsFromServer.length; int2++) {
+					var currentPizzeriaIngredient=pizzeriaIngredientsFromServer[int2];
+					var found=false;
+					for (var int3 = 0; int3 < pizzeFromServer[int].ingredients.length; int3++) {
+						if(currentPizzeriaIngredient.name==pizzeFromServer[int].ingredients[int3].name){
+							found=true;
+						}
+					}
+					
+					if(found==false){
+						difference.push(currentPizzeriaIngredient);
+					}
+				}
+				
 				console.log(difference);
 				for (var int2 = 0; int2 < difference.length; int2++) {
 					$("#addIngredients.js-example-basic-multiple").append(
-							"<option value="+pizzaName+"_"+int2+">"
-									+ difference[int2] + "</option>");
+							"<option value="+difference[int2].id+">"
+									+ difference[int2].name + "</option>");
 				}
 				//appendiamo gli ingredienti base della pizza all select degli ingredienti rimovibili
 				for (var int2 = 0; int2 < pizzeFromServer[int].ingredients.length; int2++) {
 					$("#removeIngredients.js-example-basic-multiple").append(
-							"<option value="+pizzaName+"_"+int2+">"
-									+ pizzeFromServer[int].ingredients[int2]
+							"<option value="+pizzeFromServer[int].ingredients[int2].id+">"
+									+ pizzeFromServer[int].ingredients[int2].name
 									+ "</option>");
 				}
 			}
 		}
 	}
 
-	var resolvePizza = function(editing,pizzaFromBooking) {
+	var resolvePizza = function(editing,pizzaFromBooking,numberOfItem) {
 
 		var pizza = new Pizza();
-		console.log(namePizzaSelected)
 		var pizzaNumber;
 		var ingredientsToAdd;
 		var ingredientsToRemove;
@@ -442,7 +476,6 @@ var LiveOrderTool = function(){
 			ingredientsToAdd = $('#addIngredients.js-example-basic-multiple').select2("data");
 			ingredientsToRemove = $('#removeIngredients.js-example-basic-multiple').select2("data");
 			
-			console.log(ingredientsToAdd);
 			pizza.setGlutenFree($('#glutenButtons .active > input').val());
 			pizza.setSize($('#sizeButtons .active > input').val());
 			pizza.setName(namePizzaSelected);
@@ -463,8 +496,9 @@ var LiveOrderTool = function(){
 				}
 			}	
 		}
-		else{
+		else{//pizzaFromBooking e numberOfItem sono entrambi diversi da undefined
 			pizza=pizzaFromBooking;
+			pizzaNumber=numberOfItem;
 			console.log(pizza);
 		}
 		
@@ -536,53 +570,32 @@ var LiveOrderTool = function(){
 		//mi serve la dimensione della lista delle pizze per poter accedere correttamente all'oggetto rows
 
 		console.log("STO EDITANDO LA PIZZA con code:" + code);
-		var rows = tablePizza.rows().data();
-		for (var int = 0; int < tablePizza.rows().count(); int++) {
-			var dataRow = rows[int];
-			if (dataRow[columnId] == code) {
-				found = true;
-				console.log("trovato il tr con code:" + dataRow[columnId]+ ", e numero di pizze: " + dataRow[columnNumber]);
+		var newNumber;
+		if (loaded === false)
+			newNumber = new Number(dataRow[columnNumber]) + new Number(number);
+		else
+			newNumber = new Number(number);
+		
+		tablePizza.row('.selected').remove().draw(false);
+		for (var j = 0; j < pizzaList.length; j++) {
+			if (pizzaList[j].getCode() == code) {
+				var pizzaCurrent = pizzaList[j];
+				tablePizza.row.add(
+						["", 
+						 pizzaCurrent.getName(),
+						 pizzaCurrent.getGlutenFree(),
+						 pizzaCurrent.getSize(),
+						 newNumber.toString(),
+						 pizzaCurrent.getCode()]).draw(false);
 
-				var newNumber;
-				if (loaded === false)
-					newNumber = new Number(dataRow[columnNumber]) + new Number(number);
-				else
-					newNumber = new Number(number);
+				//FACCIAMO scrollare la scroll fino alla nuova riga aggiunta
+				$('.dataTables_scrollBody').animate({
+					scrollTop : $('#resumeTablePizza tbody > tr:last-child').offset().top
+				}, 100);
 
-				//rimozione della vecchia riga
-				console.log("sto rimuovendo la riga"+ tablePizza.row(int).data())
-				//PEZZA PER RIMUOVERE LA RIGA VECCHIA
-				for (var int2 = 0; int2 < tablePizza.rows().count(); int2++) {
-					
-					if (tablePizza.row(int2).data()[columnId] == rows[int][columnId]) {
-						tablePizza.row(int2).remove().draw(false);
-					}
-				}
-				//aggiunta della nuova riga (PURTROPPO NON È POSSIBILE EDITARE DIRETTAMENTE LA RIGA)
-				for (var j = 0; j < pizzaList.length; j++) {
-					if (pizzaList[j].getCode() == code) {
-						var pizzaCurrent = pizzaList[j];
-						tablePizza.row.add(
-								["", 
-								 pizzaCurrent.getName(),
-								 pizzaCurrent.getGlutenFree(),
-								 pizzaCurrent.getSize(),
-								 newNumber.toString(),
-								 pizzaCurrent.getCode()]).draw(false);
-
-						//FACCIAMO scrollare la scroll fino alla nuova riga aggiunta
-						$('.dataTables_scrollBody').animate({
-							scrollTop : $('#resumeTablePizza tbody > tr:last-child').offset().top
-						}, 100);
-
-						return;
-					}
-				}
-
-				//update pizzaList	
+				return;
 			}
 		}
-
 	}
 
 	var addResumePizzaItem = function(pizza, number) {
@@ -753,18 +766,34 @@ var LiveOrderTool = function(){
 			});
 	}
 
-	var resolveBeverage = function(editing) {
+	var resolveBeverage = function(editing,beverageFromBooking) {
 
-		if ($("#beverageList.js-example-basic-single").select2("data").text == "Select Beverage") {
-			$('#myModal').modal('show');
-			return;
+		var beverageNumber;
+		var beverageSelectedId;
+		var res=new Array();
+		
+		if(beverageFromBooking===undefined){
+			
+			if ($("#beverageList.js-example-basic-single").select2("data").text == "Select Beverage") {
+				$('#myModal').modal('show');
+				return;
+			}
+			
+			beverageNumber = $('#counterBeverage').val();
+			beverageSelectedId = $("#beverageList.js-example-basic-single").select2("data");
+			console.log(beverageSelectedId);
+			res= beverageSelectedId.id.split("_");
+			console.log(res[1]);			
 		}
-
-		var beverageNumber = $('#counterBeverage').val();
-		var beverageSelectedId = $("#beverageList.js-example-basic-single").select2("data");
-		console.log(beverageSelectedId);
-		var res = beverageSelectedId.id.split("_");
-		console.log(res[1]);
+		else{
+			console.log(beverageFromBooking.number);
+			console.log(beverageFromBooking.id);
+			beverageNumber=beverageFromBooking.number;
+			//pezza
+			res.push("pezza");
+			res.push(beverageFromBooking.id);
+			console.log(res);
+		}
 
 		var code = checkBeverageExistence(res[1]);
 		if (editing === true) {
@@ -810,7 +839,30 @@ var LiveOrderTool = function(){
 
 	var editResumeBeverageItem = function(idBeverage, number, loaded) {
 
-		var rows = tableBeverage.rows().data();
+		var newNumber;
+		if (loaded === false)
+			newNumber = new Number(dataRow[columnNumber]) + new Number(number);
+		else
+			newNumber = new Number(number);
+		
+		tableBeverage.row('.selected').remove().draw(false);
+		for (var int = 0; int < beverageFromServer.length; int++) {
+			var beverageSelectedId = $("#beverageList.js-example-basic-single").select2("data");
+			var res = beverageSelectedId.id.split("_");
+			if (beverageFromServer[int].id == res[1]) {
+				var currentBeverage = beverageFromServer[int];
+				tableBeverage.row.add(
+						[ currentBeverage.brand, currentBeverage.name,
+						  currentBeverage.container,
+						  currentBeverage.size, newNumber,
+						  currentBeverage.id ]).draw(false);
+				return;
+
+			}
+		}
+		
+		
+		/*var rows = tableBeverage.rows().data();
 		for (var int = 0; int < tableBeverage.rows().count(); int++) {
 			var dataRow = rows[int];
 			if (dataRow[columnId] == idBeverage) {
@@ -850,7 +902,7 @@ var LiveOrderTool = function(){
 
 				//update pizzaList	
 			}
-		}
+		}*/
 
 	}
 
