@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
@@ -17,16 +19,16 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-					<form class="navbar-form form-inline">
+					<form:form class="navbar-form form-inline" action="search" method="post" modelAttribute="searchForm">
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Search">
+								<input type="text" class="form-control" name="element" placeholder="Search">
 								<div class="input-group-addon navbar-search-submit">
 									<span class="glyphicon glyphicon-search"></span>
 								</div>
 							</div>
 						</div>
-					</form>
+					</form:form>
 				</li>
 				<li><a href="#">Link3</a></li>
 				<li class="dropdown">
