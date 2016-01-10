@@ -45,7 +45,7 @@
 		<div class="row">
 
 			<div id="wrapper" class="col-xs-10">
-				<div class="card">
+				<div class="buble">
 					<div id="content"><h2>View Pizzeria ${pizzeria.name}</h2></div>
 				</div>
 			</div>
