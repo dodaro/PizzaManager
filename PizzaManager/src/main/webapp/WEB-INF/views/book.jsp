@@ -34,6 +34,7 @@
 					<div id="content"><h2>View Pizzeria ${pizzeria.name}</h2></div>
 				</div>
 			</div>
+
 				<div class="col-xs-3 col-sm-3 col-sm-push-3">
 <h2>Book Now Your Pizzas!</h2>
 <h2>Menù</h2>
@@ -57,7 +58,12 @@
     </div><!-- /.boxinner -->
 </div><!-- /.box -->
 </div>	
-
+			<div class="col-xs-3 col-sm-3 col-sm-pull-3">
+			<div>
+Numero di Posti<input type="text" class="form-control" name="numeroPosti" placeholder="Inserire numero di posti da prenotare">
+	<input type="submit" class="btn btn-primary" value="Verify" />
+</div>
+</div>
 </div>
 	</div>
 </body>
