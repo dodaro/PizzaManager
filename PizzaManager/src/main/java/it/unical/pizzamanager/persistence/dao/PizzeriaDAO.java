@@ -3,6 +3,7 @@ package it.unical.pizzamanager.persistence.dao;
 import java.util.List;
 
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 
 public interface PizzeriaDAO {
 
@@ -17,4 +18,6 @@ public interface PizzeriaDAO {
 	Pizzeria get(String email);
 
 	public List<Pizzeria> getAll();
+
+	public List<RelationPizzeriaPizza> getMenuPizze(Integer id);
 }

@@ -30,16 +30,14 @@ public class BeverageOrderItem extends OrderItem {
 		temperature = BeverageTemperature.COLD;
 	}
 
-	
 	public RelationPizzeriaBeverage getPizzeria_beverage() {
 		return pizzeria_beverage;
 	}
 
-
 	public void setPizzeria_beverage(RelationPizzeriaBeverage pizzeria_beverage) {
 		this.pizzeria_beverage = pizzeria_beverage;
 	}
-	
+
 	public BeverageTemperature getTemperature() {
 		return temperature;
 	}
@@ -48,4 +46,11 @@ public class BeverageOrderItem extends OrderItem {
 		this.temperature = temperature;
 	}
 
+	public String pizzeriaName() {
+		return pizzeria_beverage.getPizzeria().getName();
+	}
+
+	public String beverageName() {
+		return pizzeria_beverage.getBeverage().getName();
+	}
 }
