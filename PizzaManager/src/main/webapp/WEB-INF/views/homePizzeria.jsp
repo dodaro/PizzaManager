@@ -4,6 +4,7 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap-switch.js"></script>
 
 <script type="text/javascript" src="resources/js/jquery.dataTables.js"></script>
 <script type="text/javascript" src="resources/js/select2.js"></script>
@@ -48,6 +49,7 @@
 
 <link rel="stylesheet" type="text/css" href="resources/css/select2.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/select2-bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap-switch.css" />
 
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/homePizzeria.css" />
@@ -78,7 +80,7 @@
 						<li data-content="pizzeriabooking"><a href="#">Booking</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
-						<li><a href="#">Live Restaurant</a></li>
+						<li data-content="pizzerialiverestaurant"><a href="#">Live Restaurant</a></li>
 						<li><a href="#">Kitchen</a></li>
 						<li><a href="#">Statistics</a></li>
 					</ul>

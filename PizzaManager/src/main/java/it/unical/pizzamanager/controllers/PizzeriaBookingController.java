@@ -41,6 +41,7 @@ public class PizzeriaBookingController {
 	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model) {
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
+		//TODO filtrare i booking non confermati
 		System.out.println(bookings.get(0).getDate());
 		return bookings;
 	}
