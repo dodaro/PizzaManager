@@ -79,7 +79,7 @@
 						<li data-content="pizzeriabooking"><a href="#">Booking</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
-						<li><a href="#">Live Restaurant</a></li>
+						<li data-content="pizzerialiverestaurant"><a href="#">Live Restaurant</a></li>
 						<li><a href="#">Kitchen</a></li>
 						<li><a href="#">Statistics</a></li>
 					</ul>

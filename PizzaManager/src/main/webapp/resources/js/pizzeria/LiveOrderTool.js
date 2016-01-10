@@ -30,6 +30,7 @@ var LiveOrderTool = function(){
 			$(".js-example-basic-multiple").select2();
 			//creazione bootsrap-switch
 			$(".switch-radio1").bootstrapSwitch();
+			checkTypeBooking("takeAway");
 			//proprietà bottoni di modifica disabilitati al caricamento della pagina
 			setControlButtons("pizza", false, true, true);
 			setControlButtons("beverage", false, true, true);
