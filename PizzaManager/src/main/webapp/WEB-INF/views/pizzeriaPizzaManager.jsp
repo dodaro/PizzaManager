@@ -2,42 +2,43 @@
 
 <div id="pizza-manager">
 	<div class="row">
-		<div class="col-md-7">
-			<table id="tables-table" class="display">
+		<div class="col-md-8">
+			<table id="pizzas-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
-						<!-- <th>Table id</th> -->
-						<th>Table number</th>
-						<th>Minimum seats</th>
-						<th>Maximum seats</th>
-						<th>Available</th>
+						<th>PizzaId</th>
+						<th>Pizza</th>
+						<th>Size</th>
+						<th>Preparation Time</th>
+						<th>Gluten Free</th>
+						<th>Price</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-5">
-			<form class="edit-table-form form-horizontal">
+		<div class="col-md-4">
+			<form class="edit-pizza-form home-form">
 				<div class="form-group">
-					<label for="table-number" class="col-sm-offset-1 col-sm-5 control-label">Table number</label>
-					<div class="col-sm-5">
-						<input type="number" id="table-number" class="form-control">
-					</div>
+					<label for="pizza" class="control-label">Pizza</label> <input type="text" id="pizza"
+						class="form-control">
 				</div>
 				<div class="form-group">
-					<label for="table-min-seats" class="col-sm-offset-1  col-sm-5 control-label">Minimum
-						seats</label>
-					<div class="col-sm-5">
-						<input type="number" id="table-min-seats" class="form-control">
-					</div>
+					<label for="pizza-size" class="control-label">Size</label> <input type="text" id="pizza-size"
+						class="form-control">
 				</div>
 				<div class="form-group">
-					<label for="table-max-seats" class="col-sm-offset-1 col-sm-5 control-label">Maximum
-						seats</label>
-					<div class="col-sm-5">
-						<input type="number" id="table-max-seats" class="form-control">
-					</div>
+					<label for="pizza-preparation-time" class="control-label">Preparation time</label> <input
+						type="text" id="pizza-preparation-time" class="form-control">
+				</div>
+				<div class="checkbox">
+					<label> <input type="checkbox" id="pizza-gluten-free"> Gluten free
+					</label>
+				</div>
+				<div class="form-group">
+					<label for="pizza-price" class="control-label">Price</label> <input type="text"
+						id="pizza-price" class="form-control">
 				</div>
 			</form>
 			<div class="buttons-container col-sm-offset-1 col-sm-11">
@@ -56,5 +57,5 @@
 </div>
 
 <script type="text/javascript">
-	pizzeriaTableManager.init();
+	pizzeriaPizzaManager.init();
 </script>
