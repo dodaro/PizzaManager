@@ -17,7 +17,7 @@ body {
 }
 
 /* This rule removes the padding from Bootstrap columns. */
-[class^=col-xs], [class^=col-md] {
+[class^=col-xs], [class^=col-md], [class^=col-lg] {
 	padding: 0;
 }
 

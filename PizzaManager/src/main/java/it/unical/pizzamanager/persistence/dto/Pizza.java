@@ -28,7 +28,7 @@ public class Pizza implements Serializable {
 	private static final long serialVersionUID = 6079186121128866192L;
 
 	public enum PizzaSize {
-		NORMAL("Normal"), MAXI("Maxi");
+		SMALL("Small"), NORMAL("Normal"), MAXI("Maxi");
 
 		private String string;
 

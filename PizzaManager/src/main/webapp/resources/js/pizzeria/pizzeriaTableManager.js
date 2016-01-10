@@ -34,6 +34,16 @@ pizzeriaTableManager = function() {
 						'data' : 'maxSeats'
 					}, {
 						'data' : 'available'
+					} ],
+					/*
+					 * Renders "Yes" or "No" instead of "true" or "false" in the
+					 * "Available" column.
+					 */
+					columnDefs : [ {
+						"render" : function(data, type, row) {
+							return data ? 'Yes' : 'No';
+						},
+						"targets" : 3
 					} ]
 				});
 			},
@@ -90,7 +100,7 @@ pizzeriaTableManager = function() {
 					number : rowData.number,
 					minSeats : rowData.minSeats,
 					maxSeats : rowData.maxSeats,
-					available : 'Yes'
+					available : rowData.available
 				}).draw();
 			},
 
@@ -166,6 +176,23 @@ pizzeriaTableManager = function() {
 				setHighlighted($maxSeats, highlighted);
 			},
 
+			showTooltip : function(buttonClass, text) {
+				/* If a tooltip is already shown, just change the text. */
+				var $existingTooltip = $('.buttons-container .tooltip');
+				if ($existingTooltip.length > 0) {
+					$existingTooltip.find('.tooltip-inner').html(text);
+				} else {
+					$('#pizzeria-table .' + buttonClass).tooltip({
+						title : text,
+						trigger : 'manual'
+					}).tooltip('show');
+				}
+			},
+
+			hideTooltips : function() {
+				$('#pizzeria-table button').tooltip('hide');
+			},
+
 			clearForm : function() {
 				$('#pizzeria-table .edit-table-form input').val(null);
 			},
@@ -221,6 +248,8 @@ pizzeriaTableManager = function() {
 	 * This function also manages highlighting of wrong fields, if any.
 	 */
 	var canAdd = function() {
+		var canAdd = true;
+
 		/* Check if all the form fields are filled. */
 		if (!form.isFilled()) {
 			return false;
@@ -233,7 +262,11 @@ pizzeriaTableManager = function() {
 		var formData = form.getFormData();
 		if (formData.minSeats > formData.maxSeats) {
 			form.setSeatsFieldsHighlighted(true);
-			return false;
+			form.showTooltip('button-add', 'Minimum seats are less than maximum seats.');
+			canAdd = false;
+		} else {
+			/* Fields are ok, clear existing highlighting if any. */
+			form.setSeatsFieldsHighlighted(false);
 		}
 
 		/*
@@ -243,16 +276,24 @@ pizzeriaTableManager = function() {
 		var newTableNumber = form.getFormData().number;
 		if (table.containsTableNumber(newTableNumber)) {
 			form.setNumberFieldHighlighted(true);
-			return false;
+			form.showTooltip('button-add', 'A table with this number already exists.');
+			canAdd = false;
+		} else {
+			/* Field is ok, clear existing highlighting if any. */
+			form.setNumberFieldHighlighted(false);
 		}
 
-		/* Form is ok, remove existing highlighting */
-		form.setNumberFieldHighlighted(false);
-		form.setSeatsFieldsHighlighted(false);
-		return true;
+		if (canAdd) {
+			/* Form is ok, hide tooltips if any. */
+			form.hideTooltips();
+		}
+
+		return canAdd;
 	}
 
 	var canUpdate = function() {
+		var canUpdate = true;
+
 		/* Check if all the form fields are filled. */
 		if (!form.isFilled()) {
 			return false;
@@ -265,7 +306,11 @@ pizzeriaTableManager = function() {
 		var formData = form.getFormData();
 		if (formData.minSeats > formData.maxSeats) {
 			form.setSeatsFieldsHighlighted(true);
-			return false;
+			form.showTooltip('button-update', 'Minimum seats are less than maximum seats.');
+			canUpdate = false;
+		} else {
+			/* Fields are ok, clear existing highlighting if any. */
+			form.setSeatsFieldsHighlighted(false);
 		}
 
 		/*
@@ -276,23 +321,28 @@ pizzeriaTableManager = function() {
 		var $rowByNumber = table.getRowByTableNumber(formData.number);
 		if ($rowByNumber != undefined && !table.isRowSelected($rowByNumber)) {
 			form.setNumberFieldHighlighted(true);
-			return false;
+			form.showTooltip('button-update', 'A table with this number already exists.');
+			canUpdate = false;
+		} else {
+			/* Field is ok, clear existing highlighting if any. */
+			form.setNumberFieldHighlighted(false);
 		}
 
-		/* Form is ok, remove existing highlighting */
-		form.setNumberFieldHighlighted(false);
-		form.setSeatsFieldsHighlighted(false);
+		if (canUpdate) {
+			/* Form is ok, remove tooltips if any. */
+			form.hideTooltips();
+		}
 
 		/*
 		 * If the form and the selected row contain the same data the update
-		 * would be redundant, but this doesn't involve highlighting at all but
+		 * would be redundant. This doesn't involve highlighting at all but
 		 * update is forbidden anyway in this case.
 		 */
 		if (formDataEqualsSelectedRowData()) {
 			return false;
 		}
 
-		return true;
+		return canUpdate;
 	}
 
 	var getDataForRequest = function() {
@@ -429,6 +479,7 @@ pizzeriaTableManager = function() {
 
 		$('#pizzeria-table .button-update').on('click', function() {
 			var $tableRow = table.getSelectedRow();
+			form.showTooltip('button-update', "AAA");
 			updateTable($tableRow);
 		});
 
