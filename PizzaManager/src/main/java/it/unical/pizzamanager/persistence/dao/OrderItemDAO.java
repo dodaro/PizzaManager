@@ -17,4 +17,6 @@ public interface OrderItemDAO {
 	public List<PizzaOrderItem> getOrderPizza();
 
 	public List<BeverageOrderItem> getOrderBeverage();
+
+	public OrderItem getItem(Integer id);
 }

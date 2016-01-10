@@ -56,5 +56,4 @@ public class PizzeriaTableForm {
 	public void setMaxSeats(int maxSeats) {
 		this.maxSeats = maxSeats;
 	}
-
 }

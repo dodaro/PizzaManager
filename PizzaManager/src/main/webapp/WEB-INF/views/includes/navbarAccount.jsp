@@ -15,7 +15,8 @@
 		<div class="collapse navbar-collapse" id="id-navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="#">Link1</a></li>
-				<li><a href="#">Link2</a></li>
+				<%--if session user condition --%>
+				<li><a href="#">Cart</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li>
@@ -30,7 +31,7 @@
 						</div>
 					</form:form>
 				</li>
-				<li><a href="#">Link3</a></li>
+				<li><a href="#">Adv.Search</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<span class="glyphicon glyphicon-user button-glyphicon"></span>
@@ -41,7 +42,7 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Profile</a></li>
+						<li><a href="/user">Profile</a></li>
 						<li class="divider"></li>
 						<li><a href="/logout">Log out</a></li>
 					</ul>

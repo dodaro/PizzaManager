@@ -3,6 +3,7 @@ package it.unical.pizzamanager.persistence.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -18,6 +19,9 @@ public class User extends Account {
 
 	private static final long serialVersionUID = -6053598225539038240L;
 
+	@Column(name = "name", length = 255)
+	private String name;
+
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Cart cart;
@@ -32,6 +36,7 @@ public class User extends Account {
 
 	public User() {
 		super();
+		this.name="";
 		this.cart = null;
 		this.bookings = new ArrayList<Booking>();
 		this.feedbacks = new ArrayList<Feedback>();
@@ -63,5 +68,13 @@ public class User extends Account {
 
 	public void setFeedbacks(List<Feedback> feedbacks) {
 		this.feedbacks = feedbacks;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }

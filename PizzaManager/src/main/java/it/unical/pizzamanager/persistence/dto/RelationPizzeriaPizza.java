@@ -53,8 +53,11 @@ public class RelationPizzeriaPizza implements Serializable {
 	@Column(name = "size")
 	private PizzaSize pizzaSize;
 
+	/**
+	 * Preparation time in seconds.
+	 */
 	@Column(name = "preparation_time")
-	private Double preparationTime;
+	private Integer preparationTime;
 
 	@Column(name = "gluten_free", nullable = false)
 	private Boolean glutenFree;
@@ -66,22 +69,21 @@ public class RelationPizzeriaPizza implements Serializable {
 	@OneToMany(mappedBy = "pizzeria_pizza", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private List<PizzaOrderItem> orderItems;
-	
-	
+
 	public RelationPizzeriaPizza() {
 		this.id = DatabaseHandler.NO_ID;
 		this.pizzeria = null;
 		this.pizza = null;
 		this.price = 0.0;
 		this.pizzaSize = PizzaSize.NORMAL;
-		this.preparationTime = 0.0;
+		this.preparationTime = 0;
 		this.glutenFree = false;
 		this.images = new ArrayList<Image>();
-		this.orderItems=new ArrayList<>();
+		this.orderItems = new ArrayList<>();
 	}
 
 	public RelationPizzeriaPizza(Pizzeria pizzeria, Pizza pizza, Double price, PizzaSize pizzaSize,
-			Double preparationTime, Boolean glutenFree) {
+			Integer preparationTime, Boolean glutenFree) {
 		this.id = DatabaseHandler.NO_ID;
 		this.pizzeria = pizzeria;
 		this.pizza = pizza;
@@ -90,7 +92,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.preparationTime = preparationTime;
 		this.glutenFree = glutenFree;
 		this.images = new ArrayList<Image>();
-		this.orderItems=new ArrayList<>();
+		this.orderItems = new ArrayList<>();
 	}
 
 	public int getId() {
@@ -135,11 +137,11 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.pizzaSize = pizzaSize;
 	}
 
-	public Double getPreparationTime() {
+	public Integer getPreparationTime() {
 		return preparationTime;
 	}
 
-	public void setPreparationTime(Double preparationTime) {
+	public void setPreparationTime(Integer preparationTime) {
 		this.preparationTime = preparationTime;
 	}
 
