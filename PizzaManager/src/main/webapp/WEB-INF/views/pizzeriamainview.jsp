@@ -17,15 +17,14 @@
 
 
 #map {
-
-  	
   	margin-left: 50px;
 	height: 50%;
 	width: 225%;
 }
 
 #boxInfo{
-	margin-top:60px;
+	margin-top:30px;
+	margin-right: 40px;
 }
 
 #boxReview{
@@ -89,12 +88,18 @@
     </div><!-- /.boxinner -->
 </div><!-- /.box -->
 </div>	
+
   			<div id="boxInfo">
+  			<div class="col-xs-4 col-sm-4 col-sm-push-4">
   			<h3>Pizzeria</h3>
   			<div>Via delle Banane n°69</div>
   			<div>80011</div>
   			<div>e-mail: pizzeria@banana.it</div> 
+  			</div>
 </div>
+						<a href="menù" class="btn btn-success">
+							Menù
+						</a>
 </div>
 	</div>
 </body>

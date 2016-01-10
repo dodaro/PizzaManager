@@ -28,7 +28,7 @@ public class UserMainViewController {
 	public String home() {
 		return "usermainview";
 	}
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(HttpSession session, @ModelAttribute("searchForm") SearchForm form) {
 
 				UserDAO userDAO = (UserDAO) context.getBean("userDAO");
@@ -41,5 +41,5 @@ public class UserMainViewController {
 		}
 
 		return "redirect:/usermainview";
-	}
+	}*/
 }
