@@ -7,3 +7,21 @@
 #login-error {
 	margin-bottom: 25px;
 }
+
+.home-table tr {
+	cursor: pointer;
+}
+
+.home-form {
+	margin-top: 10px;
+}
+
+.buttons-container {
+	margin-top: 20px;
+	text-align: center;
+}
+
+/* Every button preceded by another button. */
+.buttons-container button+button {
+	margin-left: 10px;
+}

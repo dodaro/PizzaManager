@@ -21,10 +21,13 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
+import it.unical.pizzamanager.serializers.PizzeriaPizzaSerializer;
 
+@JsonSerialize(using = PizzeriaPizzaSerializer.class)
 @Entity
 @Table(name = "pizzeria_pizza")
 public class RelationPizzeriaPizza implements Serializable {
@@ -36,12 +39,10 @@ public class RelationPizzeriaPizza implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizzeria")
 	private Pizzeria pizzeria;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;

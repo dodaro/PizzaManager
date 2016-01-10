@@ -3,7 +3,7 @@
 <div id="pizzeria-table">
 	<div class="row">
 		<div class="col-md-7">
-			<table id="tables-table" class="display">
+			<table id="tables-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
 						<!-- <th>Table id</th> -->
@@ -18,7 +18,7 @@
 			</table>
 		</div>
 		<div class="col-md-5">
-			<form class="edit-table-form form-horizontal">
+			<form class="edit-table-form home-form form-horizontal">
 				<div class="form-group">
 					<label for="table-number" class="col-sm-offset-1 col-sm-5 control-label">Table number</label>
 					<div class="col-sm-5">
