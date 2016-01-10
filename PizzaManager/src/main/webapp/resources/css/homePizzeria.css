@@ -21,7 +21,6 @@
 	text-align: center;
 }
 
-/* Every button preceded by another button. */
-.buttons-container button+button {
+.buttons-container .button-update, .buttons-container .button-delete {
 	margin-left: 10px;
 }

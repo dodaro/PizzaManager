@@ -21,13 +21,7 @@ public class PizzeriaTableSerializer extends JsonSerializer<PizzeriaTable> {
 		jgen.writeNumberField("seats", table.getSeats());
 		jgen.writeNumberField("minSeats", table.getMinSeats());
 		jgen.writeNumberField("maxSeats", table.getMaxSeats());
-
-		if (table.getAvailable()) {
-			jgen.writeStringField("available", "Yes");
-		} else {
-			jgen.writeStringField("available", "No");
-		}
-
+		jgen.writeBooleanField("available", table.getAvailable());
 		jgen.writeEndObject();
 	}
 }

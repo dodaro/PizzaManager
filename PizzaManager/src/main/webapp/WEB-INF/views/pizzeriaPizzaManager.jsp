@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <div id="pizza-manager">
 	<div class="row">
@@ -21,27 +22,42 @@
 		<div class="col-md-4">
 			<form class="edit-pizza-form home-form">
 				<div class="form-group">
-					<label for="pizza" class="control-label">Pizza</label> <input type="text" id="pizza"
-						class="form-control">
+					<label for="pizza" class="control-label">Pizza</label> <select id="pizza" class="form-control">
+						<option />
+						<!-- Empty option tag for select2 placeholder -->
+						<c:forEach items="${pizzas}" var="pizza">
+							<option value="${pizza.id}">${pizza.name}</option>
+						</c:forEach>
+					</select>
 				</div>
 				<div class="form-group">
-					<label for="pizza-size" class="control-label">Size</label> <input type="text" id="pizza-size"
+					<label for="pizza-size" class="control-label">Size</label> <select id="pizza-size"
 						class="form-control">
+						<option />
+						<!-- Empty option tag for select2 placeholder -->
+						<c:forEach items="${sizes}" var="size">
+							<option value="${size.string}">${size.string}</option>
+						</c:forEach>
+					</select>
 				</div>
 				<div class="form-group">
-					<label for="pizza-preparation-time" class="control-label">Preparation time</label> <input
-						type="text" id="pizza-preparation-time" class="form-control">
+					<label for="pizza-preparation-time" class="control-label">Preparation time</label>
+					<div class='input-group date' id='pizza-preparation-timepicker'>
+						<input type="text" id="pizza-preparation-time" class="form-control" placeholder="Pick a time">
+						<span class="input-group-addon"> <span class="glyphicon glyphicon-time"></span></span>
+					</div>
 				</div>
 				<div class="checkbox">
-					<label> <input type="checkbox" id="pizza-gluten-free"> Gluten free
+					<label class="checkbox-label control-label"> <input type="checkbox"
+						id="pizza-gluten-free"> Gluten free
 					</label>
 				</div>
 				<div class="form-group">
-					<label for="pizza-price" class="control-label">Price</label> <input type="text"
+					<label for="pizza-price" class="control-label">Price</label> <input type="number"
 						id="pizza-price" class="form-control">
 				</div>
 			</form>
-			<div class="buttons-container col-sm-offset-1 col-sm-11">
+			<div class="buttons-container">
 				<button class="btn btn-primary button-add" disabled>
 					<span class="glyphicon glyphicon-plus"></span> Add
 				</button>
