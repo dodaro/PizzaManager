@@ -30,6 +30,7 @@ public class DatabasePopulator {
 		populators.add(new PizzaPopulator(context));
 		populators.add(new BeveragePopulator(context));
 		populators.add(new BookingPopulator(context));
+		populators.add(new CartPopulator(context));
 	}
 
 	private void populateDatabase() {

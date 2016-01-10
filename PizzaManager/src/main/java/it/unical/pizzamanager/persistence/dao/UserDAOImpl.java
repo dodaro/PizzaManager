@@ -2,9 +2,12 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.unical.pizzamanager.persistence.dto.Cart;
+import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -77,4 +80,5 @@ public class UserDAOImpl implements UserDAO {
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
 	}
+
 }
