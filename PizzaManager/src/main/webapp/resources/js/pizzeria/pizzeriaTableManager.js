@@ -25,8 +25,6 @@ pizzeriaTableManager = function() {
 						dataSrc : '',
 					},
 					columns : [ {
-						// 'data' : 'id'
-						// }, {
 						'data' : 'number'
 					}, {
 						'data' : 'minSeats'
@@ -40,10 +38,10 @@ pizzeriaTableManager = function() {
 					 * "Available" column.
 					 */
 					columnDefs : [ {
-						"render" : function(data, type, row) {
+						render : function(data, type, row) {
 							return data ? 'Yes' : 'No';
 						},
-						"targets" : 3
+						targets : 3
 					} ]
 				});
 			},

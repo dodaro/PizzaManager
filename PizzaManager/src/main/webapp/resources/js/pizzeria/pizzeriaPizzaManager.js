@@ -38,7 +38,7 @@ pizzeriaPizzaManager = function() {
 					paging : false,
 					searching : false,
 					ajax : {
-						url : "/pizzeria/pizzas",
+						url : "/pizzeria/pizzasList",
 						dataSrc : '',
 					},
 					columns : [ {
@@ -182,6 +182,33 @@ pizzeriaPizzaManager = function() {
 		return false;
 	};
 
+	var sendRequest = function(action, data, onSuccess) {
+		console.log(data);
+		$.ajax({
+			method : 'post',
+			url : '/pizzeria/pizza',
+			dataType : 'json',
+			data : {
+				action : action,
+				pizzaId : data.pizzaId,
+				size : data.size,
+				preparationTime : data.preparationTime,
+				glutenFree : data.glutenFree,
+				price : data.price
+			},
+			success : function(response) {
+				console.log(response);
+				onSuccess(response);
+			}
+		});
+	};
+
+	var addPizza = function() {
+		sendRequest('add', form.getFormData(), function(response) {
+			console.log("ResponseListener");
+		});
+	}
+
 	var onRowClick = function($row) {
 		if (table.isRowSelected($row)) {
 			table.clearRowSelection();
@@ -217,8 +244,6 @@ pizzeriaPizzaManager = function() {
 		 * contain the same data.
 		 */
 		form.setButtonEnabled('button-delete', formDataEqualsSelectedRowData());
-
-		console.log("CHANGE");
 	}
 
 	var initListeners = function() {
@@ -230,7 +255,7 @@ pizzeriaPizzaManager = function() {
 		form.setChangeListener(onFormChange);
 
 		$('#pizza-manager .button-add').on('click', function() {
-			// TODO
+			addPizza();
 		});
 
 		$('#pizza-manager .button-update').on('click', function() {
