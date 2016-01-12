@@ -45,6 +45,13 @@ var Booking = function(){
 		});
 		
 		setControlButtons(true,true,true);
+		
+		//controllo in caso di richiesta pagina post booking edited
+		if(communicator.bookingEdited!==undefined)
+			//richiamare send operation
+			sendRequest('update', communicator.bookingEdited, function(response) {
+				//update row
+			});
 	}
 
 	var initializeBookingTable = function(bookings){
@@ -113,8 +120,24 @@ var Booking = function(){
 			}//end else if
 		});
 		
+		$("#confermeButtonBooking").on('click',function(){
+			var idBooking=tableBooking.row('.selected').data()[columnId];
+			sendRequest('conferme', findBooking(idBooking), function(response) {
+				tableBooking.row('.selected').remove().draw(false);
+				alert('booking'+idBooking + response);
+			});	
+		});
+		
 		$("#editButtonBooking").on('click',function(){
 			editBooking();
+		});
+		
+		$("#removeButtonBooking").on('click',function(){
+			var idBooking=tableBooking.row('.selected').data()[columnId];
+			sendRequest('remove', findBooking(idBooking), function(response) {
+				tableBooking.row('.selected').remove().draw(false);
+				alert('booking'+idBooking + response);
+			});
 		});
 		
 	}
@@ -194,19 +217,57 @@ var Booking = function(){
 
 	function loadInfoBooking(bookingId,loading){
 		console.log("chiamata");
-		setTimeout(function(){loading();},500);
+		setTimeout(function(){loading();},200);
 	}
 
+	var sendRequest = function(action, bookingResume, onSuccess) {
+		var reducedBooking=reduceBooking(bookingResume);
+		var stringB=JSON.stringify(reducedBooking);
+		$.ajax({
+			method : 'POST',
+			url : '/pizzeriabookingAction',
+			data :{
+				action: action,
+				booking: stringB
+			},
+			success : function(response) {
+				console.log(response);
+				onSuccess(response);
+			}
+		});
+	};
+	
+	var reduceBooking = function(booking){
+		var beverages=new Array();
+		for (var int = 0; int < booking.beverages.length; int++) {
+			beverages.push(_.pick(booking.beverages[int],'id','number'));
+		}
+		
+		var newBooking=_.clone(booking);
+		newBooking.beverages=beverages;
+		//newBooking=_.omit(newBooking,'pizzas','beverages');
+		console.log(newBooking);
+		console.log(booking);
+		return newBooking;
+	}
+	
+	var findBooking = function(idBooking){
+		for (var int = 0; int < bookingFromServer.length; int++) {
+			if(bookingFromServer[int].id==idBooking)
+				return bookingFromServer[int];
+		}
+	}
+	
 	var editBooking = function(){
 		var idBooking=tableBooking.row('.selected').data()[columnId];
-		for (var int = 0; int < bookingFromServer.length; int++) {
-			if(bookingFromServer[int].id==idBooking){
-				communicator.bookingToEdit=bookingFromServer[int];
-				console.log($('#liLiveOrderTool'))
-				$('#liLiveOrderTool').click();
-			}			
-		}
+		communicator.bookingToEdit=findBooking(idBooking);
+		
+		//TODO pezza da sistemare
+		console.log($('#liLiveOrderTool'))
+		$('#liLiveOrderTool').click();	
 	}	
+	
+	
 	
 	var setControlButtons = function(boolButtonConferme, boolButtonEdit, boolButtonRemove ){
 		

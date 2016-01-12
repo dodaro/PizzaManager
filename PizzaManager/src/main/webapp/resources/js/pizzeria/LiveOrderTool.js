@@ -259,6 +259,8 @@ var LiveOrderTool = function(){
 		var stringP = JSON.stringify(orderPizzas);
 		var stringB = JSON.stringify(orderBeverages);
 		
+		//TODO se si tratta di modifica di un booking basta richiamare la pagina booking ed appendere il booking al comunicator
+		
 		$.ajax({
 			url : "/pizzerialiveorderConferme",
 			type : 'POST',

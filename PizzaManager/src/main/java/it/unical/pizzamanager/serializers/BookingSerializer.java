@@ -25,7 +25,10 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 			//jgen.writeStringField("name", booking.getUser().getEmail());//TODO QUI MI SERVE UN NOME, SPECIE SE SI TRATTA DI UNA PRENOTAZIONE DI UN NON UTENTE
 			jgen.writeStringField("date", booking.getDate().toString());
 			jgen.writeStringField("time", booking.getTime().toString());
-			jgen.writeStringField("id", booking.getId().toString()); //crittografare l'id
+			jgen.writeStringField("id", booking.getId().toString());
+			//crittografare l'id
+			
+			
 			if(booking.getPayment()!=null)
 				jgen.writeBooleanField("payment", booking.getPayment().getPaid());
 			else
