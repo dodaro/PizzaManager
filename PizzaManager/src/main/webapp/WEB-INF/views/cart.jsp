@@ -1,78 +1,105 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<div class="wrapper">
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<html>
+<head>
+<title>Pizza Manager</title>
+<script type="text/javascript" src="resources/js/jquery.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap-switch.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('input.removeButton').on('click', function() {
+			var $clickedElement = $(this);
+			var $id = $clickedElement.data('id');
+			alert($id);
+			$.ajax({
+				type : "POST",
+				url : "/cart",
+				data : {
+					id : $id
+				},
+				success : function() {
+					data
+				}
+			});
+		});
+		$('#bookCart').on('click', function() {
+			var $clickedElement = $(this);
+			var $ids = [];
+			var $numbers = [];
+			$(".number-control").each(function(index, element) {
+				$ids.push($(this).data('id'));
+				$numbers.push(parseInt($(this).val(), 10));
 
+			});
+			alert($ids);
+			alert($numbers);
+			$.ajax({
+				type : "POST",
+				url : "/bookCart",
+				data : {
+					itemsToBook : {
+						items : $ids,
+						numbers : $numbers
+					}
+				},
+				success : function() {
+					data
+				}
+			})
+		});
+	});
+</script>
+<link rel="stylesheet" type="text/css"
+	href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/pageCSS/cart.css" />
+<body>
+	<jsp:include page="includes/navbarAccount.jsp"></jsp:include>
 
-	<b>Cart</b>
-
-	<div class="bubble">
-		<c:if test="${not empty pizzaItems}">
-			<c:forEach var="p" varStatus="status" items="${pizzaItems}">
-				<div class="row">
-					<div class="col-xs-2">
-						<img class="imgCart" alt="" src="">
-					</div>
-					<div class="col-xs-4">
+	<div id="container">
+		<div class="row">
+			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
+			<div class="col-xs-9">
+				<div class="wrapper">
+					<div id="content" class="cartContainer">
+						<c:forEach var="i" varStatus="stat" items="${cart.items}">
+							<div class="row itemDisplay">
+								<div class="col-xs-2">
+									<img class="imgCart" src="" alt="" />
+								</div>
+								<div class="col-xs-2">
+									<b>${i.itemName}</b>
+								</div>
+								<div class="col-xs-2">
+									<b>${i.pizzeria}</b>
+								</div>
+								<div class="col-xs-2">
+									<input class="form-control number-control" data-id="${i.id}"
+										type="number" value="${i.number}">
+								</div>
+								<div class="col-xs-2">
+									<div class="pull-right">
+										<b>${i.cost }</b>
+									</div>
+								</div>
+								<div class="col-xs-2">
+									<input class="btn btn-default removeButton" type="button"
+										value="remove" data-id="${i.id}">
+								</div>
+							</div>
+						</c:forEach>
 						<div class="row">
-							<b>${p.pizzaName()}</b>
+							<input id="bookCart" class="pull-right" type="submit"
+								value="Confirm" />
 						</div>
-						<div class="row">${p.pizzeriaName()}</div>
-					</div>
-					<div class="input-group spinner col-xs-3">
-						<input type="text" class="form-control" value="${p.getNumber()}">
-						<div class="input-group-btn-vertical">
-							<button class="btn btn-default" type="button">
-								<i class="fa fa-caret-up"></i>
-							</button>
-							<button class="btn btn-default" type="button">
-								<i class="fa fa-caret-down"></i>
-							</button>
-						</div>
-
-					</div>
-					<div class="col-xs-3 pull-right">
-						<button id="${p.id }" data-content="cartBook"
-							class="btn btn-default" onclick="">Remove</button>
 					</div>
 				</div>
-			</c:forEach>
-
-
-		</c:if>
-		<c:if test="${not empty beverageItems}">
-			<c:forEach var="b" varStatus="status" items="${beverageItems}">
-				<div class="row">
-					<div class="col-xs-2">
-						<img class="imgCart" alt="" src="">
-					</div>
-					<div class="col-xs-4">
-						<div class="row">
-							<b>${b.beverageName()}</b>
-						</div>
-						<div class="row">${b.pizzeriaName()}</div>
-					</div>
-					<div class="input-group spinner col-xs-3">
-						<input type="text" class="form-control" value="${b.getNumber()}">
-						<div class="input-group-btn-vertical">
-							<button class="btn btn-default" type="button">
-								<i class="fa fa-caret-up"></i>
-							</button>
-							<button class="btn btn-default" type="button">
-								<i class="fa fa-caret-down"></i>
-							</button>
-						</div>
-
-					</div>
-					<div class="col-xs-3 pull-right">
-						<button id="${b.id}" class="btn btn-default"
-							onclick="removeItem()">Remove</button>
-					</div>
-				</div>
-			</c:forEach>
-		</c:if>
-
-		<div class="pull-right">
-			<button class="btn btn-default" onclick="bookCart()">Book</button>
+			</div>
 		</div>
 	</div>
+</body>
+</html>
 
-</div>

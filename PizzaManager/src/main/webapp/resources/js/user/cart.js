@@ -1,38 +1,30 @@
-$(function() {
-	$('.spinner .btn:first-of-type').on('click', function(event) {
-		event.preventDefault();
-		var $clickedElement = $(this);
-		var $inputField = $clickedElement.closest("div").siblings("input");
-		if ($inputField.val() < 99)
-			$inputField.val(parseInt($inputField.val(), 10) + 1);
-	});
-
-	$('.spinner .btn:last-of-type').on('click', function(event) {
-		event.preventDefault();
-		var $clickedElement = $(this);
-		var $inputField = $clickedElement.closest("input");
-		if ($inputField.val() > 1)
-			$inputField.val(parseInt($inputField.val(), 10) - 1);
-	});
-});
 function removeItem() {
 	var $idItem = $(this).attr('id');
-	
+
 	$.ajax({
 		url : "/removeItem",
-		type : 'GET',
+		type : 'POST',
 		data : {
-			id : $idItem
+			id : $(this).closest("div").id
+		},
+		success : function() {
+			data
 		}
 	});
-	
+
 }
 function bookCart() {
-	var $contentToLoad= $(this).data('content');
+	var $contentToLoad = $(this).data('content');
 	$('#content').load(contenToLoad);
 	$.ajax({
 		url : "/bookCart",
-		type : 'GET',
+		type : 'POST',
+		data :{
+			
+		},
+		success : function() {
+			data
+		}
 	});
 
 }

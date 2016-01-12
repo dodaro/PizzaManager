@@ -32,9 +32,9 @@ public abstract class OrderItem implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "orderItemsGenerator")
 	private Integer id;
 
-	@Column (name="number")
+	@Column(name = "number")
 	private Integer number;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "booking")
 	private Booking booking;
@@ -45,14 +45,17 @@ public abstract class OrderItem implements Serializable {
 
 	@Column(name = "cost")
 	private Double cost;
-	// instead of ha references add a boolean modified and the cost of item ordered so we can get
+	// instead of ha references add a boolean modified and the cost of item
+	// ordered so we can get
 	// cost of an order directly with a join
-	// without ask to table price, so ingredient cannot be ordered but a menu or a pizza can be
-	// modified cost is evalueted application side and stored in database at purchace time
+	// without ask to table price, so ingredient cannot be ordered but a menu or
+	// a pizza can be
+	// modified cost is evalueted application side and stored in database at
+	// purchace time
 
 	public OrderItem() {
 		this.id = DatabaseHandler.NO_ID;
-		this.number=0;
+		this.number = 0;
 		this.booking = null;
 		this.cart = null;
 		this.cost = 0.0;
