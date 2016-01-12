@@ -42,6 +42,8 @@ pizzeriaPizzaManager = function() {
 						dataSrc : '',
 					},
 					columns : [ {
+						'data' : 'id'
+					}, {
 						'data' : 'pizzaId'
 					}, {
 						'data' : 'pizzaName'
@@ -53,6 +55,27 @@ pizzeriaPizzaManager = function() {
 						'data' : 'glutenFree'
 					}, {
 						'data' : 'price'
+					} ],
+					/*
+					 * Renders "Yes" or "No" instead of "true" or "false" in the
+					 * "Available" column.
+					 */
+					columnDefs : [ {
+						/*
+						 * Turns the PizzaSize value all lowercase, then changes
+						 * only the first letter to uppercase.
+						 */
+						render : function(data, type, row) {
+							return data.toLowerCase().replace(/\b\w/g, function(m) {
+								return m.toUpperCase();
+							});
+						},
+						targets : 4
+					}, {
+						render : function(data, type, row) {
+							return data ? 'Yes' : 'No';
+						},
+						targets : 5
 					} ]
 				});
 			}
@@ -97,7 +120,7 @@ pizzeriaPizzaManager = function() {
 				return {
 					pizzaId : parseInt($pizzaSelect.val()),
 					size : $sizeSelect.val(),
-					preparationTime : parseFloat($('#pizza-manager #pizza-preparation-time').val()),
+					preparationTime : $('#pizza-manager #pizza-preparation-time').val(),
 					glutenFree : $('#pizza-manager #pizza-gluten-free').prop('checked'),
 					price : parseFloat($('#pizza-manager #pizza-price').val())
 				}
@@ -182,6 +205,28 @@ pizzeriaPizzaManager = function() {
 		return false;
 	};
 
+	var getDataForRequest = function() {
+		var id;
+		var $selectedRow = table.getSelectedRow();
+
+		if ($selectedRow != undefined) {
+			id = table.getRowData($selectedRow).id;
+		} else {
+			id = -1;
+		}
+
+		var formData = form.getFormData();
+
+		return {
+			id : id,
+			pizzaId : formData.pizzaId,
+			size : formData.size,
+			preparationTime : formData.preparationTime,
+			glutenFree : formData.glutenFree,
+			price : formData.price
+		};
+	}
+
 	var sendRequest = function(action, data, onSuccess) {
 		console.log(data);
 		$.ajax({
@@ -190,6 +235,7 @@ pizzeriaPizzaManager = function() {
 			dataType : 'json',
 			data : {
 				action : action,
+				id : data.id,
 				pizzaId : data.pizzaId,
 				size : data.size,
 				preparationTime : data.preparationTime,
@@ -204,7 +250,7 @@ pizzeriaPizzaManager = function() {
 	};
 
 	var addPizza = function() {
-		sendRequest('add', form.getFormData(), function(response) {
+		sendRequest('add', getDataForRequest(), function(response) {
 			console.log("ResponseListener");
 		});
 	}

@@ -7,10 +7,11 @@
 			<table id="pizzas-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
+						<th>Id</th>
 						<th>PizzaId</th>
 						<th>Pizza</th>
 						<th>Size</th>
-						<th>Preparation Time</th>
+						<th>Prep Time</th>
 						<th>Gluten Free</th>
 						<th>Price</th>
 					</tr>

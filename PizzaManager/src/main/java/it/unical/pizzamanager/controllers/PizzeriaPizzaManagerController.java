@@ -16,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 import it.unical.pizzamanager.forms.PizzeriaPizzaForm;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
@@ -46,8 +47,7 @@ public class PizzeriaPizzaManagerController {
 	@RequestMapping(value = "/pizzeria/pizzasList", method = RequestMethod.GET)
 	public @ResponseBody List<RelationPizzeriaPizza> getPizzas(HttpSession session) {
 		/*
-		 * If the author of the request is not logged in as a pizzeria, negate
-		 * the information.
+		 * If the author of the request is not logged in as a pizzeria, negate the information.
 		 */
 		if (!SessionUtils.isPizzeria(session)) {
 			return null;
@@ -88,7 +88,15 @@ public class PizzeriaPizzaManagerController {
 		RelationPizzeriaPizza pizzeriaPizza = new RelationPizzeriaPizza(pizzeria, pizza,
 				form.getPrice(), form.getSize(), form.getPreparationTimeInSeconds(),
 				form.getGlutenFree());
-		return "{\"action\": \"add\"}";
+
+		// FIXME - Validate data : user can't add an entry that already exists (same data).
+
+		RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
+				.getBean("relationPizzeriaPizzaDAO");
+
+		dao.create(pizzeriaPizza);
+
+		return buildJsonResponse(true, form);
 	}
 
 	private String updatePizza(Pizzeria pizzeria, Pizza pizza, PizzeriaPizzaForm form) {

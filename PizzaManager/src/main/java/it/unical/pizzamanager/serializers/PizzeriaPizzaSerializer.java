@@ -16,12 +16,32 @@ public class PizzeriaPizzaSerializer extends JsonSerializer<RelationPizzeriaPizz
 			SerializerProvider provider) throws IOException, JsonProcessingException {
 
 		jgen.writeStartObject();
-			jgen.writeNumberField("pizzaId", relation.getPizza().getId());
-			jgen.writeStringField("pizzaName", relation.getPizza().getName());
-			jgen.writeStringField("size", relation.getPizzaSize().getString());
-			jgen.writeNumberField("preparationTime", relation.getPreparationTime());
-			jgen.writeBooleanField("glutenFree", relation.getGlutenFree());
-			jgen.writeNumberField("price", relation.getPrice());
+		jgen.writeNumberField("id", relation.getId());
+		jgen.writeNumberField("pizzaId", relation.getPizza().getId());
+		jgen.writeStringField("pizzaName", relation.getPizza().getName());
+		jgen.writeStringField("size", relation.getPizzaSize().toString());
+		jgen.writeStringField("preparationTime",
+				getPreparationTimeString(relation.getPreparationTime()));
+		jgen.writeBooleanField("glutenFree", relation.getGlutenFree());
+		jgen.writeNumberField("price", relation.getPrice());
 		jgen.writeEndObject();
+	}
+
+	private String getPreparationTimeString(Integer preparationTime) {
+		Integer minutes = preparationTime / 60;
+		Integer seconds = preparationTime % 60;
+
+		String minutesString = Integer.toString(minutes);
+		String secondsString = Integer.toString(seconds);
+
+		if (minutes < 9) {
+			minutesString = "0" + minutesString;
+		}
+
+		if (seconds < 9) {
+			secondsString = "0" + secondsString;
+		}
+
+		return minutesString + ":" + secondsString;
 	}
 }
