@@ -53,7 +53,7 @@ public class PizzaOrderItem extends OrderItem {
 		this.modified = false;
 		this.pizzaOrderIngredients = new ArrayList<>();
 	}
-
+	
 	public RelationPizzeriaPizza getPizzeria_pizza() {
 		return pizzeria_pizza;
 	}
@@ -93,5 +93,11 @@ public class PizzaOrderItem extends OrderItem {
 	public void setPizzaOrderIngredients(List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients) {
 		this.pizzaOrderIngredients = pizzaOrderIngredients;
 	}
-
+	
+	public String pizzaName(){
+		return pizzeria_pizza.getPizza().getName();
+	}
+	public String pizzeriaName(){
+		return pizzeria_pizza.getPizzeria().getName();
+	}
 }

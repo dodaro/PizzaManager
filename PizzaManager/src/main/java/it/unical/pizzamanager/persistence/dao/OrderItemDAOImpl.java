@@ -60,4 +60,13 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 		this.databaseHandler = databaseHandler;
 	}
 
+	@Override
+	public OrderItem getItem(Integer id) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		String queryString = "select * from order_items where id = :itemId";
+		OrderItem item = (OrderItem) session.createSQLQuery(queryString).addEntity(OrderItem.class)
+				.setParameter("itemId", id).uniqueResult();
+		return item;
+	}
+
 }

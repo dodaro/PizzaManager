@@ -109,59 +109,59 @@ public class PizzaPopulator extends Populator {
 		Pizzeria pizzeria0 = pizzerias.get(0);
 		List<RelationPizzeriaPizza> priceLists0 = new ArrayList<RelationPizzeriaPizza>();
 		priceLists0.add(new RelationPizzeriaPizza(pizzeria0, margherita, 4.00, PizzaSize.NORMAL,
-				3.0, false));
+				180, false));
 		priceLists0.add(
-				new RelationPizzeriaPizza(pizzeria0, cardinale, 6.00, PizzaSize.MAXI, 4.0, false));
-		priceLists0.add(new RelationPizzeriaPizza(pizzeria0, calabrese, 5.50, PizzaSize.NORMAL, 4.0,
+				new RelationPizzeriaPizza(pizzeria0, cardinale, 6.00, PizzaSize.MAXI, 240, false));
+		priceLists0.add(new RelationPizzeriaPizza(pizzeria0, calabrese, 5.50, PizzaSize.NORMAL, 240,
 				false));
 
 		// Pizzeria 1
 		Pizzeria pizzeria1 = pizzerias.get(1);
 		List<RelationPizzeriaPizza> priceLists1 = new ArrayList<RelationPizzeriaPizza>();
 		priceLists1.add(
-				new RelationPizzeriaPizza(pizzeria1, margherita, 4.50, PizzaSize.MAXI, 4.0, true));
+				new RelationPizzeriaPizza(pizzeria1, margherita, 4.50, PizzaSize.MAXI, 240, true));
 		priceLists1.add(
-				new RelationPizzeriaPizza(pizzeria1, ortolana, 6.00, PizzaSize.MAXI, 5.0, false));
+				new RelationPizzeriaPizza(pizzeria1, ortolana, 6.00, PizzaSize.MAXI, 150, false));
 		priceLists1.add(new RelationPizzeriaPizza(pizzeria1, capricciosa, 5.50, PizzaSize.NORMAL,
-				6.0, false));
+				360, false));
 		priceLists1.add(
-				new RelationPizzeriaPizza(pizzeria1, funghi, 6.00, PizzaSize.MAXI, 6.0, false));
+				new RelationPizzeriaPizza(pizzeria1, funghi, 6.00, PizzaSize.MAXI, 240, false));
 
 		// Pizzeria 2
 		Pizzeria pizzeria2 = pizzerias.get(2);
 		List<RelationPizzeriaPizza> priceLists2 = new ArrayList<RelationPizzeriaPizza>();
 		priceLists2.add(
-				new RelationPizzeriaPizza(pizzeria2, diavola, 4.50, PizzaSize.MAXI, 5.0, true));
+				new RelationPizzeriaPizza(pizzeria2, diavola, 4.50, PizzaSize.MAXI, 300, true));
 		priceLists2.add(
-				new RelationPizzeriaPizza(pizzeria2, funghi, 5.00, PizzaSize.NORMAL, 6.0, true));
+				new RelationPizzeriaPizza(pizzeria2, funghi, 5.00, PizzaSize.NORMAL, 330, true));
 		priceLists2.add(new RelationPizzeriaPizza(pizzeria2, capricciosa, 6.00, PizzaSize.NORMAL,
-				4.5, false));
+				270, false));
 		priceLists2.add(
-				new RelationPizzeriaPizza(pizzeria2, calabrese, 7.00, PizzaSize.MAXI, 6.0, true));
+				new RelationPizzeriaPizza(pizzeria2, calabrese, 7.00, PizzaSize.MAXI, 390, true));
 
 		// Pizzeria 3
 		Pizzeria pizzeria3 = pizzerias.get(3);
 		List<RelationPizzeriaPizza> priceLists3 = new ArrayList<RelationPizzeriaPizza>();
 		priceLists3.add(new RelationPizzeriaPizza(pizzeria3, margherita, 3.00, PizzaSize.NORMAL,
-				4.0, false));
-		priceLists3.add(new RelationPizzeriaPizza(pizzeria3, cardinale, 4.00, PizzaSize.NORMAL, 5.5,
+				240, false));
+		priceLists3.add(new RelationPizzeriaPizza(pizzeria3, cardinale, 4.00, PizzaSize.NORMAL, 330,
 				false));
 		priceLists3.add(
-				new RelationPizzeriaPizza(pizzeria3, ortolana, 5.00, PizzaSize.MAXI, 6.0, false));
+				new RelationPizzeriaPizza(pizzeria3, ortolana, 5.00, PizzaSize.MAXI, 420, false));
 
 		// Pizzeria4
 		Pizzeria pizzeria4 = pizzerias.get(4);
 		List<RelationPizzeriaPizza> priceLists4 = new ArrayList<RelationPizzeriaPizza>();
 		priceLists4.add(new RelationPizzeriaPizza(pizzeria4, margherita, 3.50, PizzaSize.NORMAL,
-				3.0, true));
+				180, true));
 		priceLists4.add(
-				new RelationPizzeriaPizza(pizzeria4, cardinale, 4.50, PizzaSize.MAXI, 4.0, false));
+				new RelationPizzeriaPizza(pizzeria4, cardinale, 4.50, PizzaSize.MAXI, 210, false));
 		priceLists4.add(
-				new RelationPizzeriaPizza(pizzeria4, diavola, 5.0, PizzaSize.NORMAL, 5.0, false));
+				new RelationPizzeriaPizza(pizzeria4, diavola, 5.0, PizzaSize.NORMAL, 230, false));
 		priceLists4
-				.add(new RelationPizzeriaPizza(pizzeria4, funghi, 7.0, PizzaSize.MAXI, 3.5, false));
+				.add(new RelationPizzeriaPizza(pizzeria4, funghi, 7.0, PizzaSize.MAXI, 120, false));
 		priceLists4.add(
-				new RelationPizzeriaPizza(pizzeria4, calabrese, 6.0, PizzaSize.NORMAL, 4.5, false));
+				new RelationPizzeriaPizza(pizzeria4, calabrese, 6.0, PizzaSize.NORMAL, 180, false));
 
 		pizzeria0.setPizzasPriceList(priceLists0);
 		pizzeria1.setPizzasPriceList(priceLists1);

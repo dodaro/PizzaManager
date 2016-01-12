@@ -36,7 +36,7 @@
 						<option />
 						<!-- Empty option tag for select2 placeholder -->
 						<c:forEach items="${sizes}" var="size">
-							<option value="${size.string}">${size.string}</option>
+							<option value="${size}">${size.string}</option>
 						</c:forEach>
 					</select>
 				</div>

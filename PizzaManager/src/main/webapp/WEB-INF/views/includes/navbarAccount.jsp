@@ -1,3 +1,5 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
@@ -13,22 +15,23 @@
 		<div class="collapse navbar-collapse" id="id-navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li><a href="#">Link1</a></li>
-				<li><a href="#">Link2</a></li>
+				<%--if session user condition --%>
+				<li><a href="#">Cart</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-					<form class="navbar-form form-inline">
+					<form:form class="navbar-form form-inline" action="search" method="post" modelAttribute="searchForm">
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="Search">
+								<input type="text" class="form-control" name="element" placeholder="Search">
 								<div class="input-group-addon navbar-search-submit">
 									<span class="glyphicon glyphicon-search"></span>
 								</div>
 							</div>
 						</div>
-					</form>
+					</form:form>
 				</li>
-				<li><a href="#">Link3</a></li>
+				<li><a href="#">Adv.Search</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 						<span class="glyphicon glyphicon-user button-glyphicon"></span>
@@ -39,7 +42,7 @@
 						<span class="caret"></span>
 					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Profile</a></li>
+						<li><a href="/user">Profile</a></li>
 						<li class="divider"></li>
 						<li><a href="/logout">Log out</a></li>
 					</ul>

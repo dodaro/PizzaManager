@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 
 public class PizzeriaDAOImpl implements PizzeriaDAO {
 
@@ -86,6 +87,12 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
+	}
+
+	@Override
+	public List<RelationPizzeriaPizza> getMenuPizze(Integer id) {
+		//to write when remove init
+		return null;
 	}
 
 }

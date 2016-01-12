@@ -16,6 +16,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -39,6 +41,7 @@ public class Cart implements Serializable {
 
 	@OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<OrderItem> orderItems;
 
 	public Cart() {
@@ -46,7 +49,12 @@ public class Cart implements Serializable {
 		user = null;
 		orderItems = new ArrayList<OrderItem>();
 	}
-
+	
+	public Cart(User user,ArrayList<OrderItem> orderItems){
+		this.id=DatabaseHandler.NO_ID;
+		this.user=user;
+		this.orderItems=orderItems;
+	}
 	public Integer getId() {
 		return id;
 	}
