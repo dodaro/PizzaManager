@@ -386,7 +386,10 @@ pizzeriaTableManager = function() {
 			},
 			success : function(response) {
 				console.log(response);
-				onSuccess(response);
+
+				if (response.success) {
+					onSuccess(response);
+				}
 			}
 		});
 	};

@@ -81,7 +81,7 @@ public class PizzeriaPizzaManagerController {
 			return deletePizza(pizzeria, pizza, form);
 		}
 
-		return buildJsonResponse(false, form);
+		return buildJsonResponse(false, null);
 	}
 
 	private String addPizza(Pizzeria pizzeria, Pizza pizza, PizzeriaPizzaForm form) {
@@ -94,9 +94,11 @@ public class PizzeriaPizzaManagerController {
 		RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
 				.getBean("relationPizzeriaPizzaDAO");
 
+		System.out.println(pizzeriaPizza.getId());
 		dao.create(pizzeriaPizza);
 
-		return buildJsonResponse(true, form);
+		/* Now the pizzeriaPizza object contains the id of the newly created instance. */
+		return buildJsonResponse(true, pizzeriaPizza);
 	}
 
 	private String updatePizza(Pizzeria pizzeria, Pizza pizza, PizzeriaPizzaForm form) {
@@ -109,14 +111,15 @@ public class PizzeriaPizzaManagerController {
 		return "{\"action\": \"delete\"}";
 	}
 
-	private String buildJsonResponse(boolean success, PizzeriaPizzaForm form) {
+	private String buildJsonResponse(boolean success, RelationPizzeriaPizza pizzeriaPizza) {
 		if (!success) {
 			return "{\"success\" : false}";
 		}
 
-		return "{\"success\" : " + success + ", \"pizzaId\" : " + form.getPizzaId()
-				+ ", \"size\" : \"" + form.getSize().getString() + "\", \"preparationTime\" : \""
-				+ form.getPreparationTime() + "\", \"glutenFree\" : " + form.getGlutenFree()
-				+ ", \"price\" : " + form.getPrice() + "}";
+		return "{\"success\" : " + success + ", \"id\" : " + pizzeriaPizza.getId()
+				+ ", \"pizzaId\" : " + pizzeriaPizza.getPizza().getId() + ", \"size\" : \""
+				+ pizzeriaPizza.getPizzaSize() + "\", \"preparationTime\" : \""
+				+ pizzeriaPizza.getPreparationTime() + "\", \"glutenFree\" : "
+				+ pizzeriaPizza.getGlutenFree() + ", \"price\" : " + pizzeriaPizza.getPrice() + "}";
 	}
 }
