@@ -81,7 +81,7 @@ public class PizzeriaPizzaManagerController {
 			return deletePizza(pizzeria, pizza, form);
 		}
 
-		return buildJsonResponse(false, null);
+		return buildErrorResponse();
 	}
 
 	private String addPizza(Pizzeria pizzeria, Pizza pizza, PizzeriaPizzaForm form) {
@@ -89,37 +89,78 @@ public class PizzeriaPizzaManagerController {
 				form.getPrice(), form.getSize(), form.getPreparationTimeInSeconds(),
 				form.getGlutenFree());
 
-		// FIXME - Validate data : user can't add an entry that already exists (same data).
+		// FIXME - Validate data: user can't add an entry that already exists (same data).
 
 		RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
 				.getBean("relationPizzeriaPizzaDAO");
 
-		System.out.println(pizzeriaPizza.getId());
 		dao.create(pizzeriaPizza);
 
 		/* Now the pizzeriaPizza object contains the id of the newly created instance. */
-		return buildJsonResponse(true, pizzeriaPizza);
+		return buildOkResponse(pizzeriaPizza);
 	}
 
 	private String updatePizza(Pizzeria pizzeria, Pizza pizza, PizzeriaPizzaForm form) {
-		// TODO
-		return "{\"action\": \"update\"}";
+		List<RelationPizzeriaPizza> pizzeriaPizzas = pizzeria.getPizzasPriceList();
+
+		/*
+		 * Only update the pizza if the pizzeria has already a RelationPizzeriaPizza with the same
+		 * id.
+		 */
+		for (RelationPizzeriaPizza pizzeriaPizza : pizzeriaPizzas) {
+			if (pizzeriaPizza.getId() == form.getId()) {
+				pizzeriaPizza.setPizza(pizza);
+				pizzeriaPizza.setPizzaSize(form.getSize());
+				pizzeriaPizza.setPreparationTime(form.getPreparationTimeInSeconds());
+				pizzeriaPizza.setGlutenFree(form.getGlutenFree());
+				pizzeriaPizza.setPrice(form.getPrice());
+
+				RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
+						.getBean("relationPizzeriaPizzaDAO");
+				dao.update(pizzeriaPizza);
+
+				return buildOkResponse(pizzeriaPizza);
+			}
+		}
+
+		return buildErrorResponse();
 	}
 
 	private String deletePizza(Pizzeria pizzeria, Pizza pizza, PizzeriaPizzaForm form) {
-		// TODO
-		return "{\"action\": \"delete\"}";
-	}
+		List<RelationPizzeriaPizza> pizzeriaPizzas = pizzeria.getPizzasPriceList();
 
-	private String buildJsonResponse(boolean success, RelationPizzeriaPizza pizzeriaPizza) {
-		if (!success) {
-			return "{\"success\" : false}";
+		/*
+		 * Only update the pizza if the pizzeria has already a RelationPizzeriaPizza with the same
+		 * id.
+		 */
+		for (RelationPizzeriaPizza pizzeriaPizza : pizzeriaPizzas) {
+			if (pizzeriaPizza.getId() == form.getId()) {
+
+				/*
+				 * FIXME - Prevent the elimination of RelationPizzeriaPizzas which belong to an
+				 * OrderItem which has not yet been collected.
+				 */
+
+				RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
+						.getBean("relationPizzeriaPizzaDAO");
+				dao.delete(pizzeriaPizza);
+				return buildOkResponse(pizzeriaPizza);
+			}
 		}
 
-		return "{\"success\" : " + success + ", \"id\" : " + pizzeriaPizza.getId()
-				+ ", \"pizzaId\" : " + pizzeriaPizza.getPizza().getId() + ", \"size\" : \""
+		return buildErrorResponse();
+
+	}
+
+	private String buildOkResponse(RelationPizzeriaPizza pizzeriaPizza) {
+		return "{\"success\" : true, \"id\" : " + pizzeriaPizza.getId() + ", \"pizzaId\" : "
+				+ pizzeriaPizza.getPizza().getId() + ", \"size\" : \""
 				+ pizzeriaPizza.getPizzaSize() + "\", \"preparationTime\" : \""
 				+ pizzeriaPizza.getPreparationTime() + "\", \"glutenFree\" : "
 				+ pizzeriaPizza.getGlutenFree() + ", \"price\" : " + pizzeriaPizza.getPrice() + "}";
+	}
+
+	private String buildErrorResponse() {
+		return "{\"success\" : false}";
 	}
 }

@@ -1,5 +1,6 @@
 package it.unical.pizzamanager.forms;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 
 public class PizzeriaPizzaForm {
@@ -8,15 +9,17 @@ public class PizzeriaPizzaForm {
 
 	private String action;
 
-	private int pizzaId;
+	private Integer id;
+	private Integer pizzaId;
 	private PizzaSize size;
 	private String preparationTime;
-	private boolean glutenFree;
-	private double price;
+	private Boolean glutenFree;
+	private Double price;
 
 	public PizzeriaPizzaForm() {
 		this.action = "";
-		this.pizzaId = -1;
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzaId = DatabaseHandler.NO_ID;
 		this.size = PizzaSize.NORMAL;
 		this.preparationTime = "00:00";
 		this.glutenFree = false;
@@ -31,7 +34,15 @@ public class PizzeriaPizzaForm {
 		this.action = action;
 	}
 
-	public int getPizzaId() {
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Integer getPizzaId() {
 		return pizzaId;
 	}
 
@@ -63,19 +74,19 @@ public class PizzeriaPizzaForm {
 		this.preparationTime = preparationTime;
 	}
 
-	public boolean getGlutenFree() {
+	public Boolean getGlutenFree() {
 		return glutenFree;
 	}
 
-	public void setGlutenFree(boolean glutenFree) {
+	public void setGlutenFree(Boolean glutenFree) {
 		this.glutenFree = glutenFree;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 }

@@ -244,14 +244,29 @@ pizzeriaPizzaManager = function() {
 			},
 			success : function(response) {
 				console.log(response);
-				onSuccess(response);
+
+				if (response.success) {
+					onSuccess(response);
+				}
 			}
 		});
 	};
 
 	var addPizza = function() {
 		sendRequest('add', getDataForRequest(), function(response) {
-			console.log("ResponseListener");
+			console.log("Pizza added.");
+		});
+	};
+
+	var updatePizza = function() {
+		sendRequest('update', getDataForRequest(), function(response) {
+			console.log("Pizza updated.");
+		});
+	}
+
+	var deletePizza = function() {
+		sendRequest('delete', getDataForRequest(), function(response) {
+			console.log("Pizza deleted.");
 		});
 	}
 
@@ -305,11 +320,11 @@ pizzeriaPizzaManager = function() {
 		});
 
 		$('#pizza-manager .button-update').on('click', function() {
-			// TODO
+			updatePizza();
 		});
 
 		$('#pizza-manager .button-delete').on('click', function() {
-			// TODO
+			deletePizza();
 		});
 	};
 

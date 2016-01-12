@@ -13,5 +13,7 @@ public interface RelationPizzeriaPizzaDAO {
 
 	public void update(RelationPizzeriaPizza pizzaPriceList);
 
+	RelationPizzeriaPizza get(Integer id);
+
 	List<RelationPizzeriaPizza> get(Pizzeria pizzeria);
 }

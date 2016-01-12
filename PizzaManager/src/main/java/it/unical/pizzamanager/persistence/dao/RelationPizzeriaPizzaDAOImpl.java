@@ -31,6 +31,16 @@ public class RelationPizzeriaPizzaDAOImpl implements RelationPizzeriaPizzaDAO {
 		databaseHandler.update(pizzaPriceList);
 	}
 
+	@Override
+	public RelationPizzeriaPizza get(Integer id) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from RelationPizzeriaPizza where id = :id");
+		query.setParameter("id", id);
+		RelationPizzeriaPizza pizzeriaPizza = (RelationPizzeriaPizza) query.uniqueResult();
+		session.close();
+		return pizzeriaPizza;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<RelationPizzeriaPizza> get(Pizzeria pizzeria) {

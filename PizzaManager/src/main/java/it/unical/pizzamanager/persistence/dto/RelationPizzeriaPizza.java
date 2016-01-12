@@ -67,7 +67,7 @@ public class RelationPizzeriaPizza implements Serializable {
 	private List<Image> images;
 
 	@OneToMany(mappedBy = "pizzeria_pizza", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
 
 	public RelationPizzeriaPizza() {
