@@ -60,8 +60,6 @@
 <!-- <link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTableManager.css" /> -->
 
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
-<link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
-
 
 <title>${pizzeria.name}</title>
 
