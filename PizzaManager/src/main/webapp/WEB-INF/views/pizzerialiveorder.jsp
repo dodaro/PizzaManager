@@ -11,6 +11,10 @@
           </div>
      
      	<div class="form-group">
+		    <label for="bookingUserInput">User</label>
+		    <input type="text" class="form-control" id="bookingUserInput" placeholder="User">
+	 	</div>
+     	<div class="form-group">
 		    <label for="bookingNameInput">Nome del prenotante(tradurre in inglese)</label>
 		    <input type="text" class="form-control" id="bookingNameInput" placeholder="Name">
 	 	</div>
@@ -25,16 +29,20 @@
          </div>
          <div class="form-group">
 		    <label for="bookingAddresInput">Address to delivery(in caso di delivery booking)</label>
-		    <input type="text" class="form-control" id="bookingAddressInput" placeholder="Name">
+		    <input type="text" class="form-control address" id="bookingCityInput" placeholder="City">
+		    <input type="text" class="form-control address" id="bookingStreetInput" placeholder="Street">
+		    <input type="text" class="form-control address" id="bookingNumberInput" placeholder="Number">
 	 	</div>
 	 	<div class="form-group">
-	 		<label for="tables">Select table(in caso di prenotazione in pizzeria)</label>
+	 		<!--  <label for="tables">Select table(in caso di prenotazione in pizzeria)</label>
 		    <select id="tables" class="form-control">
 			  <option>1</option>
 			  <option>2</option>
 			  <option>3</option>
 			  <option>4</option>
 			  <option>5</option>
+			</select>-->
+			<select id="tables" class="js-example-basic-multiple" multiple="multiple">
 			</select>
 	 	</div>
          
@@ -192,5 +200,6 @@
 <!-- /.modal -->
 
 <script type="text/javascript">
+console.log("vengo chiamato")
 LiveOrderTool.init();
 </script>

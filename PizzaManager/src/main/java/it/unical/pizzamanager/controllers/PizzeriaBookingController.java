@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import it.unical.pizzamanager.forms.PizzeriaBookingForm;
 import it.unical.pizzamanager.models.BookingModel;
@@ -29,6 +31,10 @@ import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.serializers.BookingSerializer;
+import it.unical.pizzamanager.serializers.PizzeriaSerializer;
+import it.unical.pizzamanager.utils.BookingUtils;
 
 
 @Controller
@@ -56,7 +62,26 @@ public class PizzeriaBookingController {
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
 		//TODO filtrare i booking non confermati
-		System.out.println(bookings.get(0).getDate());
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+
+		SimpleModule module = new SimpleModule();
+		module.addSerializer(Booking.class, new BookingSerializer());
+		mapper.registerModule(module);
+
+		try {
+			for (int i = 0; i < bookings.size(); i++) {
+				String serialized = mapper.writeValueAsString(bookings.get(i));
+				System.out.println(serialized);				
+			}
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+		
 		return bookings;
 	}
 	
@@ -84,7 +109,9 @@ public class PizzeriaBookingController {
 				break;
 				
 			case "edit":
-				//fare il mapping del nuovo oggetto
+				
+				BookingUtils.createBookingFromBookingModel(book, booking.getPizzeria(), context);
+				message="updated";
 				break;
 				
 			case "remove":

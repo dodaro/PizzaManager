@@ -75,6 +75,12 @@ public abstract class Booking implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "user")
 	private User user;
+	
+	@Column(name = "bookerName")
+	private String bookerName;
+	
+	@Column(name = "bill")
+	private Double bill;
 
 	@ManyToOne
 	@JoinColumn(name = "pizzeria")
@@ -101,9 +107,11 @@ public abstract class Booking implements Serializable {
 		this.time = new Date();
 		this.confirmed = false;
 		this.priority = PRIORITY_DEFAULT;
+		this.bill=0.0;
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
+		this.bookerName=null;
 		this.orderItems = new ArrayList<OrderItem>();
 	}
 
@@ -113,9 +121,11 @@ public abstract class Booking implements Serializable {
 		this.time = time;
 		this.confirmed = confirmed;
 		this.priority = priority;
+		this.bill=0.0;
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
+		this.bookerName=null;
 		this.orderItems = new ArrayList<OrderItem>();
 	}
 
@@ -190,4 +200,37 @@ public abstract class Booking implements Serializable {
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
+
+	public String getBookerName() {
+		return bookerName;
+	}
+
+	public void setBookerName(String bookerName) {
+		this.bookerName = bookerName;
+	}
+
+	public Double getBill() {
+		return bill;
+	}
+
+	public void setBill(Double bill) {
+		this.bill = bill;
+	}
+	
+	public Double calculateBill(){
+		Double bill=0.0;
+		for (OrderItem orderItem : orderItems) {
+			if(orderItem instanceof BeverageOrderItem){				
+				bill+=orderItem.getCost();
+			}
+			else if(orderItem instanceof PizzaOrderItem){
+				PizzaOrderItem order=(PizzaOrderItem)orderItem;
+				bill+=order.getCostPizzaPlusIngredients();
+			}
+		}
+		return bill;
+	}
+	
+	
+	
 }

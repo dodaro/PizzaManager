@@ -38,8 +38,14 @@ public class RelationBookingTablePizzeriaTable implements Serializable {
 
 	public RelationBookingTablePizzeriaTable() {
 		this.id = DatabaseHandler.NO_ID;
-		this.pizzeriaTable = new PizzeriaTable();
-		this.booking = new BookingPizzeriaTable();
+		this.pizzeriaTable = null;
+		this.booking = null;
+	}
+	
+	public RelationBookingTablePizzeriaTable(PizzeriaTable pizzeriaTable,BookingPizzeriaTable booking) {
+		this.id = DatabaseHandler.NO_ID;
+		this.pizzeriaTable = pizzeriaTable;
+		this.booking = booking;
 	}
 
 	public Integer getId() {

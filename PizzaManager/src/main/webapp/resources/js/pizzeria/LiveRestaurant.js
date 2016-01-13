@@ -1,8 +1,9 @@
 var LiveRestaurant = function(){
 	
 	var tableLiveRestaurant;
-	var liveRestaurantFromServer;
-	var columnId = 5;
+	var bookingConfermedFromServer;
+	var columnId = 7;
+	var columnPayment = 5;
 
 	var initDataTable = function() {
 		
@@ -15,14 +16,13 @@ var LiveRestaurant = function(){
 		                "data":           null,
 		                "defaultContent": ''
 			        },
+				    {"string" : "User"},
 				    {"string" : "Name"},
-				    {"string" : "Date"},
+				    {"string" : "Data"},
 				    {"string" : "Time"},
 				    {"string" : "Payment"},
-				    {"string" : "Id"},
-				    {"string" : "Type"},
-				    {"string" : "Tables"},
-				    {"string" : "AddressTo"}
+				    {"string" : "Bill"},
+				    {"string" : "Id"}
 				   
 				    ],
 				order : [ [ 3, 'desc' ] ]
@@ -30,13 +30,12 @@ var LiveRestaurant = function(){
 		
 		var data;
 		$.ajax({
-			url : "/pizzerialiveRestaurantAjax",
+			url : "/pizzerialiverestaurantAjax",
 			type : 'GET',
 			success : function(data) {
-				//alert(data);
 				console.log(data);
 				//inizialize table
-				liveRestaurantFromServer=data;
+				bookingConfermedFromServer=data;
 				initializeLiveRestaurantTable(data);
 			},
 			error : function(data, status, er) {
@@ -44,38 +43,35 @@ var LiveRestaurant = function(){
 			}
 		});
 		
-		setControlButtons(true,true,true);
+		setControlButtons(true,true,true,true,true);
 	}
 
-	var initializeLiveRestaurantTable = function(liveRestaurants){
+	var initializeLiveRestaurantTable = function(bookingsConfermed){
 		
-		for (var int = 0; int < liveRestaurants.length; int++) {
-			var rowToAdd=[ "", 
-						  "Giacobbino",
-						  liveRestaurants[int].date,
-						  liveRestaurants[int].time,
-						  liveRestaurants[int].payment,
-						  liveRestaurants[int].id];
+		for (var int = 0; int < bookingsConfermed.length; int++) {
 			
-			if(liveRestaurants[int].type=="takeAway"){
-				rowToAdd.push("TAKE_AWAY");
-				rowToAdd.push("-");//Tables
-				rowToAdd.push("-");//AddressTo
-			}
-			else if(liveRestaurants[int].type=="delivery"){
-				rowToAdd.push("DELIVERY");
-				rowToAdd.push("-");//Tables
-				rowToAdd.push(liveRestaurants[int].address);//AddressTo --> FIX		
-			}
-			else if(liveRestaurants[int].type=="table"){
-				rowToAdd.push("TABLE");
-				rowToAdd.push(liveRestaurants[int].table);//Tables  --> FIX
-				rowToAdd.push("-");//AddressTo	 	
-			}
+			var user="-"
+			var nome="-"
+			if(bookingsConfermed[int].user!=undefined)
+				user=bookingsConfermed[int].user;
+			if(bookingsConfermed[int].underTheNameOf!=undefined)
+				nome=bookingsConfermed[int].underTheNameOf;
+			
+			var rowToAdd=[ "", 
+						  user,
+						  nome,
+						  bookingsConfermed[int].date,
+						  bookingsConfermed[int].time,
+						  bookingsConfermed[int].payment,
+						  bookingsConfermed[int].bill +" &euro;",
+						  bookingsConfermed[int].id];
 			tableLiveRestaurant.row.add(rowToAdd).draw(false);
 		}
 	}
 
+	
+	
+	
 	var initListeners = function(){
 		
 		$('#liveRestaurantTable tbody').on('click', 'td.details-control', function() {
@@ -86,8 +82,8 @@ var LiveRestaurant = function(){
 			if (row.child.isShown()) {
 				row.child.remove();
 				tr.removeClass('shown');
-			} else {
-				
+			} 
+			else{
 				loadInfoLiveRestaurant(2,function (){
 					tableLiveRestaurant.row('.selected');
 					tableLiveRestaurant.row('.selected').child(format(row.data()[columnId])).show();
@@ -102,18 +98,23 @@ var LiveRestaurant = function(){
 		$('#liveRestaurantTable tbody').on('click', 'tr', function() {
 			 
 			if ($(this).hasClass('selected')&& tableLiveRestaurant.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even"))) {
-				console.log();
+
 				$(this).removeClass('selected');
-				setControlButtons(true,true,true);
+				setControlButtons(true,true,true,true,true);
+			
 			} 
 			else if(!$(this).hasClass('selected') && tableLiveRestaurant.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even")) ){
+				
 				tableLiveRestaurant.$('tr.selected').removeClass('selected');
 				$(this).addClass('selected');
-				setControlButtons(false,false,false);
+				if(tableLiveRestaurant.row(this).data()[columnPayment]=="true")
+						setControlButtons(false,false,false,false,true);
+					else
+						setControlButtons(false,false,false,false,false);
 			}//end else if
 		});
 		
-		$("#confermeButtonLiveRestaurant").on('click',function(){
+		/*$("#confermeButtonLiveRestaurant").on('click',function(){
 			var idLiveRestaurant=tableLiveRestaurant.row('.selected').data()[columnId];
 			sendRequest('conferme', findLiveRestaurant(idLiveRestaurant), function(response) {
 				tableLiveRestaurant.row('.selected').remove().draw(false);
@@ -131,17 +132,24 @@ var LiveRestaurant = function(){
 				tableLiveRestaurant.row('.selected').remove().draw(false);
 				alert('liveRestaurant'+idLiveRestaurant + response);
 			});
-		});
+		});*/
 		
 	}
 	
-	function format(idLiveRestaurant) {
+	function format(idBookingConfermed) {
 	
 		string="";
-		for (var int = 0; int < liveRestaurantFromServer.length; int++) {
-			if(liveRestaurantFromServer[int].id==idLiveRestaurant){
-				var liveRestaurant=liveRestaurantFromServer[int];
-				if(liveRestaurant.pizzas.length>0){
+		for (var int = 0; int < bookingConfermedFromServer.length; int++) {
+			if(bookingConfermedFromServer[int].id==idBookingConfermed){
+				var bookingConfermed=bookingConfermedFromServer[int];
+				string+="<div> type:"+bookingConfermed.type+"</div>";
+				if(bookingConfermed.type=="delivery")
+						"<div> type:"+bookingConfermed.address+"</div>";
+				else if(bookingConfermed.type=="table")
+						"<div> type:"+bookingConfermed.table+"</div>";
+				
+				
+				if(bookingConfermed.pizzas.length>0){
 					string+='<table class="table table-bordered"><thead><tr>'
 							+'<th>Pizza</th>'
 							+'<th>Gluten</th>'
@@ -149,23 +157,25 @@ var LiveRestaurant = function(){
 							+'<th>Edited</th>'
 							+'<th>Ingredients</th>'
 							+'<th>Number</th>'
+							+'<th>Price</th>'
+							+'<th>Total</th>'
 							+'</tr></thead>';
 					
 							
-					for (var int2 = 0; int2 < liveRestaurant.pizzas.length; int2++) {
+					for (var int2 = 0; int2 < bookingConfermed.pizzas.length; int2++) {
 						string+="<tr>"
-								+"<td>"+liveRestaurant.pizzas[int2].name+"</td>"
-								+"<td>"+liveRestaurant.pizzas[int2].gluten+"</td>"
-								+"<td>"+liveRestaurant.pizzas[int2].size+"</td>";
-								console.log(liveRestaurant.pizzas[int2].ingredientsAdded.length);
-								if(liveRestaurant.pizzas[int2].ingredientsAdded.length>0 || liveRestaurant.pizzas[int2].ingredientsRemoved.length>0)
+								+"<td>"+bookingConfermed.pizzas[int2].name+"</td>"
+								+"<td>"+bookingConfermed.pizzas[int2].gluten+"</td>"
+								+"<td>"+bookingConfermed.pizzas[int2].size+"</td>";
+								console.log(bookingConfermed.pizzas[int2].ingredientsAdded.length);
+								if(bookingConfermed.pizzas[int2].ingredientsAdded.length>0 || bookingConfermed.pizzas[int2].ingredientsRemoved.length>0)
 									string+="<td>yes</td>";	
 								else
 									string+="<td>no</td>";
 									
 								var ingredientsTotal;
-								ingredientsTotal=_.difference(liveRestaurant.pizzas[int2].ingredientsBase,liveRestaurant.pizzas[int2].ingredientsRemoved);
-								ingredientsTotal=_.union(ingredientsTotal,liveRestaurant.pizzas[int2].ingredientsAdded);
+								ingredientsTotal=_.difference(bookingConfermed.pizzas[int2].ingredientsBase,bookingConfermed.pizzas[int2].ingredientsRemoved);
+								ingredientsTotal=_.union(ingredientsTotal,bookingConfermed.pizzas[int2].ingredientsAdded);
 								
 								var listIngredients="";
 								for (var int3 = 0; int3 < ingredientsTotal.length; int3++) {
@@ -175,12 +185,14 @@ var LiveRestaurant = function(){
 								}
 								
 								string+="<td>"+listIngredients+"</td>"
-								+"<td>"+liveRestaurant.pizzas[int2].number+"</td>"
+								+"<td>"+bookingConfermed.pizzas[int2].number+"</td>"
+								+"<td>"+bookingConfermed.pizzas[int2].priceEach+" &euro;</td>"
+								+"<td>"+new Number(bookingConfermed.pizzas[int2].number)*new Number(bookingConfermed.pizzas[int2].priceEach)+ " &euro;</td>"
 								+"</tr>";
 					}
 					string+='</table>';
 				}
-				if(liveRestaurant.beverages.length>0){
+				if(bookingConfermed.beverages.length>0){
 					string+='<table class="table table-bordered"><thead><tr>'
 							+'<th>Beverage</th>'
 							+'<th>Brand</th>'
@@ -188,15 +200,19 @@ var LiveRestaurant = function(){
 							+'<th>Container</th>'
 							+'<th>Size</th>'
 							+'<th>Number</th>'
+							+'<th>Price</th>'
+							+'<th>Total</th>'
 							+'</tr></thead>';
-					for (var int2 = 0; int2 < liveRestaurant.beverages.length; int2++) {
+					for (var int2 = 0; int2 < bookingConfermed.beverages.length; int2++) {
 						string+="<tr>"
-								+"<td>"+liveRestaurant.beverages[int2].name+"</td>"
-								+"<td>"+liveRestaurant.beverages[int2].brand+"</td>"
-								+"<td>"+liveRestaurant.beverages[int2].type+"</td>"
-								+"<td>"+liveRestaurant.beverages[int2].container+"</td>"
-								+"<td>"+liveRestaurant.beverages[int2].size+"</td>"
-								+"<td>"+liveRestaurant.beverages[int2].number+"</td>"		
+								+"<td>"+bookingConfermed.beverages[int2].name+"</td>"
+								+"<td>"+bookingConfermed.beverages[int2].brand+"</td>"
+								+"<td>"+bookingConfermed.beverages[int2].type+"</td>"
+								+"<td>"+bookingConfermed.beverages[int2].container+"</td>"
+								+"<td>"+bookingConfermed.beverages[int2].size+"</td>"
+								+"<td>"+bookingConfermed.beverages[int2].number+"</td>"	
+								+"<td>"+bookingConfermed.beverages[int2].priceEach+" &euro;</td>"
+								+"<td>"+new Number(bookingConfermed.beverages[int2].number)*(new Number(bookingConfermed.beverages[int2].priceEach))+" &euro;</td>"
 								+"</tr>";
 					}
 					string+='</table>';
@@ -208,11 +224,11 @@ var LiveRestaurant = function(){
 		return string;
 	}
 
-	function loadInfoLiveRestaurant(liveRestaurantId,loading){
+	function loadInfoLiveRestaurant(idBookingConfermed,loading){
 		console.log("chiamata");
 		setTimeout(function(){loading();},200);
 	}
-
+	/*
 	var sendRequest = function(action, liveRestaurantResume, onSuccess) {
 		var reducedLiveRestaurant=reduceLiveRestaurant(liveRestaurantResume);
 		var stringB=JSON.stringify(reducedLiveRestaurant);
@@ -243,14 +259,14 @@ var LiveRestaurant = function(){
 		console.log(liveRestaurant);
 		return newLiveRestaurant;
 	}
-	
-	var findLiveRestaurant = function(idLiveRestaurant){
-		for (var int = 0; int < liveRestaurantFromServer.length; int++) {
-			if(liveRestaurantFromServer[int].id==idLiveRestaurant)
-				return liveRestaurantFromServer[int];
+	*/
+	var findBookingConfermed = function(idBooking){
+		for (var int = 0; int < bookingConfermedFromServer.length; int++) {
+			if(bookingConfermedFromServer[int].id==idBooking)
+				return bookingConfermedFromServer[int];
 		}
 	}
-	
+	/*
 	var editLiveRestaurant = function(){
 		var idLiveRestaurant=tableLiveRestaurant.row('.selected').data()[columnId];
 		communicator.liveRestaurantToEdit=findLiveRestaurant(idLiveRestaurant);
@@ -258,15 +274,17 @@ var LiveRestaurant = function(){
 		//TODO pezza da sistemare
 		console.log($('#liLiveOrderTool'))
 		$('#liLiveOrderTool').click();	
-	}	
+	}*/	
 	
 	
 	
-	var setControlButtons = function(boolButtonConferme, boolButtonEdit, boolButtonRemove ){
+	var setControlButtons = function(boolButtonComplete, boolButtonRestore, boolButtonRemove, boolButtonSave, boolButtonPay  ){
 		
-		$("#confermeButtonLiveRestaurant").prop('disabled', boolButtonConferme);
-		$("#editButtonLiveRestaurant").prop('disabled', boolButtonEdit);
+		$("#completeButtonLiveRestaurant").prop('disabled', boolButtonComplete);
+		$("#restoreButtonLiveRestaurant").prop('disabled', boolButtonRestore);
 		$("#removeButtonLiveRestaurant").prop('disabled', boolButtonRemove);
+		$("#saveButtonLiveRestaurant").prop('disabled', boolButtonSave);
+		$("#payButtonLiveRestaurant").prop('disabled', boolButtonPay);
 	}
 	
 	return {

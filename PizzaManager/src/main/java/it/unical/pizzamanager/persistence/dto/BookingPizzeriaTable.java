@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.persistence.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.DiscriminatorValue;
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,13 +20,19 @@ public class BookingPizzeriaTable extends Booking {
 
 	private static final long serialVersionUID = -1611802959380912382L;
 
-	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "booking", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationBookingTablePizzeriaTable> tableBooking;
 
 	public BookingPizzeriaTable() {
 		super();
 		this.tableBooking = new ArrayList<RelationBookingTablePizzeriaTable>();
+	}
+	
+	public BookingPizzeriaTable(Date date, Date time, Boolean confirmed, Integer priority, List<RelationBookingTablePizzeriaTable> tableBooking) {
+		super(date, time, confirmed, priority);
+		this.tableBooking=tableBooking;
 	}
 
 	public List<RelationBookingTablePizzeriaTable> getTableBooking() {

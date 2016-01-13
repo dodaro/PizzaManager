@@ -35,6 +35,10 @@
 	<bean id="accountDAO" class="it.unical.pizzamanager.persistence.dao.AccountDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+	
+	<bean id="addressDAO" class="it.unical.pizzamanager.persistence.dao.AddressDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
 
 	<bean id="beverageDAO" class="it.unical.pizzamanager.persistence.dao.BeverageDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />

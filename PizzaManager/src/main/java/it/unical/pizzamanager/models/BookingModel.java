@@ -11,6 +11,13 @@ public class BookingModel {
 	private Boolean payment; //TODO deve diventare un boolean
 	private List<BeverageModel> beverages;
 	private List<PizzaModel> pizzas;
+	private String user;
+	private Double bill;
+	private String underTheNameOf;
+	private Integer address;//id dell'address
+	private List<Integer> tables;//lista di id dei tavoli
+
+	
 	
 	
 	
@@ -18,7 +25,7 @@ public class BookingModel {
 
 	}
 
-	public BookingModel(Integer id,String type, String date, String time, Boolean payment, List<BeverageModel> beverages, List<PizzaModel> pizzas) {
+	public BookingModel(Integer id,String type, String date, String time, Boolean payment, List<BeverageModel> beverages, List<PizzaModel> pizzas, String user, Double bill) {
 
 		this.id=id;
 		this.type=type;
@@ -27,6 +34,12 @@ public class BookingModel {
 		this.payment=payment;
 		this.beverages=beverages;
 		this.pizzas=pizzas;
+		this.user=user;
+		this.bill=bill;
+		//TODO  FIX
+		this.underTheNameOf="";
+		this.address=-1;
+		this.tables=null;
 		
 	}
 
@@ -86,6 +99,46 @@ public class BookingModel {
 		this.pizzas = pizzas;
 	}
 
-	
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public Double getBill() {
+		return bill;
+	}
+
+	public void setBill(Double bill) {
+		this.bill = bill;
+	}
+
+	public String getUnderTheNameOf() {
+		return underTheNameOf;
+	}
+
+	public void setUnderTheNameOf(String underTheNameOf) {
+		this.underTheNameOf = underTheNameOf;
+	}
+
+	public Integer getAddress() {
+		return address;
+	}
+
+	public void setAddress(Integer address) {
+		this.address = address;
+	}
+
+	public List<Integer> getTables() {
+		return tables;
+	}
+
+	public void setTables(List<Integer> tables) {
+		this.tables = tables;
+	}
+
+
 	
 }

@@ -11,6 +11,7 @@ public class PizzaModel {
 	List<IngredientModel> ingredientsAdded;
 	List<IngredientModel> ingredientsRemoved;
 	List<IngredientModel> ingredientsBase;
+	private Double priceEach;
 	
 	public PizzaModel() {
 		this.name="";
@@ -20,8 +21,9 @@ public class PizzaModel {
 		this.ingredientsAdded=null;
 		this.ingredientsBase=null;
 		this.ingredientsRemoved=null;
+		this.priceEach=-1.0;
 	}
-	public PizzaModel(String name, Integer number, String size, String gluten, List<IngredientModel> ingredientsAdded, List<IngredientModel> ingredientsBase, List<IngredientModel> ingredientsRemoved) {
+	public PizzaModel(String name, Integer number, String size, String gluten, List<IngredientModel> ingredientsAdded, List<IngredientModel> ingredientsBase, List<IngredientModel> ingredientsRemoved, Double priceEach) {
 		this.name="";
 		this.number=-1;//TODO aggiungere default static
 		this.size="";
@@ -29,6 +31,7 @@ public class PizzaModel {
 		this.ingredientsAdded=ingredientsAdded;
 		this.ingredientsBase=ingredientsBase;
 		this.ingredientsRemoved=ingredientsRemoved;
+		this.priceEach=priceEach;
 	}
 
 	public String getName() {
@@ -85,6 +88,12 @@ public class PizzaModel {
 
 	public void setIngredientsBase(List<IngredientModel> ingredientsBase) {
 		this.ingredientsBase = ingredientsBase;
+	}
+	public Double getPriceEach() {
+		return priceEach;
+	}
+	public void setPriceEach(Double priceEach) {
+		this.priceEach = priceEach;
 	}
 	
 	

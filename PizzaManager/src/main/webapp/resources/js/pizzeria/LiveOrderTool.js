@@ -21,8 +21,21 @@ var LiveOrderTool = function(){
 	var columnId = 5;
 	var columnNumber = 4;
 
+	var initVar = function(){
+		pizzeFromServer=new Object();
+		beverageFromServer=new Object();
+		pizzeriaIngredientsFromServer=new Object();
+		pizzaList = new Array();
+		beverageList = new Array();
+		tablePizza=new Object();
+		tableBeverage=new Object();
+		codePizza = 0;
+		columnId = 5;
+		columnNumber = 4;
+	}
+	
 	var initLiveTool = function(){
-		
+			console.log(pizzaList);
 			//datepicker
 			$('#datetimepicker1').datetimepicker();
 			//creazione SELECT2
@@ -84,44 +97,55 @@ var LiveOrderTool = function(){
 			tablePizza.columns(5).visible(false);
 			tableBeverage.columns(5).visible(false);
 
+			$.ajax({
+				url : "/pizzerialiveorderPizzas",
+				type : 'GET',
+				success : function(pizzeria) {
+					
+					//init From server
+					pizzeFromServer = pizzeria.pizzas;
+					beverageFromServer = pizzeria.beverages;
+					pizzeriaIngredientsFromServer = pizzeria.allPizzeriaIngredients;
+					//popolazione pizzas: fatta con SPRING
+					//popolazione beverage
+					createBeverage(beverageFromServer);
+					//se la pagina è stata invocata per modificare un booking
+					if(communicator.bookingToEdit!== undefined){
+						console.log(communicator.bookingToEdit);
+						var bookingToEdit=communicator.bookingToEdit;
+						for (var int = 0; int < bookingToEdit.pizzas.length; int++) {
+							var pizzaPostMapping= mapping(bookingToEdit.pizzas[int]);
+							resolvePizza(false,pizzaPostMapping,bookingToEdit.pizzas[int].number);
+						}
+						for (var int2 = 0; int2 < bookingToEdit.beverages.length; int2++) {
+							resolveBeverage(false,bookingToEdit.beverages[int2]);
+						}
+						//settare le intestazioni 
+						initHeading(bookingToEdit);
+						
+						//Eliminare subito l'oggetto dal communicator
+						communicator.bookingToEdit=undefined;
+					}
+				},
+				error : function(data, status, er) {
+					alert("error: " + data + " status: "
+							+ status + " er:" + er);
+				}
+			});	
 			
 			$.ajax({
-					url : "/pizzerialiveorderPizzas",
-					type : 'GET',
-					success : function(pizzeria) {
-
-						//init From server
-						pizzeFromServer = pizzeria.pizzas;
-						beverageFromServer = pizzeria.beverages;
-						pizzeriaIngredientsFromServer = pizzeria.allPizzeriaIngredients;
-						//popolazione pizzas: fatta con SPRING
-						//popolazione beverage
-						createBeverage(beverageFromServer);
-						
-						//se la pagina è stata invocata per modificare un booking
-						if(communicator.bookingToEdit!== undefined){
-							
-							var bookingToEdit=communicator.bookingToEdit;
-							for (var int = 0; int < bookingToEdit.pizzas.length; int++) {
-								var pizzaPostMapping= mapping(bookingToEdit.pizzas[int]);
-								resolvePizza(false,pizzaPostMapping,bookingToEdit.pizzas[int].number);
-							}
-							for (var int2 = 0; int2 < bookingToEdit.beverages.length; int2++) {
-								resolveBeverage(false,bookingToEdit.beverages[int2]);
-							}
-							//settare le intestazioni 
-							
-							
-							//Eliminare subito l'oggetto dal communicator
-							communicator.bookingToEdit=undefined;
-						}
-						
-					},
-					error : function(data, status, er) {
-						alert("error: " + data + " status: "
-								+ status + " er:" + er);
-					}
-				});
+				url : "/pizzeria/tablesList",
+				type : 'GET',
+				success : function(data) {
+					console.log(data)
+					createTables(data);
+				},
+				error : function(data, status, er) {
+					alert("error: " + data + " status: " + status + " er:" + er);
+				}
+			});
+			
+			
 		}
 	
 	
@@ -280,15 +304,15 @@ var LiveOrderTool = function(){
 	var checkTypeBooking = function(type){
 		if(type=="delivery"){
 			$("#tables").prop("disabled",true);
-			$("#bookingAddressInput").prop("disabled",false);
+			$(".address").prop("disabled",false);
 		}
 		else if(type=="takeAway"){
 			$("#tables").prop("disabled",true);
-			$("#bookingAddressInput").prop("disabled",true);
+			$(".address").prop("disabled",true);
 		}
 		else if(type=="table"){
 			$("#tables").prop("disabled",false);
-			$("#bookingAddressInput").prop("disabled",true);
+			$(".address").prop("disabled",true);
 		}
 	}
 	
@@ -353,6 +377,68 @@ var LiveOrderTool = function(){
 			$("#confermeButtonBeverage").prop('disabled', boolButtonConferme);
 		}
 		
+	}
+	
+	var createTables = function(tables){
+		for (var int = 0; int < tables.length; int++) {
+			$("#tables").append("<option value='"+tables[int].id+"'>"
+					+"TableNumber: "
+					+ tables[int].number
+					+ " - Max: "
+					+ tables[int].maxSeats
+					+ " - Min:"
+					+ tables[int].minSeats
+					+ "</option>");			
+		}
+	}
+	
+	var initHeading = function(booking){
+	
+		//set switchedBotton
+		if(booking.type!="takeAway")
+			$("[value='"+booking.type+"']").bootstrapSwitch('toggleState');
+		//set Date
+		var date=new Date(booking.date);
+		var time=booking.time.split(":");
+		date.setHours(time[0], time[1], time[2]);
+		$('#datetimepicker1').data("DateTimePicker").defaultDate(date);
+		
+		//set User or Name
+		if(booking.user!=undefined){
+			console.log(booking.user);
+			$("#bookingUserInput").val(booking.user);
+			$("#bookingNameInput").prop("disabled",true);
+		}
+		else{
+			$("#bookingUserInput").prop("disabled",true);
+			$("#bookingNameInput").prop("disabled",true);
+		}
+		if(booking.underTheNameOf!=undefined){
+			console.log(booking.underTheNameOf);
+			$("#bookingNameInput").val(booking.underTheNameOf);
+			$("#bookingNameInput").prop("disabled",false);
+		}
+		else{
+			$("#bookingUserInput").prop("disabled",true);
+		}
+		
+		//set Address
+		if(booking.type=="delivery"){
+			$("#bookingCityInput").val(booking.address.city);
+			$("#bookingStreetInput").val(booking.address.street);
+			$("#bookingNumberInput").val(booking.address.number);
+		}
+		
+		if(booking.type=="table"){
+			var tablesId=new Array();
+			for (var int = 0; int < booking.tables.length; int++) {
+				tablesId.push(booking.tables[int].id);
+			}
+			console.log(tablesId);
+			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");
+			//$("#tables.js-example-basic-multiple").select2('val',booking.tables.id);
+			
+		}
 	}
 
 	/*************** FUNZIONI UTILITA SOLO PER PIZZA *****************************************************************************************************************/
@@ -572,33 +658,52 @@ var LiveOrderTool = function(){
 	var editResumePizzaItem = function(code, number, loaded) {
 		//mi serve la dimensione della lista delle pizze per poter accedere correttamente all'oggetto rows
 
-		console.log("STO EDITANDO LA PIZZA con code:" + code);
-		var newNumber;
-		if (loaded === false)
-			newNumber = new Number(dataRow[columnNumber]) + new Number(number);
-		else
-			newNumber = new Number(number);
-		
-		tablePizza.row('.selected').remove().draw(false);
-		for (var j = 0; j < pizzaList.length; j++) {
-			if (pizzaList[j].getCode() == code) {
-				var pizzaCurrent = pizzaList[j];
-				tablePizza.row.add(
-						["", 
-						 pizzaCurrent.getName(),
-						 pizzaCurrent.getGlutenFree(),
-						 pizzaCurrent.getSize(),
-						 newNumber.toString(),
-						 pizzaCurrent.getCode()]).draw(false);
+		var rows = tablePizza.rows().data();
+		for (var int = 0; int < tablePizza.rows().count(); int++) {
+			var dataRow = rows[int];
+			if (dataRow[columnId] == code) {
+				found = true;
+				console.log("trovato il tr con idBeverage:" + dataRow[columnId]+ ", e numero di bevande: " + dataRow[columnNumber]);
 
-				//FACCIAMO scrollare la scroll fino alla nuova riga aggiunta
-				$('.dataTables_scrollBody').animate({
-					scrollTop : $('#resumeTablePizza tbody > tr:last-child').offset().top
-				}, 100);
+				var newNumber;
+				if (loaded === false)
+					newNumber = new Number(dataRow[columnNumber]) + new Number(number);
+				else
+					newNumber = new Number(number);
 
-				return;
+				//rimozione della vecchia riga
+				console.log("sto rimuovendo la riga"+ tablePizza.row(int).data())
+				//PEZZA PER RIMUOVERE LA RIGA VECCHIA
+				for (var int2 = 0; int2 < tablePizza.rows().count(); int2++) {
+					console.log(tablePizza.row(int2).data()[columnId] + "=="+ rows[int][columnId])
+					if (tablePizza.row(int2).data()[columnId] == rows[int][columnId]) {
+						tablePizza.row(int2).remove().draw(false);
+					}
+				}
+				for (var j = 0; j < pizzaList.length; j++) {
+					if (pizzaList[j].getCode() == code) {
+						var pizzaCurrent = pizzaList[j];
+						tablePizza.row.add(
+								["", 
+								 pizzaCurrent.getName(),
+								 pizzaCurrent.getGlutenFree(),
+								 pizzaCurrent.getSize(),
+								 newNumber.toString(),
+								 pizzaCurrent.getCode()]).draw(false);
+
+						//FACCIAMO scrollare la scroll fino alla nuova riga aggiunta
+						$('.dataTables_scrollBody').animate({
+							scrollTop : $('#resumeTablePizza tbody > tr:last-child').offset().top
+						}, 100);
+
+						return;
+					}
+				}
+
+				//update pizzaList	
 			}
 		}
+		
 	}
 
 	var addResumePizzaItem = function(pizza, number) {
@@ -841,31 +946,8 @@ var LiveOrderTool = function(){
 	}
 
 	var editResumeBeverageItem = function(idBeverage, number, loaded) {
-
-		var newNumber;
-		if (loaded === false)
-			newNumber = new Number(dataRow[columnNumber]) + new Number(number);
-		else
-			newNumber = new Number(number);
 		
-		tableBeverage.row('.selected').remove().draw(false);
-		for (var int = 0; int < beverageFromServer.length; int++) {
-			var beverageSelectedId = $("#beverageList.js-example-basic-single").select2("data");
-			var res = beverageSelectedId.id.split("_");
-			if (beverageFromServer[int].id == res[1]) {
-				var currentBeverage = beverageFromServer[int];
-				tableBeverage.row.add(
-						[ currentBeverage.brand, currentBeverage.name,
-						  currentBeverage.container,
-						  currentBeverage.size, newNumber,
-						  currentBeverage.id ]).draw(false);
-				return;
-
-			}
-		}
-		
-		
-		/*var rows = tableBeverage.rows().data();
+		var rows = tableBeverage.rows().data();
 		for (var int = 0; int < tableBeverage.rows().count(); int++) {
 			var dataRow = rows[int];
 			if (dataRow[columnId] == idBeverage) {
@@ -905,7 +987,7 @@ var LiveOrderTool = function(){
 
 				//update pizzaList	
 			}
-		}*/
+		}
 
 	}
 
@@ -927,6 +1009,7 @@ var LiveOrderTool = function(){
 	
 	return {
 		init : function() {
+			initVar();
 			initLiveTool();
 			initListeners();
 		}

@@ -2,7 +2,7 @@ var Booking = function(){
 	
 	var tableBooking;
 	var bookingFromServer;
-	var columnId = 5;
+	var columnId = 6;
 
 	var initDataTable = function() {
 		
@@ -15,6 +15,7 @@ var Booking = function(){
 		                "data":           null,
 		                "defaultContent": ''
 			        },
+			        {"string" : "User"},
 				    {"string" : "Name"},
 				    {"string" : "Date"},
 				    {"string" : "Time"},
@@ -22,7 +23,8 @@ var Booking = function(){
 				    {"string" : "Id"},
 				    {"string" : "Type"},
 				    {"string" : "Tables"},
-				    {"string" : "AddressTo"}
+				    {"string" : "AddressTo"},
+				    {"string" : "Bill"}
 				   
 				    ],
 				order : [ [ 3, 'desc' ] ]
@@ -57,8 +59,16 @@ var Booking = function(){
 	var initializeBookingTable = function(bookings){
 		
 		for (var int = 0; int < bookings.length; int++) {
+			var user="-"
+			var nome="-"
+			if(bookings[int].user!=undefined)
+				user=bookings[int].user;
+			if(bookings[int].underTheNameOf!=undefined)
+				nome=bookings[int].underTheNameOf;
+			
 			var rowToAdd=[ "", 
-						  "Giacobbino",
+			              user,
+			              nome,
 						  bookings[int].date,
 						  bookings[int].time,
 						  bookings[int].payment,
@@ -72,13 +82,21 @@ var Booking = function(){
 			else if(bookings[int].type=="delivery"){
 				rowToAdd.push("DELIVERY");
 				rowToAdd.push("-");//Tables
-				rowToAdd.push(bookings[int].address);//AddressTo --> FIX		
+				rowToAdd.push(bookings[int].address.city +", "+bookings[int].address.street+" "+bookings[int].address.number);//AddressTo --> FIX		
 			}
 			else if(bookings[int].type=="table"){
 				rowToAdd.push("TABLE");
-				rowToAdd.push(bookings[int].table);//Tables  --> FIX
+				var stringTables="";
+				for (var int2 = 0; int2 < bookings[int].tables.length; int2++) {
+					stringTables+=bookings[int].tables[int2].number;
+					if(int2!==bookings[int].tables.length-1)
+						stringTables+=", ";
+				}
+				rowToAdd.push(stringTables);//Tables  --> FIX
 				rowToAdd.push("-");//AddressTo	 	
 			}
+			
+			rowToAdd.push(bookings[int].bill+" &euro;");
 			tableBooking.row.add(rowToAdd).draw(false);
 		}
 	}
@@ -101,7 +119,7 @@ var Booking = function(){
 					console.log("callback");
 				});
 				
-				row.child("<div>loading</div>").show();
+				row.child("<img src='resources/gifs/loading.gif' width='50px' height='50px'></img>").show();
 				tr.addClass('shown');
 			}
 		});
@@ -130,6 +148,7 @@ var Booking = function(){
 		
 		$("#editButtonBooking").on('click',function(){
 			editBooking();
+			//com
 		});
 		
 		$("#removeButtonBooking").on('click',function(){
@@ -156,6 +175,8 @@ var Booking = function(){
 							+'<th>Edited</th>'
 							+'<th>Ingredients</th>'
 							+'<th>Number</th>'
+							+'<th>Price</th>'
+							+'<th>Total</th>'
 							+'</tr></thead>';
 					
 							
@@ -183,6 +204,8 @@ var Booking = function(){
 								
 								string+="<td>"+listIngredients+"</td>"
 								+"<td>"+booking.pizzas[int2].number+"</td>"
+								+"<td>"+booking.pizzas[int2].priceEach+" &euro;</td>"
+								+"<td>"+new Number(booking.pizzas[int2].number)*new Number(booking.pizzas[int2].priceEach)+ " &euro;</td>"
 								+"</tr>";
 					}
 					string+='</table>';
@@ -195,6 +218,8 @@ var Booking = function(){
 							+'<th>Container</th>'
 							+'<th>Size</th>'
 							+'<th>Number</th>'
+							+'<th>Price</th>'
+							+'<th>Total</th>'
 							+'</tr></thead>';
 					for (var int2 = 0; int2 < booking.beverages.length; int2++) {
 						string+="<tr>"
@@ -203,7 +228,9 @@ var Booking = function(){
 								+"<td>"+booking.beverages[int2].type+"</td>"
 								+"<td>"+booking.beverages[int2].container+"</td>"
 								+"<td>"+booking.beverages[int2].size+"</td>"
-								+"<td>"+booking.beverages[int2].number+"</td>"		
+								+"<td>"+booking.beverages[int2].number+"</td>"
+								+"<td>"+booking.beverages[int2].priceEach+" &euro;</td>"
+								+"<td>"+new Number(booking.beverages[int2].number)*(new Number(booking.beverages[int2].priceEach))+" &euro;</td>"
 								+"</tr>";
 					}
 					string+='</table>';
@@ -217,7 +244,7 @@ var Booking = function(){
 
 	function loadInfoBooking(bookingId,loading){
 		console.log("chiamata");
-		setTimeout(function(){loading();},200);
+		setTimeout(function(){loading();},500);
 	}
 
 	var sendRequest = function(action, bookingResume, onSuccess) {
@@ -238,14 +265,33 @@ var Booking = function(){
 	};
 	
 	var reduceBooking = function(booking){
+		var newBooking=_.clone(booking);
 		var beverages=new Array();
+		var address=new Object();
+		var tables=new Array();
+		
 		for (var int = 0; int < booking.beverages.length; int++) {
 			beverages.push(_.pick(booking.beverages[int],'id','number'));
 		}
-		
-		var newBooking=_.clone(booking);
 		newBooking.beverages=beverages;
 		//newBooking=_.omit(newBooking,'pizzas','beverages');
+		
+		if(booking.type=="delivery"){
+			address=booking.address['id'];
+			console.log(address);
+			newBooking.address=address;
+			console.log(newBooking)
+		}
+		else if(booking.type=="table"){
+		
+			for (var int = 0; int < booking.tables.length; int++) {
+				tables.push(booking.tables[int]['id']);
+			}
+			newBooking.tables=tables;
+		}
+		
+		
+		
 		console.log(newBooking);
 		console.log(booking);
 		return newBooking;

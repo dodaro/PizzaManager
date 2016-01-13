@@ -8,15 +8,25 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.AddressDAO;
 import it.unical.pizzamanager.persistence.dao.BeverageDAO;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dao.PizzeriaTableDAO;
+import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.Address;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.BookingDelivery;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
+import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
+import it.unical.pizzamanager.persistence.dto.User;
 
 public class BookingPopulator extends Populator {
 
@@ -26,12 +36,16 @@ public class BookingPopulator extends Populator {
 
 	@Override
 	protected void populate() {
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		AddressDAO addressDAO = (AddressDAO) context.getBean("addressDAO");
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		OrderItemDAO order = (OrderItemDAO) context.getBean("orderItemDAO");
 
+		User user1=userDAO.get(2);
+		User user2=userDAO.get(1);
+		
 		PizzaOrderItem pizzaOrder1 = new PizzaOrderItem();
-		// MANCA L'UTENTE O IL NOME DI CHI HA PRENOTATO
 		pizzaOrder1.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(0));
 		pizzaOrder1.setModified(false);
 		pizzaOrder1.setNumber(3);
@@ -46,6 +60,22 @@ public class BookingPopulator extends Populator {
 		pizzaOrder2.setGlutenFree(PizzaOrderItem.YES);
 		pizzaOrder2.setSize(PizzaOrderItem.LARGE);
 		order.create(pizzaOrder2);
+		
+		PizzaOrderItem pizzaOrder3 = new PizzaOrderItem();
+		pizzaOrder3.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(2));
+		pizzaOrder3.setModified(false);
+		pizzaOrder3.setNumber(3);
+		pizzaOrder3.setGlutenFree(PizzaOrderItem.NO);
+		pizzaOrder3.setSize(PizzaOrderItem.SMALL);
+		order.create(pizzaOrder3);
+
+		PizzaOrderItem pizzaOrder4 = new PizzaOrderItem();
+		pizzaOrder4.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(2));
+		pizzaOrder4.setModified(true);
+		pizzaOrder4.setNumber(2);
+		pizzaOrder4.setGlutenFree(PizzaOrderItem.YES);
+		pizzaOrder4.setSize(PizzaOrderItem.MEDIUM);
+		order.create(pizzaOrder4);
 
 		List<RelationPizzaOrderItemIngredient> ingredientsAdded = new ArrayList<>();
 		ingredientsAdded.add(new RelationPizzaOrderItemIngredient(
@@ -54,6 +84,20 @@ public class BookingPopulator extends Populator {
 				pizzaOrder2));
 		pizzaOrder2.setPizzaOrderIngredients(ingredientsAdded);
 
+		
+		List<RelationPizzaOrderItemIngredient> ingredientsAdded1 = new ArrayList<>();
+		ingredientsAdded1.add(new RelationPizzaOrderItemIngredient(
+				RelationPizzaOrderItemIngredient.ADDITION,
+				pizzeriaDAO.getAll().get(0).getIngredientsPriceList().get(4).getIngredient(),
+				pizzaOrder4));
+		ingredientsAdded1.add(new RelationPizzaOrderItemIngredient(
+				RelationPizzaOrderItemIngredient.ADDITION,
+				pizzeriaDAO.getAll().get(0).getIngredientsPriceList().get(2).getIngredient(),
+				pizzaOrder4));
+		pizzaOrder4.setPizzaOrderIngredients(ingredientsAdded1);
+		
+		
+		
 		BeverageOrderItem beverageOrder1 = new BeverageOrderItem();
 		beverageOrder1.setPizzeria_beverage(pizzeriaDAO.getAll().get(0).getBeveragesPriceList().get(0));
 		beverageOrder1.setNumber(4);
@@ -64,34 +108,96 @@ public class BookingPopulator extends Populator {
 		beverageOrder2.setNumber(1);
 		order.create(beverageOrder2);
 		
-		List<OrderItem> orderItems = new ArrayList<>();
-		orderItems.add(pizzaOrder1);
-		orderItems.add(pizzaOrder2);
-		orderItems.add(beverageOrder1);
-		orderItems.add(beverageOrder2);
+		BeverageOrderItem beverageOrder3 = new BeverageOrderItem();
+		beverageOrder3.setPizzeria_beverage(pizzeriaDAO.getAll().get(0).getBeveragesPriceList().get(2));
+		beverageOrder3.setNumber(3);
+		order.create(beverageOrder3);
+		
+		BeverageOrderItem beverageOrder4 = new BeverageOrderItem();
+		beverageOrder4.setPizzeria_beverage(pizzeriaDAO.getAll().get(0).getBeveragesPriceList().get(3));
+		beverageOrder4.setNumber(2);
+		order.create(beverageOrder4);
+		
+		
+		List<OrderItem> orderItemsTakeAway = new ArrayList<>();
+		orderItemsTakeAway.add(pizzaOrder1);
+		orderItemsTakeAway.add(pizzaOrder2);
+		orderItemsTakeAway.add(beverageOrder1);
+		orderItemsTakeAway.add(beverageOrder2);
+		
+		List<OrderItem> orderItemsDelivery = new ArrayList<>();
+		orderItemsDelivery.add(pizzaOrder3);
+		orderItemsDelivery.add(beverageOrder3);
+		
+		List<OrderItem> orderItemsTable = new ArrayList<>();
+		orderItemsTable.add(pizzaOrder4);
+		orderItemsTable.add(beverageOrder4);
+		
+		
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-		String date = "31-08-2015";
-		String time = "31-08-2015 10:20:12";
-		BookingTakeAway b;
+		String dateTakeAway = "31-08-2015";
+		String timeTakeAway = "31-08-2015 10:20:12";
+		String dateDelivery = "13-10-2016";
+		String timeDelivery = "13-10-2016 10:20:12";
+		String dateTable = "23-01-2019";
+		String timeTable = "31-08-2015 10:20:12";
+		BookingTakeAway takeAway;
+		BookingDelivery delivery;
+		BookingPizzeriaTable tableBooking;
+		
 		try {
-			Date date1 = sdf.parse(date);
-			Date time1 = sdf.parse(time);
-			System.out.println(date1);
-			b = new BookingTakeAway(date1, time1, false, -1);
-			b.setPizzeria(pizzeriaDAO.getAll().get(0));
-			b.setOrderItems(orderItems);
-
-			bookingDAO.create(b);
-			pizzaOrder1.setBooking(b);
-			pizzaOrder2.setBooking(b);
-			beverageOrder1.setBooking(b);
-			beverageOrder2.setBooking(b);
+			Date date1TakeAway = sdf.parse(dateTakeAway);
+			Date time1TakeAway = sdf1.parse(timeTakeAway);
+			Date date1Delivery = sdf.parse(dateDelivery);
+			Date time1Delivery = sdf1.parse(timeDelivery);
+			Date date1Table = sdf.parse(dateTable);
+			Date time1Table = sdf1.parse(timeTable);
+	
+			takeAway = new BookingTakeAway(date1TakeAway, time1TakeAway, false, Booking.PRIORITY_DEFAULT);
+			takeAway.setPizzeria(pizzeriaDAO.getAll().get(0));
+			takeAway.setOrderItems(orderItemsTakeAway);
+			takeAway.setUser(user1);
+			bookingDAO.create(takeAway);
+			
+			delivery = new BookingDelivery(date1Delivery, time1Delivery, false, Booking.PRIORITY_DEFAULT, null);
+			delivery.setPizzeria(pizzeriaDAO.getAll().get(0));
+			delivery.setOrderItems(orderItemsDelivery);
+			delivery.setBookerName("Tommaso Berardi");
+				Address deliveryAddress=new Address();
+				deliveryAddress.setCity("Cosenza");
+				deliveryAddress.setStreet("via Popilia");
+				deliveryAddress.setNumber(44);
+				addressDAO.create(deliveryAddress);
+			delivery.setDeliveryAddress(deliveryAddress);
+			bookingDAO.create(delivery);
+			
+			tableBooking = new BookingPizzeriaTable(date1Table, time1Table, false, Booking.PRIORITY_DEFAULT, null);
+			tableBooking.setPizzeria(pizzeriaDAO.getAll().get(0));
+			tableBooking.setOrderItems(orderItemsTable);
+			tableBooking.setUser(user2);
+			bookingDAO.create(tableBooking);
+				List<RelationBookingTablePizzeriaTable> tables = new ArrayList<>();
+				tables.add(new RelationBookingTablePizzeriaTable(pizzeriaDAO.getAll().get(0).getTables().get(0),tableBooking));
+			tableBooking.setTableBooking(tables);
+			bookingDAO.update(tableBooking);
+			
+			pizzaOrder1.setBooking(takeAway);
+			pizzaOrder2.setBooking(takeAway);
+			pizzaOrder3.setBooking(delivery);
+			pizzaOrder4.setBooking(tableBooking);
+			beverageOrder1.setBooking(takeAway);
+			beverageOrder2.setBooking(takeAway);
+			beverageOrder3.setBooking(delivery);
+			beverageOrder4.setBooking(tableBooking);
 			order.update(pizzaOrder1);
 			order.update(pizzaOrder2);
+			order.update(pizzaOrder3);
+			order.update(pizzaOrder4);
 			order.update(beverageOrder1);
 			order.update(beverageOrder2);
+			order.update(beverageOrder3);
 
 		} catch (ParseException e) {
 			e.printStackTrace();
