@@ -28,6 +28,9 @@
 <!-- Scripts for the booking -->
 <script type="text/javascript" src="resources/js/pizzeria/Booking.js"></script>
 
+<!-- Scripts for the live restaurant -->
+<script type="text/javascript" src="resources/js/pizzeria/LiveRestaurant.js"></script>
+
 <!-- PER DANILO: DECIDI TU DOVE METTERE QUESTO SCRIPT -->
 <script type="text/javascript">
 	/*VARIABILE CHE SERVE PER METTERE IN COMUNICAZIONE LE VARIE .jsp
@@ -57,8 +60,6 @@
 <!-- <link rel="stylesheet" type="text/css" href="resources/css/pizzeriaTableManager.css" /> -->
 
 <link rel="stylesheet" type="text/css" href="resources/css/pizzerialiveorder.css" />
-<link rel="stylesheet" type="text/css" href="resources/css/pageCSS/pizzerialiveorder.css" />
-
 
 <title>${pizzeria.name}</title>
 

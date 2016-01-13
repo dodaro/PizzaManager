@@ -28,14 +28,16 @@
 				<thead>
 					<tr>
 						<th></th>
+						<th>User</th>
 						<th>Name</th>
 						<th>Date</th>
 						<th>Time</th>
 						<th>Payment</th>
 						<th>Id</th>
 						<th>Type</th>
-						<th>Tables</th>
+						<th>N.Tables</th>
 						<th>AddressTo</th>
+						<th>Bill</th>
 					</tr>
 				</thead>
 			</table>
