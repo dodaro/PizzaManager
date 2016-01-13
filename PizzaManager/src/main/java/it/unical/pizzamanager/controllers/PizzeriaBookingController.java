@@ -10,30 +10,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
-import it.unical.pizzamanager.forms.PizzeriaBookingForm;
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.serializers.BookingSerializer;
-import it.unical.pizzamanager.serializers.PizzeriaSerializer;
 import it.unical.pizzamanager.utils.BookingUtils;
 
 

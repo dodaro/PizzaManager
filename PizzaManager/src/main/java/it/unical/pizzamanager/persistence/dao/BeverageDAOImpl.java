@@ -2,6 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.Beverage;
@@ -27,6 +28,17 @@ public class BeverageDAOImpl implements BeverageDAO {
 	@Override
 	public void update(Beverage beverage) {
 		databaseHandler.update(beverage);
+	}
+
+	@Override
+	public Beverage get(Integer id) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from Beverage where id = :id");
+		query.setParameter("id", id);
+		Beverage beverage = (Beverage) query.uniqueResult();
+		session.close();
+
+		return beverage;
 	}
 
 	@Override

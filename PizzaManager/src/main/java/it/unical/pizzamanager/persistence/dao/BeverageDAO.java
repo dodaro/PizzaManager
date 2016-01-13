@@ -12,6 +12,7 @@ public interface BeverageDAO {
 
 	public void update(Beverage beverage);
 
-	public List<Beverage> getAll();
+	Beverage get(Integer id);
 
+	public List<Beverage> getAll();
 }

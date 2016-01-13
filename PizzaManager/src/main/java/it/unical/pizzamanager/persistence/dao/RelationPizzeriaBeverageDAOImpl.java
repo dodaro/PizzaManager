@@ -2,6 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
@@ -10,11 +11,23 @@ public class RelationPizzeriaBeverageDAOImpl implements RelationPizzeriaBeverage
 
 	private DatabaseHandler databaseHandler;
 
-	@SuppressWarnings("unchecked")
+	@Override
+	public RelationPizzeriaBeverage get(Integer id) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		Query query = session.createQuery("from RelationPizzeriaBeverage where id = :id");
+		query.setParameter("id", id);
+
+		RelationPizzeriaBeverage pizzeriaBeverage = (RelationPizzeriaBeverage) query.uniqueResult();
+		session.close();
+		return pizzeriaBeverage;
+	}
+
 	@Override
 	public List<RelationPizzeriaBeverage> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		List<RelationPizzeriaBeverage> beveragePriceLists = session.createSQLQuery("Select * from pizzeria_beverage_price")
+		List<RelationPizzeriaBeverage> beveragePriceLists = session
+				.createSQLQuery("Select * from pizzeria_beverage_price")
 				.addEntity(RelationPizzeriaBeverage.class).list();
 		session.close();
 		return beveragePriceLists;
