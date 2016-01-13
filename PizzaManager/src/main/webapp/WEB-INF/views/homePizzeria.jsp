@@ -71,7 +71,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-2">
-				<div class="bubble" id="leftSideBar" >
+				<div class="bubble affix">
 					<ul class="nav nav-pills nav-stacked">
 						<!-- <li class="active"><a href="#">Home</a></li> -->
 						<li data-content="pizzeriaTableManager"><a href="#">Manage tables</a></li>

@@ -2,6 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 
 public interface RelationPizzeriaPizzaDAO {
@@ -12,5 +13,7 @@ public interface RelationPizzeriaPizzaDAO {
 
 	public void update(RelationPizzeriaPizza pizzaPriceList);
 
-	public List<RelationPizzeriaPizza> get();
+	RelationPizzeriaPizza get(Integer id);
+
+	List<RelationPizzeriaPizza> get(Pizzeria pizzeria);
 }

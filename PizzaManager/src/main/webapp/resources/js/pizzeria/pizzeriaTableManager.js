@@ -175,16 +175,15 @@ pizzeriaTableManager = function() {
 			},
 
 			showTooltip : function(buttonClass, text) {
-				/* If a tooltip is already shown, just change the text. */
-				var $existingTooltip = $('.buttons-container .tooltip');
-				if ($existingTooltip.length > 0) {
-					$existingTooltip.find('.tooltip-inner').html(text);
-				} else {
-					$('#pizzeria-table .' + buttonClass).tooltip({
-						title : text,
-						trigger : 'manual'
-					}).tooltip('show');
-				}
+				/*
+				 * If a tooltip is already shown, change the text and show the
+				 * new one.
+				 */
+				var $button = $('.buttons-container .' + buttonClass);
+				$button.attr('data-original-title', text);
+				$button.tooltip({
+					trigger : 'manual'
+				}).tooltip('fixTitle').tooltip('show');
 			},
 
 			hideTooltips : function() {
@@ -387,7 +386,10 @@ pizzeriaTableManager = function() {
 			},
 			success : function(response) {
 				console.log(response);
-				onSuccess(response);
+
+				if (response.success) {
+					onSuccess(response);
+				}
 			}
 		});
 	};
@@ -415,6 +417,8 @@ pizzeriaTableManager = function() {
 			form.setUpdateButtonEnabled(false);
 			form.setDeleteButtonEnabled(true);
 		}
+
+		form.hideTooltips();
 
 		form.setNumberFieldHighlighted(false);
 		form.setSeatsFieldsHighlighted(false);
@@ -477,7 +481,6 @@ pizzeriaTableManager = function() {
 
 		$('#pizzeria-table .button-update').on('click', function() {
 			var $tableRow = table.getSelectedRow();
-			form.showTooltip('button-update', "AAA");
 			updateTable($tableRow);
 		});
 
