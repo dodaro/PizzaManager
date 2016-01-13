@@ -1,5 +1,7 @@
 package it.unical.pizzamanager.model;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,13 +13,16 @@ public class CartBooking {
 
 	private Date date;
 
-	private int number;
+	private String identifier;
+
+	private double total;
 
 	public CartBooking() {
-		this.number=0;
+		this.identifier = "";
 		this.pizzeria = "";
 		this.items = new ArrayList<>();
 		this.date = null;
+		this.total = 0;
 	}
 
 	public String getPizzeria() {
@@ -44,12 +49,30 @@ public class CartBooking {
 		this.date = date;
 	}
 
-	public int getNumber() {
-		return number;
+	public String getIdentifier() {
+		return identifier;
 	}
 
-	public void setNumber(int number) {
-		this.number = number;
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+
+	public String performTotal() {
+		for (OrderItemDisplay orderItemDisplay : items) {
+			this.total += (orderItemDisplay.getCost() * orderItemDisplay.getNumber());
+			System.out.println(total);
+		}
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		return formatter.format(total);
+
 	}
 
 }

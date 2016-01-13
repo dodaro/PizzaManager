@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.model.CartBooking;
@@ -75,62 +76,74 @@ public class CartController {
 		return "cart";
 	}
 
-	
+	@ResponseBody
 	@RequestMapping(value = "/bookCart", method = RequestMethod.POST)
-	public String bookCart(@ModelAttribute("itemsToBook") ItemToBook itemsToBook,Model model, HttpSession session) {
+	public String bookCart(@RequestParam("itemToBook") String itemToBook, Model model, HttpSession session) {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
-		System.out.println(itemsToBook.getIds().size());
-		System.out.println("");
-		System.out.println("");
-		updateCart(itemsToBook);
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
 		Cart cart = cartDAO.getUserCart(user);
-		
+		System.out.println(itemToBook);
+		System.out.println("Item to book");
+		String[] itemsToBook = itemToBook.split(";");
+		updateCart(itemsToBook, cart, cartDAO);
+
 		ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
 		model.addAttribute("bookings", bookings);
-		return "redirect:/userBooking";
+		System.out.println("redirect");
+		return "{\"success\" : true}";
 	}
 
 	private ArrayList<CartBooking> createBookingsToDisplay(Cart cart) {
 		ArrayList<CartBooking> bookings = new ArrayList<>();
-		int numb=0;
+		int numb = 0;
 		for (OrderItem item : cart.getOrderItems()) {
 			boolean exist = false;
-			OrderItemDisplay itemToDisplay=createItemToDisplay(item);
+			OrderItemDisplay itemToDisplay = createItemToDisplay(item);
 			for (CartBooking b : bookings) {
-				if(itemToDisplay.getPizzeria()==b.getPizzeria()){
+				if (itemToDisplay.getPizzeria() == b.getPizzeria()) {
 					b.getItems().add(itemToDisplay);
-					exist=true;
+					exist = true;
 					break;
 				}
 			}
 			if (!exist) {
 				CartBooking booking = new CartBooking();
-				booking.setNumber(numb);
+				booking.setIdentifier("pizzeria" + numb);
 				booking.setPizzeria(itemToDisplay.getPizzeria());
 				booking.getItems().add(itemToDisplay);
 				bookings.add(booking);
 				numb++;
-		
+
 			}
+		}
+		for (CartBooking books : bookings) {
+			books.performTotal();
 		}
 		return bookings;
 	}
 
-	private void updateCart(ItemToBook itemsToBook) {
-		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
+	private void updateCart(String[] itemsToBook, Cart cart, CartDAO cartDAO) {
 		
-		for (int j=0;j<itemsToBook.getIds().size();j++) {
-			Integer id=itemsToBook.getIds().get(j);
-			Integer number=itemsToBook.getNumbers().get(j);
-			OrderItem item = orderItemDAO.getItem(id);
-			item.setNumber(number);
-			orderItemDAO.update(item);
+		System.out.println(itemsToBook.length);
+		for (int j = 0; j < itemsToBook.length; j++) {
+			String[] i = itemsToBook[j].split("-");
+			int id = Integer.valueOf(i[0]);
+			int number = Integer.valueOf(i[1]);
+			for (OrderItem items : cart.getOrderItems()) {
+				if (items.getId() == id) {
+
+					items.setNumber(number);
+					System.out.println(items.getNumber());
+					break;
+				}
+			}
 		}
+
+		cartDAO.update(cart);
 	}
 
 	private CartDisplay createCartToDisplay(List<OrderItem> list) {
