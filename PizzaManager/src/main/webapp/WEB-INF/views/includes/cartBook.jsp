@@ -20,12 +20,46 @@
 					</div>
 				</div>
 				<div class="pull-right">
-					<button>Take Away</button>
-					<button>Deliver</button>
+					<button id="take_away" class="btn btn-default">Take Away</button>
+					<button id="delivery" class="btn btn-default">Deliver</button>
 					<%--on click pop-up take data e time --%>
 				</div>
-
 			</c:forEach>
 		</div>
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">Select Booking Date</h4>
+
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12">
+							<div class="row">
+								<label for="bookingDate">Booking Date:</label>
+								<div class="form-group">
+									<div class='input-group date' id='datetimepicker'>
+										<input id="bookingDate" type='text' class="form-control" /> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"> </span>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="requestBook" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal-dialog -->
+		</div>
+		<!-- /.modal -->
+
 	</c:if>
 </div>

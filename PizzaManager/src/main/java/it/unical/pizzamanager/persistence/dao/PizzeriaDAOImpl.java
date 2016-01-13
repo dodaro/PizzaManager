@@ -71,6 +71,24 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 		return pizzerias;
 	}
 
+	@Override
+	public List<RelationPizzeriaPizza> getMenuPizze(Integer id) {
+		// to write when remove init
+		return null;
+	}
+
+	@Override
+	public Pizzeria getByName(String name) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from Pizzeria where name = :name");
+		query.setParameter("name", name);
+
+		Pizzeria pizzeria = (Pizzeria) query.uniqueResult();
+
+		session.close();
+		return pizzeria;
+	}
+
 	private void init(Pizzeria pizzeria) {
 		pizzeria.getBeveragesPriceList().size();
 		pizzeria.getBookings().size();
@@ -87,12 +105,6 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
-	}
-
-	@Override
-	public List<RelationPizzeriaPizza> getMenuPizze(Integer id) {
-		//to write when remove init
-		return null;
 	}
 
 }
