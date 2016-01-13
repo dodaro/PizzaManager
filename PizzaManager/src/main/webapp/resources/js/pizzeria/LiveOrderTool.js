@@ -271,6 +271,11 @@ var LiveOrderTool = function(){
 
 	} 
 	/*****************************************************   FUNZIONI COMUNI ********************************************************************************/
+	var createBooking = function(){
+		var booking=new Object();
+		
+	}
+	
 	var sendOrder = function() {
 		var orderBeverages = extractBeverages();
 		var orderPizzas = extractPizzas();
@@ -438,6 +443,71 @@ var LiveOrderTool = function(){
 			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");
 			//$("#tables.js-example-basic-multiple").select2('val',booking.tables.id);
 			
+		}
+	}
+	
+	var extractData = function(dataType){
+		switch (dataType) {
+		case "beverages":
+			var orderBeverages = new Array();
+			var rows = tableBeverage.rows().data();
+			for (var int = 0; int < tableBeverage.rows().count(); int++) {
+				var dataRow = rows[int];
+				var id = dataRow[columnId];
+				for (var int2 = 0; int2 < beverageFromServer.length; int2++) {
+					if (beverageFromServer[int2].id == id) {
+						beverageList.push(beverageFromServer[int2]);
+						orderBeverages.push({
+							number : dataRow[columnNumber],
+							id : beverageFromServer[int2].id
+						});
+					}
+				}
+			}
+			return orderBeverages;
+			break;
+		case "pizzas":
+			var orderPizzas = new Array();
+			var rows = tablePizza.rows().data();
+			for (var int = 0; int < tablePizza.rows().count(); int++) {
+				var dataRow = rows[int];
+				for (var int2 = 0; int2 < pizzaList.length; int2++) {
+					if (dataRow[columnId] == pizzaList[int2].getCode()) {
+						orderPizzas.push({
+							number : dataRow[columnNumber],
+							gluten : pizzaList[int2].getGlutenFree(),
+							ingredientsAdded:pizzaList[int2].getIngredientsAdded(),
+							//ingredientsBase:pizzaList[int2].,
+							ingredientsRemoved:pizzaList[int2].getIngredientsRemoved(),
+							name:pizzaList[int2].getName(),
+							size:pizzaList[int2].getSize()
+						})
+					}
+				}
+			}
+			return orderPizzas;
+			break;
+		case "tables":
+			var tables= $("#tables").select2("val");
+			console.log(tables);
+			return tables;
+		break;
+		case "address":
+			var address=new Object();
+			address.city=$("#bookingCityInput").val();
+			address.street=$("#bookingStreetInput").val(booking.address.street);
+			address.number=$("#bookingNumberInput").val(booking.address.number);
+			return address;
+			break;
+		case "users":
+			return $("#bookingUserInput").val();
+			break;
+		case "name":
+			return $("#bookingNameInput").val();
+			break;
+
+		default:
+			break;
 		}
 	}
 

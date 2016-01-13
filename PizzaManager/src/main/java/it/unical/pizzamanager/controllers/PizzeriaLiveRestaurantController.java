@@ -44,7 +44,7 @@ public class PizzeriaLiveRestaurantController {
 		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
 		//TODO filtrare i booking confermati
 		//System.out.println(bookings.get(0).getDate());
-		bookings.removeIf(b -> b.getConfirmed() == false);
+		//bookings.removeIf(b -> b.getConfirmed() == false);
 		return bookings;
 	}
 
