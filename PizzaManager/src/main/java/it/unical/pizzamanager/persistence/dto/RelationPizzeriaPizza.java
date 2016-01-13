@@ -141,6 +141,24 @@ public class RelationPizzeriaPizza implements Serializable {
 		return preparationTime;
 	}
 
+	public String getPreparationTimeString() {
+		Integer minutes = preparationTime / 60;
+		Integer seconds = preparationTime % 60;
+
+		String minutesString = Integer.toString(minutes);
+		String secondsString = Integer.toString(seconds);
+
+		if (minutes < 9) {
+			minutesString = "0" + minutesString;
+		}
+
+		if (seconds < 9) {
+			secondsString = "0" + secondsString;
+		}
+
+		return minutesString + ":" + secondsString;
+	}
+
 	public void setPreparationTime(Integer preparationTime) {
 		this.preparationTime = preparationTime;
 	}

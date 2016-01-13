@@ -154,9 +154,10 @@ public class PizzeriaPizzaManagerController {
 
 	private String buildOkResponse(RelationPizzeriaPizza pizzeriaPizza) {
 		return "{\"success\" : true, \"id\" : " + pizzeriaPizza.getId() + ", \"pizzaId\" : "
-				+ pizzeriaPizza.getPizza().getId() + ", \"size\" : \""
+				+ pizzeriaPizza.getPizza().getId() + ", \"pizzaName\" : \""
+				+ pizzeriaPizza.getPizza().getName() + "\", \"size\" : \""
 				+ pizzeriaPizza.getPizzaSize() + "\", \"preparationTime\" : \""
-				+ pizzeriaPizza.getPreparationTime() + "\", \"glutenFree\" : "
+				+ pizzeriaPizza.getPreparationTimeString() + "\", \"glutenFree\" : "
 				+ pizzeriaPizza.getGlutenFree() + ", \"price\" : " + pizzeriaPizza.getPrice() + "}";
 	}
 
