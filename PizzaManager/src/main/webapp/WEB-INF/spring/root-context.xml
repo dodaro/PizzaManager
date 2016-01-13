@@ -21,7 +21,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<prop key="hibernate.show_sql">true</prop>
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
 			</props>
 		</property>
 	</bean>
@@ -64,11 +64,18 @@
 	<bean id="pizzeriaDAO" class="it.unical.pizzamanager.persistence.dao.PizzeriaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+
 	<bean id="cartDAO" class="it.unical.pizzamanager.persistence.dao.CartDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
+
 	<bean id="pizzeriaTableDAO"
 		class="it.unical.pizzamanager.persistence.dao.PizzeriaTableDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+
+	<bean id="relationPizzeriaPizzaDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 

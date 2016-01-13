@@ -20,4 +20,6 @@ public interface PizzeriaDAO {
 	public List<Pizzeria> getAll();
 
 	public List<RelationPizzeriaPizza> getMenuPizze(Integer id);
+
+	public Pizzeria getByName(String name);
 }

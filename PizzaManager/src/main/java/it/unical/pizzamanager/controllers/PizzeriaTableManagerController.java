@@ -42,7 +42,7 @@ public class PizzeriaTableManagerController {
 		 * If the author of the request is not logged in as a pizzeria, the request is ignored.
 		 */
 		if (!SessionUtils.isPizzeria(session)) {
-			return buildJsonResponse(false, null);
+			return buildErrorResponse();
 		}
 
 		/*
@@ -64,7 +64,7 @@ public class PizzeriaTableManagerController {
 			}
 		}
 
-		return buildJsonResponse(false, form);
+		return buildErrorResponse();
 	}
 
 	@RequestMapping(value = "/pizzeria/tablesList", method = RequestMethod.GET)
@@ -84,32 +84,21 @@ public class PizzeriaTableManagerController {
 
 	private String addTable(Pizzeria pizzeria, PizzeriaTableForm form) {
 		List<PizzeriaTable> tables = pizzeria.getTables();
+		PizzeriaTable newTable = new PizzeriaTable(form.getNumber(), form.getMinSeats(),
+				form.getMaxSeats(), pizzeria);
 
 		/* Refuse to add the table if the pizzeria has already a table with the same number. */
 		for (PizzeriaTable table : tables) {
 			if (table.getNumber() == form.getNumber()) {
-				return buildJsonResponse(false, form);
+				return buildErrorResponse();
 			}
 		}
 
 		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
-		PizzeriaTable table = new PizzeriaTable(form.getNumber(), form.getMinSeats(),
-				form.getMaxSeats(), pizzeria);
-		pizzeriaTableDAO.create(table);
+		pizzeriaTableDAO.create(newTable);
 
-		/*
-		 * We need to provide the id of the table that has just been added to the view, so a fresh
-		 * list of the tables is retrieved from the database.
-		 */
-		List<PizzeriaTable> updatedTables = pizzeriaTableDAO.getTablesOfPizzeria(pizzeria);
-
-		for (PizzeriaTable updatedTable : updatedTables) {
-			if (updatedTable.getNumber() == form.getNumber()) {
-				form.setId(updatedTable.getId());
-			}
-		}
-
-		return buildJsonResponse(true, form);
+		/* Now the newTable object contains the id of the newly created instance. */
+		return buildOkResponse(newTable);
 	}
 
 	private String updateTable(Pizzeria pizzeria, PizzeriaTableForm form) {
@@ -118,12 +107,11 @@ public class PizzeriaTableManagerController {
 		/* Only update the table if the pizzeria has already a table with the same id. */
 		for (PizzeriaTable table : tables) {
 			if (table.getId() == form.getId()) {
-				doUpdate(table, form);
-				return buildJsonResponse(true, form);
+				return buildOkResponse(doUpdate(table, form));
 			}
 		}
 
-		return buildJsonResponse(false, form);
+		return buildErrorResponse();
 	}
 
 	private String deleteTable(Pizzeria pizzeria, PizzeriaTableForm form) {
@@ -135,28 +123,29 @@ public class PizzeriaTableManagerController {
 				PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context
 						.getBean("pizzeriaTableDAO");
 				pizzeriaTableDAO.delete(table);
-				return buildJsonResponse(true, form);
+				return buildOkResponse(table);
 			}
 		}
 
-		return buildJsonResponse(false, form);
+		return buildErrorResponse();
 	}
 
-	private void doUpdate(PizzeriaTable table, PizzeriaTableForm form) {
+	private PizzeriaTable doUpdate(PizzeriaTable table, PizzeriaTableForm form) {
 		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
 		table.setNumber(form.getNumber());
 		table.setMinSeats(form.getMinSeats());
 		table.setMaxSeats(form.getMaxSeats());
 		pizzeriaTableDAO.update(table);
+		return table;
 	}
 
-	private String buildJsonResponse(boolean success, PizzeriaTableForm form) {
-		if (!success) {
-			return "{\"success\" : false}";
-		}
+	private String buildOkResponse(PizzeriaTable table) {
+		return "{\"success\" : true, \"id\" : " + table.getId() + ", \"number\" : "
+				+ table.getNumber() + ", \"minSeats\" : " + table.getMinSeats()
+				+ ", \"maxSeats\" : " + table.getMaxSeats() + "}";
+	}
 
-		return "{\"success\" : " + success + ", \"id\" : " + form.getId() + ", \"number\" : "
-				+ form.getNumber() + ", \"minSeats\" : " + form.getMinSeats() + ", \"maxSeats\" : "
-				+ form.getMaxSeats() + "}";
+	private String buildErrorResponse() {
+		return "{\"success\" : false}";
 	}
 }

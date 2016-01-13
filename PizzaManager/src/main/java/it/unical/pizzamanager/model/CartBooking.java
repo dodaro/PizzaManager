@@ -1,42 +1,38 @@
 package it.unical.pizzamanager.model;
 
-import java.util.Date;
 import java.util.ArrayList;
-
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import java.util.Date;
 
 public class CartBooking {
 
+	private String pizzeria;
+
+	private ArrayList<OrderItemDisplay> items;
+
+	private Date date;
+
 	private int number;
 
-	Pizzeria pizzeria;
-
-	ArrayList<OrderItem> items;
-
-	Date date;
-
-	public CartBooking(int n) {
-		this.number = n;
-		this.pizzeria = null;
+	public CartBooking() {
+		this.number=0;
+		this.pizzeria = "";
 		this.items = new ArrayList<>();
+		this.date = null;
 	}
 
-	public Pizzeria getPizzeria() {
+	public String getPizzeria() {
 		return pizzeria;
 	}
 
-	public void setPizzeria(Pizzeria pizzeria) {
+	public void setPizzeria(String pizzeria) {
 		this.pizzeria = pizzeria;
 	}
 
-	public ArrayList<OrderItem> getItems() {
+	public ArrayList<OrderItemDisplay> getItems() {
 		return items;
 	}
 
-	public void setItems(ArrayList<OrderItem> items) {
+	public void setItems(ArrayList<OrderItemDisplay> items) {
 		this.items = items;
 	}
 
@@ -56,19 +52,4 @@ public class CartBooking {
 		this.number = number;
 	}
 
-	public String itemName(Integer id) {
-		String name="not found";
-		for (OrderItem item : items) {
-			if (id == item.getId()) {
-				if (item instanceof PizzaOrderItem) {
-					name = ((PizzaOrderItem) item).getPizzeria_pizza().getPizza().getName();
-				} else if (item instanceof BeverageOrderItem) {
-					name = ((BeverageOrderItem) item).getPizzeria_beverage().getBeverage().getName();
-				}
-				break;
-			}
-		}
-		return name;
-	}
-	
 }

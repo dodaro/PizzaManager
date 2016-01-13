@@ -3,14 +3,13 @@
 
 <div id="pizza-manager">
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-7">
 			<table id="pizzas-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
-						<th>PizzaId</th>
 						<th>Pizza</th>
 						<th>Size</th>
-						<th>Preparation Time</th>
+						<th>Prep Time</th>
 						<th>Gluten Free</th>
 						<th>Price</th>
 					</tr>
@@ -19,7 +18,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-5">
 			<form class="edit-pizza-form home-form">
 				<div class="form-group">
 					<label for="pizza" class="control-label">Pizza</label> <select id="pizza" class="form-control">
@@ -53,8 +52,11 @@
 					</label>
 				</div>
 				<div class="form-group">
-					<label for="pizza-price" class="control-label">Price</label> <input type="number"
-						id="pizza-price" class="form-control">
+					<label for="pizza-price" class="control-label">Price</label>
+					<div class="input-group">
+						<input type="number" id="pizza-price" class="form-control"><span
+							class="input-group-addon">&euro;</span>
+					</div>
 				</div>
 			</form>
 			<div class="buttons-container">

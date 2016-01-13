@@ -4,7 +4,36 @@
 <title>Pizza Manager</title>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
+<script type="text/javascript" src="resources/js/moment.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap-datepicker.js"></script>
 
+<script type="text/javascript">
+
+$(document).ready(function() {
+	
+	var type;
+	
+	$('#take_away').on('click',function(){
+		$('#datetimepicker').datetimepicker({
+			locale: 'it',
+	        minDate: new Date(),
+	    });
+		$type="";
+	});
+	
+	$('#delivery').on('click',function(){
+		$('#datetimepicker').datetimepicker({
+			locale: 'it',
+	        minDate: new Date(),
+	    });
+		$type="delivery";
+	});
+	$("#requestBook").on('click',function(){
+		// ajax request 
+	});
+	
+});
+</script>
 <script type="text/javascript" src="resources/js/user/cart.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/bootstrap.css" />
@@ -18,7 +47,8 @@
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
 			<div class="col-xs-9">
 				<div class="bubble">
-					<div id="content">Welcome ${user.name}</div>
+					<div id="content">
+						<jsp:include page="includes/cartBook.jsp"></jsp:include></div>
 				</div>
 			</div>
 		</div>

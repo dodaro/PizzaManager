@@ -67,7 +67,7 @@ public class RelationPizzeriaPizza implements Serializable {
 	private List<Image> images;
 
 	@OneToMany(mappedBy = "pizzeria_pizza", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<PizzaOrderItem> orderItems;
 
 	public RelationPizzeriaPizza() {
@@ -139,6 +139,24 @@ public class RelationPizzeriaPizza implements Serializable {
 
 	public Integer getPreparationTime() {
 		return preparationTime;
+	}
+
+	public String getPreparationTimeString() {
+		Integer minutes = preparationTime / 60;
+		Integer seconds = preparationTime % 60;
+
+		String minutesString = Integer.toString(minutes);
+		String secondsString = Integer.toString(seconds);
+
+		if (minutes < 9) {
+			minutesString = "0" + minutesString;
+		}
+
+		if (seconds < 9) {
+			secondsString = "0" + secondsString;
+		}
+
+		return minutesString + ":" + secondsString;
 	}
 
 	public void setPreparationTime(Integer preparationTime) {

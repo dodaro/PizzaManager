@@ -2,6 +2,18 @@ pizzeriaPizzaManager = function() {
 	var table = function() {
 		var $dataTable;
 
+		var getRowById = function(id) {
+			var $rows = $dataTable.$('tr');
+
+			for (var i = 0; i < $rows.length; i++) {
+				var $row = $rows.eq(i);
+				var rowData = $dataTable.row($row).data();
+				if (rowData.id == id) {
+					return $row;
+				}
+			}
+		};
+
 		return {
 			selectRow : function($row) {
 				var $pizzasTable = $row.closest('#pizza-manager #pizzas-table');
@@ -11,6 +23,28 @@ pizzeriaPizzaManager = function() {
 
 			clearRowSelection : function() {
 				$('#pizza-manager #pizzas-table tr.selected').removeClass('selected');
+			},
+
+			addRow : function(rowData) {
+				console.log('addRow');
+				console.log(rowData);
+				$dataTable.row.add(rowData).draw();
+			},
+
+			editRow : function(rowData) {
+				var $row = getRowById(rowData.id);
+
+				if ($row != undefined) {
+					$dataTable.row($row).data(rowData).draw();
+				}
+			},
+
+			deleteRow : function(rowData) {
+				var $row = getRowById(rowData.id);
+
+				if ($row != undefined) {
+					$dataTable.row($row).remove().draw();
+				}
 			},
 
 			getSelectedRow : function() {
@@ -42,8 +76,6 @@ pizzeriaPizzaManager = function() {
 						dataSrc : '',
 					},
 					columns : [ {
-						'data' : 'pizzaId'
-					}, {
 						'data' : 'pizzaName'
 					}, {
 						'data' : 'size'
@@ -53,6 +85,30 @@ pizzeriaPizzaManager = function() {
 						'data' : 'glutenFree'
 					}, {
 						'data' : 'price'
+					} ],
+					columnDefs : [ {
+						/*
+						 * Turns the PizzaSize value all lowercase, then changes
+						 * only the first letter to uppercase.
+						 */
+						render : function(data, type, row) {
+							return data.toLowerCase().replace(/\b\w/g, function(m) {
+								return m.toUpperCase();
+							});
+						},
+						targets : 1
+					}, {
+						/* Shows glutenFree as 'Yes' or 'No. */
+						render : function(data, type, row) {
+							return data ? 'Yes' : 'No';
+						},
+						targets : 3
+					}, {
+						/* Formats price with 2 decimal places. */
+						render : function(data, type, row) {
+							return "&euro; " + data.toFixed(2);
+						},
+						targets : 4
 					} ]
 				});
 			}
@@ -84,7 +140,7 @@ pizzeriaPizzaManager = function() {
 				$sizeSelect.val(rowData.size).trigger('change');
 				$('#pizza-manager #pizza-preparation-time').val(rowData.preparationTime);
 				$('#pizza-manager #pizza-gluten-free').prop('checked', rowData.glutenFree);
-				$('#pizza-manager #pizza-price').val(rowData.price);
+				$('#pizza-manager #pizza-price').val(rowData.price.toFixed(2));
 			},
 
 			isFilled : function() {
@@ -97,7 +153,7 @@ pizzeriaPizzaManager = function() {
 				return {
 					pizzaId : parseInt($pizzaSelect.val()),
 					size : $sizeSelect.val(),
-					preparationTime : parseFloat($('#pizza-manager #pizza-preparation-time').val()),
+					preparationTime : $('#pizza-manager #pizza-preparation-time').val(),
 					glutenFree : $('#pizza-manager #pizza-gluten-free').prop('checked'),
 					price : parseFloat($('#pizza-manager #pizza-price').val())
 				}
@@ -143,6 +199,14 @@ pizzeriaPizzaManager = function() {
 		};
 	}();
 
+	var clearAll = function() {
+		form.clearForm();
+		table.clearRowSelection();
+		form.setButtonEnabled('button-add', false);
+		form.setButtonEnabled('button-update', false);
+		form.setButtonEnabled('button-delete', false);
+	}
+
 	var canAdd = function() {
 		/* Check if all the form fields are filled. */
 		if (!form.isFilled()) {
@@ -168,6 +232,10 @@ pizzeriaPizzaManager = function() {
 		return true;
 	};
 
+	/**
+	 * Returns true if the data present in the form is equal to the data saved
+	 * in the selected row.
+	 */
 	var formDataEqualsSelectedRowData = function() {
 		var formData = form.getFormData();
 		var $selectedRow = table.getSelectedRow();
@@ -182,30 +250,60 @@ pizzeriaPizzaManager = function() {
 		return false;
 	};
 
+	var getDataForRequest = function() {
+		var id;
+		var $selectedRow = table.getSelectedRow();
+
+		if ($selectedRow != undefined) {
+			id = table.getRowData($selectedRow).id;
+		} else {
+			id = -1;
+		}
+
+		var formData = form.getFormData();
+		formData.id = id;
+
+		return formData;
+	}
+
 	var sendRequest = function(action, data, onSuccess) {
-		console.log(data);
+		data.action = action;
+
 		$.ajax({
 			method : 'post',
 			url : '/pizzeria/pizza',
 			dataType : 'json',
-			data : {
-				action : action,
-				pizzaId : data.pizzaId,
-				size : data.size,
-				preparationTime : data.preparationTime,
-				glutenFree : data.glutenFree,
-				price : data.price
-			},
+			data : data,
 			success : function(response) {
 				console.log(response);
-				onSuccess(response);
+
+				if (response.success) {
+					/* This isn't needed anymore. */
+					delete response.success;
+					onSuccess(response);
+				}
 			}
 		});
 	};
 
 	var addPizza = function() {
-		sendRequest('add', form.getFormData(), function(response) {
-			console.log("ResponseListener");
+		sendRequest('add', getDataForRequest(), function(data) {
+			table.addRow(data);
+			clearAll();
+		});
+	};
+
+	var updatePizza = function() {
+		sendRequest('update', getDataForRequest(), function(data) {
+			table.editRow(data);
+			clearAll();
+		});
+	}
+
+	var deletePizza = function() {
+		sendRequest('delete', getDataForRequest(), function(data) {
+			table.deleteRow(data);
+			clearAll();
 		});
 	}
 
@@ -259,11 +357,11 @@ pizzeriaPizzaManager = function() {
 		});
 
 		$('#pizza-manager .button-update').on('click', function() {
-			// TODO
+			updatePizza();
 		});
 
 		$('#pizza-manager .button-delete').on('click', function() {
-			// TODO
+			deletePizza();
 		});
 	};
 

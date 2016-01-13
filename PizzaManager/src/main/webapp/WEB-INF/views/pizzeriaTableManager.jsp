@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="table-min-seats" class="col-sm-offset-1  col-sm-5 control-label">Minimum
+					<label for="table-min-seats" class="col-sm-offset-1 col-sm-5 control-label">Minimum
 						seats</label>
 					<div class="col-sm-5">
 						<input type="number" id="table-min-seats" class="form-control">
