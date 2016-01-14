@@ -4,12 +4,27 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".addToCart").on('click',function(){
+		alert($(this).data("id"));
+	});
+	
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".book").on('click',function(){
+		alert($(this).data("id"));
+	});
+	
+});
+</script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 
-<title>Book View</title>
+<title>Menù View</title>
 
 <meta name="viewport" content="width=device-width" />
 
@@ -31,37 +46,30 @@
 		<div class="row">
 <div id="wrapper" class="col-xs-10">
 				<div class="card">
-					<div id="content"><h2>View Pizzeria ${pizzeria.name}</h2></div>
+					<div id="content"><h2>Menù Pizzeria ${pizzeriaResult.getName()}</h2></div>
 				</div>
 			</div>
-
 				<div class="col-xs-3 col-sm-3 col-sm-push-3">
-<h2>Book Now Your Pizzas!</h2>
 <h2>Menù</h2>
 <div class="pre-scrollable">
 <div id="boxReview">
-    <div>il contenuto qui
-	dlfhb</div>
-	<div>dfjnbòdj
-	sdljgòldkmb,
-	dijfgòdf</div>
-	<div>sògkjbd</div>
-	<div>slkgsòkmg</div>
-	<div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-	<div>dkflnglkdfj</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-    </div><!-- /.boxinner -->
-</div><!-- /.box -->
+<c:forEach var="r" items="${menuResult}">
+					<div class="row">
+						<a>${r.pizza.name}_____________${r.price}</a>
+						<a data-id="${r.id}" class="addToCart btn btn-primary">Add to Cart</a>
+					</div>
+					</c:forEach>
+					</div>
+					</div>
+   
 </div>	
+
+
+	
 			<div class="col-xs-3 col-sm-3 col-sm-pull-3">
 			<div>
 Numero di Posti<input type="text" class="form-control" name="numeroPosti" placeholder="Inserire numero di posti da prenotare">
-	<input type="submit" class="btn btn-primary" value="Verify" />
+	<a data-id="${pizzeriaResult.name}" class="book btn btn-primary">Verify</a>
 </div>
 </div>
 </div>

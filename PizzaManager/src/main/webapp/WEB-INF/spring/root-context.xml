@@ -33,6 +33,10 @@
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
+	<bean id="feedbackDAO" class="it.unical.pizzamanager.persistence.dao.FeedbackDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+	
 	<bean id="beverageDAO" class="it.unical.pizzamanager.persistence.dao.BeverageDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>

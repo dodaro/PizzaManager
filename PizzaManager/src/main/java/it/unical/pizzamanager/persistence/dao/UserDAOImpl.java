@@ -2,12 +2,9 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -47,6 +44,7 @@ public class UserDAOImpl implements UserDAO {
 		Query query = session.createQuery("from User where id = :id");
 		query.setParameter("id", id);
 		User user = (User) query.uniqueResult();
+		user.getFeedbacks().size();
 		// user.getBookings().size();
 		// if (user != null) {
 		// for (Booking b : user.getBookings()) {

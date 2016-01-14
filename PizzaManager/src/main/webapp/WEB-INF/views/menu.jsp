@@ -4,7 +4,14 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-
+<script type="text/javascript">
+$(document).ready(function(){
+	$(".addToCart").on('click',function(){
+		alert($(this).data("id"));
+	});
+	
+});
+</script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -31,30 +38,22 @@
 		<div class="row">
 <div id="wrapper" class="col-xs-10">
 				<div class="card">
-					<div id="content"><h2>View Pizzeria ${pizzeria.name}</h2></div>
+					<div id="content"><h2>Menù Pizzeria ${pizzeriaResult.getName()}</h2></div>
 				</div>
 			</div>
 				<div class="col-xs-3 col-sm-3 col-sm-push-3">
 <h2>Menù</h2>
 <div class="pre-scrollable">
 <div id="boxReview">
-    <div>il contenuto qui
-	dlfhb</div>
-	<div>dfjnbòdj
-	sdljgòldkmb,
-	dijfgòdf</div>
-	<div>sògkjbd</div>
-	<div>slkgsòkmg</div>
-	<div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-	<div>dkflnglkdfj</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-    </div><!-- /.boxinner -->
-</div><!-- /.box -->
+<c:forEach var="r" items="${menuResult}">
+					<div class="row">
+						<a>${r.pizza.name}_____________${r.price}</a>
+						<a data-id="${r.id}" class="addToCart btn btn-primary">Add to Cart</a>
+					</div>
+					</c:forEach>
+					</div>
+					</div>
+   
 </div>	
 
 </div>

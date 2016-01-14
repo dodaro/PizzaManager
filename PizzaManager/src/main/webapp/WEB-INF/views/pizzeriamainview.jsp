@@ -4,12 +4,29 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".userref").on('click', function() {
+			var $clickedElement = $(this);
+			var $id = parseInt($clickedElement.data('id'),10);
+			$.ajax({
+				type : "POST",
+				url : "/usermainview",
+				data : {
+					id : $id
+				},
+				success : function() {
+					window.location="usermainview"
+				}
+			});
+		});
+	});
+		</script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 
-<title>Pizzeria View</title>
+<title>Pizzeria View </title>
 
 <meta name="viewport" content="width=device-width" />
 
@@ -46,7 +63,7 @@
 
 			<div id="wrapper" class="col-xs-10">
 				<div class="buble">
-					<div id="content"><h2>View Pizzeria ${pizzeria.name}</h2></div>
+					<div id="content"><h2>${pizzeriaResult.getName()}</h2></div>
 				</div>
 			</div>
 			<div class="col-sm-3 col-sm-push-3">
@@ -74,42 +91,38 @@
 <h2>Latest Reviews</h2>
 <div class="pre-scrollable">
 <div id="boxReview">
-    <div>il contenuto qui
-	dlfhb</div>
-	<div>dfjnbòdj
-	sdljgòldkmb,
-	dijfgòdf</div>
-	<div>sògkjbd</div>
-	<div>slkgsòkmg</div>
-	<div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-	<div>dkflnglkdfj</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-	<div>lkjglkf</div><div>dkflnglkdfj</div>
-	<div>lkjglkf</div>
-    </div><!-- /.boxinner -->
-</div><!-- /.box -->
+<c:forEach var="r" items="${pizzeriaResult.feedbacks}">
+					<div class="row">
+						<a class="userref" data-id="${r.user.id}">${r.user.name}</a>
+						<div>Fastnes: ${r.fastnessRating}</div>
+						<div>Hospitality: ${r.hospitalityRating}</div>
+						<div>Quality: ${r.qualityRating}</div>
+						<div>Comment:</div>
+						<div>${r.comment}</div>
+						
+					</div>
+					</c:forEach>
+  
+</div>
 </div>	
-
+</div>
   			<div id="boxInfo">
   			<div class="col-xs-4 col-sm-4 col-sm-push-4">
-  			<h3>Pizzeria</h3>
-  			<div>Via Roma n°69</div>
-  			<div>80011</div>
-  			<div>e-mail: pizzeria@mail.com</div> 
+  			<h3>${pizzeriaResult.name}</h3>
+  			<div>${pizzeriaResult.getAddress()}</div>
+  			<div>${pizzeriaResult.getPhoneNumber()}</div>
+  			<div>e-mail: ${pizzeriaResult.getEmail()}</div> 
   			</div>
 </div>
 
 
 <div id="boxButton">
-<a href="menù" class="btn btn-success">
+<a href="menu" class="btn btn-success">
 							Menù
 						</a>
 <a href="book" class="btn btn-primary">Book</a>
 </div>
-</div>
+
 </div>
 </body>
 </html>

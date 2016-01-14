@@ -1,40 +1,39 @@
 package it.unical.pizzamanager.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
+import it.unical.pizzamanager.forms.SearchForm;
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
-public class BookController {
+public class ResultPageController {
+
+	private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
 
 	@Autowired
 	private WebApplicationContext context;
-	
-	@RequestMapping(value = "/book", method = RequestMethod.GET)
-	public String book(HttpSession session,Model model) {
+
+	@RequestMapping(value = "/resultpage", method = RequestMethod.GET)
+	public String resultpage(Model model, HttpSession session) {
 		
-		Pizzeria pizzeria = (Pizzeria) session.getAttribute("pizzeriaResult");
-		RelationPizzeriaPizzaDAO relationPizzeriaPizzaDAO = (RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO"); 
-		List<RelationPizzeriaPizza> relationPizzeriaPizza = relationPizzeriaPizzaDAO.get(pizzeria);
-		model.addAttribute("menuResult", relationPizzeriaPizza);
-		model.addAttribute("pizzeriaResult", pizzeria);
+		
+		//System.out.println(((Pizzeria) session.getAttribute("pizzeriaResult")).getName());
 		setUserAttribute(session, model);
-		
-		return "book";
+		return "resultpage";
 	}
 	
 	private void setUserAttribute(HttpSession session, Model model) {
@@ -42,4 +41,5 @@ public class BookController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		model.addAttribute("user", user);
 	}
+	
 }

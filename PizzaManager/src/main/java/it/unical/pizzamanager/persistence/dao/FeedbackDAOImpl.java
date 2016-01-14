@@ -69,5 +69,13 @@ private DatabaseHandler databaseHandler;
 		databaseHandler.update(feedback);
 		
 	}
+
+	public DatabaseHandler getDatabaseHandler() {
+		return databaseHandler;
+	}
+
+	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+		this.databaseHandler = databaseHandler;
+	}
 	
 }
