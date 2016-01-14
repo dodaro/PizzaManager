@@ -9,11 +9,9 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.AddressDAO;
-import it.unical.pizzamanager.persistence.dao.BeverageDAO;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dao.PizzeriaTableDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Address;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
@@ -23,7 +21,6 @@ import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 import it.unical.pizzamanager.persistence.dto.User;
@@ -135,14 +132,14 @@ public class BookingPopulator extends Populator {
 		
 		
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
-		SimpleDateFormat sdf1 = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-		String dateTakeAway = "31-08-2015";
-		String timeTakeAway = "31-08-2015 10:20:12";
-		String dateDelivery = "13-10-2016";
-		String timeDelivery = "13-10-2016 10:20:12";
-		String dateTable = "23-01-2019";
-		String timeTable = "31-08-2015 10:20:12";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+		SimpleDateFormat sdf1 = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+		String dateTakeAway = "31/08/2015";
+		String timeTakeAway = "31/08/2015 10:20:12";
+		String dateDelivery = "13/10/2016";
+		String timeDelivery = "13/10/2016 10:20:12";
+		String dateTable = "23/01/2019";
+		String timeTable = "31/08/2015 10:20:12";
 		BookingTakeAway takeAway;
 		BookingDelivery delivery;
 		BookingPizzeriaTable tableBooking;

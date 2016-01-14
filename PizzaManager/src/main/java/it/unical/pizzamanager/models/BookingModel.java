@@ -1,6 +1,5 @@
 package it.unical.pizzamanager.models;
 
-import java.util.Date;
 import java.util.List;
 
 public class BookingModel {
@@ -14,7 +13,7 @@ public class BookingModel {
 	private String user;
 	private Double bill;
 	private String underTheNameOf;
-	private Integer address;//id dell'address
+	private AddressModel address;//id dell'address
 	private List<Integer> tables;//lista di id dei tavoli
 
 	
@@ -38,7 +37,7 @@ public class BookingModel {
 		this.bill=bill;
 		//TODO  FIX
 		this.underTheNameOf="";
-		this.address=-1;
+		this.address=null;
 		this.tables=null;
 		
 	}
@@ -123,11 +122,11 @@ public class BookingModel {
 		this.underTheNameOf = underTheNameOf;
 	}
 
-	public Integer getAddress() {
+	public AddressModel getAddress() {
 		return address;
 	}
 
-	public void setAddress(Integer address) {
+	public void setAddress(AddressModel address) {
 		this.address = address;
 	}
 

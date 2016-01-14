@@ -4,7 +4,7 @@ var LiveOrderTool = function(){
 		-Ingredienti: id 
 		-Pizze: nome + nome ingredienti
 	*/
-	
+	var loadedBookingToEditId=-1;
 	var pizzeFromServer;//è la lista delle pizze, con i suoi ingredienti basilari, fornite dalla pizzeria e che risiedono sul database
 	var beverageFromServer;//è la lista di tutte le bevande fornite dalla pizzeria e che risiedono sul database
 	var pizzeriaIngredientsFromServer;//è la lista di tutti gli ingredienti di cui è fornita la pizzeria
@@ -22,6 +22,8 @@ var LiveOrderTool = function(){
 	var columnNumber = 4;
 
 	var initVar = function(){
+		
+		loadedBookingToEditId=-1;
 		pizzeFromServer=new Object();
 		beverageFromServer=new Object();
 		pizzeriaIngredientsFromServer=new Object();
@@ -37,7 +39,9 @@ var LiveOrderTool = function(){
 	var initLiveTool = function(){
 			console.log(pizzaList);
 			//datepicker
-			$('#datetimepicker1').datetimepicker();
+			$('#datetimepicker1').datetimepicker({
+				format: 'DD/MM/YYYY HH:mm',
+			});
 			//creazione SELECT2
 			$(".js-example-basic-single").select2();
 			$(".js-example-basic-multiple").select2();
@@ -111,8 +115,10 @@ var LiveOrderTool = function(){
 					createBeverage(beverageFromServer);
 					//se la pagina è stata invocata per modificare un booking
 					if(communicator.bookingToEdit!== undefined){
+						
 						console.log(communicator.bookingToEdit);
 						var bookingToEdit=communicator.bookingToEdit;
+						loadedBookingToEditId=bookingToEdit.id;
 						for (var int = 0; int < bookingToEdit.pizzas.length; int++) {
 							var pizzaPostMapping= mapping(bookingToEdit.pizzas[int]);
 							resolvePizza(false,pizzaPostMapping,bookingToEdit.pizzas[int].number);
@@ -122,6 +128,8 @@ var LiveOrderTool = function(){
 						}
 						//settare le intestazioni 
 						initHeading(bookingToEdit);
+						//TODO: TROVARE IL MODO DI FARE L'INIT HEADING DOPO IL createTables
+						//rimuovere la seconda richiesta ajax ed popolare tramite model e $ 
 						
 						//Eliminare subito l'oggetto dal communicator
 						communicator.bookingToEdit=undefined;
@@ -311,12 +319,20 @@ var LiveOrderTool = function(){
 		console.log(booking);
 		console.log(extractData("user"));
 		console.log(extractData("name"));
+		
+		if(loadedBookingToEditId!=-1){
+			booking.id=loadedBookingToEditId;
+		}
+		else{
+			booking.id=undefined;
+		}
+		return booking;
 		//console.log(extractData("date"));
 	}
 	
 	var sendOrder = function() {
-		createBooking();
-		
+		var booking=createBooking();
+		console.log(booking);
 		/*var orderBeverages = extractBeverages();
 		var orderPizzas = extractPizzas();
 		
@@ -325,17 +341,15 @@ var LiveOrderTool = function(){
 		console.log(pizzaList);
 		console.log(orderPizzas);
 	
-		var stringP = JSON.stringify(orderPizzas);
-		var stringB = JSON.stringify(orderBeverages);
+		var stringB = JSON.stringify(orderBeverages);*/
 		
 		//TODO se si tratta di modifica di un booking basta richiamare la pagina booking ed appendere il booking al comunicator
-		
+		var stringBooking = JSON.stringify(booking);		
 		$.ajax({
 			url : "/pizzerialiveorderConferme",
 			type : 'POST',
 			data : {
-				pizzas : stringP,
-				beverages : stringB
+				booking : stringBooking
 			},
 			success : function(data) {
 				console.log(data)
@@ -343,7 +357,7 @@ var LiveOrderTool = function(){
 			error : function(data, status, er) {
 				alert("error: " + data + " status: " + status + " er:" + er);
 			}
-		});*/
+		});
 	}
 
 	var checkTypeBooking = function(type){
@@ -443,7 +457,12 @@ var LiveOrderTool = function(){
 		if(booking.type!="takeAway")
 			$("[value='"+booking.type+"']").bootstrapSwitch('toggleState');
 		//set Date
-		var date=new Date(booking.date);
+		console.log(booking.date);
+		var dateConverted=booking.date.split("/");
+		var dateString=dateConverted[2]+"-"+dateConverted[1]+"-"+dateConverted[0];
+		console.log(dateString);
+		var date=new Date(dateString);
+		console.log(date);
 		var time=booking.time.split(":");
 		date.setHours(time[0], time[1], time[2]);
 		$('#datetimepicker1').data("DateTimePicker").defaultDate(date);
@@ -480,8 +499,7 @@ var LiveOrderTool = function(){
 				tablesId.push(booking.tables[int].id);
 			}
 			console.log(tablesId);
-			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");
-			
+			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");		
 		}
 	}
 	

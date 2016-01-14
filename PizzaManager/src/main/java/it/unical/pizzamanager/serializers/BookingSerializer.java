@@ -1,6 +1,9 @@
 package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +19,23 @@ import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
 public class BookingSerializer extends JsonSerializer<Booking>{
 
+	private final String NEW_FORMAT = "dd/MM/yyyy";
+	private final String OLD_FORMAT = "yyyy-MM-dd";
+
+	public String convertDate(String oldDataBooking, Booking booking){
+		
+		SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
+		Date dateBooking=null;
+		try {
+			dateBooking = sdf.parse(booking.getDate().toString());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		sdf.applyPattern(NEW_FORMAT);
+		return sdf.format(dateBooking);
+	}
+	
 	@Override
 	public void serialize(Booking booking, JsonGenerator jgen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
@@ -29,7 +49,9 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 			if(booking.getBookerName()!=null)
 				jgen.writeStringField("underTheNameOf", booking.getBookerName());
 
-			jgen.writeStringField("date", booking.getDate().toString());
+			
+			
+			jgen.writeStringField("date",this.convertDate(booking.getDate().toString(), booking) );
 			jgen.writeStringField("time", booking.getTime().toString());
 			jgen.writeStringField("id", booking.getId().toString());
 			

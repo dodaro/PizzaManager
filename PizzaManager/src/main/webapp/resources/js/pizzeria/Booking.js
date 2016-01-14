@@ -170,10 +170,14 @@ var Booking = function(){
 		//TODO LATO SERVER GESTIRE IL SAVE
 		$("#saveButtonBooking").on('click',function(){
 			var idBooking=tableBooking.row('.selected').data()[columnId];
-			sendRequest('save', findBooking(idBooking), function(response) {
+			
+			//simulazione salvataggio e rimozione tupla
+			
+			tableBooking.row('.selected').remove().draw(true);
+			/*sendRequest('save', findBooking(idBooking), function(response) {
 				tableBooking.row('.selected').remove().draw(false);
 				alert('booking'+idBooking + response);
-			});	
+			});*/	
 		});
 		
 	}
@@ -261,7 +265,7 @@ var Booking = function(){
 
 	function loadInfoBooking(bookingId,loading){
 		console.log("chiamata");
-		setTimeout(function(){loading();},500);
+		setTimeout(function(){loading();},300);
 	}
 
 	var sendRequest = function(action, bookingResume, onSuccess) {
@@ -294,9 +298,10 @@ var Booking = function(){
 		//newBooking=_.omit(newBooking,'pizzas','beverages');
 		
 		if(booking.type=="delivery"){
-			address=booking.address['id'];
-			console.log(address);
-			newBooking.address=address;
+			addressId=booking.address['id'];
+			console.log(addressId);
+			newBooking.address=new Object();
+			newBooking.address.id=addressId;
 			console.log(newBooking)
 		}
 		else if(booking.type=="table"){
@@ -306,9 +311,6 @@ var Booking = function(){
 			}
 			newBooking.tables=tables;
 		}
-		
-		
-		
 		console.log(newBooking);
 		console.log(booking);
 		return newBooking;

@@ -115,14 +115,17 @@ var LiveRestaurant = function(){
 			}//end else if
 		});
 		
-		/*$("#confermeButtonLiveRestaurant").on('click',function(){
-			var idLiveRestaurant=tableLiveRestaurant.row('.selected').data()[columnId];
+		$("#completeButtonLiveRestaurant").on('click',function(){
+			
+			alert("Transaction Completed");
+			tableLiveRestaurant.row('.selected').remove().draw(true);
+			/*var idLiveRestaurant=tableLiveRestaurant.row('.selected').data()[columnId];
 			sendRequest('conferme', findLiveRestaurant(idLiveRestaurant), function(response) {
 				tableLiveRestaurant.row('.selected').remove().draw(false);
 				alert('liveRestaurant'+idLiveRestaurant + response);
-			});	
+			});*/	
 		});
-		
+		/*
 		$("#editButtonLiveRestaurant").on('click',function(){
 			editLiveRestaurant();
 		});
