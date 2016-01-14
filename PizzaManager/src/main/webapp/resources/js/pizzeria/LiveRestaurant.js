@@ -27,6 +27,7 @@ var LiveRestaurant = function(){
 				    ],
 				order : [ [ 3, 'desc' ] ]
 			});
+		tableLiveRestaurant.columns(columnId).visible(false);
 		
 		var data;
 		$.ajax({
@@ -90,7 +91,7 @@ var LiveRestaurant = function(){
 					console.log("callback");
 				});
 				
-				row.child("<div>loading</div>").show();
+				row.child("<img src='resources/gifs/loading.gif' width='50px' height='50px'></img>").show();
 				tr.addClass('shown');
 			}
 		});
@@ -142,15 +143,52 @@ var LiveRestaurant = function(){
 		for (var int = 0; int < bookingConfermedFromServer.length; int++) {
 			if(bookingConfermedFromServer[int].id==idBookingConfermed){
 				var bookingConfermed=bookingConfermedFromServer[int];
-				string+="<div> type:"+bookingConfermed.type+"</div>";
-				if(bookingConfermed.type=="delivery")
-						"<div> type:"+bookingConfermed.address+"</div>";
-				else if(bookingConfermed.type=="table")
-						"<div> type:"+bookingConfermed.table+"</div>";
 				
+				string = '<table class="attacable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;font-size:14px;margin-bottom:10px;">';
+				string += '<tr>' 
+						 + '<td><b>Type</b></td>' 
+						 + '<td>'
+						 + bookingConfermed.type 
+						 + '</td>'
+						 + '</tr>';
+				
+				if(bookingConfermed.type=="delivery"){
+					string += '<tr>' 
+						 + '<td><b>Address</b></td>' 
+						 + '<td>'
+						 + bookingConfermed.address.city
+						 + '  -</td>'
+						 + '<td>'
+						 + bookingConfermed.address.street
+						 + '  -</td>'
+						 + '<td>'
+						 + bookingConfermed.address.number 
+						 + '</td>'
+						 + '</tr>';
+				}
+				else if(bookingConfermed.type=="table"){
+					var tablesString="";
+					for (var int2 = 0; int2 < bookingConfermed.tables.length; int2++) {
+						tablesString+="TableN. "
+									+ bookingConfermed.tables[int2].number
+									+ " - Max "
+									+ bookingConfermed.tables[int2].maxSeats
+									+ " - Min "
+									+ bookingConfermed.tables[int2].minSeats
+						if(int2!=bookingConfermed.tables.length-1)
+							tablesString+=', ';
+					}
+					string += '<tr>' 
+						 + '<td><b>Tables</b></td>' 
+						 + '<td>'
+						 + tablesString
+						 + '</td>'
+						 + '</tr>';					
+				}
+				string += '</table>';
 				
 				if(bookingConfermed.pizzas.length>0){
-					string+='<table class="table table-bordered"><thead><tr>'
+					string+='<table class="table table-bordered" style="font-size:13px;"><thead><tr>'
 							+'<th>Pizza</th>'
 							+'<th>Gluten</th>'
 							+'<th>Size</th>'
@@ -193,7 +231,7 @@ var LiveRestaurant = function(){
 					string+='</table>';
 				}
 				if(bookingConfermed.beverages.length>0){
-					string+='<table class="table table-bordered"><thead><tr>'
+					string+='<table class="table table-bordered" style="font-size:13px;"><thead><tr>'
 							+'<th>Beverage</th>'
 							+'<th>Brand</th>'
 							+'<th>Type</th>'
@@ -278,12 +316,11 @@ var LiveRestaurant = function(){
 	
 	
 	
-	var setControlButtons = function(boolButtonComplete, boolButtonRestore, boolButtonRemove, boolButtonSave, boolButtonPay  ){
+	var setControlButtons = function(boolButtonComplete, boolButtonRestore, boolButtonRemove, boolButtonPay){
 		
 		$("#completeButtonLiveRestaurant").prop('disabled', boolButtonComplete);
 		$("#restoreButtonLiveRestaurant").prop('disabled', boolButtonRestore);
 		$("#removeButtonLiveRestaurant").prop('disabled', boolButtonRemove);
-		$("#saveButtonLiveRestaurant").prop('disabled', boolButtonSave);
 		$("#payButtonLiveRestaurant").prop('disabled', boolButtonPay);
 	}
 	

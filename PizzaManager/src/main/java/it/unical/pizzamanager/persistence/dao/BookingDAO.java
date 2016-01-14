@@ -2,10 +2,12 @@ package it.unical.pizzamanager.persistence.dao;
 
 
 import java.util.List;
+
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
 
 public interface BookingDAO {
 
@@ -24,6 +26,8 @@ public interface BookingDAO {
 	public List<BookingTakeAway> getOnlyBookingTakeAwayList();
 	
 	public List<BookingDelivery> getOnlyBookingDeliveryList();
+
+	public List<Booking> getBookingsFromPizzeria(Pizzeria pizzeria);
 	
 	//CHIEDERE A DODARO SE LE QUERY QUI GIÙ SERVONO O SE BASTA FARE LE SEGUENTI RICERCHE DIRETTAMENTE DA PIZZERIA (operando sulla lista di booking)
 	

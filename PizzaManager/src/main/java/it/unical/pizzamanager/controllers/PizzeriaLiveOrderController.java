@@ -1,9 +1,7 @@
 package it.unical.pizzamanager.controllers;
 
-import java.io.IOException;
-import java.time.LocalTime;
-
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,18 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.serializers.PizzeriaSerializer;
+import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
 public class PizzeriaLiveOrderController {
@@ -34,28 +26,21 @@ public class PizzeriaLiveOrderController {
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/pizzerialiveorder", method = RequestMethod.GET)
-	public String pizzeriaLiveOrder(Model model) {
+	public String pizzeriaLiveOrder(Model model, HttpSession session) {
 		logger.info("Live order requested");
-		System.out.println("richiesta pagina live order " + LocalTime.now());
-		// ogni qualvolta si riavvia l'applicazione il database viene azzerato
-		// PizzaDAO pizzaDao = (PizzaDAO) context.getBean("pizzaDAO");
-		// BeverageDAO beverageDao = (BeverageDAO) context.getBean("beverageDAO");
-		// MenuDAO menuDao = (MenuDAO) context.getBean("menuDAO");
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
 
-		// List<Pizza> pizzas = (List<Pizza>) pizzaDao.getAll();
-
-		PizzeriaDAO pizzeriaDao = (PizzeriaDAO) context.getBean("pizzeriaDAO");
-		Pizzeria pizzeria = pizzeriaDao.getAll().get(0);
-		// model.addAttribute("pizzasList", pizzas);
-		// model.addAttribute("beveragesList", beverages);
-		// model.addAttribute("menusList", menus);
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 		model.addAttribute("pizzeria", pizzeria);
+		
 		return "pizzerialiveorder";
 	}
 
-	@RequestMapping(value = "/pizzerialiveorderConferme", method = RequestMethod.POST)
-	public @ResponseBody String confermeLiveOrder(Model model, @RequestParam("pizzas") String json1,
-			@RequestParam("beverages") String json2) {
+	/*@RequestMapping(value = "/pizzerialiveorderConferme", method = RequestMethod.POST)
+	public @ResponseBody String confermeLiveOrder(Model model, @RequestParam("pizzas") String json1, @RequestParam("beverages") String json2) {
 		logger.info("Live order confermed");
 		System.out.println(json1);
 		System.out.println(json2);
@@ -73,36 +58,32 @@ public class PizzeriaLiveOrderController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		/*
-		 * PizzaOrderItem pizza=new PizzaOrderItem(); BeverageOrderItem beverage= new
-		 * BeverageOrderItem(); BookingPizzeriaTable booking= new BookingPizzeriaTable();
-		 */
-
 		String a = "{ciao:io}";
 		return a;
-	}
+	}*/
 
 	@RequestMapping(value = "/pizzerialiveorderPizzas", method = RequestMethod.GET)
-	public @ResponseBody Pizzeria processAJAXRequest(HttpServletRequest request, Model model) {
-		logger.info("Ajax request pizzeria");
-		PizzeriaDAO pizzeriaDao = (PizzeriaDAO) context.getBean("pizzeriaDAO");
-		Pizzeria pizzeria = pizzeriaDao.getAll().get(0);
-		System.out.println("richiesta pizza " + LocalTime.now());
+	public @ResponseBody Pizzeria processAJAXRequest(HttpServletRequest request, Model model, HttpSession session) {
+		logger.info("Live order Ajax request pizzeria");
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
 
-		ObjectMapper mapper = new ObjectMapper();
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 
+		//IL SEGUENTE CODICE COMMENTATO SERVE SOLO PER STAMPARE CIÒ CHE FA LA SERIALIZZAZIONE(non è necessario per serializzare)
+		/*ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(Pizzeria.class, new PizzeriaSerializer());
 		mapper.registerModule(module);
-
 		try {
 			String serialized = mapper.writeValueAsString(pizzeria);
 			System.out.println(serialized);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		return pizzeria;
 	}

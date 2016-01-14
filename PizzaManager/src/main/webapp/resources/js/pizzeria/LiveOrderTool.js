@@ -94,8 +94,8 @@ var LiveOrderTool = function(){
 			
 			
 			//Nascondo la colonna codePizza e codeBeverage in quanto non deve essere visibile
-			tablePizza.columns(5).visible(false);
-			tableBeverage.columns(5).visible(false);
+			tablePizza.columns(columnId).visible(false);
+			tableBeverage.columns(columnId).visible(false);
 
 			$.ajax({
 				url : "/pizzerialiveorderPizzas",
@@ -272,12 +272,52 @@ var LiveOrderTool = function(){
 	} 
 	/*****************************************************   FUNZIONI COMUNI ********************************************************************************/
 	var createBooking = function(){
-		var booking=new Object();
 		
+
+		var booking=new Object();
+		booking.beverages=extractData("beverages");
+		booking.pizzas=extractData("pizzas");
+		booking.date=extractData("date");
+		
+		//console.log(extractData("beverages"));
+		//console.log(extractData("pizzas"));
+	
+		if($("[value='delivery']").is(':checked')){
+			//console.log(extractData("address"));
+			booking.address=extractData("address");
+			booking.type="delivery";
+		}
+		else if($("[value='table']").is(':checked')){
+			//console.log(extractData("tables"));
+			booking.tables=extractData("tables");
+			booking.type="table";
+		}
+		else{
+			booking.type="takeAway";
+		}
+		
+		var user=extractData("user");
+		var name=extractData("name");
+		
+		if(user!=undefined || user!="" || user!="User")
+			booking.user=user;
+		if(name!=undefined || name!="" || name!="Name")	
+			booking.underTheNameOf=name;
+		
+		var dateTime=extractData("date");
+		booking.date=dateTime.split(" ")[0];
+		booking.time=dateTime.split(" ")[1];
+		
+		console.log(booking);
+		console.log(extractData("user"));
+		console.log(extractData("name"));
+		//console.log(extractData("date"));
 	}
 	
 	var sendOrder = function() {
-		var orderBeverages = extractBeverages();
+		createBooking();
+		
+		/*var orderBeverages = extractBeverages();
 		var orderPizzas = extractPizzas();
 		
 		console.log(beverageList);
@@ -303,7 +343,7 @@ var LiveOrderTool = function(){
 			error : function(data, status, er) {
 				alert("error: " + data + " status: " + status + " er:" + er);
 			}
-		});
+		});*/
 	}
 
 	var checkTypeBooking = function(type){
@@ -441,7 +481,6 @@ var LiveOrderTool = function(){
 			}
 			console.log(tablesId);
 			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");
-			//$("#tables.js-example-basic-multiple").select2('val',booking.tables.id);
 			
 		}
 	}
@@ -495,15 +534,18 @@ var LiveOrderTool = function(){
 		case "address":
 			var address=new Object();
 			address.city=$("#bookingCityInput").val();
-			address.street=$("#bookingStreetInput").val(booking.address.street);
-			address.number=$("#bookingNumberInput").val(booking.address.number);
+			address.street=$("#bookingStreetInput").val();
+			address.number=$("#bookingNumberInput").val();
 			return address;
 			break;
-		case "users":
+		case "user":
 			return $("#bookingUserInput").val();
 			break;
 		case "name":
 			return $("#bookingNameInput").val();
+			break;
+		case "date":
+			return $("#datetimepicker1").data("DateTimePicker").date().format('DD/MM/YYYY h:mm');
 			break;
 
 		default:
@@ -862,15 +904,15 @@ var LiveOrderTool = function(){
 				console.log(pizzaList[j].toStringIngredientsAdded());
 				console.log(pizzaList[j].toStringIngredientsRemoved());
 				var added = false;
-				var string = '<table class="attacable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
+				var string = '<table class="attacable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;font-size:14px;">';
 				if (pizzaList[j].getIngredientsAdded().length > 0) {
-					string += '<tr>' + '<td>Ingredients added:</td>' + '<td>'
+					string += '<tr>' + '<td><b>Ingredients added</b></td>' + '<td>'
 							+ pizzaList[j].toStringIngredientsAdded() + '</td>'
 							+ '</tr>';
 					added = true;
 				}
 				if (pizzaList[j].getIngredientsRemoved().length > 0) {
-					string += '<tr>' + '<td>Ingredients removed:</td>' + '<td>'
+					string += '<tr>' + '<td><b>Ingredients removed</b></td>' + '<td>'
 							+ pizzaList[j].toStringIngredientsRemoved()
 							+ '</td>' + '</tr>';
 					added = true;

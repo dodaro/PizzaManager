@@ -1,9 +1,11 @@
 package it.unical.pizzamanager.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +24,12 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.serializers.BookingSerializer;
 import it.unical.pizzamanager.utils.BookingUtils;
+import it.unical.pizzamanager.utils.SessionUtils;
 
 
 @Controller
@@ -36,43 +41,47 @@ public class PizzeriaBookingController {
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/pizzeriabooking", method = RequestMethod.GET)
-	public String pizzeriaBooking(Model model) {
-		logger.info("Home page requested. Loading list of users.");
-
-		// ogni qualvolta si riavvia l'applicazione il database viene azzerato
-		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
-		model.addAttribute("bookings", bookings);
-
+	public String pizzeriaBooking(Model model,HttpSession session) {
+		logger.info("Booking controller page requested. Loading list of users.");
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
 		return "pizzeriabooking";
 	}
 
 	@RequestMapping(value = "/pizzeriabookingAjax", method = RequestMethod.GET)
-	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model) {
-		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
-		//TODO filtrare i booking non confermati
+	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model,HttpSession session) {
 		
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
+
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		List<Booking> allBookings = (List<Booking>) bookingDAO.getBookingsFromPizzeria(pizzeria);
+		List<Booking> filteredBookings=new ArrayList<>();
+		for (Booking booking : allBookings) {
+			if(booking.getConfirmed()==false)
+				filteredBookings.add(booking);
+		}
 		
 		ObjectMapper mapper = new ObjectMapper();
-
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(Booking.class, new BookingSerializer());
 		mapper.registerModule(module);
-
 		try {
-			for (int i = 0; i < bookings.size(); i++) {
-				String serialized = mapper.writeValueAsString(bookings.get(i));
+			for (int i = 0; i < filteredBookings.size(); i++) {
+				String serialized = mapper.writeValueAsString(filteredBookings.get(i));
 				System.out.println(serialized);				
 			}
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		
-		
-		return bookings;
+		return filteredBookings;
 	}
 	
 	@RequestMapping(value = "/pizzeriabookingAction", method = RequestMethod.POST)
@@ -86,6 +95,7 @@ public class PizzeriaBookingController {
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
 			System.out.println(book.getId());
+			//TODO prendere la sessione e solo i booking della pizzeria loggata
 			BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 			
 			Booking booking=bookingDAO.getBooking(book.getId());

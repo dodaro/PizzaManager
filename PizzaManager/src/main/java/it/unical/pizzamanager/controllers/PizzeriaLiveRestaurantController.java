@@ -1,8 +1,10 @@
 package it.unical.pizzamanager.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
 public class PizzeriaLiveRestaurantController {
@@ -27,31 +32,32 @@ public class PizzeriaLiveRestaurantController {
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/pizzerialiverestaurant", method = RequestMethod.GET)
-	public String pizzeriaLiveRestaurant(Model model) {
+	public String pizzeriaLiveRestaurant(Model model, HttpSession session) {
 		logger.info("liveRestaurant page requested.");
-
-		// ogni qualvolta si riavvia l'applicazione il database viene azzerato
-		/*
-		 * BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO"); List<Booking>
-		 * bookings = (List<Booking>) bookingDAO.getBookingList(); model.addAttribute("bookings",
-		 * bookings);
-		 */
-
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
 		return "pizzerialiverestaurant";
 	}
 
 	@RequestMapping(value = "/pizzerialiverestaurantAjax", method = RequestMethod.GET)
-	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model) {
+	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model, HttpSession session) {
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
+
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-		List<Booking> bookings = (List<Booking>) bookingDAO.getBookingList();
+		List<Booking> allBookings = (List<Booking>) bookingDAO.getBookingsFromPizzeria(pizzeria);
+		List<Booking> filteredBookings=new ArrayList<>();
+		for (Booking booking : allBookings) {
+			if(booking.getConfirmed()==true)
+				filteredBookings.add(booking);
+		}
 
-		// TODO filtrare i booking confermati
-		// System.out.println(bookings.get(0).getDate());
-
-		// FIXME Le lambda danno fastidio a jetty.
-		// bookings.removeIf(b -> b.getConfirmed() == false);
-
-		return bookings;
+		return filteredBookings;
 	}
 
 }

@@ -32,11 +32,11 @@
 						<th>Name</th>
 						<th>Date</th>
 						<th>Time</th>
-						<th>Payment</th>
+						<th>Paid</th>
 						<th>Id</th>
 						<th>Type</th>
 						<th>N.Tables</th>
-						<th>AddressTo</th>
+						<th>Address</th>
 						<th>Bill</th>
 					</tr>
 				</thead>
@@ -46,10 +46,19 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="controls">
-				<button id="confermeButtonBooking" type="submit" class="btn btn-default" >Conferme</button>
-				<button id="editButtonBooking" type="submit" class="btn btn-default" >Edit</button>
-				<button id="removeButtonBooking" type="submit" class="btn btn-default">Remove</button>			
+			<div class="buttons-container controls">
+					<button id="confermeButtonBooking" type="submit" class="btn btn-primary button-add">
+						<span class="glyphicon glyphicon-plus"></span> Confirm
+					</button>
+					<button id="editButtonBooking" type="submit" class="btn btn-success button-update">
+						<span class="glyphicon glyphicon-refresh"></span> Update
+					</button>
+					<button id="removeButtonBooking" type="submit" class="btn btn-danger button-delete">
+						<span class="glyphicon glyphicon-remove"></span> Delete
+					</button>
+					<button id="saveButtonBooking" type="submit" class="btn btn-info button-save">
+						<span class="glyphicon glyphicon-floppy-save"></span> Save
+					</button>
 			</div>
 		</div>
 	</div>

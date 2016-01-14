@@ -9,6 +9,7 @@ import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
 
 public class BookingDAOImpl implements BookingDAO {
 
@@ -48,6 +49,25 @@ public class BookingDAOImpl implements BookingDAO {
 		return booking;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Booking> getBookingsFromPizzeria(Pizzeria pizzeria) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where pizzeria = :pizzeria ";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+
+		session.close();
+		return bookings;
+	}
+	
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getBookingList() {

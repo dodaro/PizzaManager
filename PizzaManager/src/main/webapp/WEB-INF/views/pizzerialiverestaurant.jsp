@@ -23,13 +23,20 @@
 	</div>
 	<div class="row">
 		<div class="col-xs-12">
-			<div class="controls">
-				<button id="completeButtonLiveRestaurant" type="submit" class="btn btn-default" >Complete</button>
-				<button id="restoreButtonLiveRestaurant" type="submit" class="btn btn-default" >Restore</button>
-				<button id="removeButtonLiveRestaurant" type="submit" class="btn btn-default">Remove</button>
-				<button id="saveButtonLiveRestaurant" type="submit" class="btn btn-default">Save</button>	
-				<button id="payButtonLiveRestaurant" type="submit" class="btn btn-default">Pay</button>		
-			</div> 
+			<div class="buttons-container controls">
+					<button id="completeButtonLiveRestaurant" type="submit" class="btn btn-primary button-add">
+						<span class="glyphicon glyphicon-plus"></span> Collected
+					</button>
+					<button id="restoreButtonLiveRestaurant" type="submit" class="btn btn-success button-update">
+						<span class="glyphicon glyphicon-refresh"></span> Send back
+					</button>
+					<button id="removeButtonLiveRestaurant" type="submit" class="btn btn-danger button-delete">
+						<span class="glyphicon glyphicon-remove"></span> Delete
+					</button>
+					<button id="payButtonLiveRestaurant" type="submit" class="btn btn-warning button-pay">
+						<span class="glyphicon glyphicon-eur"></span> Pay
+					</button>
+			</div>
 		</div>
 	</div>
 

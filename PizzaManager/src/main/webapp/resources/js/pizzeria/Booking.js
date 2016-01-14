@@ -1,8 +1,10 @@
 var Booking = function(){
 	
+	//NON HO BISOGNO DELL'INITVAR perchè queste due variabili vengono inizializzate ogni volta
 	var tableBooking;
 	var bookingFromServer;
 	var columnId = 6;
+	var columnPaid = 5;
 
 	var initDataTable = function() {
 		
@@ -29,6 +31,7 @@ var Booking = function(){
 				    ],
 				order : [ [ 3, 'desc' ] ]
 			});
+		tableBooking.columns(columnId).visible(false);
 		
 		var data;
 		$.ajax({
@@ -46,7 +49,7 @@ var Booking = function(){
 			}
 		});
 		
-		setControlButtons(true,true,true);
+		setControlButtons(true,true,true,true);
 		
 		//controllo in caso di richiesta pagina post booking edited
 		if(communicator.bookingEdited!==undefined)
@@ -129,12 +132,17 @@ var Booking = function(){
 			if ($(this).hasClass('selected')&& tableBooking.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even"))) {
 				console.log();
 				$(this).removeClass('selected');
-				setControlButtons(true,true,true);
+				setControlButtons(true,true,true,true);
+			
 			} 
 			else if(!$(this).hasClass('selected') && tableBooking.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even")) ){
 				tableBooking.$('tr.selected').removeClass('selected');
 				$(this).addClass('selected');
-				setControlButtons(false,false,false);
+				console.log(tableBooking.row(this).data()[columnPaid]);
+				if(tableBooking.row(this).data()[columnPaid]==true)
+					setControlButtons(false,false,false,false);
+				else
+					setControlButtons(false,false,false,true);
 			}//end else if
 		});
 		
@@ -159,6 +167,15 @@ var Booking = function(){
 			});
 		});
 		
+		//TODO LATO SERVER GESTIRE IL SAVE
+		$("#saveButtonBooking").on('click',function(){
+			var idBooking=tableBooking.row('.selected').data()[columnId];
+			sendRequest('save', findBooking(idBooking), function(response) {
+				tableBooking.row('.selected').remove().draw(false);
+				alert('booking'+idBooking + response);
+			});	
+		});
+		
 	}
 	
 	function format(idBooking) {
@@ -168,7 +185,7 @@ var Booking = function(){
 			if(bookingFromServer[int].id==idBooking){
 				var booking=bookingFromServer[int];
 				if(booking.pizzas.length>0){
-					string+='<table class="table table-bordered"><thead><tr>'
+					string+='<table class="table table-bordered" style="font-size:13px;"><thead><tr>'
 							+'<th>Pizza</th>'
 							+'<th>Gluten</th>'
 							+'<th>Size</th>'
@@ -199,7 +216,7 @@ var Booking = function(){
 								for (var int3 = 0; int3 < ingredientsTotal.length; int3++) {
 									listIngredients+=ingredientsTotal[int3].name;
 									if(int3!==ingredientsTotal.length-1)
-										listIngredients+=",";
+										listIngredients+=", ";
 								}
 								
 								string+="<td>"+listIngredients+"</td>"
@@ -211,7 +228,7 @@ var Booking = function(){
 					string+='</table>';
 				}
 				if(booking.beverages.length>0){
-					string+='<table class="table table-bordered"><thead><tr>'
+					string+='<table class="table table-bordered" style="font-size:13px;"><thead><tr>'
 							+'<th>Beverage</th>'
 							+'<th>Brand</th>'
 							+'<th>Type</th>'
@@ -315,11 +332,12 @@ var Booking = function(){
 	
 	
 	
-	var setControlButtons = function(boolButtonConferme, boolButtonEdit, boolButtonRemove ){
+	var setControlButtons = function(boolButtonConferme, boolButtonEdit, boolButtonRemove, boolButtonSave ){
 		
 		$("#confermeButtonBooking").prop('disabled', boolButtonConferme);
 		$("#editButtonBooking").prop('disabled', boolButtonEdit);
 		$("#removeButtonBooking").prop('disabled', boolButtonRemove);
+		$("#saveButtonBooking").prop('disabled', boolButtonSave);
 	}
 	
 	return {
