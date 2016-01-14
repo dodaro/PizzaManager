@@ -35,7 +35,17 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public Booking getBooking(Integer id) {
-		return null;
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where id = :id ";
+		Query query = session.createQuery(queryString);
+		query.setParameter("id", id);
+		
+		Booking booking = (Booking) query.uniqueResult();
+		booking.getOrderItems().size();
+
+		session.close();
+		return booking;
 	}
 
 	@SuppressWarnings("unchecked")

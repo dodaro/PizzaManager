@@ -1,21 +1,17 @@
 package it.unical.pizzamanager.model;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PizzeriaCartBooking {
-	
+
 	String pizzeria;
-	List<Integer> items;
-	Date data;
+	Date date;
 	private String bookingType;
-	
+
 	public PizzeriaCartBooking() {
-		this.pizzeria="";
-		this.items=new ArrayList<>();
-		this.data=null;
-		this.bookingType="";
+		this.pizzeria = "";
+		this.date = null;
+		this.bookingType = "";
 	}
 
 	public String getPizzeria() {
@@ -26,20 +22,12 @@ public class PizzeriaCartBooking {
 		this.pizzeria = pizzeria;
 	}
 
-	public List<Integer> getItems() {
-		return items;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setItems(List<Integer> items) {
-		this.items = items;
-	}
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public String getBookingType() {

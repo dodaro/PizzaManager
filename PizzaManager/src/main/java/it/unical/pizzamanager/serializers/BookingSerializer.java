@@ -20,12 +20,19 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 	public void serialize(Booking booking, JsonGenerator jgen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
 		
+		Double bill=0.0;
 		
 		jgen.writeStartObject();
-			//jgen.writeStringField("name", booking.getUser().getEmail());//TODO QUI MI SERVE UN NOME, SPECIE SE SI TRATTA DI UNA PRENOTAZIONE DI UN NON UTENTE
+			if(booking.getUser()!=null)
+				jgen.writeStringField("user", booking.getUser().getEmail());
+			
+			if(booking.getBookerName()!=null)
+				jgen.writeStringField("underTheNameOf", booking.getBookerName());
+
 			jgen.writeStringField("date", booking.getDate().toString());
 			jgen.writeStringField("time", booking.getTime().toString());
-			jgen.writeStringField("id", booking.getId().toString()); //crittografare l'id
+			jgen.writeStringField("id", booking.getId().toString());
+			
 			if(booking.getPayment()!=null)
 				jgen.writeBooleanField("payment", booking.getPayment().getPaid());
 			else
@@ -36,13 +43,28 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 			else if(booking instanceof BookingDelivery){
 				BookingDelivery b=(BookingDelivery)booking;
 				jgen.writeStringField("type", "delivery");
-				jgen.writeStringField("address", b.getDeliveryAddress().toString());
-				//TIME TO DELIVERY?
+				jgen.writeObjectFieldStart("address");
+					jgen.writeStringField("id",b.getDeliveryAddress().getId().toString());
+					jgen.writeStringField("city",b.getDeliveryAddress().getCity());
+					jgen.writeStringField("street",b.getDeliveryAddress().getStreet());
+					jgen.writeStringField("number",b.getDeliveryAddress().getNumber().toString());
+				jgen.writeEndObject();
 			}
 			else if(booking instanceof BookingPizzeriaTable){
 				BookingPizzeriaTable b=(BookingPizzeriaTable)booking;
 				jgen.writeStringField("type", "table");
-				jgen.writeObjectField("table", b.getTableBooking());
+				jgen.writeArrayFieldStart("tables");
+				//booking.getpizza() ti restituisce la relationPizzeriaPizza, facendo .getPizza() hai la pizza....
+				for (int j = 0; j < b.getTableBooking().size(); j++) {
+					jgen.writeStartObject();
+						jgen.writeStringField("number",b.getTableBooking().get(0).getPizzeriaTable().getNumber().toString());
+						jgen.writeStringField("id",b.getTableBooking().get(0).getPizzeriaTable().getId().toString());
+						jgen.writeStringField("seats",b.getTableBooking().get(0).getPizzeriaTable().getSeats().toString());
+						jgen.writeStringField("maxSeats",b.getTableBooking().get(0).getPizzeriaTable().getMaxSeats().toString());
+						jgen.writeStringField("minSeats",b.getTableBooking().get(0).getPizzeriaTable().getMinSeats().toString());
+					jgen.writeEndObject();
+				}
+				jgen.writeEndArray();
 			}
 			
 		
@@ -50,8 +72,9 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof PizzaOrderItem){
 						PizzaOrderItem pizzabooking=(PizzaOrderItem)booking.getOrderItems().get(i);
-	
+						bill+=pizzabooking.getCostPizzaPlusIngredients()*pizzabooking.getNumber();
 						jgen.writeStartObject();
+							jgen.writeStringField("priceEach",pizzabooking.getCostPizzaPlusIngredients().toString());
 							jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getName());
 							jgen.writeStringField("gluten",pizzabooking.getGlutenFree());
 							jgen.writeStringField("size",pizzabooking.getSize());
@@ -93,6 +116,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof BeverageOrderItem){
 						BeverageOrderItem beveragebooking=(BeverageOrderItem)booking.getOrderItems().get(i);
+						bill+=beveragebooking.getPizzeria_beverage().getPrice()*beveragebooking.getNumber();
 						jgen.writeStartObject();
 							jgen.writeStringField("name",beveragebooking.getPizzeria_beverage().getBeverage().getName());
 							jgen.writeStringField("brand",beveragebooking.getPizzeria_beverage().getBeverage().getBrand());
@@ -101,45 +125,16 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 							jgen.writeStringField("type",beveragebooking.getPizzeria_beverage().getBeverage().getType().toString());
 							jgen.writeStringField("id",beveragebooking.getPizzeria_beverage().getBeverage().getId().toString());
 							jgen.writeStringField("number",beveragebooking.getNumber().toString());
+							//ATTENZIONE: per la BEVANDA il prezzo è dato dal price della bibita nella relazione bibitaPizzeria
+							//e non dal getCost() dell'ordineBevanda
+							jgen.writeStringField("priceEach",(beveragebooking.getPizzeria_beverage().getPrice()).toString());
 						jgen.writeEndObject();
 						
 					}
 				}
 			jgen.writeEndArray();
+			jgen.writeStringField("bill", bill.toString());
 		jgen.writeEndObject();
 		
 	}
-	/*
-	 * 	booking:{
-			name: "giacomino",
-			user: "pillo99",  --> nullable
-			information:{
-				type: "delivery",
-				address: "via cerignola",
-				date: "12-1-2016, 12.30",
-				table: undefined
-			},
-			pizzas:[{
-				number:22, -->numero di pizze ordinate per questa tipologia
-				name:"capricciosa",
-				ingredients:["banana","tomanto"], -->ingredienti base
-				ingredientsAdded:[],
-				ingredientsRemoved:["banana"]
-			}.{
-				..
-			}],
-			beverages:[{
-				number:23, -->numero di bibite ordinate per questa tipologia
-				beverage:{
-					id:..
-					tutti i campi
-				} --> crittografato
-			}]
-		}
-	 * */
-
 }
-
-/*COSE DA GESTIRE:
-1)il nome del prenotatore nel caso si tratti di una prenotazione che non è fatta da un utente
-*/

@@ -29,7 +29,7 @@ public class Address {
 	@Column(name = "city")
 	private String city;
 
-	@OneToOne(mappedBy = "address", fetch = FetchType.LAZY)
+	@OneToOne(mappedBy = "address", fetch = FetchType.EAGER)
 	private Account account;
 
 	public Address() {
@@ -47,11 +47,11 @@ public class Address {
 		this.street = street;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 
-	public void setNumber(int number) {
+	public void setNumber(Integer number) {
 		this.number = number;
 	}
 
@@ -70,4 +70,13 @@ public class Address {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
 }

@@ -10,14 +10,14 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('input.removeButton').on('click', function() {
-			var $clickedElement = $(this);
-			var $id = $clickedElement.data('id');
-			alert($id);
+			var clickedElement = $(this);
+			var id = clickedElement.data('id');
+			alert(id);
 			$.ajax({
 				type : "POST",
 				url : "/cart",
 				data : {
-					id : $id
+					id : id
 				},
 				success : function() {
 					data
@@ -25,27 +25,32 @@
 			});
 		});
 		$('#bookCart').on('click', function() {
-			var $clickedElement = $(this);
-			var $ids = [];
-			var $numbers = [];
+			var clickedElement = $(this);
+			var items = "";
 			$(".number-control").each(function(index, element) {
-				$ids.push($(this).data('id'));
-				$numbers.push(parseInt($(this).val(), 10));
+				var id = $(this).data('id');
+				var number = $(this).val();
+				var item = id + "-" + number;
+				items = items + ";" + item;
 
 			});
-			alert($ids);
-			alert($numbers);
+			alert(items);
+
+			var itemToBook = items.substring(1, items.length);
+
+			console.log(itemToBook);
+
 			$.ajax({
 				type : "POST",
 				url : "/bookCart",
 				data : {
-					itemsToBook : {
-						items : $ids,
-						numbers : $numbers
-					}
+					itemToBook : itemToBook,
 				},
-				success : function() {
-					data
+				success : function(response) {
+					if (response.success) {
+						console.log(response)
+						window.location = 'userBooking'
+					}
 				}
 			})
 		});

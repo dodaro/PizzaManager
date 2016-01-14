@@ -28,7 +28,7 @@ public class PizzaOrderItem extends OrderItem {
 	private static final long serialVersionUID = 8977364851663655249L;
 
 	// mantengo il nome dell'attributo cmq sia un oggetto RelationPizzeriaPizza
-	// è una pizza con il prezzo e la pizzeria dove viene prodotta
+	// ï¿½ una pizza con il prezzo e la pizzeria dove viene prodotta
 	@ManyToOne
 	@JoinColumn(name = "pizzeria_pizza")
 	private RelationPizzeriaPizza pizzeria_pizza;
@@ -100,4 +100,26 @@ public class PizzaOrderItem extends OrderItem {
 	public String pizzeriaName(){
 		return pizzeria_pizza.getPizzeria().getName();
 	}
+	
+	public Double getCostPizzaPlusIngredients(){
+		if(modified){
+			Double ingredientAddedCost=0.0;
+			Double ingredientRemovedCost=0.0;
+			for (int i = 0; i < pizzaOrderIngredients.size(); i++) {
+				if(pizzaOrderIngredients.get(i).getAdditive().equals(RelationPizzaOrderItemIngredient.ADDITION)){
+					ingredientAddedCost+=0.50;
+				}
+				else{//REMOVAL
+					ingredientRemovedCost+=0.50;
+				}
+			}
+			if(this.getPizzeria_pizza().getPrice()+ingredientAddedCost-ingredientRemovedCost>0)
+				return this.getPizzeria_pizza().getPrice()+ingredientAddedCost-ingredientRemovedCost;
+			else
+				return 0.0;
+		}
+		return this.getCost();
+	}
+	
+	
 }

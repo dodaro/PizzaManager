@@ -1,5 +1,8 @@
 package it.unical.pizzamanager.model;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 public class OrderItemDisplay {
 
 	int id;
@@ -59,6 +62,11 @@ public class OrderItemDisplay {
 		return cost;
 	}
 
+	public String getCostLabel() {
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		return formatter.format(cost);
+	}
+
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
@@ -69,6 +77,12 @@ public class OrderItemDisplay {
 
 	public void setImageItem(String imageItem) {
 		this.imageItem = imageItem;
+	}
+
+	public String getTotal() {
+		NumberFormat formatter = new DecimalFormat("#0.00");
+		return formatter.format(number * cost);
+
 	}
 
 }

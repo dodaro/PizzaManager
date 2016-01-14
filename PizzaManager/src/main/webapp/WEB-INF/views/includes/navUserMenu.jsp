@@ -2,6 +2,7 @@
 	<div class="bubble">
 		<ul class="nav nav-pills nav-stacked">
 			<li><a href="/cart">My Cart</a></li>
+			<li><a href="/userBooking">Book Cart</a></li>
 			<li><a href="#">My Order</a></li>
 			<li><a href="/settings">Settings</a></li>
 		</ul>

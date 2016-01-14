@@ -100,4 +100,5 @@ public abstract class OrderItem implements Serializable {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+	
 }

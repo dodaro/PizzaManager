@@ -16,9 +16,10 @@ public class BookingDelivery extends Booking {
 
 	private static final long serialVersionUID = -8241567483648220533L;
 
+	/*//PER ORA QUESTO ATTRIBUTO è  IGNORABILE
 	@Temporal(TemporalType.TIME)
 	@Column(name = "estimated_delivery_time")
-	private Date estimatedDeliveryTime;
+	private Date estimatedDeliveryTime;*/
 
 	@OneToOne
 	@JoinColumn(name = "delivery_address")
@@ -27,16 +28,22 @@ public class BookingDelivery extends Booking {
 	public BookingDelivery() {
 		super();
 		this.deliveryAddress = null;
-		this.estimatedDeliveryTime = new Date();
+		//this.estimatedDeliveryTime = new Date();
 	}
 
-	public Date getEstimatedDeliveryTime() {
+	public BookingDelivery(Date date, Date time, Boolean confirmed, Integer priority, Address deliveryAddress/*, Date estimatedDeliveryTime */) {
+		super(date, time, confirmed,priority);
+		this.deliveryAddress = deliveryAddress;
+		//this.estimatedDeliveryTime = estimatedDeliveryTime;
+	}
+	
+	/*public Date getEstimatedDeliveryTime() {
 		return estimatedDeliveryTime;
 	}
 
 	public void setEstimatedDeliveryTime(Date estimatedDeliveryTime) {
 		this.estimatedDeliveryTime = estimatedDeliveryTime;
-	}
+	}*/
 
 	public Address getDeliveryAddress() {
 		return deliveryAddress;
