@@ -49,6 +49,7 @@ public class DatabasePopulator {
 		databaseFile.delete();
 		traceFile.delete();
 
+		System.out.println("Started populating.");
 		new DatabasePopulator().populateDatabase();
 		System.out.println("Done.");
 	}
