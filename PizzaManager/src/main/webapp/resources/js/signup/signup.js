@@ -7,4 +7,8 @@ $(function() {
 		signupController.onPasswordChanged($(this).val());
 	});
 
+	maps.initMaps('maps-autocomplete-input');
+	maps.setOnPlaceChangedListener(function(latitude, longitude) {
+		console.log(latitude + " " + longitude);
+	});
 });

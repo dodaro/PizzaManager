@@ -6,6 +6,9 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places"></script>
+<script type="text/javascript" src="resources/js/maps.js"></script>
 <script type="text/javascript" src="resources/js/signup/signup.js"></script>
 <script type="text/javascript" src="resources/js/signup/signupController.js"></script>
 
@@ -32,8 +35,8 @@
 								<div class="form-group has-feedback js-email-form">
 									<form:input type="text" path="email" class="form-control js-email-input"
 										placeholder="Email" />
-									<span class="glyphicon form-control-feedback"></span>
-									<img class="loader form-control-feedback" src="resources/img/loader.gif" />
+									<span class="glyphicon form-control-feedback"></span> <img
+										class="loader form-control-feedback" src="resources/img/loader.gif" />
 								</div>
 							</div>
 							<div class="col-md-7">
@@ -57,6 +60,9 @@
 								<div class="message valid">Password is ok.</div>
 								<div class="message error">Your password must be at least 8 characters long.</div>
 							</div>
+						</div>
+						<div class="row">
+							<input type="text" id="maps-autocomplete-input" class="form-control" />
 						</div>
 					</form:form>
 				</div>
