@@ -58,4 +58,19 @@ public class AddressDAOImpl implements AddressDAO{
 		session.close();
 		return address;
 	}
+	
+	@Override
+	public Address get(String city, String street, Integer number) {
+		// TODO Auto-generated method stub
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Address where city = :city  and street = :street and number = :number  ";
+		Query query = session.createQuery(queryString);
+		query.setParameter("city", city);
+		query.setParameter("street", street);
+		query.setParameter("number", number);
+		Address address = (Address) query.uniqueResult();
+		session.close();
+		return address;
+	}
 }

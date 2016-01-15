@@ -333,15 +333,6 @@ var LiveOrderTool = function(){
 	var sendOrder = function() {
 		var booking=createBooking();
 		console.log(booking);
-		/*var orderBeverages = extractBeverages();
-		var orderPizzas = extractPizzas();
-		
-		console.log(beverageList);
-		console.log(orderBeverages);
-		console.log(pizzaList);
-		console.log(orderPizzas);
-	
-		var stringB = JSON.stringify(orderBeverages);*/
 		
 		//TODO se si tratta di modifica di un booking basta richiamare la pagina booking ed appendere il booking al comunicator
 		var stringBooking = JSON.stringify(booking);		

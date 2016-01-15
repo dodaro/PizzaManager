@@ -14,6 +14,9 @@ public interface AddressDAO {
 	public void update(Address address);
 
 	public Address get(Integer id);
+
+	public Address get(String city, String street, Integer number);
 	
 	public List<Address> getAll();
+
 }

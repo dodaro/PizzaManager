@@ -20,7 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.utils.BookingUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
@@ -46,21 +48,32 @@ public class PizzeriaLiveOrderController {
 	}
 
 	@RequestMapping(value = "/pizzerialiveorderConferme", method = RequestMethod.POST)
-	public @ResponseBody String confermeLiveOrder(Model model, @RequestParam("booking") String jsonBooking) {
+	public @ResponseBody String confermeLiveOrder(Model model, @RequestParam("booking") String jsonBooking,HttpSession session) {
 		logger.info("Live order confermed");
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+		
+		
 		System.out.println(jsonBooking);
 		ObjectMapper objectMapper = new ObjectMapper();
-		BookingModel book;
+		BookingModel book=null;
 		String message="error";
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
+			System.out.println(book.getId());
+			Booking booking=BookingUtils.createBookingFromBookingModel(book,pizzeria,context);
+			booking=BookingUtils.calculateBill(booking, pizzeria, context);
+			
+			message="complete";
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//BookingUtils.createBookingFromBookingModel(model, pizzeria, context);
-		String a = "{ciao:io}";
-		return a;
+	
+		return message;
 	}
 
 	@RequestMapping(value = "/pizzerialiveorderPizzas", method = RequestMethod.GET)
