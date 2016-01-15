@@ -7,6 +7,8 @@
 			<table id="beverages-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
+<!-- 						<th>Id</th> -->
+<!-- 						<th>BevId</th> -->
 						<th>Name</th>
 						<th>Brand</th>
 						<th>Container</th>
@@ -32,10 +34,10 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="pizza-price" class="control-label">Price</label>
+					<label for="beverage-price" class="control-label">Price</label>
 					<div class="input-group">
-						<input type="number" id="pizza-price" class="form-control"><span
-							class="input-group-addon">&euro;</span>
+						<input type="number" id="beverage-price" class="form-control" placeholder="Choose a price">
+						<span class="input-group-addon">&euro;</span>
 					</div>
 				</div>
 			</form>

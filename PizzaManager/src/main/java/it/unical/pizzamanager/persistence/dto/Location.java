@@ -15,8 +15,6 @@ import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 @Table(name = "addresses")
 public class Location {
 
-	private static final int NO_NUMBER = -1;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")

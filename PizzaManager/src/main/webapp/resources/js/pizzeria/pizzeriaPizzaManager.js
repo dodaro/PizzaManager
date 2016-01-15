@@ -224,6 +224,10 @@ pizzeriaPizzaManager = function() {
 			return false;
 		}
 
+		/* Check if form data is equal to the selected row data. */
+		if (formDataEqualsSelectedRowData()) {
+			return false;
+		}
 		/*
 		 * TODO - Check if the data the user is trying to insert isn't already
 		 * in another row.
@@ -242,7 +246,7 @@ pizzeriaPizzaManager = function() {
 
 		if ($selectedRow != undefined) {
 			var rowData = table.getRowData($selectedRow);
-			return formData.pizzaId == rowData.pizzaId && formData.size == formData.size
+			return formData.pizzaId == rowData.pizzaId && formData.size == rowData.size
 					&& formData.preparationTime == rowData.preparationTime
 					&& formData.glutenFree == rowData.glutenFree && formData.price == rowData.price;
 		}

@@ -22,25 +22,25 @@ public class BeveragePopulator extends Populator {
 
 	@Override
 	protected void populate() {
-		Beverage beverage0 = new Beverage("Water1", "brand0", BeverageContainer.BOTTLE,
+		Beverage beverage0 = new Beverage("Sparkling Water", "Ferrarelle", BeverageContainer.BOTTLE,
 				BeverageSize.LARGE, BeverageType.WATER);
-		Beverage beverage1 = new Beverage("Cola2", "brand0", BeverageContainer.CAN,
+		Beverage beverage1 = new Beverage("Coca Cola", "Coca Cola", BeverageContainer.CAN,
 				BeverageSize.MEDIUM, BeverageType.SODA);
-		Beverage beverage2 = new Beverage("Red Wine", "brand1", BeverageContainer.BOTTLE,
+		Beverage beverage2 = new Beverage("Cirò Rosso", "Cirò", BeverageContainer.BOTTLE,
 				BeverageSize.SMALL, BeverageType.WINE);
-		Beverage beverage3 = new Beverage("Orange Juice", "brand1", BeverageContainer.CAN,
+		Beverage beverage3 = new Beverage("Fanta", "Coca Cola", BeverageContainer.CAN,
 				BeverageSize.LARGE, BeverageType.SODA);
-		Beverage beverage4 = new Beverage("Sparkling Water", "brand1", BeverageContainer.BOTTLE,
+		Beverage beverage4 = new Beverage("Still Water", "Levissima", BeverageContainer.BOTTLE,
 				BeverageSize.MEDIUM, BeverageType.WATER);
-		Beverage beverage5 = new Beverage("Beer1", "brand2", BeverageContainer.DRAFT,
+		Beverage beverage5 = new Beverage("Peroni Bionda", "Peroni", BeverageContainer.DRAFT,
 				BeverageSize.LARGE, BeverageType.BEER);
-		Beverage beverage6 = new Beverage("Water2", "brand2", BeverageContainer.BOTTLE,
+		Beverage beverage6 = new Beverage("Sparkling Water", "Lete", BeverageContainer.BOTTLE,
 				BeverageSize.MEDIUM, BeverageType.WATER);
-		Beverage beverage7 = new Beverage("Lemon Juice", "brand2", BeverageContainer.CAN,
+		Beverage beverage7 = new Beverage("Lemon Juice", "Schweppes", BeverageContainer.CAN,
 				BeverageSize.LARGE, BeverageType.SODA);
-		Beverage beverage8 = new Beverage("Beer2", "brand3", BeverageContainer.BOTTLE,
+		Beverage beverage8 = new Beverage("Heineken", "Heineken", BeverageContainer.BOTTLE,
 				BeverageSize.LARGE, BeverageType.BEER);
-		Beverage beverage9 = new Beverage("Cola2", "brand4", BeverageContainer.DRAFT,
+		Beverage beverage9 = new Beverage("Coca Cola", "Coca Cola", BeverageContainer.DRAFT,
 				BeverageSize.MEDIUM, BeverageType.SODA);
 
 		BeverageDAO beverageDAO = (BeverageDAO) context.getBean("beverageDAO");

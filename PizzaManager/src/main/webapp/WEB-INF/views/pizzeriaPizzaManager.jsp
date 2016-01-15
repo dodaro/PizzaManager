@@ -54,8 +54,8 @@
 				<div class="form-group">
 					<label for="pizza-price" class="control-label">Price</label>
 					<div class="input-group">
-						<input type="number" id="pizza-price" class="form-control"><span
-							class="input-group-addon">&euro;</span>
+						<input type="number" id="pizza-price" class="form-control" placeholder="Choose a price">
+						<span class="input-group-addon">&euro;</span>
 					</div>
 				</div>
 			</form>

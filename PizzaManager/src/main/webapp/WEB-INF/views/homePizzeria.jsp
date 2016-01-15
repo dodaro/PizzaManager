@@ -20,6 +20,7 @@
 <!-- Scripts for tables management -->
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaTableManager.js"></script>
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaPizzaManager.js"></script>
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaBeverageManager.js"></script>
 
 <!-- Scripts for the live order tool -->
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
@@ -77,7 +78,7 @@
 						<!-- <li class="active"><a href="#">Home</a></li> -->
 						<li data-content="pizzeriaTableManager"><a href="#">Manage tables</a></li>
 						<li data-content="pizzeriaPizzaManager"><a href="#">Manage pizzas</a></li>
-						<li><a href="#">Beverage</a></li>
+						<li data-content="pizzeriaBeverageManager"><a href="#">Manage beverages</a></li>
 						<li data-content="pizzeriabooking"><a href="#">Booking</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>

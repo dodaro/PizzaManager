@@ -19,9 +19,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+import it.unical.pizzamanager.serializers.PizzeriaBeverageSerializer;
 
+@JsonSerialize(using = PizzeriaBeverageSerializer.class)
 @Entity
 @Table(name = "pizzeria_beverage")
 public class RelationPizzeriaBeverage implements Serializable {
@@ -33,12 +36,10 @@ public class RelationPizzeriaBeverage implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizzeria")
 	private Pizzeria pizzeria;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "beverage")
 	private Beverage beverage;
@@ -50,15 +51,15 @@ public class RelationPizzeriaBeverage implements Serializable {
 	 * OrderItems which contain a beverage.
 	 */
 	@OneToMany(mappedBy = "pizzeria_beverage", fetch = FetchType.EAGER)
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<BeverageOrderItem> orderItems;
-	
+
 	public RelationPizzeriaBeverage() {
 		this.id = DatabaseHandler.NO_ID;
 		this.pizzeria = null;
 		this.beverage = null;
 		this.price = 0.0;
-		this.orderItems=new ArrayList<>();
+		this.orderItems = new ArrayList<>();
 	}
 
 	public RelationPizzeriaBeverage(Pizzeria pizzeria, Beverage beverage, Double price) {
@@ -66,7 +67,7 @@ public class RelationPizzeriaBeverage implements Serializable {
 		this.pizzeria = pizzeria;
 		this.beverage = beverage;
 		this.price = price;
-		this.orderItems=new ArrayList<>();
+		this.orderItems = new ArrayList<>();
 	}
 
 	public int getId() {
