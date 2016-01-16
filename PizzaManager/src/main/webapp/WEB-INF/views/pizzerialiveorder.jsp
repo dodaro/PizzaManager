@@ -32,6 +32,16 @@
 			</div>
 			<div class="form-group">
 				<select id="tables" class="js-example-basic-multiple" multiple="multiple">
+					<c:choose>
+							<c:when test="${pizzeria.getTables().size() > 0}">
+								<c:forEach var="table" items="${pizzeria.getTables()}">
+									<option value="${table.getId()}">N: ${table.getNumber()} - Min:${table.getMinSeats()} - Max:${table.getMaxSeats()}</option>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<div>There are no pizzas into the database.</div>
+							</c:otherwise>
+					</c:choose>
 				</select>
 			</div>
 		</div>

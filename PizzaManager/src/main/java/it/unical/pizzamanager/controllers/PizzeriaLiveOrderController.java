@@ -65,7 +65,7 @@ public class PizzeriaLiveOrderController {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
 			System.out.println(book.getId());
 			Booking booking=BookingUtils.createBookingFromBookingModel(book,pizzeria,context);
-			//booking=BookingUtils.calculateBill(booking, pizzeria, context);
+			booking=BookingUtils.calculateBill(booking, pizzeria, context);
 			
 			message="complete";
 		} catch (IOException e) {

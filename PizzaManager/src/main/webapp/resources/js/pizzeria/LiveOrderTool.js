@@ -141,7 +141,7 @@ var LiveOrderTool = function(){
 				}
 			});	
 			
-			$.ajax({
+			/*$.ajax({
 				url : "/pizzeria/tablesList",
 				type : 'GET',
 				success : function(data) {
@@ -151,7 +151,7 @@ var LiveOrderTool = function(){
 				error : function(data, status, er) {
 					alert("error: " + data + " status: " + status + " er:" + er);
 				}
-			});
+			});*/
 			
 			
 		}
@@ -429,7 +429,7 @@ var LiveOrderTool = function(){
 		
 	}
 	
-	var createTables = function(tables){
+	/*var createTables = function(tables){
 		for (var int = 0; int < tables.length; int++) {
 			$("#tables").append("<option value='"+tables[int].id+"'>"
 					+"TableNumber: "
@@ -440,7 +440,7 @@ var LiveOrderTool = function(){
 					+ tables[int].minSeats
 					+ "</option>");			
 		}
-	}
+	}*/
 	
 	var initHeading = function(booking){
 	
