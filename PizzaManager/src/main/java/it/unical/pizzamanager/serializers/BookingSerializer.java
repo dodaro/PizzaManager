@@ -79,11 +79,11 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				//booking.getpizza() ti restituisce la relationPizzeriaPizza, facendo .getPizza() hai la pizza....
 				for (int j = 0; j < b.getTableBooking().size(); j++) {
 					jgen.writeStartObject();
-						jgen.writeStringField("number",b.getTableBooking().get(0).getPizzeriaTable().getNumber().toString());
-						jgen.writeStringField("id",b.getTableBooking().get(0).getPizzeriaTable().getId().toString());
-						jgen.writeStringField("seats",b.getTableBooking().get(0).getPizzeriaTable().getSeats().toString());
-						jgen.writeStringField("maxSeats",b.getTableBooking().get(0).getPizzeriaTable().getMaxSeats().toString());
-						jgen.writeStringField("minSeats",b.getTableBooking().get(0).getPizzeriaTable().getMinSeats().toString());
+						jgen.writeStringField("number",b.getTableBooking().get(j).getPizzeriaTable().getNumber().toString());
+						jgen.writeStringField("id",b.getTableBooking().get(j).getPizzeriaTable().getId().toString());
+						jgen.writeStringField("seats",b.getTableBooking().get(j).getPizzeriaTable().getSeats().toString());
+						jgen.writeStringField("maxSeats",b.getTableBooking().get(j).getPizzeriaTable().getMaxSeats().toString());
+						jgen.writeStringField("minSeats",b.getTableBooking().get(j).getPizzeriaTable().getMinSeats().toString());
 					jgen.writeEndObject();
 				}
 				jgen.writeEndArray();
