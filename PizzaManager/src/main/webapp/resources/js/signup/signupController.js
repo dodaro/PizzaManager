@@ -168,6 +168,15 @@ var signupController = function() {
 			} else {
 				setValidationError($passwordContainer, "error");
 			}
+		},
+
+		onPillClicked : function($li) {
+			$li.addClass('active');
+			$li.siblings('li').removeClass('active');
+
+			var $additional = $('.additional.additional-' + $li.data('additional'));
+			$additional.siblings('.additional').hide();
+			$additional.show();
 		}
 	};
 }();

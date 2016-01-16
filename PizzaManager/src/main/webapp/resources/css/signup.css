@@ -26,6 +26,20 @@ h2 {
 	}
 }
 
+#signup-additional {
+	margin-top: 40px;
+	text-align: center;
+}
+
+#signup-additional .nav li+li a {
+	margin-left: 20px;
+}
+
+#signup-additional .nav {
+	margin-top: 30px;
+	font-size: 120%;
+}
+
 .message {
 	margin-top: 7px;
 	margin-left: 15px;
@@ -46,4 +60,9 @@ h2 {
 
 .valid {
 	color: #3C763D;
+}
+
+.additional {
+	display: none;
+	margin-top: 25px;
 }
