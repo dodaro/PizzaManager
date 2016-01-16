@@ -79,7 +79,7 @@
 						<li data-content="pizzeriaTableManager"><a href="#">Manage tables</a></li>
 						<li data-content="pizzeriaPizzaManager"><a href="#">Manage pizzas</a></li>
 						<li data-content="pizzeriaBeverageManager"><a href="#">Manage beverages</a></li>
-						<li data-content="pizzeriabooking"><a href="#">Booking</a></li>
+						<li data-content="pizzeriabooking"><a href="#">Manage Bookings</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
 						<li data-content="pizzerialiverestaurant"><a href="#">Live Restaurant</a></li>

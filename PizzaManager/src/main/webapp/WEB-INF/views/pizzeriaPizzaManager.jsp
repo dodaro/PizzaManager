@@ -3,7 +3,7 @@
 
 <div id="pizza-manager">
 	<div class="row">
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<table id="pizzas-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
@@ -18,7 +18,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-5">
+		<div class="col-md-4 form-column">
 			<form class="edit-pizza-form home-form">
 				<div class="form-group">
 					<label for="pizza" class="control-label">Pizza</label> <select id="pizza" class="form-control">

@@ -7,8 +7,6 @@
 			<table id="beverages-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
-<!-- 						<th>Id</th> -->
-<!-- 						<th>BevId</th> -->
 						<th>Name</th>
 						<th>Brand</th>
 						<th>Container</th>
@@ -21,7 +19,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4 form-column">
 			<form class="edit-beverage-form home-form">
 				<div class="form-group">
 					<label for="beverage" class="control-label">Beverage</label> <select id="beverage"
@@ -42,13 +40,13 @@
 				</div>
 			</form>
 			<div class="buttons-container">
-				<button class="btn btn-primary button-add" disabled>
+				<button class="btn btn-primary button-add" data-toggle="tooltip" data-placement="bottom" disabled>
 					<span class="glyphicon glyphicon-plus"></span> Add
 				</button>
-				<button class="btn btn-success button-update" disabled>
+				<button class="btn btn-success button-update" data-toggle="tooltip" data-placement="bottom" disabled>
 					<span class="glyphicon glyphicon-refresh"></span> Update
 				</button>
-				<button class="btn btn-danger button-delete" disabled>
+				<button class="btn btn-danger button-delete" data-toggle="tooltip" data-placement="bottom" disabled>
 					<span class="glyphicon glyphicon-remove"></span> Delete
 				</button>
 			</div>

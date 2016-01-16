@@ -26,7 +26,6 @@ pizzeriaBeverageManager = function() {
 			},
 
 			addRow : function(rowData) {
-				console.log(rowData);
 				$dataTable.row.add(rowData).draw();
 			},
 
@@ -66,6 +65,10 @@ pizzeriaBeverageManager = function() {
 				return $row.hasClass('selected');
 			},
 
+			hasOrderItems : function($row) {
+				return $dataTable.row($row).data().orderItems > 0;
+			},
+
 			initDataTable : function() {
 				$dataTable = $("#beverages-table").DataTable({
 					paging : false,
@@ -75,10 +78,6 @@ pizzeriaBeverageManager = function() {
 						dataSrc : '',
 					},
 					columns : [ {
-						// 'data' : 'id'
-						// }, {
-						// 'data' : 'beverageId'
-						// }, {
 						'data' : 'name'
 					}, {
 						'data' : 'brand'
@@ -90,7 +89,13 @@ pizzeriaBeverageManager = function() {
 						'data' : 'type'
 					}, {
 						'data' : 'price'
-					} ]
+					} ],
+
+					createdRow : function(row, data, index) {
+						if (data.orderItems > 0) {
+							$(row).addClass('highlighted');
+						}
+					}
 				});
 			}
 		};
@@ -106,6 +111,22 @@ pizzeriaBeverageManager = function() {
 				} else {
 					$('#beverage-manager .' + buttonClass).attr('disabled', 'disabled');
 				}
+			},
+
+			showTooltip : function(buttonClass, text) {
+				/*
+				 * If a tooltip is already shown, change the text and show the
+				 * new one.
+				 */
+				var $button = $('.buttons-container .' + buttonClass);
+				$button.attr('data-original-title', text);
+				$button.tooltip({
+					trigger : 'manual'
+				}).tooltip('fixTitle').tooltip('show');
+			},
+
+			hideTooltips : function() {
+				$('#beverage-manager button').tooltip('hide');
 			},
 
 			clearForm : function() {
@@ -168,7 +189,7 @@ pizzeriaBeverageManager = function() {
 		return true;
 	};
 
-	var canUpdate = function() {
+	var canUpdate = function($row) {
 		/* Check if all the form fields are filled. */
 		if (!form.isFilled()) {
 			return false;
@@ -180,12 +201,42 @@ pizzeriaBeverageManager = function() {
 		}
 
 		/*
+		 * Check if, according to the data received by the server, the beverage
+		 * is contained in an OrderItem.
+		 */
+		if (table.hasOrderItems($row)) {
+			return false;
+		}
+
+		/*
 		 * TODO - Check if the data the user is trying to insert isn't already
 		 * in another row.
 		 */
 
 		return true;
 	};
+
+	var canDelete = function($row) {
+		/* Check if all the form fields are filled. */
+		if (!form.isFilled()) {
+			return false;
+		}
+
+		/* Check if form data is equal to the selected row data. */
+		if (!formDataEqualsSelectedRowData()) {
+			return false;
+		}
+
+		/*
+		 * Check if, according to the data received by the server, the beverage
+		 * is contained in an OrderItem.
+		 */
+		if (table.hasOrderItems($row)) {
+			return false;
+		}
+
+		return true;
+	}
 
 	/**
 	 * Returns true if the data present in the form is equal to the data saved
@@ -266,15 +317,23 @@ pizzeriaBeverageManager = function() {
 			form.clearForm();
 			form.setButtonEnabled('button-add', false);
 			form.setButtonEnabled('button-update', false);
-			form.setButtonEnabled('button-delete', false);
+			form.hideTooltips();
 		} else {
 			var rowData = table.getRowData($row);
 			table.selectRow($row);
 			form.fillForm(rowData);
 			form.setButtonEnabled('button-add', false);
 			form.setButtonEnabled('button-update', false);
-			form.setButtonEnabled('button-delete', true);
+
+			if (table.hasOrderItems($row)) {
+				form.showTooltip('button-update', 'Can\'t update or delete this beverage'
+						+ ' because it belongs to at least one active booking.');
+			} else {
+				form.hideTooltips();
+			}
 		}
+
+		form.setButtonEnabled('button-delete', canDelete($row));
 	}
 
 	var onFormChange = function() {
@@ -285,7 +344,7 @@ pizzeriaBeverageManager = function() {
 		 * Enable or disable the buttons accordingly.
 		 */
 		if ($selectedRow != undefined) {
-			form.setButtonEnabled('button-update', canUpdate());
+			form.setButtonEnabled('button-update', canUpdate($selectedRow));
 		} else {
 			form.setButtonEnabled('button-add', canAdd());
 		}
@@ -294,7 +353,7 @@ pizzeriaBeverageManager = function() {
 		 * Delete button is always disabled unless the form AND the selected row
 		 * contain the same data.
 		 */
-		form.setButtonEnabled('button-delete', formDataEqualsSelectedRowData());
+		form.setButtonEnabled('button-delete', canDelete($selectedRow));
 	}
 
 	var initListeners = function() {

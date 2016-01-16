@@ -16,11 +16,20 @@
 	margin-top: 10px;
 }
 
+.form-column {
+	padding-left: 15px;
+}
+
 .buttons-container {
-	margin-top: 20px;
+	margin-top: 35px;
 	text-align: center;
 }
 
-.buttons-container .button-update, .buttons-container .button-delete, .buttons-container .button-pay, .buttons-container .button-save {
+.buttons-container .button-update, .buttons-container .button-delete,
+	.buttons-container .button-pay, .buttons-container .button-save {
 	margin-left: 10px;
+}
+
+tr.highlighted {
+	color: #A94442;
 }
