@@ -90,8 +90,6 @@
   			 <div class="col-sm-3 col-sm-pull-3">
   			 <div class="image">
   			<img src="resources/images/no-image.png" class="img-circle">
-  			<div class="col-sm-offset-2">Age:</div>
-  			<div class="col-sm-offset-2">Location:</div>
   			
  		</div>
 </div>

@@ -4,24 +4,6 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$(".userref").on('click', function() {
-			var $clickedElement = $(this);
-			var $id = parseInt($clickedElement.data('id'),10);
-			$.ajax({
-				type : "POST",
-				url : "/usermainview",
-				data : {
-					id : $id
-				},
-				success : function() {
-					window.location="usermainview"
-				}
-			});
-		});
-	});
-		</script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -93,7 +75,7 @@
 <div id="boxReview">
 <c:forEach var="r" items="${pizzeriaResult.feedbacks}">
 					<div class="row">
-						<a class="userref" data-id="${r.user.id}">${r.user.name}</a>
+						<a class="userref" href="usermainview?id=${r.user.id}">${r.user.name}</a>
 						<div>Fastnes: ${r.fastnessRating}</div>
 						<div>Hospitality: ${r.hospitalityRating}</div>
 						<div>Quality: ${r.qualityRating}</div>
@@ -122,7 +104,15 @@
 						</a>
 <a href="book" class="btn btn-primary">Book</a>
 </div>
+	<div class="col-sm-4 col-sm-push-4">
+<div class="pre-scrollable">
+<input type="text" class="form-control" id="boxInputReview">
 
+</div>
+
+<a class="btn btn-primary">Leave Comment</a>
+</div>
+</div>
 </div>
 </body>
 </html>

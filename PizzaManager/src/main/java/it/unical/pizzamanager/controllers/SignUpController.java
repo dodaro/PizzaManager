@@ -17,7 +17,6 @@ import it.unical.pizzamanager.persistence.dao.AccountDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Account;
 import it.unical.pizzamanager.persistence.dto.User;
-import it.unical.pizzamanager.utils.Config;
 
 @Controller
 public class SignUpController {
@@ -30,7 +29,6 @@ public class SignUpController {
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
 	public String get(Model model) {
 		model.addAttribute("signUpForm", new SignUpForm());
-		model.addAttribute("apiKey", Config.API_KEY);
 
 		return "signup";
 	}
