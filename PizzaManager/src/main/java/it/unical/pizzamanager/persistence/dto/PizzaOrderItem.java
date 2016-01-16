@@ -101,7 +101,7 @@ public class PizzaOrderItem extends OrderItem {
 		return pizzeria_pizza.getPizzeria().getName();
 	}
 	
-	public Double getCostPizzaPlusIngredients(){
+	/*public Double getCostPizzaPlusIngredients(){
 		if(modified){
 			Double ingredientAddedCost=0.0;
 			Double ingredientRemovedCost=0.0;
@@ -120,6 +120,6 @@ public class PizzaOrderItem extends OrderItem {
 		}
 		return this.getCost();
 	}
-	
+	*/
 	
 }

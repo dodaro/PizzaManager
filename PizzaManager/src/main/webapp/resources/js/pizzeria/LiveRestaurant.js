@@ -214,8 +214,19 @@ var LiveRestaurant = function(){
 								else
 									string+="<td>no</td>";
 									
-								var ingredientsTotal;
-								ingredientsTotal=_.difference(bookingConfermed.pizzas[int2].ingredientsBase,bookingConfermed.pizzas[int2].ingredientsRemoved);
+								var ingredientsTotal=new Array();
+								for (var int3 = 0; int3 < bookingConfermed.pizzas[int2].ingredientsBase.length; int3++) {
+									var idBase=bookingConfermed.pizzas[int2].ingredientsBase[int3].id;
+									var founded=false;
+									for (var int4 = 0; int4 < bookingConfermed.pizzas[int2].ingredientsRemoved.length; int4++) {
+										if(idBase==bookingConfermed.pizzas[int2].ingredientsRemoved[int4].id){
+											founded=true;
+										}
+									}
+									if(founded==false)
+										ingredientsTotal.push(bookingConfermed.pizzas[int2].ingredientsBase[int3]);
+								}
+								//ingredientsTotal=_.difference(bookingConfermed.pizzas[int2].ingredientsBase,bookingConfermed.pizzas[int2].ingredientsRemoved);
 								ingredientsTotal=_.union(ingredientsTotal,bookingConfermed.pizzas[int2].ingredientsAdded);
 								
 								var listIngredients="";

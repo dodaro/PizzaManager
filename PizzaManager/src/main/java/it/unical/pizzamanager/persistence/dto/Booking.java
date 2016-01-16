@@ -217,7 +217,7 @@ public abstract class Booking implements Serializable {
 		this.bill = bill;
 	}
 	
-	public Double calculateBill(){
+	/*public Double calculateBill(){
 		Double bill=0.0;
 		for (OrderItem orderItem : orderItems) {
 			if(orderItem instanceof BeverageOrderItem){				
@@ -229,7 +229,7 @@ public abstract class Booking implements Serializable {
 			}
 		}
 		return bill;
-	}
+	}*/
 	
 	
 	

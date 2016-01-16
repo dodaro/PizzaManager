@@ -94,9 +94,10 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof PizzaOrderItem){
 						PizzaOrderItem pizzabooking=(PizzaOrderItem)booking.getOrderItems().get(i);
-						bill+=pizzabooking.getCostPizzaPlusIngredients()*pizzabooking.getNumber();
+						//TODO FIX cost Pizza
+						bill+=5*pizzabooking.getNumber();
 						jgen.writeStartObject();
-							jgen.writeStringField("priceEach",pizzabooking.getCostPizzaPlusIngredients().toString());
+							jgen.writeStringField("priceEach","5");
 							jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getName());
 							jgen.writeStringField("gluten",pizzabooking.getGlutenFree());
 							jgen.writeStringField("size",pizzabooking.getSize());
@@ -114,8 +115,8 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 							for (int j = 0; j < pizzabooking.getPizzaOrderIngredients().size(); j++) {
 								if(pizzabooking.getPizzaOrderIngredients().get(j).getAdditive().equals("addition")){
 									jgen.writeStartObject();
-										jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getName());
-										jgen.writeStringField("id",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getId().toString());
+										jgen.writeStringField("name",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getName());
+										jgen.writeStringField("id",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getId().toString());
 									jgen.writeEndObject();								
 								}
 							}
@@ -124,8 +125,8 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 							for (int j = 0; j < pizzabooking.getPizzaOrderIngredients().size(); j++) {
 								if(pizzabooking.getPizzaOrderIngredients().get(j).getAdditive().equals("removal")){
 									jgen.writeStartObject();
-										jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getName());
-										jgen.writeStringField("id",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getId().toString());
+										jgen.writeStringField("name",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getName());
+										jgen.writeStringField("id",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getId().toString());
 									jgen.writeEndObject();
 								}
 							}

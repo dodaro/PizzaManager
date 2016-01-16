@@ -212,8 +212,20 @@ var Booking = function(){
 								else
 									string+="<td>no</td>";
 									
-								var ingredientsTotal;
-								ingredientsTotal=_.difference(booking.pizzas[int2].ingredientsBase,booking.pizzas[int2].ingredientsRemoved);
+								var ingredientsTotal=new Array();
+								//FARE LA DIFFERENZA A MANO
+								for (var int3 = 0; int3 < booking.pizzas[int2].ingredientsBase.length; int3++) {
+									var idBase=booking.pizzas[int2].ingredientsBase[int3].id;
+									var founded=false;
+									for (var int4 = 0; int4 < booking.pizzas[int2].ingredientsRemoved.length; int4++) {
+										if(idBase==booking.pizzas[int2].ingredientsRemoved[int4].id){
+											founded=true;
+										}
+									}
+									if(founded==false)
+										ingredientsTotal.push(booking.pizzas[int2].ingredientsBase[int3]);
+								}
+								//ingredientsTotal=_.difference(booking.pizzas[int2].ingredientsBase,booking.pizzas[int2].ingredientsRemoved);
 								ingredientsTotal=_.union(ingredientsTotal,booking.pizzas[int2].ingredientsAdded);
 								
 								var listIngredients="";

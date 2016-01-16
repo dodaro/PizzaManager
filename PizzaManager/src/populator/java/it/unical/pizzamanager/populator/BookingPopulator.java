@@ -47,14 +47,14 @@ public class BookingPopulator extends Populator {
 		pizzaOrder1.setModified(false);
 		pizzaOrder1.setNumber(3);
 		pizzaOrder1.setGlutenFree(PizzaOrderItem.NO);
-		pizzaOrder1.setSize(PizzaOrderItem.SMALL);
+		pizzaOrder1.setSize(PizzaOrderItem.MEDIUM);
 		orderDAO.create(pizzaOrder1);
 
 		PizzaOrderItem pizzaOrder2 = new PizzaOrderItem();
 		pizzaOrder2.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(1));
 		pizzaOrder2.setModified(true);
 		pizzaOrder2.setNumber(2);
-		pizzaOrder2.setGlutenFree(PizzaOrderItem.YES);
+		pizzaOrder2.setGlutenFree(PizzaOrderItem.NO);
 		pizzaOrder2.setSize(PizzaOrderItem.LARGE);
 		orderDAO.create(pizzaOrder2);
 		
@@ -63,7 +63,7 @@ public class BookingPopulator extends Populator {
 		pizzaOrder3.setModified(false);
 		pizzaOrder3.setNumber(3);
 		pizzaOrder3.setGlutenFree(PizzaOrderItem.NO);
-		pizzaOrder3.setSize(PizzaOrderItem.SMALL);
+		pizzaOrder3.setSize(PizzaOrderItem.MEDIUM);
 		orderDAO.create(pizzaOrder3);
 
 		PizzaOrderItem pizzaOrder4 = new PizzaOrderItem();

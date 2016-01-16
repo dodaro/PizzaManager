@@ -21,9 +21,11 @@ import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
+import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
+import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
 
@@ -41,7 +43,8 @@ public class BookingUtils {
 		
 		Integer idBooking=model.getId();
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-		bookingDAO.delete(bookingDAO.getBooking(idBooking));
+		if(idBooking!=null)
+			bookingDAO.delete(bookingDAO.getBooking(idBooking));
 		//il metodo già mi crea sul database l'oggetto
 		Booking booking=createAndInitInformationBooking(model,pizzeria,model.getType(),context);
 		//creo quanto server
@@ -162,77 +165,99 @@ public class BookingUtils {
 		OrderItemDAO orderDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		
 		for (int i = 0; i < model.getPizzas().size(); i++) {
-			PizzaModel pizzaModel=model.getPizzas().get(i);
+			PizzaModel pizzaModel=model.getPizzas().get(i);			
 			for (int j = 0; j < pizzeria.getPizzasPriceList().size(); j++) {
-				RelationPizzeriaPizza relation=pizzeria.getPizzasPriceList().get(j);
-				if(relation.getPizza().getName().equals(pizzaModel.getName())
-				   /*&& relation.getGlutenFree().equals(pizzaModel.getGluten())*/
-				   /*&& relation.getPizzaSize().toString().equalsIgnoreCase()*/){
+				
+				//PEZZA
+				//gluten: "no" e "yes"
+				//size: "s","l","m"
+				String size=null;
+				Boolean glutenFree=null;
+				switch (pizzaModel.getGluten()) {
+				case "no":
+					glutenFree=false;
+					break;
+				case "yes":
+					glutenFree=true;
+					break;
+				default:
+					break;
+				}
+				switch (pizzaModel.getSize()) {
+				case "s":
+					size=PizzaSize.SMALL.toString();
+					break;
+				case "m":
+					size=PizzaSize.NORMAL.toString();			
+					break;
+				case "l":
+					size=PizzaSize.MAXI.toString();
+					break;
+
+				default:
 					break;
 				}
 				
-				PizzaOrderItem pizzaOrder = new PizzaOrderItem();
-				pizzaOrder.setPizzeria_pizza(relation);
-				
-				if(pizzaModel.getIngredientsAdded().size()>0 || pizzaModel.getIngredientsRemoved().size()>0)
-					pizzaOrder.setModified(true);
-				else
-					pizzaOrder.setModified(false);
-				pizzaOrder.setNumber(pizzaModel.getNumber());
-				//pizzaOrder.setGlutenFree(relation.getGlutenFree());
-				//pizzaOrder.setSize(relation.getPizzaSize());
-				orderDAO.create(pizzaOrder);
-				
-				
-				for (int k = 0; k < pizzaModel.getIngredientsAdded().size(); k++) {
+				RelationPizzeriaPizza relation=pizzeria.getPizzasPriceList().get(j);
+				System.out.println(relation.getPizza().getName()+" - "+pizzaModel.getName());
+				System.out.println(relation.getGlutenFree() +" - "+glutenFree);
+				System.out.println(relation.getPizzaSize().toString()+" - "+size);
+				System.out.println("*********************************************************");
+				if(relation.getPizza().getName().equals(pizzaModel.getName())
+				   && relation.getGlutenFree()==glutenFree
+				   && relation.getPizzaSize().toString().equalsIgnoreCase(size)){
 					
-				}
-				for (int k = 0; k < pizzaModel.getIngredientsRemoved().size(); k++) {
+					System.out.println("HO trovato la pizza");
+					PizzaOrderItem pizzaOrder = new PizzaOrderItem();
+					pizzaOrder.setPizzeria_pizza(relation);
 					
+					if(pizzaModel.getIngredientsAdded().size()>0 || pizzaModel.getIngredientsRemoved().size()>0){
+						pizzaOrder.setModified(true);
+						pizzaOrder.setPizzaOrderIngredients(new ArrayList<>());
+					}
+					else
+						pizzaOrder.setModified(false);
+						
+					pizzaOrder.setNumber(pizzaModel.getNumber());
+					pizzaOrder.setGlutenFree(pizzaModel.getGluten());
+					pizzaOrder.setSize(pizzaModel.getSize());
+					orderDAO.create(pizzaOrder);
+					
+					
+					for (int k = 0; k < pizzaModel.getIngredientsAdded().size(); k++) {
+						Integer idIngredient=pizzaModel.getIngredientsAdded().get(k).getId();
+						for (int l = 0; l < pizzeria.getIngredientsPriceList().size(); l++) {
+							if(pizzeria.getIngredientsPriceList().get(l).getIngredient().getId()==idIngredient){
+								pizzaOrder.getPizzaOrderIngredients().add(new RelationPizzaOrderItemIngredient(
+										RelationPizzaOrderItemIngredient.ADDITION,
+										pizzeria.getIngredientsPriceList().get(l).getIngredient(),pizzaOrder));								
+							}
+						}
+					}
+					for (int k = 0; k < pizzaModel.getIngredientsRemoved().size(); k++) {
+						Integer idIngredient=pizzaModel.getIngredientsRemoved().get(k).getId();
+						for (int l = 0; l < pizzeria.getIngredientsPriceList().size(); l++) {
+							if(pizzeria.getIngredientsPriceList().get(l).getIngredient().getId()==idIngredient){
+								pizzaOrder.getPizzaOrderIngredients().add(new RelationPizzaOrderItemIngredient(
+										RelationPizzaOrderItemIngredient.REMOVAL,
+										pizzeria.getIngredientsPriceList().get(l).getIngredient(),pizzaOrder));								
+							}
+						}
+					}
+					orderDAO.update(pizzaOrder);
+					booking.getOrderItems().add(pizzaOrder);
+					bookingDAO.update(booking);
+					pizzaOrder.setBooking(booking);
+					orderDAO.update(pizzaOrder);
+					break;
 				}
-				booking.getOrderItems().add(pizzaOrder);
-				bookingDAO.update(booking);
-				pizzaOrder.setBooking(booking);
-				orderDAO.update(pizzaOrder);
+				
 			}
 		}
-		
-		/*
-		PizzaOrderItem pizzaOrder1 = new PizzaOrderItem();
-		pizzaOrder1.setPizzeria_pizza(pizzeriaDAO.getAll().get(0).getPizzasPriceList().get(0));
-		pizzaOrder1.setModified(false);
-		pizzaOrder1.setNumber(3);
-		pizzaOrder1.setGlutenFree(PizzaOrderItem.NO);
-		pizzaOrder1.setSize(PizzaOrderItem.SMALL);
-		order.create(pizzaOrder1);
-		
-		List<RelationPizzaOrderItemIngredient> ingredientsAdded = new ArrayList<>();
-		ingredientsAdded.add(new RelationPizzaOrderItemIngredient(
-				RelationPizzaOrderItemIngredient.ADDITION,
-				pizzeriaDAO.getAll().get(0).getIngredientsPriceList().get(7).getIngredient(),
-				pizzaOrder2));
-		pizzaOrder2.setPizzaOrderIngredients(ingredientsAdded);
-		
-		booking.setOrderItems(orderItemsTable);
-		bookingDAO.update(booking);
-		
-		pizzaOrder1.setBooking(takeAway);
-		order.update(pizzaOrder1);
-		*/
 	}
 	
 	private static void setBeverageOrderBooking(Booking booking, BookingModel model,Pizzeria pizzeria, WebApplicationContext context){
-		/*
-		 BeverageOrderItem beverageOrder4 = new BeverageOrderItem();
-		beverageOrder4.setPizzeria_beverage(pizzeriaDAO.getAll().get(0).getBeveragesPriceList().get(3));
-		beverageOrder4.setNumber(2);
-		orderDAO.create(beverageOrder4);
 		
-		booking.getOrderItems().add(pizzaOrder);
-				bookingDAO.update(booking);
-		
-		orderDAO.update(beverageOrder1);
-		 */
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		OrderItemDAO orderDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		
@@ -241,7 +266,7 @@ public class BookingUtils {
 				if(pizzeria.getBeveragesPriceList().get(j).getBeverage().getId()==model.getBeverages().get(i).getId()){
 					BeverageOrderItem beverageOrder = new BeverageOrderItem();
 					beverageOrder.setPizzeria_beverage(pizzeria.getBeveragesPriceList().get(j));
-					beverageOrder.setNumber(2);
+					beverageOrder.setNumber(Integer.parseInt(model.getBeverages().get(i).getNumber()));
 					orderDAO.create(beverageOrder);
 					
 					booking.getOrderItems().add(beverageOrder);
@@ -249,8 +274,7 @@ public class BookingUtils {
 			
 					beverageOrder.setBooking(booking);
 					orderDAO.update(beverageOrder);
-				}
-					
+				}	
 			}
 		}
 	}
