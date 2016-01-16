@@ -15,12 +15,13 @@
 			alert(id);
 			$.ajax({
 				type : "POST",
-				url : "/cart",
+				url : "/cart/removeItem",
 				data : {
 					id : id
 				},
-				success : function() {
-					data
+				success : function(response) {
+					console.log(response);
+					window.location="cart";
 				}
 			});
 		});
@@ -47,10 +48,9 @@
 					itemToBook : itemToBook,
 				},
 				success : function(response) {
-					if (response.success) {
-						console.log(response)
-						window.location = 'userBooking'
-					}
+					console.log(response);
+					window.location = 'userBooking'
+
 				}
 			})
 		});
@@ -69,38 +69,40 @@
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
 			<div class="col-xs-9">
 				<div class="wrapper">
-					<div id="content" class="cartContainer">
-						<c:forEach var="i" varStatus="stat" items="${cart.items}">
-							<div class="row itemDisplay">
-								<div class="col-xs-2">
-									<img class="imgCart" src="" alt="" />
-								</div>
-								<div class="col-xs-2">
-									<b>${i.itemName}</b>
-								</div>
-								<div class="col-xs-2">
-									<b>${i.pizzeria}</b>
-								</div>
-								<div class="col-xs-2">
-									<input class="form-control number-control" data-id="${i.id}"
-										type="number" value="${i.number}">
-								</div>
-								<div class="col-xs-2">
-									<div class="pull-right">
-										<b>${i.cost }</b>
+					<c:if test="${not empty cart.items }">
+						<div id="content" class="cartContainer">
+							<c:forEach var="i" varStatus="stat" items="${cart.items}">
+								<div class="row itemDisplay">
+									<div class="col-xs-2">
+										<img class="imgCart" src="" alt="" />
+									</div>
+									<div class="col-xs-2">
+										<b>${i.itemName}</b>
+									</div>
+									<div class="col-xs-2">
+										<b>${i.pizzeria}</b>
+									</div>
+									<div class="col-xs-2">
+										<input class="form-control number-control" data-id="${i.id}"
+											type="number" value="${i.number}">
+									</div>
+									<div class="col-xs-2">
+										<div class="pull-right">
+											<b>${i.cost }</b>
+										</div>
+									</div>
+									<div class="col-xs-2">
+										<input class="btn btn-default removeButton" type="button"
+											value="remove" data-id="${i.id}">
 									</div>
 								</div>
-								<div class="col-xs-2">
-									<input class="btn btn-default removeButton" type="button"
-										value="remove" data-id="${i.id}">
-								</div>
+							</c:forEach>
+							<div class="row">
+								<input id="bookCart" class="btn btn-default pull-right" type="submit"
+									value="Confirm" />
 							</div>
-						</c:forEach>
-						<div class="row">
-							<input id="bookCart" class="pull-right" type="submit"
-								value="Confirm" />
 						</div>
-					</div>
+					</c:if>
 				</div>
 			</div>
 		</div>

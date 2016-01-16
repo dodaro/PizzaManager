@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.springframework.context.ApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.AddressDAO;
 import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.Address;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Cart;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
@@ -41,26 +43,24 @@ public class CartPopulator extends Populator {
 
 		// cascade type save update insert orderitems in the list
 		cartDAO.create(cart);
-		ArrayList<OrderItem> orderItems = createOrderItems(cart);
+		createOrderItems(cart);
 		cart.setUser(user);
-		cart.setOrderItems(orderItems);
 		cartDAO.update(cart);
 
 	}
 
-	private ArrayList<OrderItem> createOrderItems(Cart cart) {
+	private void createOrderItems(Cart cart) {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		List<Pizzeria> pizzerias = pizzeriaDAO.getAll();
-		ArrayList<OrderItem> orderItems = new ArrayList<OrderItem>();
+
 		// to change if init function will be removed
 
-		createOrderItemList(orderItems, pizzerias, pizzeriaDAO, cart, 0);
-		createOrderItemList(orderItems, pizzerias, pizzeriaDAO, cart, 1);
+		createOrderItemList( pizzerias, pizzeriaDAO, cart, 0);
+		createOrderItemList( pizzerias, pizzeriaDAO, cart, 1);
 
-		return orderItems;
 	}
 
-	private void createOrderItemList(ArrayList<OrderItem> orderItems, List<Pizzeria> pizzerias, PizzeriaDAO pizzeriaDAO,
+	private void createOrderItemList( List<Pizzeria> pizzerias, PizzeriaDAO pizzeriaDAO,
 			Cart cart, int i) {
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		List<RelationPizzeriaPizza> pizzeriaMenuPriceList = pizzerias.get(i).getPizzasPriceList();
@@ -79,18 +79,23 @@ public class CartPopulator extends Populator {
 			beverageItem.setCart(cart);
 			orderItemDAO.create(beverageItem);
 			orderItemDAO.create(pizzaItem);
-			orderItems.add(beverageItem);
-			orderItems.add(pizzaItem);
 
 		}
 	}
 
 	private User addUser() {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		AddressDAO addressDAO= (AddressDAO) context.getBean("addressDAO");
 		User user = new User("mar@mail.com", "password33");
 		user.setName("Marco");
 		userDAO.create(user);
-
+		Address address=new Address();
+		address.setStreet("Via Giovanni Nova");
+		address.setNumber(41);
+		address.setCity("Cosenza");
+		addressDAO.create(address);	
+		user.setAddress(address);
+		userDAO.update(user);
 		return user;
 	}
 

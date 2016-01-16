@@ -5,15 +5,28 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	$(".addToCart").on('click',function(){
-		alert($(this).data("id"));
+	$(document).ready(function() {
+		$(".addToCart").on('click', function() {
+			var id=parseInt($(this).data("id"), 10);
+			alert($(this).data("id"));
+			$.ajax({
+				type : "POST",
+				url : "/cart/addCart",
+				data : {
+					id : id
+
+				},
+				success : function(response) {
+					window.location = "menu"
+				}
+			});
+		});
+
 	});
-	
-});
 </script>
 
-<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 
 <title>Menù View</title>
@@ -21,13 +34,10 @@ $(document).ready(function(){
 <meta name="viewport" content="width=device-width" />
 
 <style type="text/css">
-
-
-#boxReview{
+#boxReview {
 	height: 40%;
 	width: 45%;
 }
-
 </style>
 </head>
 <body>
@@ -36,27 +46,30 @@ $(document).ready(function(){
 	<div class="container">
 
 		<div class="row">
-<div id="wrapper" class="col-xs-10">
+			<div id="wrapper" class="col-xs-10">
 				<div class="card">
-					<div id="content"><h2>Menù Pizzeria ${pizzeriaResult.getName()}</h2></div>
+					<div id="content">
+						<h2>Menù Pizzeria ${pizzeriaResult.getName()}</h2>
+					</div>
 				</div>
 			</div>
-				<div class="col-xs-3 col-sm-3 col-sm-push-3">
-<h2>Menù</h2>
-<div class="pre-scrollable">
-<div id="boxReview">
-<c:forEach var="r" items="${menuResult}">
-					<div class="row">
-						<a>${r.pizza.name}_____________${r.price}</a>
-						<a data-id="${r.id}" class="addToCart btn btn-primary">Add to Cart</a>
+			<div class="col-xs-3 col-sm-3 col-sm-push-3">
+				<h2>Menù</h2>
+				<div class="pre-scrollable">
+					<div id="boxReview">
+						<c:forEach var="r" items="${menuResult}">
+							<div class="row">
+								<a>${r.pizza.name}_____________${r.price}</a> <a
+									data-id="${r.id}" class="addToCart btn btn-primary">Add to
+									Cart</a>
+							</div>
+						</c:forEach>
 					</div>
-					</c:forEach>
-					</div>
-					</div>
-   
-</div>	
+				</div>
 
-</div>
+			</div>
+
+		</div>
 	</div>
 </body>
 </html>

@@ -35,9 +35,8 @@
 
 				},
 				success : function(response) {
-					if (response.success) {
-						window.location = 'userBooking'
-					}
+					console.log(response)
+					window.location = 'userBooking'
 				}
 			});
 
@@ -57,10 +56,10 @@
 
 				},
 				success : function(response) {
-					if(response.success){
-						console.log(response)
-						window.location = 'userBooking'
-					}
+
+					console.log(response)
+					window.location = 'userBooking'
+
 				}
 			});
 		});
@@ -81,10 +80,8 @@
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
 			<div class="col-xs-9">
-				<div class="bubble">
-					<div id="content">
-						<jsp:include page="includes/cartBook.jsp"></jsp:include></div>
-				</div>
+				<div id="content">
+					<jsp:include page="includes/cartBook.jsp"></jsp:include></div>
 			</div>
 		</div>
 	</div>

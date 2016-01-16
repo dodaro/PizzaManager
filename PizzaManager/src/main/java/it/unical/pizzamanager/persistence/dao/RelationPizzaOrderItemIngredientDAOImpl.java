@@ -39,6 +39,7 @@ public class RelationPizzaOrderItemIngredientDAOImpl implements RelationPizzaOrd
 		List<RelationPizzaOrderItemIngredient> pizzaOrderItemIngredients = session
 				.createSQLQuery("select * from pizzaOrderItem_ingredient")
 				.addEntity(RelationPizzaOrderItemIngredient.class).list();
+		session.close();
 		return pizzaOrderItemIngredients;
 	}
 

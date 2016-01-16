@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,15 +16,16 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.model.CartBooking;
 import it.unical.pizzamanager.model.CartDisplay;
-import it.unical.pizzamanager.model.ItemToBook;
 import it.unical.pizzamanager.model.OrderItemDisplay;
 import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
+import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Cart;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
@@ -64,8 +64,9 @@ public class CartController {
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		OrderItem item = orderItemDAO.getItem(id);
 		System.out.println("Cancello " + item.getId());
+
 		orderItemDAO.delete(item);
-		System.out.println("Cancello ");
+
 		Cart cart = cartDAO.getUserCart(user);
 		System.out.println("cart" + cart.getOrderItems().size());
 		CartDisplay cartDisplay = createCartToDisplay(cart.getOrderItems());
@@ -97,6 +98,34 @@ public class CartController {
 		return "{\"success\" : true}";
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/cart/addItem", method = RequestMethod.POST)
+	public String addItem(@RequestParam("itemToBook") int id, Model model, HttpSession session) {
+		if (!SessionUtils.isUser(session)) {
+			return "index";
+		}
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
+		Cart cart = cartDAO.getUserCart(user);
+		
+		RelationPizzeriaPizzaDAO menuDAO=(RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO");
+		RelationPizzeriaPizza pizza=menuDAO.get(id);
+		
+		PizzaOrderItem item=new PizzaOrderItem();
+		item.setCart(cart);
+		item.setCost(pizza.getPrice());
+		item.setPizzeria_pizza(pizza);
+		item.setNumber(1);
+		
+		OrderItemDAO orderItemDAO=(OrderItemDAO) context.getBean("orderItemDAO");
+		orderItemDAO.create(item);
+		
+		
+		model.addAttribute("user",user);
+		System.out.println("redirect");
+		return "{\"success\" : true}";
+	}
 	private ArrayList<CartBooking> createBookingsToDisplay(Cart cart) {
 		ArrayList<CartBooking> bookings = new ArrayList<>();
 		int numb = 0;

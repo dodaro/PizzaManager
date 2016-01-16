@@ -35,8 +35,8 @@ public class SignUpController {
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signUp(@ModelAttribute("signUpForm") SignUpForm form) {
-		logger.info("Adding a new user to the database with email: " + form.getEmail()
-				+ ", password: " + form.getPassword());
+		logger.info("Adding a new user to the database with email: " + form.getEmail() + ", password: "
+				+ form.getPassword());
 
 		User user = new User(form.getEmail(), form.getPassword());
 		UserDAO dao = (UserDAO) context.getBean("userDAO");
@@ -45,7 +45,7 @@ public class SignUpController {
 
 		return "redirect:/";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "/signup/emailTaken", method = RequestMethod.GET)
 	public String isEmailTaken(@RequestParam String email) {
@@ -64,4 +64,5 @@ public class SignUpController {
 		 */
 		return "{\"email\" : \"" + email + "\", \"taken\" : " + taken + "}";
 	}
+
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
@@ -48,5 +49,9 @@ public class MenuController {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		model.addAttribute("user", user);
+	}
+	
+	public String addToCart(@RequestParam String string){
+		return "";
 	}
 }

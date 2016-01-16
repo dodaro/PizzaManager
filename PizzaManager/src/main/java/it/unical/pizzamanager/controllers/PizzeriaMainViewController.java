@@ -33,6 +33,7 @@ public class PizzeriaMainViewController {
 
 	@RequestMapping(value = "/pizzeriamainview", method = RequestMethod.GET)
 	public String pizzeriamainview(@RequestParam Integer id, HttpSession session,Model model) {
+
 		
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(id);

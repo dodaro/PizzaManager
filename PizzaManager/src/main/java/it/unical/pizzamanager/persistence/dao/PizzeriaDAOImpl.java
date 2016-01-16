@@ -91,11 +91,12 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 
 	private void init(Pizzeria pizzeria) {
 		pizzeria.getBeveragesPriceList().size();
+		pizzeria.getIngredientsPriceList().size();
+		pizzeria.getPizzasPriceList().size();
 		pizzeria.getBookings().size();
 		pizzeria.getFeedbacks().size();
 		pizzeria.getImages().size();
-		pizzeria.getIngredientsPriceList().size();
-		pizzeria.getPizzasPriceList().size();
+
 		pizzeria.getTables().size();
 	}
 
