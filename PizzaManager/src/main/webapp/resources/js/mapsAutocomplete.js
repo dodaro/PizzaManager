@@ -1,4 +1,4 @@
-maps = function() {
+mapsAutocomplete = function() {
 	var autocomplete;
 
 	return {
@@ -12,7 +12,7 @@ maps = function() {
 		setOnPlaceChangedListener : function(onPlaceChanged) {
 			autocomplete.addListener('place_changed', function() {
 				var place = autocomplete.getPlace();
-				
+
 				var latitude = place.geometry.location.lat();
 				var longitude = place.geometry.location.lng();
 

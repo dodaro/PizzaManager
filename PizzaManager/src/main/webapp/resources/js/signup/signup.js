@@ -12,8 +12,8 @@ $(function() {
 		event.preventDefault();
 	});
 
-	maps.initMaps('maps-autocomplete-input');
-	maps.setOnPlaceChangedListener(function(latitude, longitude) {
+	mapsAutocomplete.initMaps('maps-autocomplete-input');
+	mapsAutocomplete.setOnPlaceChangedListener(function(latitude, longitude) {
 		console.log(latitude + " " + longitude);
 	});
 });

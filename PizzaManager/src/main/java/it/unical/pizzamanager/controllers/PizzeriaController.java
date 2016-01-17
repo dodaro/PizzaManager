@@ -1,16 +1,20 @@
 package it.unical.pizzamanager.controllers;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
+import it.unical.pizzamanager.forms.NearbyPizzeriasForm;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 
 @Controller
@@ -21,15 +25,46 @@ public class PizzeriaController {
 	@Autowired
 	private WebApplicationContext context;
 
-	@RequestMapping(value = "/pizzeria", method = RequestMethod.GET)
-	public String home(Model model, @RequestParam Integer id) {
+	@ResponseBody
+	@RequestMapping(value = "/pizzeria/nearby", method = RequestMethod.POST)
+	public String getNearbyPizzerias(@ModelAttribute NearbyPizzeriasForm form) {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
-		Pizzeria pizzeria = pizzeriaDAO.get(id);
-		logger.info("Pizzeria page requested for pizzeria " + pizzeria.getName() + ".");
+		Location center = new Location(form.getLatitude(), form.getLongitude());
 
-		model.addAttribute("pizzeria", pizzeria);
-
-		return "pizzeria";
+		List<Pizzeria> pizzeriasNearby = pizzeriaDAO.getPizzeriasWithin(center, form.getRadius());
+		return buildNearbyPizzeriasJson(pizzeriasNearby, form.getRadius());
 	}
 
+	public String buildNearbyPizzeriasJson(List<Pizzeria> pizzerias, Double radius) {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("{");
+		builder.append("\"success\" : true");
+		builder.append(", ");
+		builder.append("\"pizzerias\" : ");
+		builder.append("[");
+
+		for (int i = 0; i < pizzerias.size(); i++) {
+			builder.append("{");
+			builder.append("\"id\" : " + pizzerias.get(i).getId());
+			builder.append(", ");
+			builder.append("\"name\" : \"" + pizzerias.get(i).getName() + "\"");
+			builder.append(", ");
+			builder.append("\"latitude\" : " + pizzerias.get(i).getLocation().getLatitude());
+			builder.append(", ");
+			builder.append("\"longitude\" : " + pizzerias.get(i).getLocation().getLongitude());
+			builder.append("}");
+
+			if (i != pizzerias.size() - 1) {
+				builder.append(", ");
+			}
+		}
+
+		builder.append("]");
+		builder.append(", ");
+		builder.append("\"radius\" : " + radius);
+		builder.append("}");
+
+		return builder.toString();
+	}
 }

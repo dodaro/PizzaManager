@@ -2,6 +2,13 @@
 
 @import url("navbar.css");
 
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+
 html {
 	/*
 	 * Scrollbar is always visible to prevent page from shifting to the left when the scrollbar is
@@ -14,6 +21,10 @@ body {
 	/* This rule moves the content of the body down to make place for the navbar. */
 	padding-top: 51px;
 	background-color: #D4E3E9;
+}
+
+#map {
+	height: 100%;
 }
 
 /* This rule removes the padding from Bootstrap columns. */
