@@ -16,35 +16,35 @@ public class BoundingRectangle {
 	}
 
 	public double getMinLatitude() {
-		return minLatitude;
+		return Math.toDegrees(minLatitude);
 	}
 
 	public double getMaxLatitude() {
-		return maxLatitude;
+		return Math.toDegrees(maxLatitude);
 	}
 
 	public double getMinLongitude() {
-		return minLongitude;
+		return Math.toDegrees(minLongitude);
 	}
 
 	public double getMaxLongitude() {
-		return maxLongitude;
+		return Math.toDegrees(maxLongitude);
 	}
 
 	public double getMinLatitudeInRad() {
-		return Math.toRadians(minLatitude);
+		return minLatitude;
 	}
 
 	public double getMaxLatitudeInRad() {
-		return Math.toRadians(maxLatitude);
+		return maxLatitude;
 	}
 
 	public double getMinLongitudeInRad() {
-		return Math.toRadians(minLongitude);
+		return minLongitude;
 	}
 
 	public double getMaxLongitudeInRad() {
-		return Math.toRadians(maxLongitude);
+		return maxLongitude;
 	}
 
 	@Override

@@ -5,6 +5,12 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+<script type="text/javascript" src="resources/js/maps.js"></script>
+
+<script type="text/javascript" src="resources/js/pizzeria/pizzeriaMainView.js"></script>
+
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 
@@ -13,24 +19,14 @@
 <meta name="viewport" content="width=device-width" />
 
 <style type="text/css">
-
-
-#map {
-  	margin-left: 50px;
-	height: 50%;
-	width: 225%;
-}
-
 #boxInfo{
 	margin-top:30px;
 	margin-right: 40px;
 }
-
 #boxReview{
 	height: 40%;
 	width: 45%;
 }
-
 #boxButton{
 	margin-top:410px;
 }
@@ -49,25 +45,7 @@
 				</div>
 			</div>
 			<div class="col-sm-3 col-sm-push-3">
-			<div id="map">
-
-	<script type="text/javascript">
-		var map;
-		function initMap() {
-			map = new google.maps.Map(document.getElementById('map'), {
-				center : {
-					lat : -34.397,
-					lng : 150.644
-				},
-				
-				zoom : 8
-			});
-		}
-	</script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?callback=initMap">
-		
-	</script>
-	</div>
+			<div id="map"></div>
 	</div>
   				<div class="col-xs-3 col-sm-3 col-sm-pull-3">
 <h2>Latest Reviews</h2>
@@ -114,6 +92,11 @@
 </div>
 </div>
 </div>
+	<script>
+		pizzeriaMainView.init({
+			latitude : <c:out value="${pizzeriaResult.location.latitude}" />,
+			longitude : <c:out value="${pizzeriaResult.location.longitude}" />
+		});
+	</script>
 </body>
 </html>
-
