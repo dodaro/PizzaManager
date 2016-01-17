@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Pizza;
@@ -30,15 +31,11 @@ public class MenuController {
 	private WebApplicationContext context;
 	
 	@RequestMapping(value = "/menu", method = RequestMethod.GET)
-	public String menu(HttpSession session,Model model) {
-		Pizzeria pizzeria = (Pizzeria) session.getAttribute("pizzeriaResult");
+	public String menu(@RequestParam Integer id, HttpSession session,Model model) {
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(id);
 		RelationPizzeriaPizzaDAO relationPizzeriaPizzaDAO = (RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO"); 
 		List<RelationPizzeriaPizza> relationPizzeriaPizza = relationPizzeriaPizzaDAO.get(pizzeria);
-	/*	List<String> pizzeResult = new ArrayList<>();
-		for(int i=0; i<relationPizzeriaPizza.size(); i++)
-		{
-			pizzeResult.add(relationPizzeriaPizza.get(i).getPizza().getName()+"_____________"+relationPizzeriaPizza.get(i).getPrice());
-		}*/
 		model.addAttribute("menuResult", relationPizzeriaPizza);
 		model.addAttribute("pizzeriaResult", pizzeria);
 		setUserAttribute(session, model);

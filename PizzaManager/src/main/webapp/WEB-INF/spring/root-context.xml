@@ -36,16 +36,7 @@
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
-	<bean id="relationPizzaOrderItemIngredientDAO"
-		class="it.unical.pizzamanager.persistence.dao.RelationPizzaOrderItemIngredientDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-
 	<bean id="addressDAO" class="it.unical.pizzamanager.persistence.dao.AddressDAOImpl">
-		<property name="databaseHandler" ref="databaseHandler" />
-	</bean>
-
-	<bean id="feedbackDAO" class="it.unical.pizzamanager.persistence.dao.FeedbackDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
@@ -57,6 +48,10 @@
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
 
+	<bean id="feedbackDAO" class="it.unical.pizzamanager.persistence.dao.FeedbackDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+	
 	<bean id="ingredientDAO"
 		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
@@ -87,7 +82,12 @@
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-
+	
+	<bean id="relationPizzaOrderItemIngredientDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationPizzaOrderItemIngredientDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
+	
 	<bean id="relationPizzeriaPizzaDAO"
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
