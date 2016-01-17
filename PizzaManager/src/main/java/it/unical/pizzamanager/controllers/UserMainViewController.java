@@ -25,16 +25,15 @@ import it.unical.pizzamanager.utils.SessionUtils;
 public class UserMainViewController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
-	private static Integer userid;
 	
 	@Autowired
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/usermainview", method = RequestMethod.GET)
-	public String usermainview(HttpSession session,Model model) {
+	public String usermainview(@RequestParam Integer id, HttpSession session,Model model) {
 		
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		User user = userDAO.get(userid);
+		User user = userDAO.get(id);
 		List <Feedback> feedbacks = user.getFeedbacks();
 		setUserAttribute(session, model);
 		model.addAttribute("feedbacksuser", feedbacks);
@@ -42,13 +41,7 @@ public class UserMainViewController {
 		return "usermainview";
 	}
 	
-	@RequestMapping(value = "/usermainview", method = RequestMethod.POST)
-	public String usermainview(@RequestParam Integer id, HttpSession session,Model model) {
-		
-		userid=id;
-		setUserAttribute(session, model);
-		return "usermainview";
-	}
+
 	private void setUserAttribute(HttpSession session, Model model) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));

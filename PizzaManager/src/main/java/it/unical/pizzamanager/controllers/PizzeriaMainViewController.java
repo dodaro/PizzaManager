@@ -38,7 +38,6 @@ public class PizzeriaMainViewController {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(id);
 		setUserAttribute(session, model);
-		session.setAttribute("pizzeriaResult", pizzeria);
 		model.addAttribute("pizzeriaResult", pizzeria);
 		return "pizzeriamainview";
 	}
@@ -53,14 +52,12 @@ public class PizzeriaMainViewController {
 				{
 					if(pizzerias.get(i).getName().equals(form.getWord()))
 						{model.addAttribute("pizzeriaResult", pizzerias.get(i));
-						session.setAttribute("pizzeriaResult", pizzerias.get(i));
 						setUserAttribute(session, model);
 						return "redirect:/pizzeriamainview";}
 					else if(pizzerias.get(i).getName().contains(form.getWord()))
 						result.add(pizzerias.get(i));
 				}
 				setUserAttribute(session, model);
-				session.setAttribute("pizzeriaResult", result);
 				model.addAttribute("pizzeriaResult", result);	
 		return "resultpage";
 	}

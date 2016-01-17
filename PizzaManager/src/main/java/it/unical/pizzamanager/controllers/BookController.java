@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
@@ -25,9 +27,10 @@ public class BookController {
 	private WebApplicationContext context;
 	
 	@RequestMapping(value = "/book", method = RequestMethod.GET)
-	public String book(HttpSession session,Model model) {
+	public String book(@RequestParam Integer id, HttpSession session,Model model) {
 		
-		Pizzeria pizzeria = (Pizzeria) session.getAttribute("pizzeriaResult");
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(id);
 		RelationPizzeriaPizzaDAO relationPizzeriaPizzaDAO = (RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO"); 
 		List<RelationPizzeriaPizza> relationPizzeriaPizza = relationPizzeriaPizzaDAO.get(pizzeria);
 		model.addAttribute("menuResult", relationPizzeriaPizza);

@@ -99,10 +99,10 @@
 
 
 <div id="boxButton">
-<a href="menu" class="btn btn-success">
+<a href="menu?id=${pizzeriaResult.id}" class="btn btn-success">
 							Menù
 						</a>
-<a href="book" class="btn btn-primary">Book</a>
+<a href="book?id=${pizzeriaResult.id}" class="btn btn-primary">Book</a>
 </div>
 	<div class="col-sm-4 col-sm-push-4">
 <div class="pre-scrollable">
