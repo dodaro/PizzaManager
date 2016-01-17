@@ -25,8 +25,9 @@
 	<jsp:include page="includes/navbarAccount.jsp" />
 
 	<div class="container">
-		<div id="map"></div>
+		
 		<div class="row">
+		<div id="map"></div>
 			<div class="col-xs-2">
 				<div class="card">
 					<ul class="nav nav-pills nav-stacked">

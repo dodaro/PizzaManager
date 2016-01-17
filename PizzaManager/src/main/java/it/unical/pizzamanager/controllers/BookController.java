@@ -35,9 +35,10 @@ public class BookController {
 		List<RelationPizzeriaPizza> relationPizzeriaPizza = relationPizzeriaPizzaDAO.get(pizzeria);
 		model.addAttribute("menuResult", relationPizzeriaPizza);
 		model.addAttribute("pizzeriaResult", pizzeria);
-		setUserAttribute(session, model);
 		
-		return "book";
+		if(setUserAttribute(session, model))
+			return "book";
+		return "errorRedirect";
 	}
 	
 	/*private void setUserAttribute(HttpSession session, Model model) {
@@ -45,11 +46,12 @@ public class BookController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		model.addAttribute("user", user);
 	}*/
-	private void setUserAttribute(HttpSession session, Model model) {
+	private boolean setUserAttribute(HttpSession session, Model model) {
 		if(!SessionUtils.isUser(session))
 		{
-			String login = "Login";
-			model.addAttribute("typeSession", login);
+			return false;
+			/*String login = "Login";
+			model.addAttribute("typeSession", login);*/
 		}
 		else
 			{
@@ -57,6 +59,7 @@ public class BookController {
 			User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 			String account = "Account";
 			model.addAttribute("typeSession", account);
-			model.addAttribute("user", user);}
+			model.addAttribute("user", user);
+			return true;}
 	}
 }

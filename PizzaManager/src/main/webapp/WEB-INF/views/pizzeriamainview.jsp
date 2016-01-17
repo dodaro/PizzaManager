@@ -23,12 +23,19 @@
 	margin-top:30px;
 	margin-right: 40px;
 }
+
+#map {
+	height: 50%;
+	width: 230%;
+}
+
 #boxReview{
 	height: 40%;
 	width: 45%;
 }
 #boxButton{
 	margin-top:410px;
+	margin-left:1px;
 }
 </style>
 </head>
@@ -66,14 +73,14 @@
 </div>
 </div>	
 </div>
-  			<div id="boxInfo">
+  			
   			<div class="col-xs-4 col-sm-4 col-sm-push-4">
   			<h3>${pizzeriaResult.name}</h3>
   			<div>${pizzeriaResult.getAddress()}</div>
   			<div>${pizzeriaResult.getPhoneNumber()}</div>
   			<div>e-mail: ${pizzeriaResult.getEmail()}</div> 
   			</div>
-</div>
+
 
 
 <div id="boxButton">
@@ -82,6 +89,8 @@
 						</a>
 <a href="book?id=${pizzeriaResult.id}" class="btn btn-primary">Book</a>
 </div>
+</div>
+<div class="row">
 	<div class="col-sm-4 col-sm-push-4">
 <div class="pre-scrollable">
 <input type="text" class="form-control" id="boxInputReview">
