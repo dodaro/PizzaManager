@@ -41,11 +41,17 @@ public abstract class Account implements Serializable {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Address address;
 
+	@OneToOne
+	@JoinColumn(name = "location")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Location location;
+
 	public Account() {
 		this.id = DatabaseHandler.NO_ID;
 		this.email = "";
 		this.password = "";
 		this.address = null;
+		this.location = null;
 	}
 
 	public Account(String email, String password) {
@@ -53,6 +59,15 @@ public abstract class Account implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.address = null;
+		this.location = null;
+	}
+
+	public Account(String email, String password, Location location) {
+		this.id = DatabaseHandler.NO_ID;
+		this.email = email;
+		this.password = password;
+		this.address = null;
+		this.location = location;
 	}
 
 	public Integer getId() {
@@ -85,5 +100,13 @@ public abstract class Account implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }

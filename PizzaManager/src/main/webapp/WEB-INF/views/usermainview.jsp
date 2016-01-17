@@ -4,24 +4,6 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-<script type="text/javascript">
-	$(document).ready(function() {
-		$(".myref").on('click', function() {
-			var $clickedElement = $(this);
-			var $id = parseInt($clickedElement.data('id'),10);
-			$.ajax({
-				type : "POST",
-				url : "/pizzeriamainview",
-				data : {
-					id : $id
-				},
-				success : function() {
-					window.location="pizzeriamainview"
-				}
-			});
-		});
-	});
-		</script>
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -65,7 +47,7 @@
 <div id="boxReview">
     <c:forEach var="r" items="${feedbacksuser}">
 					<div class="row">
-						<a class="myref" data-id="${r.pizzeria.id}">${r.pizzeria.name}</a>
+						<a class="myref" href="pizzeriamainview?id=${r.pizzeria.id}">${r.pizzeria.name}</a>
 						<div>Fastnes: ${r.fastnessRating}</div>
 						<div>Hospitality: ${r.hospitalityRating}</div>
 						<div>Quality: ${r.qualityRating}</div>

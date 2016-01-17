@@ -49,7 +49,7 @@ var Booking = function(){
 			}
 		});
 		
-		setControlButtons(true,true,true,true);
+		setControlButtons(true,true,true);
 		
 		//controllo in caso di richiesta pagina post booking edited
 		if(communicator.bookingEdited!==undefined)
@@ -102,6 +102,21 @@ var Booking = function(){
 			rowToAdd.push(bookings[int].bill+" &euro;");
 			tableBooking.row.add(rowToAdd).draw(false);
 		}
+		
+		tableBooking.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+		
+			var dateFromTable=this.data()[3];
+			var timeFromTable=this.data()[4];
+			var splitDate=dateFromTable.split("/");
+			var splitTime=timeFromTable.split(":");
+			var date=new Date(); 
+			date.setFullYear(splitDate[2], splitDate[1]-1, splitDate[0]);
+			date.setHours(splitTime[0], splitTime[1], 0, 0);
+			
+			if(new Date()>date){
+				$(this.node()).css("color","red");
+			}
+		} );
 	}
 
 	var initListeners = function(){
@@ -132,17 +147,14 @@ var Booking = function(){
 			if ($(this).hasClass('selected')&& tableBooking.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even"))) {
 				console.log();
 				$(this).removeClass('selected');
-				setControlButtons(true,true,true,true);
+				setControlButtons(true,true,true);
 			
 			} 
 			else if(!$(this).hasClass('selected') && tableBooking.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even")) ){
 				tableBooking.$('tr.selected').removeClass('selected');
 				$(this).addClass('selected');
 				console.log(tableBooking.row(this).data()[columnPaid]);
-				if(tableBooking.row(this).data()[columnPaid]==true)
-					setControlButtons(false,false,false,false);
-				else
-					setControlButtons(false,false,false,true);
+				setControlButtons(false,false,false);
 			}//end else if
 		});
 		
@@ -155,11 +167,15 @@ var Booking = function(){
 		});
 		
 		$("#editButtonBooking").on('click',function(){
-			editBooking();
+			if(tableBooking.row('.selected').data()[columnPaid]==true)
+				$('#operationOnPaidBookingModal').modal('show');
+			else
+				editBooking();
 			//com
 		});
 		
 		$("#removeButtonBooking").on('click',function(){
+			$('#selectionModal').modal('show');
 			var idBooking=tableBooking.row('.selected').data()[columnId];
 			sendRequest('remove', findBooking(idBooking), function(response) {
 				tableBooking.row('.selected').remove().draw(false);
@@ -191,7 +207,7 @@ var Booking = function(){
 				if(booking.pizzas.length>0){
 					string+='<table class="table table-bordered" style="font-size:13px;"><thead><tr>'
 							+'<th>Pizza</th>'
-							+'<th>Gluten</th>'
+							+'<th>GlutenFree</th>'
 							+'<th>Size</th>'
 							+'<th>Edited</th>'
 							+'<th>Ingredients</th>'
@@ -204,7 +220,7 @@ var Booking = function(){
 					for (var int2 = 0; int2 < booking.pizzas.length; int2++) {
 						string+="<tr>"
 								+"<td>"+booking.pizzas[int2].name+"</td>"
-								+"<td>"+booking.pizzas[int2].gluten+"</td>"
+								+"<td>"+booking.pizzas[int2].glutenFree+"</td>"
 								+"<td>"+booking.pizzas[int2].size+"</td>";
 								console.log(booking.pizzas[int2].ingredientsAdded.length);
 								if(booking.pizzas[int2].ingredientsAdded.length>0 || booking.pizzas[int2].ingredientsRemoved.length>0)
@@ -237,8 +253,10 @@ var Booking = function(){
 								
 								string+="<td>"+listIngredients+"</td>"
 								+"<td>"+booking.pizzas[int2].number+"</td>"
-								+"<td>"+booking.pizzas[int2].priceEach+" &euro;</td>"
-								+"<td>"+new Number(booking.pizzas[int2].number)*new Number(booking.pizzas[int2].priceEach)+ " &euro;</td>"
+								+"<td>"+booking.pizzas[int2].priceEach+" &euro;</td>";
+								
+								var total=new Number(booking.pizzas[int2].number)*new Number(booking.pizzas[int2].priceEach);
+								string+="<td>"+total.toFixed(2)+ " &euro;</td>"
 								+"</tr>";
 					}
 					string+='</table>';
@@ -351,7 +369,6 @@ var Booking = function(){
 		$("#confermeButtonBooking").prop('disabled', boolButtonConferme);
 		$("#editButtonBooking").prop('disabled', boolButtonEdit);
 		$("#removeButtonBooking").prop('disabled', boolButtonRemove);
-		$("#saveButtonBooking").prop('disabled', boolButtonSave);
 	}
 	
 	return {
@@ -362,4 +379,3 @@ var Booking = function(){
 	}
 	
 }();
-

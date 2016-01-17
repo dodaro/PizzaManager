@@ -3,7 +3,7 @@
 
 <div id="pizza-manager">
 	<div class="row">
-		<div class="col-md-7">
+		<div class="col-md-8">
 			<table id="pizzas-table" class="display home-table non-selectable">
 				<thead>
 					<tr>
@@ -18,7 +18,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-5">
+		<div class="col-md-4 form-column">
 			<form class="edit-pizza-form home-form">
 				<div class="form-group">
 					<label for="pizza" class="control-label">Pizza</label> <select id="pizza" class="form-control">
@@ -54,8 +54,8 @@
 				<div class="form-group">
 					<label for="pizza-price" class="control-label">Price</label>
 					<div class="input-group">
-						<input type="number" id="pizza-price" class="form-control"><span
-							class="input-group-addon">&euro;</span>
+						<input type="number" id="pizza-price" class="form-control" placeholder="Choose a price">
+						<span class="input-group-addon">&euro;</span>
 					</div>
 				</div>
 			</form>

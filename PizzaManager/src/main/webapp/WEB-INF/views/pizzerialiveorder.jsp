@@ -3,15 +3,15 @@
 	<div class="row booking-data">
 		<div class="col-md-4 left-col">
 			<div class="form-group">
-				<label for="bookingUserInput">User</label> <input type="text" class="form-control"
+				<label class="control-label" for="bookingUserInput">User</label> <input type="text" class="form-control"
 					id="bookingUserInput" placeholder="User">
 			</div>
 			<div class="form-group">
-				<label for="bookingNameInput">Name (if it's not a User)</label> <input type="text"
+				<label class="control-label" for="bookingNameInput">Name (if it's not a User)</label> <input type="text"
 					class="form-control" id="bookingNameInput" placeholder="Name">
 			</div>
 			<div class="form-group">
-				<label for="datetimepicker1">Booking date and hour</label>
+				<label class="control-label" for="datetimepicker1">Booking date and hour</label>
 				<div class='input-group date' id='datetimepicker1'>
 					<input type='text' class="form-control" /> <span class="input-group-addon"> <span
 						class="glyphicon glyphicon-calendar"></span>
@@ -20,7 +20,7 @@
 			</div>
 		</div>
 		<div class="col-md-4 middle-col">
-			<label>Address to delivery (if delivery)</label>
+			<label class="control-label">Address to delivery (if delivery)</label>
 			<div class="form-group">
 				<input type="text" class="form-control address" id="bookingCityInput" placeholder="City">
 			</div>
@@ -105,12 +105,12 @@
 					</div>
 					<div class="form-group">
 						<div class="pizzaButtons">
-							<label>Gluten</label>
+							<label>Gl.Free</label>
 							<div id="glutenButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
 								<label class="btn btn-primary active"> <input type="radio" name="options"
-									value="yes" id="option1" autocomplete="off" checked> Yes
-								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="no"
-									id="option2" autocomplete="off"> No
+									value="no" id="option1" autocomplete="off" checked> No
+								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="yes"
+									id="option2" autocomplete="off"> Yes
 								</label>
 							</div>
 						</div>
@@ -213,7 +213,10 @@
 		<button id="confermeOrder" type="submit" class="btn btn-default">Complete</button>
 	</div>
 </div>
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+
+
+
+<div id="selectionModal" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

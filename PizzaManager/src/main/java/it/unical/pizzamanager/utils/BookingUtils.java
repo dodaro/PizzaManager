@@ -35,24 +35,29 @@ public class BookingUtils {
 	private static String DELIVERY="delivery";
 	private static String TABLE="table";
 	
-	public static Booking calculateBill(Booking booking, Pizzeria pizzeria, WebApplicationContext context){
-		return null;
+	public static Booking calculateBill(Booking booking, Pizzeria pizzeria){
+		Double bill=0.0;
+		for (OrderItem order : booking.getOrderItems()) {
+			bill+=order.getCost();
+		}
+		booking.setBill(bill);
+		return booking;
 	}
 	
-	public static Booking createBookingFromBookingModel(BookingModel model, Pizzeria pizzeria, WebApplicationContext context) {
+	public static Booking createBookingFromBookingModelAndSave(BookingModel model, Pizzeria pizzeria, WebApplicationContext context) {
 		
 		Integer idBooking=model.getId();
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		if(idBooking!=null)
 			bookingDAO.delete(bookingDAO.getBooking(idBooking));
 		//il metodo già mi crea sul database l'oggetto
-		Booking booking=createAndInitInformationBooking(model,pizzeria,model.getType(),context);
+		Booking booking=createAndInitInformationBookingAndSave(model,pizzeria,model.getType(),context);
 		//creo quanto server
 		return booking;
 	}
 	
 	
-	private static Booking createAndInitInformationBooking(BookingModel model,Pizzeria pizzeria,String type, WebApplicationContext context){
+	private static Booking createAndInitInformationBookingAndSave(BookingModel model,Pizzeria pizzeria,String type, WebApplicationContext context){
 		
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		
@@ -78,7 +83,7 @@ public class BookingUtils {
 		}
 		
 		
-		Boolean confirmed=false;
+		Boolean confirmed=model.getConfirmed();
 	
 		
 		//IMPORTANTE :payment è già nullo nel costruttore!!
@@ -111,9 +116,10 @@ public class BookingUtils {
 			bookingDelivery.setOrderItems(new ArrayList<OrderItem>());
 			bookingDAO.create(bookingDelivery);
 			
-			setPizzaOrderBooking(bookingDelivery, model, pizzeria, context);
-			setBeverageOrderBooking(bookingDelivery, model, pizzeria, context);
-			
+			setPizzaOrderBookingAndSave(bookingDelivery, model, pizzeria, context);
+			setBeverageOrderBookingAndSave(bookingDelivery, model, pizzeria, context);
+			bookingDelivery=(BookingDelivery)calculateBill(bookingDelivery, pizzeria);
+			bookingDAO.update(bookingDelivery);
 			
 			return bookingDelivery;
 		}
@@ -137,9 +143,10 @@ public class BookingUtils {
 			bookingPizzeriaTable.setTableBooking(tablesBooking);
 			bookingDAO.update(bookingPizzeriaTable);
 			
-			setPizzaOrderBooking(bookingPizzeriaTable, model, pizzeria, context);
-			setBeverageOrderBooking(bookingPizzeriaTable, model, pizzeria, context);
-			
+			setPizzaOrderBookingAndSave(bookingPizzeriaTable, model, pizzeria, context);
+			setBeverageOrderBookingAndSave(bookingPizzeriaTable, model, pizzeria, context);
+			bookingPizzeriaTable=(BookingPizzeriaTable)calculateBill(bookingPizzeriaTable, pizzeria);
+			bookingDAO.update(bookingPizzeriaTable);
 			return bookingPizzeriaTable;
 		}
 		else if(type.equals(TAKE_AWAY)){
@@ -150,16 +157,18 @@ public class BookingUtils {
 			bookingTakeAway.setOrderItems(new ArrayList<OrderItem>());
 			bookingDAO.create(bookingTakeAway);
 			
-			setPizzaOrderBooking(bookingTakeAway, model, pizzeria, context);
-			setBeverageOrderBooking(bookingTakeAway, model, pizzeria, context);
-	
+			//questi metodi salvano gia lo stato
+			setPizzaOrderBookingAndSave(bookingTakeAway, model, pizzeria, context);
+			setBeverageOrderBookingAndSave(bookingTakeAway, model, pizzeria, context);
+			bookingTakeAway=(BookingTakeAway)calculateBill(bookingTakeAway, pizzeria);
+			bookingDAO.update(bookingTakeAway);
 			return bookingTakeAway;
 		}
 		return null;
 		
 	}
 	
-	private static void setPizzaOrderBooking(Booking booking, BookingModel model,Pizzeria pizzeria, WebApplicationContext context){
+	private static void setPizzaOrderBookingAndSave(Booking booking, BookingModel model,Pizzeria pizzeria, WebApplicationContext context){
 		
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		OrderItemDAO orderDAO = (OrderItemDAO) context.getBean("orderItemDAO");
@@ -173,7 +182,7 @@ public class BookingUtils {
 				//size: "s","l","m"
 				String size=null;
 				Boolean glutenFree=null;
-				switch (pizzaModel.getGluten()) {
+				switch (pizzaModel.getGlutenFree()) {
 				case "no":
 					glutenFree=false;
 					break;
@@ -219,7 +228,7 @@ public class BookingUtils {
 						pizzaOrder.setModified(false);
 						
 					pizzaOrder.setNumber(pizzaModel.getNumber());
-					pizzaOrder.setGlutenFree(pizzaModel.getGluten());
+					pizzaOrder.setGlutenFree(pizzaModel.getGlutenFree());
 					pizzaOrder.setSize(pizzaModel.getSize());
 					orderDAO.create(pizzaOrder);
 					
@@ -244,6 +253,8 @@ public class BookingUtils {
 							}
 						}
 					}
+					
+					pizzaOrder=OrderItemUtils.setPizzaOrderCost(pizzaOrder, pizzeria);
 					orderDAO.update(pizzaOrder);
 					booking.getOrderItems().add(pizzaOrder);
 					bookingDAO.update(booking);
@@ -256,7 +267,7 @@ public class BookingUtils {
 		}
 	}
 	
-	private static void setBeverageOrderBooking(Booking booking, BookingModel model,Pizzeria pizzeria, WebApplicationContext context){
+	private static void setBeverageOrderBookingAndSave(Booking booking, BookingModel model,Pizzeria pizzeria, WebApplicationContext context){
 		
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		OrderItemDAO orderDAO = (OrderItemDAO) context.getBean("orderItemDAO");
@@ -267,6 +278,7 @@ public class BookingUtils {
 					BeverageOrderItem beverageOrder = new BeverageOrderItem();
 					beverageOrder.setPizzeria_beverage(pizzeria.getBeveragesPriceList().get(j));
 					beverageOrder.setNumber(Integer.parseInt(model.getBeverages().get(i).getNumber()));
+					beverageOrder=OrderItemUtils.setBeverageOrderCost(beverageOrder, pizzeria);
 					orderDAO.create(beverageOrder);
 					
 					booking.getOrderItems().add(beverageOrder);

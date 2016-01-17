@@ -7,7 +7,7 @@ public class PizzaModel {
 	private String name;
 	private Integer number;
 	private String size;
-	private String gluten;
+	private String glutenFree;
 	List<IngredientModel> ingredientsAdded;
 	List<IngredientModel> ingredientsRemoved;
 	List<IngredientModel> ingredientsBase;
@@ -17,17 +17,17 @@ public class PizzaModel {
 		this.name="";
 		this.number=-1;//TODO aggiungere default static
 		this.size="";
-		this.gluten="";
+		this.glutenFree="";
 		this.ingredientsAdded=null;
 		this.ingredientsBase=null;
 		this.ingredientsRemoved=null;
 		this.priceEach=-1.0;
 	}
-	public PizzaModel(String name, Integer number, String size, String gluten, List<IngredientModel> ingredientsAdded, List<IngredientModel> ingredientsBase, List<IngredientModel> ingredientsRemoved, Double priceEach) {
+	public PizzaModel(String name, Integer number, String size, String glutenFree, List<IngredientModel> ingredientsAdded, List<IngredientModel> ingredientsBase, List<IngredientModel> ingredientsRemoved, Double priceEach) {
 		this.name="";
 		this.number=-1;//TODO aggiungere default static
 		this.size="";
-		this.gluten="";
+		this.glutenFree="";
 		this.ingredientsAdded=ingredientsAdded;
 		this.ingredientsBase=ingredientsBase;
 		this.ingredientsRemoved=ingredientsRemoved;
@@ -58,12 +58,12 @@ public class PizzaModel {
 		this.size = size;
 	}
 
-	public String getGluten() {
-		return gluten;
+	public String getGlutenFree() {
+		return glutenFree;
 	}
 
-	public void setGluten(String gluten) {
-		this.gluten = gluten;
+	public void setGluten(String glutenFree) {
+		this.glutenFree = glutenFree;
 	}
 
 	public List<IngredientModel> getIngredientsAdded() {

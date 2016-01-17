@@ -19,7 +19,7 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-4 form-column">
 			<form class="edit-beverage-form home-form">
 				<div class="form-group">
 					<label for="beverage" class="control-label">Beverage</label> <select id="beverage"
@@ -32,21 +32,21 @@
 					</select>
 				</div>
 				<div class="form-group">
-					<label for="pizza-price" class="control-label">Price</label>
+					<label for="beverage-price" class="control-label">Price</label>
 					<div class="input-group">
-						<input type="number" id="pizza-price" class="form-control"><span
-							class="input-group-addon">&euro;</span>
+						<input type="number" id="beverage-price" class="form-control" placeholder="Choose a price">
+						<span class="input-group-addon">&euro;</span>
 					</div>
 				</div>
 			</form>
 			<div class="buttons-container">
-				<button class="btn btn-primary button-add" disabled>
+				<button class="btn btn-primary button-add" data-toggle="tooltip" data-placement="bottom" disabled>
 					<span class="glyphicon glyphicon-plus"></span> Add
 				</button>
-				<button class="btn btn-success button-update" disabled>
+				<button class="btn btn-success button-update" data-toggle="tooltip" data-placement="bottom" disabled>
 					<span class="glyphicon glyphicon-refresh"></span> Update
 				</button>
-				<button class="btn btn-danger button-delete" disabled>
+				<button class="btn btn-danger button-delete" data-toggle="tooltip" data-placement="bottom" disabled>
 					<span class="glyphicon glyphicon-remove"></span> Delete
 				</button>
 			</div>

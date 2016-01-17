@@ -43,6 +43,7 @@ private DatabaseHandler databaseHandler;
 	public List<Payment> getSaved(boolean saved) {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		List<Payment> paymentRequested = (List<Payment>) session.createQuery("from Payment p where p.saved= "+saved).list();
+		session.close();
 		return paymentRequested;
 	}
 

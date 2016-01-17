@@ -22,6 +22,12 @@ public class User extends Account {
 	@Column(name = "name", length = 255)
 	private String name;
 
+	@Column(name = "firstName", length = 255)
+	private String firstName;
+
+	@Column(name = "lastName", length = 255)
+	private String lastName;
+
 	@OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Cart cart;
@@ -36,7 +42,9 @@ public class User extends Account {
 
 	public User() {
 		super();
-		this.name="";
+		this.name = "";
+		this.firstName = "";
+		this.lastName = "";
 		this.cart = null;
 		this.bookings = new ArrayList<Booking>();
 		this.feedbacks = new ArrayList<Feedback>();
@@ -44,6 +52,14 @@ public class User extends Account {
 
 	public User(String email, String password) {
 		super(email, password);
+	}
+
+	public User(String email, String password, String username, String firstName, String lastName) {
+		super(email, password);
+
+		this.name = username;
+		this.firstName = firstName;
+		this.lastName = lastName;
 	}
 
 	public Cart getCart() {
@@ -76,5 +92,21 @@ public class User extends Account {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 }

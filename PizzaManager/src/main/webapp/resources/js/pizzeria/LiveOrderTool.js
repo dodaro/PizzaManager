@@ -4,7 +4,8 @@ var LiveOrderTool = function(){
 		-Ingredienti: id 
 		-Pizze: nome + nome ingredienti
 	*/
-	var loadedBookingToEditId=-1;
+	var confirmedBooking=false;
+	var loadedBookingToEditId=-1;//l'id di un eventuale booking che si sta modificando
 	var pizzeFromServer;//è la lista delle pizze, con i suoi ingredienti basilari, fornite dalla pizzeria e che risiedono sul database
 	var beverageFromServer;//è la lista di tutte le bevande fornite dalla pizzeria e che risiedono sul database
 	var pizzeriaIngredientsFromServer;//è la lista di tutti gli ingredienti di cui è fornita la pizzeria
@@ -23,6 +24,7 @@ var LiveOrderTool = function(){
 
 	var initVar = function(){
 		
+		confirmedBooking=false;
 		loadedBookingToEditId=-1;
 		pizzeFromServer=new Object();
 		beverageFromServer=new Object();
@@ -51,6 +53,7 @@ var LiveOrderTool = function(){
 			//proprietà bottoni di modifica disabilitati al caricamento della pagina
 			setControlButtons("pizza", false, true, true);
 			setControlButtons("beverage", false, true, true);
+			$("#bookingUserInput").prop("disabled",true);
 
 			tablePizza = $('#resumeTablePizza').DataTable({
 				"scrollY" : "320px",
@@ -118,7 +121,11 @@ var LiveOrderTool = function(){
 						
 						console.log(communicator.bookingToEdit);
 						var bookingToEdit=communicator.bookingToEdit;
+						
+						/***********INFO SUL PRECEDENTE BOOKING***************/
+						confirmedBooking=bookingToEdit.confirmed;
 						loadedBookingToEditId=bookingToEdit.id;
+						/*****************************************************/
 						for (var int = 0; int < bookingToEdit.pizzas.length; int++) {
 							var pizzaPostMapping= mapping(bookingToEdit.pizzas[int]);
 							resolvePizza(false,pizzaPostMapping,bookingToEdit.pizzas[int].number);
@@ -128,9 +135,6 @@ var LiveOrderTool = function(){
 						}
 						//settare le intestazioni 
 						initHeading(bookingToEdit);
-						//TODO: TROVARE IL MODO DI FARE L'INIT HEADING DOPO IL createTables
-						//rimuovere la seconda richiesta ajax ed popolare tramite model e $ 
-						
 						//Eliminare subito l'oggetto dal communicator
 						communicator.bookingToEdit=undefined;
 					}
@@ -139,21 +143,7 @@ var LiveOrderTool = function(){
 					alert("error: " + data + " status: "
 							+ status + " er:" + er);
 				}
-			});	
-			
-			/*$.ajax({
-				url : "/pizzeria/tablesList",
-				type : 'GET',
-				success : function(data) {
-					console.log(data)
-					createTables(data);
-				},
-				error : function(data, status, er) {
-					alert("error: " + data + " status: " + status + " er:" + er);
-				}
-			});*/
-			
-			
+			});		
 		}
 	
 	
@@ -180,7 +170,8 @@ var LiveOrderTool = function(){
 		});
 
 		$('#confermeOrder').on("click",function(){
-			sendOrder();
+			if(validatorHeading())
+				sendOrder();
 		});
 		//Beverage listener
 		$('#confermeButtonBeverage').on("click",function(){
@@ -326,6 +317,8 @@ var LiveOrderTool = function(){
 		else{
 			booking.id=undefined;
 		}
+		
+		booking.confirmed=confirmedBooking;
 		return booking;
 		//console.log(extractData("date"));
 	}
@@ -344,6 +337,12 @@ var LiveOrderTool = function(){
 			},
 			success : function(data) {
 				console.log(data)
+				alert(data);
+				if(confirmedBooking)
+					$('#liLiveRestaurant').click();
+				else
+					$('#liManageBooking').click();
+				
 			},
 			error : function(data, status, er) {
 				alert("error: " + data + " status: " + status + " er:" + er);
@@ -398,7 +397,12 @@ var LiveOrderTool = function(){
 			$("#addIngredients.js-example-basic-multiple").select2('data', "");
 			$("#removeIngredients.js-example-basic-multiple").select2('data',"");
 			$('#counterPizza').val(1);
-			//TODO:MANCA IL RESET DEI BOTTONI
+			
+			$('#glutenButtons .active').removeClass("active");
+			$('#glutenButtons > label:first-child').addClass("active");
+			$('#sizeButtons .active').removeClass("active");
+			$('#sizeButtons > label:first-child').addClass("active");
+			
 		} else {
 			$('#counterBeverage').val(1);
 		}
@@ -429,19 +433,6 @@ var LiveOrderTool = function(){
 		
 	}
 	
-	/*var createTables = function(tables){
-		for (var int = 0; int < tables.length; int++) {
-			$("#tables").append("<option value='"+tables[int].id+"'>"
-					+"TableNumber: "
-					+ tables[int].number
-					+ " - Max: "
-					+ tables[int].maxSeats
-					+ " - Min:"
-					+ tables[int].minSeats
-					+ "</option>");			
-		}
-	}*/
-	
 	var initHeading = function(booking){
 	
 		//set switchedBotton
@@ -464,16 +455,8 @@ var LiveOrderTool = function(){
 			$("#bookingUserInput").val(booking.user);
 			$("#bookingNameInput").prop("disabled",true);
 		}
-		else{
-			$("#bookingUserInput").prop("disabled",true);
-			$("#bookingNameInput").prop("disabled",true);
-		}
-		if(booking.underTheNameOf!=undefined){
-			console.log(booking.underTheNameOf);
+		else{//user undefined e name diverso da undefined
 			$("#bookingNameInput").val(booking.underTheNameOf);
-			$("#bookingNameInput").prop("disabled",false);
-		}
-		else{
 			$("#bookingUserInput").prop("disabled",true);
 		}
 		
@@ -523,7 +506,7 @@ var LiveOrderTool = function(){
 					if (dataRow[columnId] == pizzaList[int2].getCode()) {
 						orderPizzas.push({
 							number : dataRow[columnNumber],
-							gluten : pizzaList[int2].getGlutenFree(),
+							glutenFree : pizzaList[int2].getGlutenFree(),
 							ingredientsAdded:pizzaList[int2].getIngredientsAdded(),
 							//ingredientsBase:pizzaList[int2].,
 							ingredientsRemoved:pizzaList[int2].getIngredientsRemoved(),
@@ -570,7 +553,7 @@ var LiveOrderTool = function(){
 			var pizza= new Pizza();
 			pizza.setName(pizzaFromBooking.name);
 			pizza.setSize(pizzaFromBooking.size);
-			pizza.setGlutenFree(pizzaFromBooking.gluten);
+			pizza.setGlutenFree(pizzaFromBooking.glutenFree);
 			var ingredientsToAdd=pizzaFromBooking.ingredientsAdded;
 			var ingredientsToRemove=pizzaFromBooking.ingredientsRemoved;
 			if (ingredientsToAdd.length > 0 || ingredientsToRemove.length > 0) {
@@ -623,7 +606,33 @@ var LiveOrderTool = function(){
 		$("#addIngredients.js-example-basic-multiple").select2('data',pizza.getIngredientsAdded());
 		$("#removeIngredients.js-example-basic-multiple").select2('data',pizza.getIngredientsRemoved());
 		$('#counterPizza').val(number);
-		//TODO:MANCA IL SETTING DEI BOTTONI
+		
+		$('#sizeButtons .active').removeClass("active");
+		switch (pizza.getSize()) {
+		case "s":			
+			$('#sizeButtons > label:eq(0)').addClass("active");
+			break;
+		case "m":
+			$('#sizeButtons > label:eq(1)').addClass("active");
+			break;
+		case "l":
+			$('#sizeButtons > label:eq(2)').addClass("active");
+			break;
+		default:
+			break;
+		}
+				
+		$('#glutenButtons .active').removeClass("active");
+		switch (pizza.getGlutenFree()) {
+		case "no":
+			$('#glutenButtons > label:eq(0)').addClass("active");	
+			break;
+		case "yes":
+			$('#glutenButtons > label:eq(1)').addClass("active");		
+			break;
+		default:
+			break;
+		}
 	}
 
 	//carica sui select2 sia gli ingredienti base che quelli aggiungibili ad una pizza
@@ -678,7 +687,7 @@ var LiveOrderTool = function(){
 			
 			var namePizzaSelected = $("#pizzaList.js-example-basic-single").select2("data").text;
 			if (namePizzaSelected == "Select Pizza") {
-				$('#myModal').modal('show');
+				$('#selectionModal').modal('show');
 				return;
 			}
 			
@@ -1004,7 +1013,7 @@ var LiveOrderTool = function(){
 		if(beverageFromBooking===undefined){
 			
 			if ($("#beverageList.js-example-basic-single").select2("data").text == "Select Beverage") {
-				$('#myModal').modal('show');
+				$('#selectionModal').modal('show');
 				return;
 			}
 			
@@ -1126,8 +1135,71 @@ var LiveOrderTool = function(){
 		return codeFounded;
 	}
 	
+	var validatorHeading = function(){
+		
+		//resetFormError
+		$("#datetimepicker1").closest("div").parent().removeClass("has-error");
+		$("#bookingNameInput").closest("div").removeClass("has-error");
+		$("#bookingCityInput").closest("div").removeClass("has-error");
+		$("#bookingStreetInput").closest("div").removeClass("has-error");
+		$("#tables").closest("div").removeClass("has-error");
+		
+		var pattern=/^([a-zA-Z\xE0\xE8\xE9\xF9\xF2\xEC\x27]\s?)+$/; //caratteri, lettere accentate apostrofo e un solo spazio fra le parole
+		var patternNumber;
+		
+		if ($("#datetimepicker1").data("DateTimePicker").date()==null){
+			//alert("Inserire il campo data!");
+			$("#datetimepicker1").closest("div").parent().addClass("has-error");
+			$('html, body').animate({
+				scrollTop: $(".row.booking-data").offset().top
+			}, 1000);
+			return false;
+		}
+		
+		if($("#bookingNameInput").prop("disabled")==false){
+			if (!pattern.test($("#bookingNameInput").val())){
+				//alert("Il campo name non e\' valido!");
+				$("#bookingNameInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
+		}
+		
+		if($("[value='delivery']").is(':checked')){
+			if (!pattern.test($("#bookingCityInput").val())){
+				//alert("Il campo city non e\' valido!");
+				$("#bookingCityInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: 0
+				}, 1000);
+				return false;
+			}
+			if (!pattern.test($("#bookingStreetInput").val())){
+				//alert("Il campo street non e\' valido!");
+				$("#bookingStreetInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
+		}
+		else if($("[value='table']").is(':checked')){
+			console.log($("#tables").select2("val").length);
+			if($("#tables").select2("val").length==0){
+				//alert("Seleziona un tavolo!");
+				$("#tables").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
+		}
+		return true;
+	}
 	
-	
+
 	return {
 		init : function() {
 			initVar();
@@ -1135,5 +1207,4 @@ var LiveOrderTool = function(){
 			initListeners();
 		}
 	}
-	
 }();

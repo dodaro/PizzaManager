@@ -43,9 +43,6 @@
 					<button id="removeButtonBooking" type="submit" class="btn btn-danger button-delete">
 						<span class="glyphicon glyphicon-remove"></span> Delete
 					</button>
-					<button id="saveButtonBooking" type="submit" class="btn btn-info button-save" data-target="#myModal">
-						<span class="glyphicon glyphicon-floppy-save"></span> Save
-					</button>
 			</div>
 		</div>
 	</div>

@@ -24,6 +24,7 @@ public class PizzeriaBeverageSerializer extends JsonSerializer<RelationPizzeriaB
 		jgen.writeStringField("size", relation.getBeverage().getSize().toString());
 		jgen.writeStringField("type", relation.getBeverage().getType().toString());
 		jgen.writeNumberField("price", relation.getPrice());
+		jgen.writeNumberField("orderItems", relation.getOrderItems().size());
 		jgen.writeEndObject();
 	}
 }

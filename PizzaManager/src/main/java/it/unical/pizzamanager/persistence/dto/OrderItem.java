@@ -54,7 +54,7 @@ public abstract class OrderItem implements Serializable {
 	// purchace time
 
 	public OrderItem() {
-		this.id = DatabaseHandler.NO_ID;
+		this.id =DatabaseHandler.NO_ID;
 		this.number = 0;
 		this.booking = null;
 		this.cart = null;

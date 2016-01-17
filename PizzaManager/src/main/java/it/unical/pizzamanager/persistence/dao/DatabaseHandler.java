@@ -6,7 +6,7 @@ import org.hibernate.Transaction;
 
 public class DatabaseHandler {
 
-	public static final Integer NO_ID = -1;
+	public static final Integer NO_ID = -5;
 
 	private SessionFactory sessionFactory;
 
@@ -50,6 +50,7 @@ public class DatabaseHandler {
 	}
 
 	protected void delete(Object object) {
+		
 		performOperation(object, Operation.DELETE);
 	}
 

@@ -4,3 +4,4 @@
 /src/main/webapp/META-INF
 /database.mv.db
 /database.trace.db
+/src/main/java/it/unical/pizzamanager/utils/Config.java

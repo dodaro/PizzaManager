@@ -33,7 +33,7 @@ public class Pizzeria extends Account {
 
 	@Column(name = "phoneNumber")
 	private String phoneNumber;
-	
+
 	@OneToMany(mappedBy = "pizzeria", fetch = FetchType.LAZY)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
@@ -78,7 +78,11 @@ public class Pizzeria extends Account {
 		this.images = new ArrayList<Image>();
 	}
 
-	public Pizzeria(String email, String password, String name, String phoneNumber) {
+	public Pizzeria(String email, String password) {
+		super(email, password);
+	}
+
+	public Pizzeria(String email, String password, String name, String phoneNumber, Location location) {
 		super(email, password);
 		this.name = name;
 		this.phoneNumber = phoneNumber;

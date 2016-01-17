@@ -30,6 +30,7 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 
 	@Override
 	public void update(OrderItem orderItem) {
+	
 		databaseHandler.update(orderItem);
 
 	}
@@ -40,6 +41,7 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		String queryString = "from PizzaItem";
 		List<PizzaOrderItem> pizzaItems = session.createQuery(queryString).list();
+		session.close();
 		return pizzaItems;
 	}
 
@@ -49,6 +51,7 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 		Session session = databaseHandler.getSessionFactory().openSession();
 		String queryString = "from BeverageItem";
 		List<BeverageOrderItem> beverageItems = session.createQuery(queryString).list();
+		session.close();
 		return beverageItems;
 	}
 
@@ -66,6 +69,7 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 		String queryString = "select * from order_items where id = :itemId";
 		OrderItem item = (OrderItem) session.createSQLQuery(queryString).addEntity(OrderItem.class)
 				.setParameter("itemId", id).uniqueResult();
+		session.close();
 		return item;
 	}
 

@@ -81,7 +81,6 @@ public class PizzeriaBeverageManagerController {
 
 		List<RelationPizzeriaBeverage> beverages = pizzeria.getBeveragesPriceList();
 
-		System.out.println(beverages.size());
 		return beverages;
 	}
 
@@ -125,15 +124,24 @@ public class PizzeriaBeverageManagerController {
 				.getBean("relationPizzeriaBeverageDAO");
 		RelationPizzeriaBeverage pizzeriaBeverage = dao.get(form.getId());
 
-		// TODO - Form validation
-
-		dao.delete(pizzeriaBeverage);
-
-		return buildOkResponse(pizzeriaBeverage);
+		/* If the beverage belongs to an order, it cannot be deleted. */
+		if (pizzeriaBeverage.getOrderItems().size() > 0) {
+			return buildErrorResponse();
+		} else {
+			dao.delete(pizzeriaBeverage);
+			return buildOkResponse(pizzeriaBeverage);
+		}
 	}
 
-	private String buildOkResponse(RelationPizzeriaBeverage beverage) {
-		return "{\"success\" : true}";
+	private String buildOkResponse(RelationPizzeriaBeverage relation) {
+		return "{\"success\" : true, \"id\" : " + relation.getId() + ", \"beverageId\" : "
+				+ relation.getBeverage().getId() + ", \"name\" : \""
+				+ relation.getBeverage().getName() + "\", \"brand\" : \""
+				+ relation.getBeverage().getBrand() + "\", \"container\" : \""
+				+ relation.getBeverage().getContainer() + "\", \"size\" : \""
+				+ relation.getBeverage().getSize() + "\", \"type\" : \""
+				+ relation.getBeverage().getType() + "\", \"price\" : " + relation.getPrice() + "}";
+
 	}
 
 	private String buildErrorResponse() {

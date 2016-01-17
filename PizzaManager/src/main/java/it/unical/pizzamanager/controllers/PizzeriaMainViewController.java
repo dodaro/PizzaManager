@@ -27,31 +27,22 @@ import it.unical.pizzamanager.utils.SessionUtils;
 public class PizzeriaMainViewController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
-	private static String mailP;
 	
 	@Autowired
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/pizzeriamainview", method = RequestMethod.GET)
-	public String pizzeriamainview(HttpSession session,Model model) {
-		
-		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
-		Pizzeria pizzeria = pizzeriaDAO.get(mailP);
-		setUserAttribute(session, model);
-		model.addAttribute("pizzeriaResult", pizzeria);
-		return "pizzeriamainview";
-	}
-	
-	@RequestMapping(value = "/pizzeriamainview", method = RequestMethod.POST)
-	public String pizzeriamainview(@RequestParam Integer id,HttpSession session,Model model) {
+	public String pizzeriamainview(@RequestParam Integer id, HttpSession session,Model model) {
+
 		
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(id);
 		setUserAttribute(session, model);
-		mailP=pizzeria.getEmail();
+		session.setAttribute("pizzeriaResult", pizzeria);
 		model.addAttribute("pizzeriaResult", pizzeria);
 		return "pizzeriamainview";
 	}
+	
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(@ModelAttribute SearchForm form, HttpSession session,Model model) {
 
@@ -62,19 +53,15 @@ public class PizzeriaMainViewController {
 				{
 					if(pizzerias.get(i).getName().equals(form.getWord()))
 						{model.addAttribute("pizzeriaResult", pizzerias.get(i));
-						mailP=pizzerias.get(i).getEmail();
 						session.setAttribute("pizzeriaResult", pizzerias.get(i));
 						setUserAttribute(session, model);
 						return "redirect:/pizzeriamainview";}
 					else if(pizzerias.get(i).getName().contains(form.getWord()))
 						result.add(pizzerias.get(i));
 				}
-				/*List<Pizzeria> pizzerias=new ArrayList<>();
-				pizzerias.add(pizzeria);*/
 				setUserAttribute(session, model);
 				session.setAttribute("pizzeriaResult", result);
-				model.addAttribute("pizzeriaResult", result);
- 		//	return "pizzeriamainview";	
+				model.addAttribute("pizzeriaResult", result);	
 		return "resultpage";
 	}
 	
