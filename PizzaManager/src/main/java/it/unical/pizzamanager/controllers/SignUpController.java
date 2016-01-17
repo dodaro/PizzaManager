@@ -65,7 +65,6 @@ public class SignUpController {
 
 	@ResponseBody
 	@RequestMapping(value = "/signup/emailTaken", method = RequestMethod.GET)
-
 	public String isEmailTaken(@RequestParam String email) {
 		logger.info("Request for email " + email);
 
@@ -83,4 +82,17 @@ public class SignUpController {
 		return "{\"email\" : \"" + email + "\", \"taken\" : " + taken + "}";
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/signup/usernameTaken", method = RequestMethod.GET)
+	public String isUsernameTaken(@RequestParam String username) {
+		logger.info("Request for username " + username);
+
+		boolean taken;
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+
+		User user = userDAO.getByUsername(username);
+		taken = user != null && user.getName().equals(username);
+
+		return "{\"username\" : \"" + username + "\", \"taken\" : " + taken + "}";
+	}
 }

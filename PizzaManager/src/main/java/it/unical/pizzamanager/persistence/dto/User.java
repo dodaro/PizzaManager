@@ -19,7 +19,7 @@ public class User extends Account {
 
 	private static final long serialVersionUID = -6053598225539038240L;
 
-	@Column(name = "name", length = 255)
+	@Column(name = "name", length = 255, unique = true)
 	private String name;
 
 	@Column(name = "firstName", length = 255)

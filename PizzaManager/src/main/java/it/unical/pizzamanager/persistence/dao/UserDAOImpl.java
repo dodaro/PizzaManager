@@ -71,6 +71,16 @@ public class UserDAOImpl implements UserDAO {
 		return user;
 	}
 
+	@Override
+	public User getByUsername(String username) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from User where name = :name");
+		query.setParameter("name", username);
+		User user = (User) query.uniqueResult();
+		session.close();
+		return user;
+	}
+
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
 	}

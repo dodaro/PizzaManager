@@ -2,46 +2,7 @@ var signupController = function() {
 
 	var validationDelay = 500;
 	var emailTimeout;
-
-	/*
-	 * Provides a simple regex to validate email syntax. It doesn't try to be
-	 * overly smart and it just checks for syntax.
-	 */
-	var validateEmail = function(email) {
-		if (email.length < 5) {
-			return false;
-		}
-
-		var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-		return regex.test(email);
-	};
-
-	/*
-	 * Validates password, just checking for its length.
-	 */
-	var validatePassword = function(password) {
-		return password.length >= 8
-	};
-
-	/*
-	 * Sends an AJAX request to the server to check if the email provided has
-	 * already been taken.
-	 */
-	var sendEmailRequest = function(email) {
-		console.log("Sending request for email " + email);
-		$.ajax({
-			type : "get",
-			url : "signup/emailTaken",
-			dataType : "json",
-			data : {
-				email : email
-			},
-			success : function(data) {
-				console.log("Response success.");
-				processEmailResponse(data);
-			}
-		});
-	};
+	var usernameTimeout;
 
 	/*
 	 * Processes the response of the server after the sendEmailRequest method.
@@ -53,6 +14,16 @@ var signupController = function() {
 			setValidationError($emailContainer, "taken");
 		} else {
 			setValidationSuccess($emailContainer);
+		}
+	};
+
+	var processUsernameResponse = function(data) {
+		var $usernameContainer = $(".js-username-container");
+
+		if (data.taken) {
+			setValidationError($usernameContainer, "taken");
+		} else {
+			setValidationSuccess($usernameContainer);
 		}
 	};
 
@@ -76,10 +47,11 @@ var signupController = function() {
 		$newMessage.addClass("visible");
 
 		$object.find(".loader").hide();
+		checkButton();
 	};
 
 	/*
-	 * Sets the validation state of the email form field to "success".
+	 * Sets the validation state of a form field to "success".
 	 */
 	var setValidationSuccess = function($object) {
 		var $formGroup = $object.find(".form-group");
@@ -96,11 +68,12 @@ var signupController = function() {
 		$validMessage.addClass("visible");
 
 		$object.find(".loader").hide();
+		checkButton();
 	};
 
 	/*
-	 * Clears the validation state of the email form field. It will show the
-	 * loading icon if showLoader is true, or hide it if showLoader is false.
+	 * Clears the validation state of a form field. It will show the loading
+	 * icon if showLoader is true, or hide it if showLoader is false.
 	 */
 	var clearValidationState = function($object, showLoader) {
 		var $formGroup = $object.find(".form-group");
@@ -125,7 +98,29 @@ var signupController = function() {
 			$object.find(".loader").hide();
 			$object.find(".message.hint").addClass("visible");
 		}
+
+		checkButton();
 	}
+
+	/**
+	 * Checks if the Sign Up button must be enabled or not, and enabled (or
+	 * disables) it if necessary.
+	 */
+	var checkButton = function() {
+		var $formGroups = $('#sign-up-form .form-group');
+		console.log($formGroups.length);
+
+		for (var i = 0; i < $formGroups.length; i++) {
+			if (!$formGroups.eq(i).hasClass('has-success')) {
+				$('#sign-up-form .button-submit').attr('disabled', 'disabled');
+				return false;
+			}
+		}
+
+		$('#sign-up-form .button-submit').removeAttr('disabled');
+
+		return true;
+	};
 
 	return {
 		/*
@@ -141,32 +136,63 @@ var signupController = function() {
 
 			if (email.length == 0) {
 				clearValidationState($emailContainer, false);
-			} else if (validateEmail(email)) {
+			} else if (signupValidator.emailValidate(email)) {
 				clearValidationState($emailContainer, true);
 				console.log("Email ok, sending request.")
 				emailTimeout = setTimeout(function() {
-					sendEmailRequest(email);
+					signupValidator.emailTaken(email, processEmailResponse);
 				}, validationDelay);
 			} else {
 				setValidationError($emailContainer, "error");
 			}
 		},
 
-		/*
-		 * Each time the user types in a character into the password input,
-		 * check for its validity.
-		 */
-		onPasswordChanged : function(password) {
-			var $passwordContainer = $(".js-password-container");
+		onUsernameChanged : function(username) {
+			clearTimeout(usernameTimeout);
+			var $usernameContainer = $(".js-username-container");
 
-			console.log("Password changed in " + password);
-
-			if (password.length == 0) {
-				clearValidationState($passwordContainer, false);
-			} else if (validatePassword(password)) {
-				setValidationSuccess($passwordContainer);
+			if (username.length == 0) {
+				clearValidationState($usernameContainer, false);
+			} else if (signupValidator.usernameValidate(username)) {
+				clearValidationState($usernameContainer, true);
+				console.log("Username ok, sending request.")
+				usernameTimeout = setTimeout(function() {
+					signupValidator.usernameTaken(username, processUsernameResponse);
+				}, validationDelay);
 			} else {
-				setValidationError($passwordContainer, "error");
+				setValidationError($usernameContainer, "error");
+			}
+		},
+
+		/**
+		 * Generic callback for every field which does not require server side
+		 * checks.
+		 */
+		onSimpleFieldChanged : function(fieldName, value) {
+
+			var $container = $('.js-' + fieldName + '-container');
+
+			if (value.length == 0) {
+				clearValidationState($container, false);
+			} else if (signupValidator.validate(fieldName, value)) {
+				setValidationSuccess($container);
+			} else {
+				setValidationError($container, 'error');
+			}
+		},
+
+		onPlaceChanged : function(latitude, longitude) {
+			console.log(latitude + " " + longitude);
+
+			var $container = $('.js-location-container');
+			setValidationSuccess($container);
+		},
+
+		onLocationInput : function() {
+			var $container = $('.js-location-container');
+
+			if ($container.find('.js-location-form').hasClass('has-success')) {
+				clearValidationState($container);
 			}
 		},
 
@@ -174,9 +200,29 @@ var signupController = function() {
 			$li.addClass('active');
 			$li.siblings('li').removeClass('active');
 
-			var $additional = $('.additional.additional-' + $li.data('additional'));
-			$additional.siblings('.additional').hide();
-			$additional.show();
+			var $form = $('#sign-up-form');
+			var accountType = $li.data('additional');
+
+			/*
+			 * Update the action attribute of the form to point to the right
+			 * controller.
+			 */
+			$form.attr('action', accountType + 'Signup');
+
+			/*
+			 * Detach the additional which is currently inside the form, append
+			 * it to the body, and hide it.
+			 */
+			$('#sign-up-form .additional').detach().appendTo('body').hide();
+
+			/*
+			 * Detach the additional that must be added to the form, append it
+			 * to the form, and make it visible.
+			 */
+			$('.additional.additional-' + accountType).detach().appendTo('#sign-up-form').show();
+
+			/* Check the sign up button at the end. */
+			checkButton();
 		}
 	};
 }();
