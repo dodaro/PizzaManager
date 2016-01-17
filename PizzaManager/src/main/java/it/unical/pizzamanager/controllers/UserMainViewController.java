@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Feedback;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
@@ -41,12 +39,6 @@ public class UserMainViewController {
 		return "usermainview";
 	}
 	
-
-	/*private void setUserAttribute(HttpSession session, Model model) {
-		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		model.addAttribute("user", user);
-	}*/
 	
 	private void setUserAttribute(HttpSession session, Model model) {
 		if(!SessionUtils.isUser(session))
