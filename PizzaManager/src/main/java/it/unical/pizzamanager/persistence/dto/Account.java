@@ -73,6 +73,14 @@ public abstract class Account implements Serializable {
 		this.location = location;
 	}
 
+	public Account(String email, String password, Address address, Location location) {
+		this.id = DatabaseHandler.NO_ID;
+		this.email = email;
+		this.password = password;
+		this.address = address;
+		this.location = location;
+	}
+
 	public Integer getId() {
 		return id;
 	}

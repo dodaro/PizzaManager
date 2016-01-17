@@ -108,7 +108,6 @@ var signupController = function() {
 	 */
 	var checkButton = function() {
 		var $formGroups = $('#sign-up-form .form-group');
-		console.log($formGroups.length);
 
 		for (var i = 0; i < $formGroups.length; i++) {
 			if (!$formGroups.eq(i).hasClass('has-success')) {
@@ -181,8 +180,12 @@ var signupController = function() {
 			}
 		},
 
-		onPlaceChanged : function(latitude, longitude) {
-			console.log(latitude + " " + longitude);
+		onPlaceChanged : function(address, location) {
+			$('.js-street-input').val(address.street);
+			$('.js-number-input').val(address.number);
+			$('.js-city-input').val(address.city);
+			$('.js-latitude-input').val(location.latitude);
+			$('.js-longitude-input').val(location.longitude);
 
 			var $container = $('.js-location-container');
 			setValidationSuccess($container);

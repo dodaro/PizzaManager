@@ -16,7 +16,6 @@ public class PizzeriaPopulator extends Populator {
 
 	@Override
 	protected void populate() {
-
 		createPizzeria("mail11@mail.com", "password11", "PizzeriaName11", "PizzeriaPhone11",
 				new Location(39.349557, 16.240456999999992));
 		createPizzeria("mail12@mail.com", "password12", "PizzeriaName12", "PizzeriaPhone12",
@@ -44,7 +43,7 @@ public class PizzeriaPopulator extends Populator {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
 
-		Pizzeria pizzeria = new Pizzeria(mail, password, name, phone, location);
+		Pizzeria pizzeria = new Pizzeria(mail, password, name, phone, null, location);
 		pizzeriaDAO.create(pizzeria);
 
 		// Create 5 tables for the pizzeria.

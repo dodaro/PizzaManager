@@ -6,6 +6,7 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+<script type="text/javascript" src="resources/js/maps.js"></script>
 <script type="text/javascript" src="resources/js/mapsAutocomplete.js"></script>
 <script type="text/javascript" src="resources/js/signup/signup.js"></script>
 <script type="text/javascript" src="resources/js/signup/signupValidator.js"></script>
@@ -156,9 +157,17 @@
 				<div class="message valid">Address selected.</div>
 			</div>
 		</div>
+		<div class="hidden-fields-container">
+			<input class="js-street-input" type="hidden" name="street" />
+			<input class="js-number-input" type="hidden" name="number" />
+			<input class="js-city-input" type="hidden" name="city" />
+			<input class="js-latitude-input" type="hidden" name="latitude" />
+			<input class="js-longitude-input" type="hidden" name="longitude" />
+		</div>
 		<div class="button-submit-container">
 			<button type="submit" class="btn btn-primary button-submit" disabled>Sign up</button>
 		</div>
 	</div>
+	<div id="emptyDiv"></div>
 </body>
 </html>

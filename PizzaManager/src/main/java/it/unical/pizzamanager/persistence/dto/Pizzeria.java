@@ -82,8 +82,9 @@ public class Pizzeria extends Account {
 		super(email, password);
 	}
 
-	public Pizzeria(String email, String password, String name, String phoneNumber, Location location) {
-		super(email, password, location);
+	public Pizzeria(String email, String password, String name, String phoneNumber, Address address,
+			Location location) {
+		super(email, password, address, location);
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.beveragesPriceList = new ArrayList<RelationPizzeriaBeverage>();
