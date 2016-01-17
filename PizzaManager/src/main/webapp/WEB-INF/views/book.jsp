@@ -39,7 +39,7 @@ $(document).ready(function(){
 </style>
 </head>
 <body>
-	<jsp:include page="includes/navbarAccount.jsp" />
+	<jsp:include page="includes/navbar${typeSession}.jsp" />
 
 	<div class="container">
 

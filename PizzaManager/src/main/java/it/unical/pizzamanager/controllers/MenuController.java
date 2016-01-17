@@ -25,8 +25,6 @@ import it.unical.pizzamanager.utils.SessionUtils;
 @Controller
 public class MenuController {
 
-	// private static final Logger logger = LoggerFactory.getLogger(MapsController.class);
-
 	@Autowired
 	private WebApplicationContext context;
 	
@@ -42,10 +40,25 @@ public class MenuController {
 		return "menu";
 	}
 	
-	private void setUserAttribute(HttpSession session, Model model) {
+	/*private void setUserAttribute(HttpSession session, Model model) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		model.addAttribute("user", user);
+	}*/
+	
+	private void setUserAttribute(HttpSession session, Model model) {
+		if(!SessionUtils.isUser(session))
+		{
+			String login = "Login";
+			model.addAttribute("typeSession", login);
+		}
+		else
+			{
+			UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+			User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+			String account = "Account";
+			model.addAttribute("typeSession", account);
+			model.addAttribute("user", user);}
 	}
 	
 	public String addToCart(@RequestParam String string){
