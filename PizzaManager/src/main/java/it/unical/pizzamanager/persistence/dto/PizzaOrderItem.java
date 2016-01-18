@@ -100,4 +100,12 @@ public class PizzaOrderItem extends OrderItem {
 	public String pizzeriaName(){
 		return pizzeria_pizza.getPizzeria().getName();
 	}
+
+	public Double getCostPizzaPlusIngredients() {
+		Double cost=getCost();
+		for (RelationPizzaOrderItemIngredient ingredient : pizzaOrderIngredients) {
+			cost+=ingredient.getCost();
+		}
+		return cost;
+	}
 }

@@ -88,7 +88,7 @@
 									</div>
 									<div class="col-xs-2">
 										<div class="pull-right">
-											<b>${i.cost }</b>
+											<b>${i.getCostLabel()} &#8364</b>
 										</div>
 									</div>
 									<div class="col-xs-2">

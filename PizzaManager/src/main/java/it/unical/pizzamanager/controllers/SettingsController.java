@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.model.AddressDisplay;
@@ -33,43 +34,47 @@ public class SettingsController {
 		User loggedUser = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 
 		Address userAddress = loggedUser.getAddress();
-		AddressDisplay address = new AddressDisplay();
-		address.setCity(userAddress.getCity());
-		address.setNumber(userAddress.getNumber());
-		address.setStreet(userAddress.getStreet());
 
 		model.addAttribute("user", loggedUser);
-		model.addAttribute("address", address);
+		model.addAttribute("address", userAddress);
 		return "settings";
 	}
 
-	@RequestMapping(value = "/settings/email", method = RequestMethod.POST)
-	public String modifySettings(@RequestParam EmailSetting emailsetting, Model model, HttpSession session) {
-		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		User loggedUser = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		System.out.println(emailsetting.getEmail());
-		model.addAttribute("user", loggedUser);
-
-		return "settings";
-	}
-
+	
+	@ResponseBody
 	@RequestMapping(value = "/settings/password", method = RequestMethod.POST)
-	public String modifySettings(@RequestParam PasswordSetting password, Model model, HttpSession session) {
+	public String modifySettings(@RequestParam String passwords, Model model, HttpSession session) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User loggedUser = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		System.out.println(password.getNewPassword());
+		String[] toSet = passwords.split(";");
+		PasswordSetting password = new PasswordSetting();
+		password.setOldPassword(toSet[0]);
+		password.setNewPassword(toSet[1]);
+		if (loggedUser.getPassword().equals(password.getOldPassword())) {
+			loggedUser.setPassword(password.getNewPassword());
+			userDAO.update(loggedUser);
+			return "{\"redirect\" : index}";
+		}
 		model.addAttribute("user", loggedUser);
 
-		return "settings";
+		return "{\"redirect\" : settings}";
 	}
 
+	// to fix
+	@ResponseBody
 	@RequestMapping(value = "/settings/address", method = RequestMethod.POST)
-	public String modifySettings(@RequestParam AddressDisplay address, Model model, HttpSession session) {
+	public String editAddres(@RequestParam String address, Model model, HttpSession session) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User loggedUser = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		System.out.println(address.getCity());
+		String[] toSet = address.split(";");
+		
+		AddressDisplay newAddress=new AddressDisplay();
+		if (loggedUser.getPassword().equals(toSet[1])) {
+			loggedUser.setAddress(new Address());
+			userDAO.update(loggedUser);
+			return "{\"redirect\" : index}";
+		}
 		model.addAttribute("user", loggedUser);
-
-		return "settings";
+		return "{\"redirect\" : settings}";
 	}
 }

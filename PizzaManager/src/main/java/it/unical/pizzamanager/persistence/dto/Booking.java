@@ -56,10 +56,10 @@ public abstract class Booking implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "completion_date")
 	private Date completionDate;
-	
+
 	/*
-	 * FIXME - Non abbiamo realmente bisogno di un altro attributo time: l'ora è già inclusa in un
-	 * oggetto Date.
+	 * FIXME - Non abbiamo realmente bisogno di un altro attributo time: l'ora
+	 * è già inclusa in un oggetto Date.
 	 */
 	@Temporal(TemporalType.TIME)
 	@Column(name = "time", nullable = false)
@@ -67,13 +67,12 @@ public abstract class Booking implements Serializable {
 
 	@Column(name = "confirmed", nullable = false)
 	private Boolean confirmed;
-	
-
 
 	/*
-	 * finchè una prenotazione non è stata confermata il campo priority deve avere un valore di
-	 * default. nel momento in cui però una prenotazione viene effettuata bisogna calcolare la
-	 * priorità in base all'orario ed alla modalità di prenotazione.
+	 * finchè una prenotazione non è stata confermata il campo priority deve
+	 * avere un valore di default. nel momento in cui però una prenotazione
+	 * viene effettuata bisogna calcolare la priorità in base all'orario ed
+	 * alla modalità di prenotazione.
 	 */
 	@Column(name = "priority", nullable = false)
 	private Integer priority;
@@ -81,10 +80,10 @@ public abstract class Booking implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "user")
 	private User user;
-	
+
 	@Column(name = "bookerName")
 	private String bookerName;
-	
+
 	@Column(name = "bill")
 	private Double bill;
 
@@ -98,9 +97,8 @@ public abstract class Booking implements Serializable {
 	@JoinColumn(name = "payment")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Payment payment;
-	
 
-	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, orphanRemoval=true)
+	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, orphanRemoval = true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<OrderItem> orderItems;
 
@@ -114,12 +112,12 @@ public abstract class Booking implements Serializable {
 		this.time = new Date();
 		this.confirmed = false;
 		this.priority = PRIORITY_DEFAULT;
-		this.bill=0.0;
+		this.bill = 0.0;
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
-		this.bookerName=null;
-		this.completionDate=null;
+		this.bookerName = null;
+		this.completionDate = null;
 		this.orderItems = new ArrayList<OrderItem>();
 	}
 
@@ -129,12 +127,13 @@ public abstract class Booking implements Serializable {
 		this.time = time;
 		this.confirmed = confirmed;
 		this.priority = priority;
-		this.bill=0.0;
+		this.bill = 0.0;
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
-		this.bookerName=null;
-		this.completionDate=null;
+
+		this.bookerName = null;
+		this.completionDate = null;
 		this.orderItems = new ArrayList<OrderItem>();
 	}
 
@@ -228,11 +227,55 @@ public abstract class Booking implements Serializable {
 
 	public Date getCompletionDate() {
 		return completionDate;
+
 	}
 
 	public void setCompletionDate(Date completionDate) {
 		this.completionDate = completionDate;
 	}
 
-	
+	public Double calculateBill() {
+		Double bill = 0.0;
+		for (OrderItem orderItem : orderItems) {
+			Double itemCost = 0.0;
+			if (orderItem instanceof BeverageOrderItem) {
+				itemCost = orderItem.getCost();
+			} else if (orderItem instanceof PizzaOrderItem) {
+				PizzaOrderItem order = (PizzaOrderItem) orderItem;
+				itemCost = order.getCostPizzaPlusIngredients();
+			}
+			bill += itemCost * orderItem.getNumber();
+		}
+		return bill;
+	}
+
+	public Integer evaluatePreparationTime() {
+		Integer preparationTime = 0;
+		for (OrderItem orderItem : orderItems) {
+			if (orderItem instanceof PizzaOrderItem)
+				preparationTime += ((PizzaOrderItem) orderItem).getPizzeria_pizza().getPreparationTime()
+						* orderItem.getNumber();
+		}
+
+		return preparationTime;
+	}
+
+	public String getPreparationTimeString(Integer preparationTime) {
+		Integer minutes = preparationTime / 60;
+		Integer seconds = preparationTime % 60;
+
+		String minutesString = Integer.toString(minutes);
+		String secondsString = Integer.toString(seconds);
+
+		if (minutes <= 9) {
+			minutesString = "0" + minutesString;
+		}
+
+		if (seconds <= 9) {
+			secondsString = "0" + secondsString;
+		}
+
+		return minutesString + ":" + secondsString;
+	}
+
 }

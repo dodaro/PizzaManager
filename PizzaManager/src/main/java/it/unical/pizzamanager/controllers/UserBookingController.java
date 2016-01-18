@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,6 +33,8 @@ import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.Cart;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
+import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
@@ -72,7 +75,7 @@ public class UserBookingController {
 			pizzeriaBook.setDate(format.parse(value[2]));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			System.out.println("Exception "+e);
+			System.out.println("Exception " + e);
 		}
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
@@ -90,8 +93,6 @@ public class UserBookingController {
 		booking.setTime(pizzeriaBook.getDate());
 		booking.setPizzeria(pizzeriaDAO.getByName(pizzeriaBook.getPizzeria()));
 		booking.setUser(user);
-		
-		
 
 		if (booking instanceof BookingDelivery)
 			((BookingDelivery) booking).setDeliveryAddress(user.getAddress());
@@ -102,8 +103,7 @@ public class UserBookingController {
 			orderItemDAO.update(orderItem);
 
 		}
-		
-		
+
 		ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
 		model.addAttribute("bookings", bookings);
 		model.addAttribute("user", user);
@@ -169,6 +169,9 @@ public class UserBookingController {
 		if (item instanceof PizzaOrderItem) {
 			itemToDisplay.setItemName(((PizzaOrderItem) item).pizzaName());
 			itemToDisplay.setPizzeria(((PizzaOrderItem) item).pizzeriaName());
+			itemToDisplay.setIngredients(stringFyIngredientsList(
+					((PizzaOrderItem) item).getPizzeria_pizza().getPizza().getPizzaIngredients(),
+					((PizzaOrderItem) item).getPizzaOrderIngredients()));
 		} else if (item instanceof BeverageOrderItem) {
 			itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
 			itemToDisplay.setPizzeria(((BeverageOrderItem) item).pizzeriaName());
@@ -177,5 +180,22 @@ public class UserBookingController {
 		itemToDisplay.setNumber(item.getNumber());
 		itemToDisplay.setImageItem("not found");
 		return itemToDisplay;
+	}
+
+	private String stringFyIngredientsList(List<RelationPizzaIngredient> pizzaIngredients,
+			List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients) {
+		String ingredients="(";
+		for (RelationPizzaIngredient relationPizzaIngredient : pizzaIngredients) {
+				ingredients=ingredients.concat(relationPizzaIngredient.getIngredient().getName());
+				ingredients=ingredients.concat(",");
+		}
+		for (RelationPizzaOrderItemIngredient relationPizzaOrderItemIngredient : pizzaOrderIngredients) {
+			ingredients=ingredients.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
+			ingredients=ingredients.concat(",");
+		}
+		ingredients=ingredients.substring(0, ingredients.length()-1);
+		ingredients=ingredients.concat(")");
+		System.out.println(ingredients);
+		return ingredients;
 	}
 }

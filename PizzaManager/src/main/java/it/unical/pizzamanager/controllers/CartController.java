@@ -63,12 +63,11 @@ public class CartController {
 
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		OrderItem item = orderItemDAO.getItem(id);
-		System.out.println("Cancello " + item.getId());
+
 
 		orderItemDAO.delete(item);
 
 		Cart cart = cartDAO.getUserCart(user);
-		System.out.println("cart" + cart.getOrderItems().size());
 		CartDisplay cartDisplay = createCartToDisplay(cart.getOrderItems());
 
 		model.addAttribute("user", user);
@@ -87,14 +86,11 @@ public class CartController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
 		Cart cart = cartDAO.getUserCart(user);
-		System.out.println(itemToBook);
-		System.out.println("Item to book");
 		String[] itemsToBook = itemToBook.split(";");
 		updateCart(itemsToBook, cart, cartDAO);
 
 		ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
 		model.addAttribute("bookings", bookings);
-		System.out.println("redirect");
 		return "{\"success\" : true}";
 	}
 
@@ -112,19 +108,32 @@ public class CartController {
 		RelationPizzeriaPizzaDAO menuDAO=(RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO");
 		RelationPizzeriaPizza pizza=menuDAO.get(id);
 		
+		addToCart(pizza, cart);
+		
+		
+		model.addAttribute("user",user);
+		return "{\"success\" : true}";
+	}
+	
+	private void addToCart(RelationPizzeriaPizza pizza, Cart cart){
+		OrderItemDAO orderItemDAO=(OrderItemDAO) context.getBean("orderItemDAO");
+		for (OrderItem o : cart.getOrderItems()) {
+			if(o instanceof PizzaOrderItem){
+				if(((PizzaOrderItem) o).getPizzeria_pizza().getId()==pizza.getId()){
+					o.setNumber(o.getNumber()+1);
+					orderItemDAO.update(o);
+					return;
+				}
+			}
+		}
 		PizzaOrderItem item=new PizzaOrderItem();
 		item.setCart(cart);
 		item.setCost(pizza.getPrice());
 		item.setPizzeria_pizza(pizza);
 		item.setNumber(1);
 		
-		OrderItemDAO orderItemDAO=(OrderItemDAO) context.getBean("orderItemDAO");
+		
 		orderItemDAO.create(item);
-		
-		
-		model.addAttribute("user",user);
-		System.out.println("redirect");
-		return "{\"success\" : true}";
 	}
 	private ArrayList<CartBooking> createBookingsToDisplay(Cart cart) {
 		ArrayList<CartBooking> bookings = new ArrayList<>();

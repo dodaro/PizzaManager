@@ -1,10 +1,10 @@
 package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
-
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
-
+import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.User;
 
 public class UserDAOImpl implements UserDAO {
@@ -80,6 +80,28 @@ public class UserDAOImpl implements UserDAO {
 		session.close();
 		return user;
 	}
+
+
+	@Override
+	public Booking getBooking(int bookingId, Integer id) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from User where id = :id");
+		query.setParameter("id", id);
+		User user = (User) query.uniqueResult();
+		Booking book = null;
+		for (Booking booking : user.getBookings()) {
+			if (booking.getId() == bookingId) {
+				Hibernate.initialize(booking);
+				booking.getOrderItems().size();
+				book = booking;
+			}
+
+		}
+
+		session.close();
+		return book;
+	}
+
 
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
