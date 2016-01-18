@@ -12,6 +12,7 @@
 
 <script type="text/javascript" src="resources/js/moment.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="resources/js/Chart.js"></script>
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
 
 <!-- Home scripts. -->
@@ -31,6 +32,10 @@
 
 <!-- Scripts for the live restaurant -->
 <script type="text/javascript" src="resources/js/pizzeria/LiveRestaurant.js"></script>
+
+<!-- Scripts for statistics -->
+<script type="text/javascript" src="resources/js/pizzeria/Statistics.js"></script>
+
 
 <!-- PER DANILO: DECIDI TU DOVE METTERE QUESTO SCRIPT -->
 <script type="text/javascript">
@@ -83,8 +88,7 @@
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
 						<li id="liLiveRestaurant" data-content="pizzerialiverestaurant"><a href="#">Live Restaurant</a></li>
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
-						<li><a href="#">Kitchen</a></li>
-						<li><a href="#">Statistics</a></li>
+						<li data-content="pizzeriastatistics"><a href="#">Statistics</a></li>
 					</ul>
 				</div>
 			</div>

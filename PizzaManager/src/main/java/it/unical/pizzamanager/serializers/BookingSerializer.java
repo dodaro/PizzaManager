@@ -99,8 +99,8 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 						jgen.writeStartObject();
 							jgen.writeStringField("priceEach",new DecimalFormat("#0.00").format(singlePrice));
 							jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getName());
-							jgen.writeStringField("glutenFree",pizzabooking.getGlutenFree());
-							jgen.writeStringField("size",pizzabooking.getSize());
+							jgen.writeStringField("glutenFree",pizzabooking.getGlutenFree().toString());
+							jgen.writeStringField("size",pizzabooking.getSize().toString());
 							jgen.writeStringField("number",pizzabooking.getNumber().toString());
 							jgen.writeArrayFieldStart("ingredientsBase");
 							//booking.getpizza() ti restituisce la relationPizzeriaPizza, facendo .getPizza() hai la pizza....

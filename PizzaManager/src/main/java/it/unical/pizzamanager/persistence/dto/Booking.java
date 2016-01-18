@@ -100,7 +100,7 @@ public abstract class Booking implements Serializable {
 	private Payment payment;
 	
 
-	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, orphanRemoval=true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<OrderItem> orderItems;
 

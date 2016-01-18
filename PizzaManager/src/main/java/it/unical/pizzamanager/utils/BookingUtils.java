@@ -34,7 +34,7 @@ public class BookingUtils {
 	private static String TAKE_AWAY="takeAway";
 	private static String DELIVERY="delivery";
 	private static String TABLE="table";
-	
+
 	public static Booking calculateBill(Booking booking, Pizzeria pizzeria){
 		Double bill=0.0;
 		for (OrderItem order : booking.getOrderItems()) {
@@ -46,11 +46,9 @@ public class BookingUtils {
 	
 	public static Booking createBookingFromBookingModelAndSave(BookingModel model, Pizzeria pizzeria, WebApplicationContext context) {
 		
-		Integer idBooking=model.getId();
+		//Integer idBooking=model.getId();
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-		if(idBooking!=null)
-			bookingDAO.delete(bookingDAO.getBooking(idBooking));
-		//il metodo già mi crea sul database l'oggetto
+		//metodo già mi crea sul database l'oggetto
 		Booking booking=createAndInitInformationBookingAndSave(model,pizzeria,model.getType(),context);
 		//creo quanto server
 		return booking;
@@ -60,6 +58,14 @@ public class BookingUtils {
 	private static Booking createAndInitInformationBookingAndSave(BookingModel model,Pizzeria pizzeria,String type, WebApplicationContext context){
 		
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+
+		/*
+		 * Nel caso in cui viene modificato un booking che prima era , ad esempio, di tipo bookingTakeAway, e voglio
+		 * fare un update rendendolo di tipo bookingDelivery(fare l'update del discriminatore) non mi viene consentito da hibernate
+		 * */
+		if(model.getId()!=null){
+			bookingDAO.delete(bookingDAO.getBooking(model.getId()));
+		}
 		
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd/M/yyyy");
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
@@ -290,7 +296,4 @@ public class BookingUtils {
 			}
 		}
 	}
-	
-	
-
 }
