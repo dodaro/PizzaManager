@@ -26,12 +26,10 @@ public class RelationPizzaIngredient implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizza")
 	private Pizza pizza;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "ingredient")
 	private Ingredient ingredient;

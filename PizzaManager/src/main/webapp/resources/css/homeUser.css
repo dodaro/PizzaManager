@@ -18,20 +18,12 @@
 	font-style: italic;
 }
 
-.feedback {
-	padding-top: 10px;
-	padding-bottom: 10px;
-}
 
 .form-radius {
 	width: 85px;
 	display: inline-block;
 	margin-left: 10px;
 	margin-right: 10px;
-}
-
-.feedback+.feedback {
-	border-top: 1px solid #DDDDDD;
 }
 
 .button-radius {
@@ -54,4 +46,8 @@
 
 .feedbacks-bubble .bubble-title {
 	margin-bottom: 10px;
+}
+
+.no-feedbacks {
+	margin-top: 20px;
 }
