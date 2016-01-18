@@ -36,11 +36,11 @@ public class PizzaOrderItem extends OrderItem {
 	@Column(name = "modified")
 	private Boolean modified;
 
-	@Column(name = "glutenFree")
+	/*@Column(name = "glutenFree")
 	private String glutenFree;
 
 	@Column(name = "size")
-	private String size;
+	private String size;*/
 
 	@OneToMany(mappedBy = "pizzaOrderItem", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -70,7 +70,7 @@ public class PizzaOrderItem extends OrderItem {
 		this.modified = modified;
 	}
 
-	public String getGlutenFree() {
+	/*public String getGlutenFree() {
 		return glutenFree;
 	}
 
@@ -84,7 +84,7 @@ public class PizzaOrderItem extends OrderItem {
 
 	public void setSize(String size) {
 		this.size = size;
-	}
+	}*/
 
 	public List<RelationPizzaOrderItemIngredient> getPizzaOrderIngredients() {
 		return pizzaOrderIngredients;

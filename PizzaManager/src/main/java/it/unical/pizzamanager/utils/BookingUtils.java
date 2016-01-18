@@ -21,7 +21,6 @@ import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
@@ -183,44 +182,14 @@ public class BookingUtils {
 			PizzaModel pizzaModel=model.getPizzas().get(i);			
 			for (int j = 0; j < pizzeria.getPizzasPriceList().size(); j++) {
 				
-				//PEZZA
-				//gluten: "no" e "yes"
-				//size: "s","l","m"
-				String size=null;
-				Boolean glutenFree=null;
-				switch (pizzaModel.getGlutenFree()) {
-				case "no":
-					glutenFree=false;
-					break;
-				case "yes":
-					glutenFree=true;
-					break;
-				default:
-					break;
-				}
-				switch (pizzaModel.getSize()) {
-				case "s":
-					size=PizzaSize.SMALL.toString();
-					break;
-				case "m":
-					size=PizzaSize.NORMAL.toString();			
-					break;
-				case "l":
-					size=PizzaSize.MAXI.toString();
-					break;
-
-				default:
-					break;
-				}
-				
 				RelationPizzeriaPizza relation=pizzeria.getPizzasPriceList().get(j);
 				System.out.println(relation.getPizza().getName()+" - "+pizzaModel.getName());
-				System.out.println(relation.getGlutenFree() +" - "+glutenFree);
-				System.out.println(relation.getPizzaSize().toString()+" - "+size);
+				System.out.println(relation.getGlutenFree() +" - "+pizzaModel.getGlutenFree());
+				System.out.println(relation.getPizzaSize().toString()+" - "+pizzaModel.getSize());
 				System.out.println("*********************************************************");
-				if(relation.getPizza().getName().equals(pizzaModel.getName())
-				   && relation.getGlutenFree()==glutenFree
-				   && relation.getPizzaSize().toString().equalsIgnoreCase(size)){
+				if(relation.getPizza().getName().equalsIgnoreCase(pizzaModel.getName())
+				   && relation.getGlutenFree()==Boolean.parseBoolean(pizzaModel.getGlutenFree())
+				   && relation.getPizzaSize().toString().equalsIgnoreCase(pizzaModel.getSize())){
 					
 					System.out.println("HO trovato la pizza");
 					PizzaOrderItem pizzaOrder = new PizzaOrderItem();
@@ -234,8 +203,8 @@ public class BookingUtils {
 						pizzaOrder.setModified(false);
 						
 					pizzaOrder.setNumber(pizzaModel.getNumber());
-					pizzaOrder.setGlutenFree(pizzaModel.getGlutenFree());
-					pizzaOrder.setSize(pizzaModel.getSize());
+					//pizzaOrder.setGlutenFree(pizzaModel.getGlutenFree());
+					//pizzaOrder.setSize(pizzaModel.getSize());
 					orderDAO.create(pizzaOrder);
 					
 					

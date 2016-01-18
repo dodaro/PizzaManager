@@ -50,6 +50,8 @@ var Statistics = function(){
 	
 	var initCharts = function(idChart,actionString, data,typeChart){
 		console.log("vengo chiamat")
+		$("#"+idChart).remove();
+		$("#canvasContenitor"+idChart).html('<canvas id="'+idChart+'" width="730" height="380"></canvas>');
 		var ctx= $("#"+idChart).get(0).getContext("2d");
 		var chart;
 		

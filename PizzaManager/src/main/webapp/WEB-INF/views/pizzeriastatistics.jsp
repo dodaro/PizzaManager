@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div>
 	<div class="row graphicChart">
-		<div class="col-xs-10">
+		<div id="canvasContenitoryearChart" class="col-xs-10">
 			<canvas id="yearChart" width="730" height="380"></canvas>
 		</div>
 		<div class="col-xs-2 table-column">
@@ -45,7 +45,7 @@
 		</div>
 	</div>
 	<div class="row graphicChart">
-		<div class="col-xs-10">
+		<div id="canvasContenitormonthsChart" class="col-xs-10">
 			<canvas id="monthsChart" width="730" height="380"></canvas>
 		</div>
 		<div class="col-xs-2 table-column">
