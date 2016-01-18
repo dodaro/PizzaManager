@@ -1,5 +1,7 @@
 var homeUser = function() {
 
+	var center;
+
 	var showPizzeriasMarkers = function(pizzerias) {
 		for (var i = 0; i < pizzerias.length; i++) {
 			var marker = maps.createAndShowMarker({
@@ -35,12 +37,23 @@ var homeUser = function() {
 		});
 	};
 
+	var initListeners = function() {
+		$('.button-radius').on('click', function() {
+			maps.clearMap();
+			requestPizzerias(center, $('.form-radius').val());
+		});
+	}
+
 	return {
 		init : function() {
+			initListeners();
+
 			maps.locate(function(location) {
 				// onSuccess
-				maps.initMap('map', location, 'red', 12);
-				requestPizzerias(location, $('.form-radius').val());
+				center = location;
+
+				maps.initMap('map', center, 'red', 12);
+				requestPizzerias(center, $('.form-radius').val());
 			}, function() {
 				// onFailure
 				maps.initMapWithError('map');

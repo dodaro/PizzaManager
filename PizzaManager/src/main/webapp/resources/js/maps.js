@@ -1,9 +1,18 @@
 var maps = function() {
 	var theMap;
 
+	var markers = new Array();
+	var infoWindows = new Array();
+	var circles = new Array();
+
+	var getInfoWindowContent = function(pizzeria) {
+		return "<div><b>" + pizzeria.name + "</b></div>" + "<div>" + pizzeria.street + " "
+				+ pizzeria.number + "</div>" + "<div>" + pizzeria.city + "</div>";
+	}
+
 	return {
 		createAndShowMarker : function(position, color) {
-			return new google.maps.Marker({
+			var marker = new google.maps.Marker({
 				map : theMap,
 				position : {
 					lat : position.latitude,
@@ -11,12 +20,18 @@ var maps = function() {
 				},
 				icon : 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
 			});
+
+			if (color != 'red') {
+				markers.push(marker);
+			}
+			
+			return marker;
 		},
 
 		attachInfoWindowToMarker : function(marker, pizzeria) {
 			var infoWindow = new google.maps.InfoWindow({
 				position : marker.getPosition(),
-				content : pizzeria.name,
+				content : getInfoWindowContent(pizzeria),
 				disableAutoPan : true,
 				pixelOffset : {
 					width : 0,
@@ -36,10 +51,14 @@ var maps = function() {
 			marker.addListener('click', function() {
 				window.location = 'pizzeriamainview?id=' + pizzeria.id;
 			});
+
+			infoWindows.push(infoWindow);
+
+			return infoWindow;
 		},
 
 		createAndShowCircle : function(position, radiusInKm) {
-			return new google.maps.Circle({
+			var circle = new google.maps.Circle({
 				strokeColor : '#0000FF',
 				strokeOpacity : 0.5,
 				strokeWeight : 2,
@@ -52,6 +71,10 @@ var maps = function() {
 				},
 				radius : radiusInKm * 1000
 			});
+			
+			circles.push(circle);
+			
+			return circle;
 		},
 
 		locate : function(onSuccess, onFailure) {
@@ -67,6 +90,24 @@ var maps = function() {
 			} else {
 				onFailure();
 			}
+		},
+
+		clearMap : function() {
+			for (var i = 0; i < markers.length; i++) {
+				markers[i].setMap(null);
+			}
+
+			for (var i = 0; i < markers.length; i++) {
+				infoWindows[i].setMap(null);
+			}
+
+			for (var i = 0; i < circles.length; i++) {
+				circles[i].setMap(null);
+			}
+
+			markers = new Array();
+			infoWindows = new Array();
+			circles = new Array();
 		},
 
 		initMap : function(mapDivId, center, markerColor, zoom) {

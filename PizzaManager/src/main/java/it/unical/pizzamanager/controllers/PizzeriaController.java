@@ -53,6 +53,12 @@ public class PizzeriaController {
 			builder.append("\"latitude\" : " + pizzerias.get(i).getLocation().getLatitude());
 			builder.append(", ");
 			builder.append("\"longitude\" : " + pizzerias.get(i).getLocation().getLongitude());
+			builder.append(", ");
+			builder.append("\"street\" : \"" + pizzerias.get(i).getAddress().getStreet() + "\"");
+			builder.append(", ");
+			builder.append("\"number\" : " + pizzerias.get(i).getAddress().getNumber());
+			builder.append(", ");
+			builder.append("\"city\" : \"" + pizzerias.get(i).getAddress().getCity() + "\"");
 			builder.append("}");
 
 			if (i != pizzerias.size() - 1) {
