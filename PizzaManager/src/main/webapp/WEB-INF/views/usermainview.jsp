@@ -13,17 +13,14 @@
 <meta name="viewport" content="width=device-width" />
 
 <style type="text/css">
-
-
-#boxInfo{
-	margin-top:60px;
+#boxInfo {
+	margin-top: 60px;
 }
 
-#boxReview{
+#boxReview {
 	height: 40%;
 	width: 45%;
 }
-
 </style>
 </head>
 <body>
@@ -35,32 +32,37 @@
 
 			<div id="wrapper" class="col-xs-10">
 				<div class="card">
-					<div id="content"><h2>User ${searchedUser.name}</h2></div>
+					<div id="content">
+						<h2>User ${searchedUser.name}</h2>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-3 col-sm-push-3">
-			<div>Immagine e info</div>
-	</div>
-  				<div class="col-xs-3 col-sm-3 col-sm-pull-3">
-<h2>Latest Reviews</h2>
-<div class="pre-scrollable">
-<div id="boxReview">
-    <c:forEach var="r" items="${feedbacksuser}">
-					<div class="row">
-						<a class="myref" href="pizzeriamainview?id=${r.pizzeria.id}">${r.pizzeria.name}</a>
-						<div>Fastnes: ${r.fastnessRating}</div>
-						<div>Hospitality: ${r.hospitalityRating}</div>
-						<div>Quality: ${r.qualityRating}</div>
-						<div>Comment:</div>
-						<div>${r.comment}</div>
-						
+				<div>Conviene mettere nella colonna a sinistra immagine e info, e nella colonna a destra
+					una lista di tutti i feedback che l'utente ha rilasciato</div>
+			</div>
+			<div class="col-xs-3 col-sm-3 col-sm-pull-3">
+				<h2>Latest Reviews</h2>
+				<div class="pre-scrollable">
+					<div id="boxReview">
+						<c:forEach var="r" items="${feedbacksuser}">
+							<div class="row">
+								<a class="myref" href="pizzeriamainview?id=${r.pizzeria.id}">${r.pizzeria.name}</a>
+								<div>Fastnes: ${r.fastnessRating}</div>
+								<div>Hospitality: ${r.hospitalityRating}</div>
+								<div>Quality: ${r.qualityRating}</div>
+								<div>Comment:</div>
+								<div>${r.comment}</div>
+
+							</div>
+						</c:forEach>
 					</div>
-					</c:forEach>
-    </div><!-- /.boxinner -->
-</div><!-- /.box -->
-</div>	
-  			
-</div>
+					<!-- /.boxinner -->
+				</div>
+				<!-- /.box -->
+			</div>
+
+		</div>
 	</div>
 </body>
 </html>

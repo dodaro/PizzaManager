@@ -48,6 +48,7 @@ public class HomeController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		model.addAttribute(MODEL_ATTRIBUTE_USER, user);
 		model.addAttribute("radius", 5);
+		model.addAttribute("numberOfFeedbacks", 5);
 	}
 
 	private void populatePizzeriaModel(HttpSession session, Model model) {

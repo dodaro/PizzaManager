@@ -42,29 +42,16 @@
 	margin-top: 25px;
 }
 
-.comment {
-	font-style: italic;
-	margin-top: 15px;
-}
-
 .ratings {
 	margin-top: 10px;
 }
 
-.rating {
-	padding-top: 3px;
-	padding-bottom: 3px;
-}
-
-.stars {
-	margin-left: 10px;
-}
-
-.pizzeria-name {
+.feedbacks-header {
+	font-weight: bold;
 	font-size: 110%;
-	font-weight: bold;
+	margin-bottom: 20px;
 }
 
-.rating-name {
-	font-weight: bold;
+.feedbacks-bubble .bubble-title {
+	margin-bottom: 10px;
 }

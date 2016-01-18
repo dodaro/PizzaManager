@@ -13,30 +13,14 @@
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaMainView.css" />
 
-<title>Pizzeria View </title>
+<title>${pizzeriaResult.name}</title>
 
 <meta name="viewport" content="width=device-width" />
 
 <style type="text/css">
-#boxInfo{
-	margin-top:30px;
-	margin-right: 40px;
-}
 
-#map {
-	height: 50%;
-	width: 230%;
-}
-
-#boxReview{
-	height: 40%;
-	width: 45%;
-}
-#boxButton{
-	margin-top:410px;
-	margin-left:1px;
-}
 </style>
 </head>
 <body>
@@ -48,59 +32,59 @@
 
 			<div id="wrapper" class="col-xs-10">
 				<div class="buble">
-					<div id="content"><h2>${pizzeriaResult.getName()}</h2></div>
+					<div id="content">
+						<h2>${pizzeriaResult.getName()}</h2>
+					</div>
 				</div>
 			</div>
 			<div class="col-sm-3 col-sm-push-3">
-			<div id="map"></div>
-	</div>
-  				<div class="col-xs-3 col-sm-3 col-sm-pull-3">
-<h2>Latest Reviews</h2>
-<div class="pre-scrollable">
-<div id="boxReview">
-<c:forEach var="r" items="${pizzeriaResult.feedbacks}">
-					<div class="row">
-						<a class="userref" href="usermainview?id=${r.user.id}">${r.user.name}</a>
-						<div>Fastnes: ${r.fastnessRating}</div>
-						<div>Hospitality: ${r.hospitalityRating}</div>
-						<div>Quality: ${r.qualityRating}</div>
-						<div>Comment:</div>
-						<div>${r.comment}</div>
-						
+				<div id="map"></div>
+			</div>
+			<div class="col-xs-3 col-sm-3 col-sm-pull-3">
+				<h2>Latest Reviews</h2>
+				<div class="pre-scrollable">
+					<div id="boxReview">
+						<c:forEach var="r" items="${pizzeriaResult.feedbacks}">
+							<div class="row">
+								<a class="userref" href="usermainview?id=${r.user.id}">${r.user.name}</a>
+								<div>Fastnes: ${r.fastnessRating}</div>
+								<div>Hospitality: ${r.hospitalityRating}</div>
+								<div>Quality: ${r.qualityRating}</div>
+								<div>Comment:</div>
+								<div>${r.comment}</div>
+
+							</div>
+						</c:forEach>
+
 					</div>
-					</c:forEach>
-  
-</div>
-</div>	
-</div>
-  			
-  			<div class="col-xs-4 col-sm-4 col-sm-push-4">
-  			<h3>${pizzeriaResult.name}</h3>
-  			<div>${pizzeriaResult.getAddress()}</div>
-  			<div>${pizzeriaResult.getPhoneNumber()}</div>
-  			<div>e-mail: ${pizzeriaResult.getEmail()}</div> 
-  			</div>
+				</div>
+			</div>
+
+			<div class="col-xs-4 col-sm-4 col-sm-push-4">
+				<h3>${pizzeriaResult.name}</h3>
+				<div>${pizzeriaResult.getAddress()}</div>
+				<div>${pizzeriaResult.getPhoneNumber()}</div>
+				<div>e-mail: ${pizzeriaResult.getEmail()}</div>
+			</div>
 
 
 
-<div id="boxButton">
-<a href="menu?id=${pizzeriaResult.id}" class="btn btn-success">
-							Menù
-						</a>
-<a href="book?id=${pizzeriaResult.id}" class="btn btn-primary">Book</a>
-</div>
-</div>
-<div class="row">
-	<div class="col-sm-4 col-sm-push-4">
-<div class="pre-scrollable">
-<input type="text" class="form-control" id="boxInputReview">
+			<div id="boxButton">
+				<a href="menu?id=${pizzeriaResult.id}" class="btn btn-success"> Menù </a> <a
+					href="book?id=${pizzeriaResult.id}" class="btn btn-primary">Book</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-4 col-sm-push-4">
+				<div class="pre-scrollable">
+					<input type="text" class="form-control" id="boxInputReview">
 
-</div>
+				</div>
 
-<a class="btn btn-primary">Leave Comment</a>
-</div>
-</div>
-</div>
+				<a class="btn btn-primary">Leave Comment</a>
+			</div>
+		</div>
+	</div>
 	<script>
 		pizzeriaMainView.init({
 			latitude : <c:out value="${pizzeriaResult.location.latitude}" />,

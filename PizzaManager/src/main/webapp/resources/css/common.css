@@ -55,6 +55,33 @@ body {
 	font-weight: bold;
 }
 
+.comment {
+	font-style: italic;
+	margin-top: 15px;
+}
+
+.ratings {
+	margin-top: 10px;
+}
+
+.rating {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.stars {
+	margin-left: 10px;
+}
+
+.feedback .pizzeria-name, .feedback .user-name {
+	font-size: 110%;
+	font-weight: bold;
+}
+
+.rating-name {
+	font-weight: bold;
+}
+
 .non-selectable {
 	-webkit-user-select: none;
 	-moz-user-select: none;
