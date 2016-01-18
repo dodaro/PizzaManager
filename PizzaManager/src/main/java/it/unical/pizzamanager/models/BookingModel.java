@@ -15,7 +15,7 @@ public class BookingModel {
 	private String underTheNameOf;
 	private AddressModel address;//id dell'address
 	private List<Integer> tables;//lista di id dei tavoli
-
+	private Boolean confirmed;
 	
 	
 	
@@ -24,7 +24,7 @@ public class BookingModel {
 
 	}
 
-	public BookingModel(Integer id,String type, String date, String time, Boolean payment, List<BeverageModel> beverages, List<PizzaModel> pizzas, String user, Double bill) {
+	public BookingModel(Integer id,String type, String date, String time, Boolean payment,Boolean confirmed, List<BeverageModel> beverages, List<PizzaModel> pizzas, String user, Double bill) {
 
 		this.id=id;
 		this.type=type;
@@ -39,6 +39,7 @@ public class BookingModel {
 		this.underTheNameOf="";
 		this.address=null;
 		this.tables=null;
+		this.confirmed=confirmed;
 		
 	}
 
@@ -136,6 +137,14 @@ public class BookingModel {
 
 	public void setTables(List<Integer> tables) {
 		this.tables = tables;
+	}
+
+	public Boolean getConfirmed() {
+		return confirmed;
+	}
+
+	public void setConfirmed(Boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 
 
