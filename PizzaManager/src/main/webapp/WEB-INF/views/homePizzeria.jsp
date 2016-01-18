@@ -15,6 +15,8 @@
 <script type="text/javascript" src="resources/js/Chart.js"></script>
 <script type="text/javascript" src="resources/js/pizzeria/Pizza.js"></script>
 
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
+<script type="text/javascript" src="resources/js/mapsAutocomplete.js"></script>
 <!-- Home scripts. -->
 <script type="text/javascript" src="resources/js/pizzeria/homePizzeria.js"></script>
 
@@ -35,7 +37,6 @@
 
 <!-- Scripts for statistics -->
 <script type="text/javascript" src="resources/js/pizzeria/Statistics.js"></script>
-
 
 <!-- PER DANILO: DECIDI TU DOVE METTERE QUESTO SCRIPT -->
 <script type="text/javascript">
