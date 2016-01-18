@@ -25,11 +25,14 @@
 					<div id="content"><h2>Result </h2>
 				 	<c:forEach var="r" items="${pizzeriaResult}">
 					<div class="row">
-						<a class="myref" href="pizzeriamainview?id=${r.getId()}">${r.getName()}</a>
+						<a class="myref" href="pizzeriamainview?id=${r.getId()}">${r.getName()} (Pizzeria)</a>
 					</div>
 					</c:forEach>
-					<%--<div class="row">
-					<a>${pizzeriaResult.getName()}</a>--%>
+					<c:forEach var="r" items="${pizzeriaResult2}">
+					<div class="row">
+						<a class="myref" href="pizza?id=${r.getId()}">${r.getName()} (Pizza)</a>
+					</div>
+					</c:forEach>
 					</div>
 				</div>
 				</div>

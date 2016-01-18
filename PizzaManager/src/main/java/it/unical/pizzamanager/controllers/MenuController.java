@@ -1,6 +1,5 @@
 package it.unical.pizzamanager.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,18 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.persistence.dao.CartDAO;
-import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizza;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
