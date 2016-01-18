@@ -111,24 +111,24 @@
 					</div>
 					<div class="form-group">
 						<div class="pizzaButtons">
-							<label>Gl.Free</label>
+							<label>Glt Free</label>
 							<div id="glutenButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
 								<label class="btn btn-primary active"> <input type="radio" name="options"
-									value="no" id="option1" autocomplete="off" checked> No
-								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="yes"
+									value="false" id="option1" autocomplete="off" checked> No
+								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="true"
 									id="option2" autocomplete="off"> Yes
 								</label>
 							</div>
 						</div>
 						<div class="pizzaButtons">
-							<label>Size</label>
+							<label>Sz</label>
 							<div id="sizeButtons" class="btn-group buttonPizzaControls" data-toggle="buttons">
-								<label class="btn btn-primary active"> <input type="radio" name="options" value="s"
+								<label class="btn btn-primary active"> <input type="radio" name="options" value="SMALL"
 									id="option11" autocomplete="off" checked> S
-								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="m"
-									id="option22" autocomplete="off"> M
-								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="l"
-									id="option33" autocomplete="off"> L
+								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="NORMAL"
+									id="option22" autocomplete="off"> N
+								</label> <label class="btn btn-primary"> <input type="radio" name="options" value="MAXI"
+									id="option33" autocomplete="off"> M
 								</label>
 							</div>
 						</div>

@@ -51,8 +51,8 @@ public class BookingPopulator extends Populator {
 		pizzaOrder1.setPizzeria_pizza(pizzeria.getPizzasPriceList().get(0));
 		pizzaOrder1.setModified(false);
 		pizzaOrder1.setNumber(3);
-		pizzaOrder1.setGlutenFree(PizzaOrderItem.NO);
-		pizzaOrder1.setSize(PizzaOrderItem.MEDIUM);
+		//pizzaOrder1.setGlutenFree(PizzaOrderItem.NO);
+		//pizzaOrder1.setSize(PizzaOrderItem.MEDIUM);
 			pizzaOrder1=OrderItemUtils.setPizzaOrderCost(pizzaOrder1, pizzeria);
 		orderDAO.create(pizzaOrder1);
 
@@ -60,16 +60,16 @@ public class BookingPopulator extends Populator {
 		pizzaOrder2.setPizzeria_pizza(pizzeria.getPizzasPriceList().get(1));
 		pizzaOrder2.setModified(true);
 		pizzaOrder2.setNumber(2);
-		pizzaOrder2.setGlutenFree(PizzaOrderItem.NO);
-		pizzaOrder2.setSize(PizzaOrderItem.LARGE);
+		//pizzaOrder2.setGlutenFree(PizzaOrderItem.NO);
+		//pizzaOrder2.setSize(PizzaOrderItem.LARGE);
 		orderDAO.create(pizzaOrder2);
 
 		PizzaOrderItem pizzaOrder3 = new PizzaOrderItem();
 		pizzaOrder3.setPizzeria_pizza(pizzeria.getPizzasPriceList().get(2));
 		pizzaOrder3.setModified(false);
 		pizzaOrder3.setNumber(3);
-		pizzaOrder3.setGlutenFree(PizzaOrderItem.NO);
-		pizzaOrder3.setSize(PizzaOrderItem.MEDIUM);
+		//pizzaOrder3.setGlutenFree(PizzaOrderItem.NO);
+		//pizzaOrder3.setSize(PizzaOrderItem.MEDIUM);
 			pizzaOrder3=OrderItemUtils.setPizzaOrderCost(pizzaOrder3, pizzeria);
 		orderDAO.create(pizzaOrder3);
 
@@ -77,8 +77,8 @@ public class BookingPopulator extends Populator {
 		pizzaOrder4.setPizzeria_pizza(pizzeria.getPizzasPriceList().get(2));
 		pizzaOrder4.setModified(true);
 		pizzaOrder4.setNumber(2);
-		pizzaOrder4.setGlutenFree(PizzaOrderItem.YES);
-		pizzaOrder4.setSize(PizzaOrderItem.MEDIUM);
+		//pizzaOrder4.setGlutenFree(PizzaOrderItem.YES);
+		//pizzaOrder4.setSize(PizzaOrderItem.MEDIUM);
 		orderDAO.create(pizzaOrder4);
 
 		List<RelationPizzaOrderItemIngredient> ingredientsAdded = new ArrayList<>();
