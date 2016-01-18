@@ -50,6 +50,7 @@ var LiveOrderTool = function(){
 			//creazione bootsrap-switch
 			$(".switch-radio1").bootstrapSwitch();
 			checkTypeBooking("takeAway");
+			mapsAutocomplete.initMaps('maps-autocomplete-input');
 			//proprietà bottoni di modifica disabilitati al caricamento della pagina
 			setControlButtons("pizza", false, true, true);
 			setControlButtons("beverage", false, true, true);
@@ -172,6 +173,17 @@ var LiveOrderTool = function(){
 		$('#confermeOrder').on("click",function(){
 			if(validatorHeading())
 				sendOrder();
+		});
+		
+		mapsAutocomplete.setOnPlaceChangedListener(function(address, longitude) {
+			//console.log(address);
+			//console.log(location);
+			if(address.city!=undefined)
+				$("#bookingCityInput").val(address.city);
+			if(address.street!=undefined)
+				$("#bookingStreetInput").val(address.street);
+			if(address.number!=undefined)
+				$("#bookingNumberInput").val(address.number);
 		});
 		//Beverage listener
 		$('#confermeButtonBeverage').on("click",function(){
@@ -1142,10 +1154,11 @@ var LiveOrderTool = function(){
 		$("#bookingNameInput").closest("div").removeClass("has-error");
 		$("#bookingCityInput").closest("div").removeClass("has-error");
 		$("#bookingStreetInput").closest("div").removeClass("has-error");
+		$("#bookingNumberInput").closest("div").removeClass("has-error");
 		$("#tables").closest("div").removeClass("has-error");
 		
 		var pattern=/^([a-zA-Z\xE0\xE8\xE9\xF9\xF2\xEC\x27]\s?)+$/; //caratteri, lettere accentate apostrofo e un solo spazio fra le parole
-		var patternNumber;
+		var patternNumber=/^\d+$/;
 		
 		if ($("#datetimepicker1").data("DateTimePicker").date()==null){
 			//alert("Inserire il campo data!");
@@ -1154,6 +1167,13 @@ var LiveOrderTool = function(){
 				scrollTop: $(".row.booking-data").offset().top
 			}, 1000);
 			return false;
+		}
+		else{
+			var dateSelected=$("#datetimepicker1").data("DateTimePicker").date();
+			if(dateSelected<moment().valueOf()){
+				alert("data improbabile");
+				return false;
+			}
 		}
 		
 		if($("#bookingNameInput").prop("disabled")==false){
@@ -1168,6 +1188,7 @@ var LiveOrderTool = function(){
 		}
 		
 		if($("[value='delivery']").is(':checked')){
+			console.log($("#bookingCityInput").val());
 			if (!pattern.test($("#bookingCityInput").val())){
 				//alert("Il campo city non e\' valido!");
 				$("#bookingCityInput").closest("div").addClass("has-error");
@@ -1176,6 +1197,7 @@ var LiveOrderTool = function(){
 				}, 1000);
 				return false;
 			}
+			console.log($("#bookingStreetInput").val());
 			if (!pattern.test($("#bookingStreetInput").val())){
 				//alert("Il campo street non e\' valido!");
 				$("#bookingStreetInput").closest("div").addClass("has-error");
@@ -1184,6 +1206,16 @@ var LiveOrderTool = function(){
 				}, 1000);
 				return false;
 			}
+			console.log($("#bookingNumberInput").val());
+			if (!patternNumber.test($("#bookingNumberInput").val())){
+				//alert("Il campo street non e\' valido!");
+				$("#bookingNumberInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
+			
 		}
 		else if($("[value='table']").is(':checked')){
 			console.log($("#tables").select2("val").length);
@@ -1196,6 +1228,12 @@ var LiveOrderTool = function(){
 				return false;
 			}
 		}
+		
+		if(pizzaList.length==0){
+			alert("Book a pizza!")
+			return false;
+		}
+		
 		return true;
 	}
 	

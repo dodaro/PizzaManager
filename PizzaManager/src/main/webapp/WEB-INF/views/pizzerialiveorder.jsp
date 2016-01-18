@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <div id="live-order-tool">
 	<div class="row booking-data">
 		<div class="col-md-4 left-col">
@@ -21,6 +22,11 @@
 		</div>
 		<div class="col-md-4 middle-col">
 			<label class="control-label">Address to delivery (if delivery)</label>
+			<div class="form-group has-feedback js-location-form">
+				<input type="text" name="location" id="maps-autocomplete-input"
+					class="form-control js-location-input address" placeholder="Search for your address" /><span
+					class="glyphicon form-control-feedback"></span>
+			</div>
 			<div class="form-group">
 				<input type="text" class="form-control address" id="bookingCityInput" placeholder="City">
 			</div>
@@ -236,6 +242,5 @@
 </div>
 <!-- /.modal -->
 <script type="text/javascript">
-	console.log("vengo chiamato")
 	LiveOrderTool.init();
 </script>

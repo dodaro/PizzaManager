@@ -1,5 +1,5 @@
 var Statistics = function(){
-	Chart.defaults.global.showTooltips=false;
+	//Chart.defaults.global.showTooltips=false;
 	
 	var dataPerYearFromServer;
 	var dataPerMonthFromServer;

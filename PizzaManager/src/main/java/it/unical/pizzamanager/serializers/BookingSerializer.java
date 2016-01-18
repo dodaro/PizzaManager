@@ -54,6 +54,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 			jgen.writeStringField("time", booking.getTime().toString());
 			jgen.writeStringField("id", booking.getId().toString());
 			jgen.writeBooleanField("confirmed", booking.getConfirmed());
+			jgen.writeStringField("priority", booking.getPriority().toString());
 			
 			if(booking.getPayment()!=null)
 				jgen.writeBooleanField("payment", booking.getPayment().getPaid());

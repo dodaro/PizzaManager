@@ -11,6 +11,7 @@
 						<th>Name</th>
 						<th>Data</th>
 						<th>Time</th>
+						<th>Prior.</th>
 						<th>Payment</th>
 						<th>Bill</th>
 						<th>Id</th>

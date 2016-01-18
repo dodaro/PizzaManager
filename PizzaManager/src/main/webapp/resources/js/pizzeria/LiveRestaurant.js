@@ -2,8 +2,9 @@ var LiveRestaurant = function(){
 	
 	var tableLiveRestaurant;
 	var bookingConfermedFromServer;
-	var columnId = 7;
-	var columnPayment = 5;
+	var columnId = 8;
+	var columnPayment = 6;
+	var columnPriority = 5;
 
 	var initDataTable = function() {
 		
@@ -20,6 +21,7 @@ var LiveRestaurant = function(){
 				    {"string" : "Name"},
 				    {"string" : "Data"},
 				    {"string" : "Time"},
+				    {"string" : "Priority"},
 				    {"string" : "Payment"},
 				    {"string" : "Bill"},
 				    {"string" : "Id"}
@@ -63,11 +65,20 @@ var LiveRestaurant = function(){
 						  nome,
 						  bookingsConfermed[int].date,
 						  bookingsConfermed[int].time,
+						  bookingsConfermed[int].priority,
 						  bookingsConfermed[int].payment,
 						  bookingsConfermed[int].bill +" &euro;",
 						  bookingsConfermed[int].id];
 			tableLiveRestaurant.row.add(rowToAdd).draw(false);
 		}
+		
+		tableLiveRestaurant.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+			
+			var priority=this.data()[columnPriority];
+			if(priority==6){
+				$(this.node()).css("color","red");
+			}
+		});
 	}
 
 	
@@ -146,9 +157,9 @@ var LiveRestaurant = function(){
 	}
 	
 	function format(idBookingConfermed) {
-	
 		string="";
 		for (var int = 0; int < bookingConfermedFromServer.length; int++) {
+			console.log("chiamato")
 			if(bookingConfermedFromServer[int].id==idBookingConfermed){
 				var bookingConfermed=bookingConfermedFromServer[int];
 				
@@ -277,7 +288,7 @@ var LiveRestaurant = function(){
 				}
 			}
 		}
-		
+		console.log(string);
 		return string;
 	}
 
