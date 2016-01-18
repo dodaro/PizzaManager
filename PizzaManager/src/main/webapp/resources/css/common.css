@@ -2,6 +2,12 @@
 
 @import url("navbar.css");
 
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
 html {
 	/*
 	 * Scrollbar is always visible to prevent page from shifting to the left when the scrollbar is
@@ -14,6 +20,10 @@ body {
 	/* This rule moves the content of the body down to make place for the navbar. */
 	padding-top: 51px;
 	background-color: #D4E3E9;
+}
+
+#map {
+	height: 100%;
 }
 
 /* This rule removes the padding from Bootstrap columns. */
@@ -37,6 +47,39 @@ body {
 	padding: 15px;
 	background-color: white;
 	border-radius: 10px;
+}
+
+.bubble-title {
+	margin-bottom: 25px;
+	font-size: 120%;
+	font-weight: bold;
+}
+
+.comment {
+	font-style: italic;
+	margin-top: 15px;
+}
+
+.ratings {
+	margin-top: 10px;
+}
+
+.rating {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+
+.stars {
+	margin-left: 10px;
+}
+
+.feedback .pizzeria-name, .feedback .user-name {
+	font-size: 110%;
+	font-weight: bold;
+}
+
+.rating-name {
+	font-weight: bold;
 }
 
 .non-selectable {

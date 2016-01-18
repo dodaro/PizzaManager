@@ -1,0 +1,57 @@
+.wrapper {
+	padding-left: 15px;
+}
+
+.profile-image-container {
+	text-align: center;
+}
+
+.name-container {
+	font-size: 140%;
+	font-weight: bold;
+	margin-top: 25px;
+}
+
+.username-container {
+	margin-top: 15px;
+	font-size: 110%;
+	font-style: italic;
+}
+
+.feedback {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.form-radius {
+	width: 85px;
+	display: inline-block;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.feedback+.feedback {
+	border-top: 1px solid #DDDDDD;
+}
+
+.button-radius {
+	margin-left: 25px;
+}
+
+#map {
+	margin-top: 25px;
+}
+
+.ratings {
+	margin-top: 10px;
+}
+
+.feedbacks-header {
+	font-weight: bold;
+	font-size: 110%;
+	margin-bottom: 20px;
+}
+
+.feedbacks-bubble .bubble-title {
+	margin-bottom: 10px;
+}

@@ -3,8 +3,13 @@ $(function() {
 		signupController.onEmailChanged($(this).val());
 	});
 
-	$('.js-password-input').on('input propertychange', function() {
-		signupController.onPasswordChanged($(this).val());
+	$('.js-username-input').on('input propertychange', function() {
+		signupController.onUsernameChanged($(this).val());
+	});
+
+	$('.js-simple-input').on('input propertychange', function() {
+		var fieldName = $(this).attr('name');
+		signupController.onSimpleFieldChanged(fieldName, $(this).val());
 	});
 
 	$('#signup-additional li').on('click', function(event) {
@@ -12,8 +17,12 @@ $(function() {
 		event.preventDefault();
 	});
 
-	maps.initMaps('maps-autocomplete-input');
-	maps.setOnPlaceChangedListener(function(latitude, longitude) {
-		console.log(latitude + " " + longitude);
+	$('.js-location-input').on('input', function() {
+		signupController.onLocationInput();
+	});
+
+	mapsAutocomplete.initMaps('maps-autocomplete-input');
+	mapsAutocomplete.setOnPlaceChangedListener(function(latitude, longitude) {
+		signupController.onPlaceChanged(latitude, longitude);
 	});
 });

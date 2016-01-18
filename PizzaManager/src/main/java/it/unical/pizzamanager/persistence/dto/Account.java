@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -44,6 +46,7 @@ public abstract class Account implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "location")
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private Location location;
 
 	public Account() {
@@ -67,6 +70,14 @@ public abstract class Account implements Serializable {
 		this.email = email;
 		this.password = password;
 		this.address = null;
+		this.location = location;
+	}
+
+	public Account(String email, String password, Address address, Location location) {
+		this.id = DatabaseHandler.NO_ID;
+		this.email = email;
+		this.password = password;
+		this.address = address;
 		this.location = location;
 	}
 

@@ -1,12 +1,16 @@
 package it.unical.pizzamanager.persistence.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
+import it.unical.pizzamanager.utils.geo.BoundingRectangle;
+import it.unical.pizzamanager.utils.geo.Geolocalization;
 
 public class PizzeriaDAOImpl implements PizzeriaDAO {
 
@@ -69,6 +73,45 @@ public class PizzeriaDAOImpl implements PizzeriaDAO {
 
 		session.close();
 		return pizzerias;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Pizzeria> getPizzeriasWithin(Location center, Double radius) {
+		// Calculate BoundingRectangle;
+		BoundingRectangle rectangle = Geolocalization.getBoundingRectangle(center, radius);
+
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("select pizzeria from Pizzeria as pizzeria where "
+				+ "pizzeria.location.latitude <= :maxLatitude and "
+				+ "pizzeria.location.latitude >= :minLatitude and "
+				+ "pizzeria.location.longitude <= :maxLongitude and "
+				+ "pizzeria.location.longitude >= :minLongitude");
+		query.setParameter("minLatitude", rectangle.getMinLatitude());
+		query.setParameter("maxLatitude", rectangle.getMaxLatitude());
+		query.setParameter("minLongitude", rectangle.getMinLongitude());
+		query.setParameter("maxLongitude", rectangle.getMaxLongitude());
+
+		/* Find pizzerias in the bounding rectangle. */
+		List<Pizzeria> pizzeriasInRectangle = (List<Pizzeria>) query.list();
+
+		session.close();
+
+		/*
+		 * For every pizzeria in the rectangle, check the distance from the center. Delete all
+		 * pizzerias which are in the "corners" of the bounding rectangle, and not within the given
+		 * radius.
+		 */
+
+		List<Pizzeria> pizzeriasWithin = new ArrayList<>();
+
+		for (Pizzeria pizzeria : pizzeriasInRectangle) {
+			if (Geolocalization.greatCircleDistance(center, pizzeria.getLocation()) <= radius) {
+				pizzeriasWithin.add(pizzeria);
+			}
+		}
+
+		return pizzeriasWithin;
 	}
 
 	@Override

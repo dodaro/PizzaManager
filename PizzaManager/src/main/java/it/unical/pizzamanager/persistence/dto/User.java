@@ -19,7 +19,7 @@ public class User extends Account {
 
 	private static final long serialVersionUID = -6053598225539038240L;
 
-	@Column(name = "name", length = 255)
+	@Column(name = "name", length = 255, unique = true)
 	private String name;
 
 	@Column(name = "firstName", length = 255)
@@ -45,7 +45,7 @@ public class User extends Account {
 		this.name = "";
 		this.firstName = "";
 		this.lastName = "";
-		this.cart = null;
+		this.cart = new Cart();
 		this.bookings = new ArrayList<Booking>();
 		this.feedbacks = new ArrayList<Feedback>();
 	}

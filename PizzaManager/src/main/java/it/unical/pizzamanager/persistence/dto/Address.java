@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -36,6 +38,14 @@ public class Address {
 		this.street = "";
 		this.number = NO_NUMBER;
 		this.city = "";
+		this.account = null;
+	}
+
+	public Address(String street, Integer number, String city) {
+		this.id = DatabaseHandler.NO_ID;
+		this.street = street;
+		this.number = number;
+		this.city = city;
 		this.account = null;
 	}
 
@@ -78,5 +88,5 @@ public class Address {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
 @Entity
-@Table(name = "addresses")
+@Table(name = "locations")
 public class Location {
 
 	@Id
@@ -38,8 +38,8 @@ public class Location {
 
 	public Location(Double latitude, Double longitude) {
 		this.id = DatabaseHandler.NO_ID;
-		this.longitude = latitude;
-		this.latitude = longitude;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.account = null;
 	}
 
