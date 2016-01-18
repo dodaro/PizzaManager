@@ -2,6 +2,9 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+
+import it.unical.pizzamanager.persistence.dto.Booking;
+
 import it.unical.pizzamanager.persistence.dto.User;
 
 public interface UserDAO {
@@ -19,5 +22,7 @@ public interface UserDAO {
 	public User getByUsername(String username);
 
 	public List<User> getAll();
+
+	public Booking getBooking(int bookingId, Integer id);
 
 }

@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,8 +41,6 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 	public void serialize(Booking booking, JsonGenerator jgen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
 		
-		Double bill=0.0;
-		
 		jgen.writeStartObject();
 			if(booking.getUser()!=null)
 				jgen.writeStringField("user", booking.getUser().getEmail());
@@ -54,6 +53,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 			jgen.writeStringField("date",this.convertDate(booking.getDate().toString(), booking) );
 			jgen.writeStringField("time", booking.getTime().toString());
 			jgen.writeStringField("id", booking.getId().toString());
+			jgen.writeBooleanField("confirmed", booking.getConfirmed());
 			
 			if(booking.getPayment()!=null)
 				jgen.writeBooleanField("payment", booking.getPayment().getPaid());
@@ -79,11 +79,11 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				//booking.getpizza() ti restituisce la relationPizzeriaPizza, facendo .getPizza() hai la pizza....
 				for (int j = 0; j < b.getTableBooking().size(); j++) {
 					jgen.writeStartObject();
-						jgen.writeStringField("number",b.getTableBooking().get(0).getPizzeriaTable().getNumber().toString());
-						jgen.writeStringField("id",b.getTableBooking().get(0).getPizzeriaTable().getId().toString());
-						jgen.writeStringField("seats",b.getTableBooking().get(0).getPizzeriaTable().getSeats().toString());
-						jgen.writeStringField("maxSeats",b.getTableBooking().get(0).getPizzeriaTable().getMaxSeats().toString());
-						jgen.writeStringField("minSeats",b.getTableBooking().get(0).getPizzeriaTable().getMinSeats().toString());
+						jgen.writeStringField("number",b.getTableBooking().get(j).getPizzeriaTable().getNumber().toString());
+						jgen.writeStringField("id",b.getTableBooking().get(j).getPizzeriaTable().getId().toString());
+						jgen.writeStringField("seats",b.getTableBooking().get(j).getPizzeriaTable().getSeats().toString());
+						jgen.writeStringField("maxSeats",b.getTableBooking().get(j).getPizzeriaTable().getMaxSeats().toString());
+						jgen.writeStringField("minSeats",b.getTableBooking().get(j).getPizzeriaTable().getMinSeats().toString());
 					jgen.writeEndObject();
 				}
 				jgen.writeEndArray();
@@ -94,12 +94,13 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof PizzaOrderItem){
 						PizzaOrderItem pizzabooking=(PizzaOrderItem)booking.getOrderItems().get(i);
-						bill+=pizzabooking.getCostPizzaPlusIngredients()*pizzabooking.getNumber();
+						//TODO FIX cost Pizza
+						Double singlePrice=pizzabooking.getCost()/pizzabooking.getNumber();
 						jgen.writeStartObject();
-							jgen.writeStringField("priceEach",pizzabooking.getCostPizzaPlusIngredients().toString());
+							jgen.writeStringField("priceEach",new DecimalFormat("#0.00").format(singlePrice));
 							jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getName());
-							jgen.writeStringField("gluten",pizzabooking.getGlutenFree());
-							jgen.writeStringField("size",pizzabooking.getSize());
+							jgen.writeStringField("glutenFree",pizzabooking.getGlutenFree().toString());
+							jgen.writeStringField("size",pizzabooking.getSize().toString());
 							jgen.writeStringField("number",pizzabooking.getNumber().toString());
 							jgen.writeArrayFieldStart("ingredientsBase");
 							//booking.getpizza() ti restituisce la relationPizzeriaPizza, facendo .getPizza() hai la pizza....
@@ -114,8 +115,8 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 							for (int j = 0; j < pizzabooking.getPizzaOrderIngredients().size(); j++) {
 								if(pizzabooking.getPizzaOrderIngredients().get(j).getAdditive().equals("addition")){
 									jgen.writeStartObject();
-										jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getName());
-										jgen.writeStringField("id",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getId().toString());
+										jgen.writeStringField("name",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getName());
+										jgen.writeStringField("id",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getId().toString());
 									jgen.writeEndObject();								
 								}
 							}
@@ -124,8 +125,8 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 							for (int j = 0; j < pizzabooking.getPizzaOrderIngredients().size(); j++) {
 								if(pizzabooking.getPizzaOrderIngredients().get(j).getAdditive().equals("removal")){
 									jgen.writeStartObject();
-										jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getName());
-										jgen.writeStringField("id",pizzabooking.getPizzeria_pizza().getPizza().getPizzaIngredients().get(j).getIngredient().getId().toString());
+										jgen.writeStringField("name",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getName());
+										jgen.writeStringField("id",pizzabooking.getPizzaOrderIngredients().get(j).getIngredient().getId().toString());
 									jgen.writeEndObject();
 								}
 							}
@@ -138,7 +139,6 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof BeverageOrderItem){
 						BeverageOrderItem beveragebooking=(BeverageOrderItem)booking.getOrderItems().get(i);
-						bill+=beveragebooking.getPizzeria_beverage().getPrice()*beveragebooking.getNumber();
 						jgen.writeStartObject();
 							jgen.writeStringField("name",beveragebooking.getPizzeria_beverage().getBeverage().getName());
 							jgen.writeStringField("brand",beveragebooking.getPizzeria_beverage().getBeverage().getBrand());
@@ -155,7 +155,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 					}
 				}
 			jgen.writeEndArray();
-			jgen.writeStringField("bill", bill.toString());
+			jgen.writeStringField("bill", new DecimalFormat("#0.00").format(booking.getBill()));
 		jgen.writeEndObject();
 		
 	}

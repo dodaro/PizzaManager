@@ -23,11 +23,11 @@
 							<c:forEach var="i" varStatus="Istatus" items="${b.items}">
 								<li class="list-group-item row"><b
 									class="col-xs-3">${i.itemName} </b><b class="col-xs-3">
-										${i.number} </b><b class="col-xs-3"> ${i.getCostLabel()} </b><b
-									class="pull-right">${i.getTotal()}</b></li>
+										${i.number} </b><b class="col-xs-3"> ${i.getCostLabel()} &#8364</b><b
+									class="pull-right">${i.getTotal()} &#8364</b></li>
 							</c:forEach>
 							<li class="list-group-item"><b>Total Book</b> <b
-								class="pull-right">${b.performTotal()}</b></li>
+								class="pull-right">${b.performTotal()} &#8364</b></li>
 						</ul>
 						<div class="row">
 							<div class='col-xs-3'>

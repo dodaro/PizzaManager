@@ -16,6 +16,8 @@ public class OrderItemDisplay {
 	double cost;
 
 	String imageItem;
+	
+	private String ingredients;
 
 	public OrderItemDisplay() {
 		id = 0;
@@ -24,6 +26,7 @@ public class OrderItemDisplay {
 		number = 1;
 		cost = 0;
 		imageItem = "";
+		ingredients="";
 	}
 
 	public int getId() {
@@ -77,6 +80,14 @@ public class OrderItemDisplay {
 
 	public void setImageItem(String imageItem) {
 		this.imageItem = imageItem;
+	}
+
+	public String getIngredients() {
+		return ingredients;
+	}
+
+	public void setIngredients(String ingredients) {
+		this.ingredients = ingredients;
 	}
 
 	public String getTotal() {

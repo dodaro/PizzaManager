@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@ page session="false"%>
 <html>
 <head>
@@ -20,68 +22,98 @@
 <meta name="viewport" content="width=device-width" />
 
 <style type="text/css">
-
 </style>
 </head>
 <body>
 	<jsp:include page="includes/navbar${typeSession}.jsp" />
 
 	<div class="container">
-
 		<div class="row">
-
-			<div id="wrapper" class="col-xs-10">
-				<div class="buble">
-					<div id="content">
-						<h2>${pizzeriaResult.getName()}</h2>
+			<div class="col-xs-4">
+				<div class="bubble pizzeria-info-bubble">
+					<div class="name-container">${pizzeriaResult.name}</div>
+					<div class="address-container">
+						<div class="address-route">
+							<span class="glyphicon glyphicon-map-marker"></span><span>${pizzeriaResult.address.street} ${pizzeriaResult.address.number}, ${pizzeriaResult.address.city}</span>
+						</div>
+					</div>
+					<div class="email-container"><span class="glyphicon glyphicon-envelope"></span>${pizzeriaResult.email}</div>
+					<div class="phone-container"><span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
+					<div class="pizzeria-buttons-container">
+						<button class="btn btn-primary button-bookatable">Book a table</button>
 					</div>
 				</div>
-			</div>
-			<div class="col-sm-3 col-sm-push-3">
-				<div id="map"></div>
-			</div>
-			<div class="col-xs-3 col-sm-3 col-sm-pull-3">
-				<h2>Latest Reviews</h2>
-				<div class="pre-scrollable">
-					<div id="boxReview">
-						<c:forEach var="r" items="${pizzeriaResult.feedbacks}">
-							<div class="row">
-								<a class="userref" href="usermainview?id=${r.user.id}">${r.user.name}</a>
-								<div>Fastnes: ${r.fastnessRating}</div>
-								<div>Hospitality: ${r.hospitalityRating}</div>
-								<div>Quality: ${r.qualityRating}</div>
-								<div>Comment:</div>
-								<div>${r.comment}</div>
-
+				<div class="bubble feedbacks-bubble">
+					<div class="bubble-title">Feedbacks</div>
+					<div class="feedbacks">
+						<c:forEach items="${pizzeriaResult.feedbacks}" var="feedback">
+							<div class="feedback">
+								<div class="user-name">
+									<a href="usermainview?id=${feedback.user.id}">${feedback.user.name}</a>
+								</div>
+								<div class="ratings">
+									<div class="rating row">
+										<div class="col-xs-3 rating-name">Quality</div>
+										<div class="col-xs-9">
+											<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
+													<img src="resources/images/star.png">
+												</c:forEach></span>
+										</div>
+									</div>
+									<div class="rating row">
+										<div class="col-xs-3 rating-name">Fastness</div>
+										<div class="col-xs-9">
+											<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
+													<img src="resources/images/star.png">
+												</c:forEach></span>
+										</div>
+									</div>
+									<div class="rating row">
+										<div class="col-xs-3 rating-name">Hospitality</div>
+										<div class="col-xs-9">
+											<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
+													<img src="resources/images/star.png">
+												</c:forEach></span>
+										</div>
+									</div>
+								</div>
+								<div class="comment">"${feedback.comment}"</div>
 							</div>
 						</c:forEach>
-
 					</div>
 				</div>
 			</div>
-
-			<div class="col-xs-4 col-sm-4 col-sm-push-4">
-				<h3>${pizzeriaResult.name}</h3>
-				<div>${pizzeriaResult.getAddress()}</div>
-				<div>${pizzeriaResult.getPhoneNumber()}</div>
-				<div>e-mail: ${pizzeriaResult.getEmail()}</div>
-			</div>
-
-
-
-			<div id="boxButton">
-				<a href="menu?id=${pizzeriaResult.id}" class="btn btn-success"> Menù </a> <a
-					href="book?id=${pizzeriaResult.id}" class="btn btn-primary">Book</a>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-4 col-sm-push-4">
-				<div class="pre-scrollable">
-					<input type="text" class="form-control" id="boxInputReview">
-
+			<div class="col-xs-8 wrapper">
+				<div class="bubble">
+					<div class="bubble-title">Location</div>
+					<div id="map"></div>
 				</div>
-
-				<a class="btn btn-primary">Leave Comment</a>
+				<div class="bubble">
+					<div class="bubble-title">Menu</div>
+					<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
+						<div class="row menu-entry">
+							<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
+							<div class="pizza-ingredients">
+								<span class="pizzeriaPizza-label">Ingredients:</span>
+								<c:forEach var="i" begin="0" end="${pizzeriaPizza.pizza.pizzaIngredients.size() - 1}"><span>${pizzeriaPizza.pizza.pizzaIngredients[i].ingredient.name}</span><c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">,</c:if>
+								</c:forEach>
+							</div>
+							<div class="pizza-size">
+								<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaPizza.pizzaSize.string}</span>
+							</div>
+							<c:if test="${pizzeriaPizza.glutenFree}">
+								<div class="pizza-gluten-free">Gluten free</div>
+							</c:if>
+							<div class="right-container">
+								<div class="pizza-price">
+									&euro;
+									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
+								</div>
+								<a href="#" class="btn btn-default button-addtocart">Add to cart</a>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
 			</div>
 		</div>
 	</div>

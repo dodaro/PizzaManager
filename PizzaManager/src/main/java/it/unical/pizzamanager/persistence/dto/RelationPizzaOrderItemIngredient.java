@@ -31,12 +31,16 @@ public class RelationPizzaOrderItemIngredient {
 	@JoinColumn(name = "ingredient")
 	private Ingredient ingredient;
 	
+	@Column(name="cost")
+	private Double cost;
+	
 	@ManyToOne
 	@JoinColumn(name="pizzaOrderItem")
 	private PizzaOrderItem pizzaOrderItem;
 	
 	public RelationPizzaOrderItemIngredient() {
 		id=DatabaseHandler.NO_ID;
+		cost=0.0;
 		additive=ADDITION;
 		ingredient=null;
 		pizzaOrderItem=null;
@@ -80,6 +84,14 @@ public class RelationPizzaOrderItemIngredient {
 
 	public void setAdditive(String additive) {
 		this.additive = additive;
+	}
+
+	public Double getCost() {
+		return cost;
+	}
+
+	public void setCost(Double cost) {
+		this.cost = cost;
 	}
 	
 	

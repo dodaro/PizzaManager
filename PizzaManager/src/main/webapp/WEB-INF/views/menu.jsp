@@ -7,17 +7,28 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$(".addToCart").on('click', function() {
-			var id=parseInt($(this).data("id"), 10);
-			alert($(this).data("id"));
+			var id = parseInt($(this).data("id"), 10);
+			var pizzeria = parseInt($(this).data("pizzeria"), 10);
+			alert($(this).data("pizzeria"));
 			$.ajax({
 				type : "POST",
-				url : "/cart/addCart",
+				url : "/cart/addItem",
 				data : {
-					id : id
+					itemToBook : id
 
 				},
 				success : function(response) {
-					window.location = "menu"
+					$.ajax({
+						type : "GET",
+						url : "/menu",
+						data : {
+							id : pizzeria
+
+						},
+						success : function(response) {
+
+						}
+					});
 				}
 			});
 		});
@@ -60,8 +71,8 @@
 						<c:forEach var="r" items="${menuResult}">
 							<div class="row">
 								<a>${r.pizza.name}_____________${r.price}</a> <a
-									data-id="${r.id}" class="addToCart btn btn-primary">Add to
-									Cart</a>
+									data-id="${r.id}" data-pizzeria="${pizzeriaResult.id}"
+									class="addToCart btn btn-primary">Add to Cart</a>
 							</div>
 						</c:forEach>
 					</div>

@@ -31,50 +31,57 @@
 					<div class="profile-image-container">
 						<img src="resources/images/no-image.png" class="img-circle">
 					</div>
-					<div class="name-container">${user.firstName} ${user.lastName}</div>
+					<div class="name-container">${user.firstName}${user.lastName}</div>
 					<div class="username-container">${user.name}</div>
 				</div>
 				<div class="bubble feedbacks-bubble">
-					<div class="bubble-title">Your last ${numberOfFeedbacks} feedbacks</div>
-					<div class="feedbacks-header">
-						<a href="usermainview?id=${user.id}">View all feedbacks.</a>
-					</div>
-					<div class="feedbacks">
-						<c:forEach begin="1" end="${numberOfFeedbacks}" items="${user.feedbacks}" var="feedback">
-							<div class="feedback">
-								<div class="pizzeria-name">
-									<a href="pizzeriamainview?id=${feedback.pizzeria.id}">${feedback.pizzeria.name}</a>
-								</div>
-								<div class="ratings">
-									<div class="rating row">
-										<div class="col-xs-3 rating-name">Quality</div>
-										<div class="col-xs-9">
-											<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
-													<img src="resources/images/star.png">
-												</c:forEach></span>
-										</div>
-									</div>
-									<div class="rating row">
-										<div class="col-xs-3 rating-name">Fastness</div>
-										<div class="col-xs-9">
-											<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
-													<img src="resources/images/star.png">
-												</c:forEach></span>
-										</div>
-									</div>
-									<div class="rating row">
-										<div class="col-xs-3 rating-name">Hospitality</div>
-										<div class="col-xs-9">
-											<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
-													<img src="resources/images/star.png">
-												</c:forEach></span>
-										</div>
-									</div>
-								</div>
-								<div class="comment">"${feedback.comment}"</div>
+					<div class="bubble-title">Your latest feedbacks</div>
+					<c:choose>
+						<c:when test="${user.feedbacks.size() > 0}">
+							<div class="feedbacks-header">
+								<a href="usermainview?id=${user.id}">View all feedbacks.</a>
 							</div>
-						</c:forEach>
-					</div>
+							<div class="feedbacks">
+								<c:forEach begin="1" end="${numberOfFeedbacks}" items="${user.feedbacks}" var="feedback">
+									<div class="feedback">
+										<div class="pizzeria-name">
+											<a href="pizzeriamainview?id=${feedback.pizzeria.id}">${feedback.pizzeria.name}</a>
+										</div>
+										<div class="ratings">
+											<div class="rating row">
+												<div class="col-xs-3 rating-name">Quality</div>
+												<div class="col-xs-9">
+													<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
+															<img src="resources/images/star.png">
+														</c:forEach></span>
+												</div>
+											</div>
+											<div class="rating row">
+												<div class="col-xs-3 rating-name">Fastness</div>
+												<div class="col-xs-9">
+													<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
+															<img src="resources/images/star.png">
+														</c:forEach></span>
+												</div>
+											</div>
+											<div class="rating row">
+												<div class="col-xs-3 rating-name">Hospitality</div>
+												<div class="col-xs-9">
+													<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
+															<img src="resources/images/star.png">
+														</c:forEach></span>
+												</div>
+											</div>
+										</div>
+										<div class="comment">"${feedback.comment}"</div>
+									</div>
+								</c:forEach>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<div class="no-feedbacks">You didn't leave any feedback yet.</div>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 			<div class="col-xs-8 wrapper">
@@ -94,4 +101,5 @@
 		</div>
 	</div>
 </body>
+
 </html>

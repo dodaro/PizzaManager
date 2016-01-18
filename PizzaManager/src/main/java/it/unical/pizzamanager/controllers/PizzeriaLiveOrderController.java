@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.utils.BookingUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
@@ -63,9 +62,9 @@ public class PizzeriaLiveOrderController {
 		String message="error";
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
-			System.out.println(book.getId());
-			Booking booking=BookingUtils.createBookingFromBookingModel(book,pizzeria,context);
-			booking=BookingUtils.calculateBill(booking, pizzeria, context);
+			System.out.println("LiveOrderControlled --> id booking:"+book.getId() +";  (se null è un nuovo booking)");
+			System.out.println("LiveOrderControlled --> underTheNameOf:"+book.getUnderTheNameOf());
+			BookingUtils.createBookingFromBookingModelAndSave(book,pizzeria,context);
 			
 			message="complete";
 		} catch (IOException e) {

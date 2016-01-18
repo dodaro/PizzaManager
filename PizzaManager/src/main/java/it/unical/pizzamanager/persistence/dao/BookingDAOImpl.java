@@ -1,5 +1,7 @@
 package it.unical.pizzamanager.persistence.dao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -10,6 +12,7 @@ import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.User;
 
 public class BookingDAOImpl implements BookingDAO {
 
@@ -67,6 +70,23 @@ public class BookingDAOImpl implements BookingDAO {
 		return bookings;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Booking> getUserBookings(User user) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where user = :user ";
+		Query query = session.createQuery(queryString);
+		query.setParameter("user", user);
+		
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+
+		session.close();
+		return bookings;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -125,12 +145,47 @@ public class BookingDAOImpl implements BookingDAO {
 		return bookings;
 	}
 	
-	
-	
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
 	}
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
 	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<Booking> BookingInYear(Pizzeria pizzeria, Date date) {
+		
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY') = :date";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		query.setParameter("date", new SimpleDateFormat("YYYY").format(date));
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+		session.close();
+		return bookings;
+	}
+
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	@Override
+	public List<Booking> BookingInMonths(Pizzeria pizzeria, Date date) {
+		// TODO Auto-generated method stub
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY/MM') = :date";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		query.setParameter("date", new SimpleDateFormat("YYYY/MM").format(date));
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+		session.close();
+		return bookings;
+	}
+
 }

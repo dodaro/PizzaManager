@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,7 @@ import it.unical.pizzamanager.utils.SessionUtils;
 @Controller
 public class PizzeriaMainViewController {
 
+	private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
 	
 	@Autowired
 	private WebApplicationContext context;
@@ -47,7 +50,11 @@ public class PizzeriaMainViewController {
 				List<Pizzeria> result=new ArrayList<>();
 				for(int i=0; i<pizzerias.size(); i++)
 				{
-					if(pizzerias.get(i).getName().contains(form.getWord()))
+					if(pizzerias.get(i).getName().equals(form.getWord()))
+						{model.addAttribute("pizzeriaResult", pizzerias.get(i));
+						setUserAttribute(session, model);
+						return "redirect:/pizzeriamainview";}
+					else if(pizzerias.get(i).getName().contains(form.getWord()))
 						result.add(pizzerias.get(i));
 				}
 				setUserAttribute(session, model);

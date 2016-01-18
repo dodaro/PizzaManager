@@ -100,26 +100,12 @@ public class PizzaOrderItem extends OrderItem {
 	public String pizzeriaName(){
 		return pizzeria_pizza.getPizzeria().getName();
 	}
-	
-	public Double getCostPizzaPlusIngredients(){
-		if(modified){
-			Double ingredientAddedCost=0.0;
-			Double ingredientRemovedCost=0.0;
-			for (int i = 0; i < pizzaOrderIngredients.size(); i++) {
-				if(pizzaOrderIngredients.get(i).getAdditive().equals(RelationPizzaOrderItemIngredient.ADDITION)){
-					ingredientAddedCost+=0.50;
-				}
-				else{//REMOVAL
-					ingredientRemovedCost+=0.50;
-				}
-			}
-			if(this.getPizzeria_pizza().getPrice()+ingredientAddedCost-ingredientRemovedCost>0)
-				return this.getPizzeria_pizza().getPrice()+ingredientAddedCost-ingredientRemovedCost;
-			else
-				return 0.0;
+
+	public Double getCostPizzaPlusIngredients() {
+		Double cost=getCost();
+		for (RelationPizzaOrderItemIngredient ingredient : pizzaOrderIngredients) {
+			cost+=ingredient.getCost();
 		}
-		return this.getCost();
+		return cost;
 	}
-	
-	
 }

@@ -28,7 +28,6 @@ import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.serializers.BookingSerializer;
-import it.unical.pizzamanager.utils.BookingUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 
@@ -63,7 +62,7 @@ public class PizzeriaBookingController {
 		List<Booking> allBookings = (List<Booking>) bookingDAO.getBookingsFromPizzeria(pizzeria);
 		List<Booking> filteredBookings=new ArrayList<>();
 		for (Booking booking : allBookings) {
-			if(booking.getConfirmed()==false)
+			if(booking.getConfirmed()==false && booking.getCompletionDate()==null)
 				filteredBookings.add(booking);
 		}
 		
@@ -108,11 +107,13 @@ public class PizzeriaBookingController {
 				message="confermed";
 				break;
 				
-			case "edit":
+			//IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER
+			/*case "edit":
 				
 				BookingUtils.createBookingFromBookingModel(book, booking.getPizzeria(), context);
 				message="updated";
-				break;
+				break;*/
+				
 				
 			case "remove":
 				

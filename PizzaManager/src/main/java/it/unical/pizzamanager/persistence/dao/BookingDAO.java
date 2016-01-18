@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.persistence.dao;
 
 
+import java.util.Date;
 import java.util.List;
 
 import it.unical.pizzamanager.persistence.dto.Booking;
@@ -8,6 +9,7 @@ import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.User;
 
 public interface BookingDAO {
 
@@ -19,6 +21,10 @@ public interface BookingDAO {
 	
 	public Booking getBooking(Integer id);
 	
+	public List<Booking> BookingInYear(Pizzeria pizzeria,Date date);
+	
+	public List<Booking> BookingInMonths(Pizzeria pizzeria,Date date);
+	
 	public List<Booking> getBookingList();
 	
 	public List<BookingPizzeriaTable> getOnlyBookingTablePizzeriaList();
@@ -28,6 +34,9 @@ public interface BookingDAO {
 	public List<BookingDelivery> getOnlyBookingDeliveryList();
 
 	public List<Booking> getBookingsFromPizzeria(Pizzeria pizzeria);
+
+	public List<Booking> getUserBookings(User user);
+	
 	
 	//CHIEDERE A DODARO SE LE QUERY QUI GIÙ SERVONO O SE BASTA FARE LE SEGUENTI RICERCHE DIRETTAMENTE DA PIZZERIA (operando sulla lista di booking)
 	
@@ -50,5 +59,5 @@ public interface BookingDAO {
 	   DIFATTI  cos'è una prenotazione? un insieme di order item ritirate nella stessa data alla stessa ora.
 	 */
 
-	
+
 }
