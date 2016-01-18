@@ -12,45 +12,81 @@
 
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/homeUser.css" />
 
 <title>Home User</title>
 
 <meta name="viewport" content="width=device-width" />
 
 <style type="text/css">
-
 </style>
 </head>
 <body>
 	<jsp:include page="includes/navbarAccount.jsp" />
 
 	<div class="container">
-		
 		<div class="row">
-		<div id="map"></div>
-			<div class="col-xs-2">
-				<div class="card">
-					<ul class="nav nav-pills nav-stacked">
-						<!-- <li class="active"><a href="#">Home</a></li> -->
-						<li data-content="index"><a href="#">Your Reviews</a></li>
-					</ul>
+			<div class="col-xs-4">
+				<div class="bubble">
+					<div class="profile-image-container">
+						<img src="resources/images/no-image.png" class="img-circle">
+					</div>
+					<div class="name-container">${user.firstName}${user.lastName}</div>
+					<div class="username-container">${user.name}</div>
+				</div>
+				<div class="bubble">
+					<div class="bubble-title">Your reviews</div>
+					<c:forEach items="${user.feedbacks}" var="feedback">
+						<div class="feedback">
+							<div class="pizzeria-name">
+								<a href="pizzeriamainview?id=${feedback.pizzeria.id}">${feedback.pizzeria.name}</a>
+							</div>
+							<div class="ratings">
+								<div class="rating row">
+									<div class="col-xs-3 rating-name">Quality</div>
+									<div class="col-xs-9">
+										<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
+												<img src="resources/images/star.png">
+											</c:forEach></span>
+									</div>
+								</div>
+								<div class="rating row">
+									<div class="col-xs-3 rating-name">Fastness</div>
+									<div class="col-xs-9">
+										<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
+												<img src="resources/images/star.png">
+											</c:forEach></span>
+									</div>
+								</div>
+								<div class="rating row">
+									<div class="col-xs-3 rating-name">Hospitality</div>
+									<div class="col-xs-9">
+										<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
+												<img src="resources/images/star.png">
+											</c:forEach></span>
+									</div>
+								</div>
+							</div>
+							<div class="comment">"${feedback.comment}"</div>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
-			<div id="wrapper" class="col-xs-10">
-				<div class="card">
-					<div id="content">Home User ${user.id}</div>
+			<div class="col-xs-8 wrapper">
+				<div class="bubble">
+					<div class="bubble-title">Book a pizza now!</div>
 				</div>
-			</div>
-			<div class="col-sm-3 col-sm-push-3"></div>
-			<div class="col-sm-3 col-sm-pull-3">
-				<div class="image">
-					<img src="resources/images/no-image.png" class="img-circle">
-
+				<div class="bubble">
+					<div class="bubble-title">Find pizzerias near you</div>
+					<div>
+						Find pizzerias within <input type="number" value="${radius}" class="form-control form-radius">
+						km
+						<button class="btn btn-default button-radius">Update</button>
+					</div>
+					<div id="map"></div>
 				</div>
 			</div>
 		</div>
-
 	</div>
 </body>
 </html>
-

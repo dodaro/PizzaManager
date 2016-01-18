@@ -8,7 +8,6 @@ html, body {
 	padding: 0;
 }
 
-
 html {
 	/*
 	 * Scrollbar is always visible to prevent page from shifting to the left when the scrollbar is
@@ -48,6 +47,12 @@ body {
 	padding: 15px;
 	background-color: white;
 	border-radius: 10px;
+}
+
+.bubble-title {
+	margin-bottom: 15px;
+	font-size: 120%;
+	font-weight: bold;
 }
 
 .non-selectable {

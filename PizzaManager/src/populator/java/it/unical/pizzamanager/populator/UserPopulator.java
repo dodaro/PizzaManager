@@ -21,6 +21,8 @@ public class UserPopulator extends Populator {
 		for (int i = 1; i <= 10; i++) {
 			User u = new User("mail" + i + "@mail.com", "password" + i);
 			u.setName("User" + i);
+			u.setFirstName("FirstName" + i);
+			u.setLastName("LastName" + i);
 			userDAO.create(u);
 		}
 	}

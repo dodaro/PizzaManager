@@ -40,7 +40,7 @@ var homeUser = function() {
 			maps.locate(function(location) {
 				// onSuccess
 				maps.initMap('map', location, 'red', 12);
-				requestPizzerias(location, 5);
+				requestPizzerias(location, $('.form-radius').val());
 			}, function() {
 				// onFailure
 				maps.initMapWithError('map');
