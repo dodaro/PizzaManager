@@ -45,7 +45,7 @@ public class User extends Account {
 		this.name = "";
 		this.firstName = "";
 		this.lastName = "";
-		this.cart = null;
+		this.cart = new Cart();
 		this.bookings = new ArrayList<Booking>();
 		this.feedbacks = new ArrayList<Feedback>();
 	}
