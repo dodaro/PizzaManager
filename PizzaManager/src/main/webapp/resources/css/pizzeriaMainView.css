@@ -1,19 +1,74 @@
-#boxInfo {
-	margin-top: 30px;
-	margin-right: 40px;
-}
-
 #map {
-	height: 50%;
-	width: 230%;
+	height: 300px;
 }
 
-#boxReview {
-	height: 40%;
-	width: 45%;
+.wrapper {
+	padding-left: 15px;
 }
 
-#boxButton {
-	margin-top: 410px;
-	margin-left: 1px;
+.menu-entry {
+	position: relative;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	width: 100%;
+}
+
+.name-container {
+	font-size: 150%;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.address-route {
+	vertical-align: middle;
+}
+
+.address-container {
+	font-size: 120%;
+	margin-bottom: 20px;
+}
+
+.email-container {
+	font-size: 120%;
+}
+
+.phone-container {
+	font-size: 120%;
+	margin-top: 10px;
+}
+
+.menu-entry+.menu-entry {
+	border-top: 1px solid #DDDDDD;
+}
+
+.pizza-name {
+	font-size: 130%;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.right-container {
+	position: absolute;
+	bottom: 15;
+	right: 0;
+}
+
+.pizza-price {
+	text-align: right;
+	font-size: 150%;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.pizzeriaPizza-label {
+	font-weight: bold;
+}
+
+.pizzeria-buttons-container {
+	margin-top: 15px;
+	text-align: center;
+}
+
+.pizzeria-info-bubble .glyphicon {
+	margin-right: 10px;
 }

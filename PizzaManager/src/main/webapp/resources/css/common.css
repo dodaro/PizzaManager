@@ -82,6 +82,15 @@ body {
 	font-weight: bold;
 }
 
+.feedback {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.feedback+.feedback {
+	border-top: 1px solid #DDDDDD;
+}
+
 .non-selectable {
 	-webkit-user-select: none;
 	-moz-user-select: none;

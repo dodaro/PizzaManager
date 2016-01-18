@@ -13,16 +13,6 @@
 
 <meta name="viewport" content="width=device-width" />
 
-<style type="text/css">
-#boxInfo {
-	margin-top: 60px;
-}
-
-#boxReview {
-	height: 40%;
-	width: 45%;
-}
-</style>
 </head>
 <body>
 	<jsp:include page="includes/navbar${typeSession}.jsp" />
