@@ -1,5 +1,8 @@
 package it.unical.pizzamanager.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
@@ -46,9 +50,14 @@ public class HomeController {
 	private void populateUserModel(HttpSession session, Model model) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		
+		List<Pizzeria> pizzeriasRated = pizzeriaDAO.getAll();
+		
 		model.addAttribute(MODEL_ATTRIBUTE_USER, user);
 		model.addAttribute("radius", 5);
 		model.addAttribute("numberOfFeedbacks", 5);
+		model.addAttribute("top", pizzeriasRated);
 	}
 
 	private void populatePizzeriaModel(HttpSession session, Model model) {

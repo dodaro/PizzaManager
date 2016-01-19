@@ -197,7 +197,7 @@ public class BookingUtils {
 					
 					if(pizzaModel.getIngredientsAdded().size()>0 || pizzaModel.getIngredientsRemoved().size()>0){
 						pizzaOrder.setModified(true);
-						pizzaOrder.setPizzaOrderIngredients(new ArrayList<>());
+						pizzaOrder.setPizzaOrderIngredients(new ArrayList<RelationPizzaOrderItemIngredient>());
 					}
 					else
 						pizzaOrder.setModified(false);
