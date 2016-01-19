@@ -29,6 +29,7 @@ import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.serializers.BookingSerializer;
 import it.unical.pizzamanager.utils.SessionUtils;
+import it.unical.pizzamanager.utils.ValidatorUtils;
 
 
 @Controller
@@ -88,6 +89,12 @@ public class PizzeriaBookingController {
 		
 		System.out.println(jsonAction);
 		System.out.println(jsonBooking);
+		
+		String REGEX = "[^&%$#!~]*";
+		if(ValidatorUtils.ValidateString(REGEX, jsonAction)==false || ValidatorUtils.ValidateString(REGEX, jsonBooking)==false){
+			return null;
+		}
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		BookingModel book;
 		String message="error";

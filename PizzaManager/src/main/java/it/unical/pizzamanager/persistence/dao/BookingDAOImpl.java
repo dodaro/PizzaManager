@@ -188,4 +188,37 @@ public class BookingDAOImpl implements BookingDAO {
 		return bookings;
 	}
 
+	@Override
+	public Integer NumberOfBookingInAYearForType(Pizzeria pizzeria, Date date, String type) {
+		
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "select count(*) from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY') = :date and type= :type";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		query.setParameter("date", new SimpleDateFormat("YYYY").format(date));
+		query.setParameter("type", type);
+		Long number=(Long) query.uniqueResult();
+		session.close();
+		return (int) (long) number;
+	}
+
+	@Override
+	public Integer NumberOfBookingInAMonthsForType(Pizzeria pizzeria, Date date, String type) {
+	
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "select count(*) from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY/MM') = :date and type= :type";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		query.setParameter("date", new SimpleDateFormat("YYYY/MM").format(date));
+		query.setParameter("type", type);
+		Long number=(Long) query.uniqueResult();
+		session.close();
+		return (int) (long) number;
+	}
+
+
+	
+
 }

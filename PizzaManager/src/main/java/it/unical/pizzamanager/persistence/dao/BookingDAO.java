@@ -25,6 +25,11 @@ public interface BookingDAO {
 	
 	public List<Booking> BookingInMonths(Pizzeria pizzeria,Date date);
 	
+	public Integer NumberOfBookingInAYearForType(Pizzeria pizzeria,Date date, String type);
+	
+	public Integer NumberOfBookingInAMonthsForType(Pizzeria pizzeria,Date date, String type);
+	
+	
 	public List<Booking> getBookingList();
 	
 	public List<BookingPizzeriaTable> getOnlyBookingTablePizzeriaList();

@@ -63,7 +63,7 @@ public class PizzeriaStatisticsController {
 	
 	
 	@RequestMapping(value = "/pizzeriastatisticsAjax", method = RequestMethod.GET)
-	public @ResponseBody HashMap<String, List<Integer>> processAJAXRequest(HttpServletRequest request, Model model,HttpSession session,@RequestParam("action") String actionString,@RequestParam("date") String dateString) {
+	public @ResponseBody List<HashMap<String, List<Integer>>> processAJAXRequest(HttpServletRequest request, Model model,HttpSession session,@RequestParam("action") String actionString,@RequestParam("date") String dateString) {
 		
 		if (!SessionUtils.isPizzeria(session)) {
 			return null;
@@ -71,6 +71,9 @@ public class PizzeriaStatisticsController {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		
+		
+		List<HashMap<String, List<Integer>>> list=new ArrayList<HashMap<String,List<Integer>>>();
 		
 		System.out.println(actionString);
 		System.out.println(dateString);
@@ -89,7 +92,9 @@ public class PizzeriaStatisticsController {
 				e.printStackTrace();
 			}
 		
-		HashMap<String,List<Integer>> hashTable=new HashMap<>();
+		HashMap<String,List<Integer>> hashTablePizzas=new HashMap<>();
+		HashMap<String,List<Integer>> hashTableBooking=new HashMap<>();
+		
 		HashSet<Pizza> pizzasSet = new HashSet<Pizza>();
 		for (RelationPizzeriaPizza relation : pizzeria.getPizzasPriceList()) {
 			pizzasSet.add(relation.getPizza());
@@ -101,17 +106,44 @@ public class PizzeriaStatisticsController {
 				List<Booking> bookings = bookingDAO.BookingInYear(pizzeria, date);
 				for (int i = 0; i < pizzas.toArray().length; i++) {
 					List<Integer> yearPerMonths = getOrderItemNumberForMonth(bookings, pizzas.get(i));
-					hashTable.put(pizzas.get(i).getName(), yearPerMonths);
+					hashTablePizzas.put(pizzas.get(i).getName(), yearPerMonths);
 				}
+				
+				List<Integer> listDelivery=new ArrayList<>();
+				listDelivery.add(bookingDAO.NumberOfBookingInAYearForType(pizzeria, date,"booking_delivery"));
+				List<Integer> listTakeAway=new ArrayList<>();
+				listTakeAway.add(bookingDAO.NumberOfBookingInAYearForType(pizzeria, date,"booking_takeaway"));
+				List<Integer> listTable=new ArrayList<>();
+				listTable.add(bookingDAO.NumberOfBookingInAYearForType(pizzeria, date,"booking_table"));
+				
+				hashTableBooking.put("delivery",listDelivery);
+				hashTableBooking.put("takeAway",listTakeAway);
+				hashTableBooking.put("table",listTable);
+				
 			}
 			else if(actionString.equals("monthAction")){
 				List<Booking> bookings = bookingDAO.BookingInMonths(pizzeria, date);
 				for (int i = 0; i < pizzas.toArray().length; i++) {
 					List<Integer> monthPerDays = getOrderItemNumberForDay(bookings, pizzas.get(i));
-					hashTable.put(pizzas.get(i).getName(), monthPerDays);
+					hashTablePizzas.put(pizzas.get(i).getName(), monthPerDays);
 				}
+				
+				List<Integer> listDelivery=new ArrayList<>();
+				listDelivery.add(bookingDAO.NumberOfBookingInAMonthsForType(pizzeria, date,"booking_delivery"));
+				List<Integer> listTakeAway=new ArrayList<>();
+				listTakeAway.add(bookingDAO.NumberOfBookingInAMonthsForType(pizzeria, date,"booking_takeaway"));
+				List<Integer> listTable=new ArrayList<>();
+				listTable.add(bookingDAO.NumberOfBookingInAMonthsForType(pizzeria, date,"booking_table"));
+				
+				hashTableBooking.put("delivery",listDelivery);
+				hashTableBooking.put("takeAway",listTakeAway);
+				hashTableBooking.put("table",listTable);
 			}
-		return hashTable;
+			
+			
+		list.add(hashTablePizzas);
+		list.add(hashTableBooking);
+		return list;
 	}
 	
 	private List<Integer> getOrderItemNumberForMonth(List<Booking> bookings,Pizza pizza){
@@ -139,6 +171,8 @@ public class PizzeriaStatisticsController {
 		
 		return numberPerMonth;
 	}
+	
+	
 	private List<Integer> getOrderItemNumberForDay(List<Booking> bookings,Pizza pizza){
 		List<Integer> numberPerDay=new ArrayList<>();
 		for (int i = 0; i < 31; i++) {

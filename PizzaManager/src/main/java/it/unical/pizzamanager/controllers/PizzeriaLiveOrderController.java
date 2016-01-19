@@ -23,6 +23,7 @@ import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.utils.BookingUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
+import it.unical.pizzamanager.utils.ValidatorUtils;
 
 @Controller
 public class PizzeriaLiveOrderController {
@@ -57,6 +58,13 @@ public class PizzeriaLiveOrderController {
 		
 		
 		System.out.println(jsonBooking);
+		String REGEX = "[^&%$#!~]*";
+		if(ValidatorUtils.ValidateString(REGEX, jsonBooking)==false){
+			System.out.println("QUI");
+			return null;
+		}
+		
+		
 		ObjectMapper objectMapper = new ObjectMapper();
 		BookingModel book=null;
 		String message="error";
