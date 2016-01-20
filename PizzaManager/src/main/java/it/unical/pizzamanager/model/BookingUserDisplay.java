@@ -23,6 +23,8 @@ public class BookingUserDisplay {
 	private Double bill;
 
 	private String preparationTime;
+	
+	private String completationTime;
 
 	private String identifier;
 	
@@ -39,6 +41,7 @@ public class BookingUserDisplay {
 		this.preparationTime = "";
 		this.identifier = "";
 		this.paypalUrl="";
+		this.completationTime="";
 
 	}
 
@@ -127,5 +130,15 @@ public class BookingUserDisplay {
 	public void setPaypalUrl(String paypalUrl) {
 		this.paypalUrl = paypalUrl;
 	}
+
+	public String getCompletationTime() {
+		return completationTime;
+	}
+
+	public void setCompletationTime(String completationTime) {
+		this.completationTime = completationTime;
+	}
+
+	
 
 }

@@ -41,6 +41,10 @@ public interface BookingDAO {
 	public List<Booking> getBookingsFromPizzeria(Pizzeria pizzeria);
 
 	public List<Booking> getUserBookings(User user);
+
+	public List<Booking> getActiveUserBookings(User user);
+
+	public List<Booking> getOrderedBookings(Pizzeria pizzeria);
 	
 	
 	//CHIEDERE A DODARO SE LE QUERY QUI GIÙ SERVONO O SE BASTA FARE LE SEGUENTI RICERCHE DIRETTAMENTE DA PIZZERIA (operando sulla lista di booking)

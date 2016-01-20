@@ -80,7 +80,7 @@
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
 			<div class="col-xs-9">
-				<div id="content">
+				<div id="content" class="container">
 					<jsp:include page="includes/cartBook.jsp"></jsp:include></div>
 			</div>
 		</div>
