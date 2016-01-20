@@ -45,6 +45,7 @@
 		});
 	});
 </script>
+<link rel="stylesheet" type="text/css" href="resources/css/pageCSS/orders.css" />
 <link rel="stylesheet" type="text/css"
 	href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -56,47 +57,38 @@
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
 			<div class="col-xs-9">
-				<div class="container">
+				<div id="container">
 					<div class="bubble">
 						<h2>My Orders</h2>
 						<c:if test="${not empty bookings}">
 							<c:forEach var="b" items="${bookings}">
-								<div class="row">
+								<div class="row itemRow">
 									<div data-toggle="collapse" data-target="#${b.identifier}"
 										class="moreDetails clickable col-xs-1">
 										<b>+</b>
 									</div>
 									<div class="col-xs-2">${b.pizzeria}</div>
-									<div class="col-xs-1">${b.bookingType}</div>
+									<div class="col-xs-2">${b.bookingType}</div>
 									<div class="col-xs-2">${b.date}</div>
-									<div class="col-xs-1">
+									<div class="col-xs-2">
 										<c:choose>
-											<c:when test="${not b.actived}">
+											<c:when test="${b.actived}">
 									${b.completationTime}</c:when>
 											<c:otherwise>Not yet Active</c:otherwise>
 										</c:choose>
 
 									</div>
 									<div class="col-xs-1">${b.preparationTime}</div>
-									<div class="col-xs-2">${b.getBillLabel()}&#8364</div>
-									<div class="col-xs-2">
-										<%-- 									 										if (request.getAttribute("redirectURL") != null) {
-<!-- 									<div> -->
-<!-- 										<a class="btn btn-default paypalButton" -->
-<%-- 											href=<%=(String) request.getAttribute("redirectURL")%>>Buy --%>
-										<!-- 											Now</a> -->
-										<!-- 									</div> -->
-										<%-- 								
-// 										}
---%>
+									<div class="col-xs-1">${b.getBillLabel()}&#8364</div>
+									<div class="col-xs-1">
 										<a data-id="${b.id}" class="btn btn-default">Buy Now</a>
 									</div>
 								</div>
 								<div id="${b.identifier}" class="collapse">
 									<c:if test="${not empty b.items}">
-										<div class="bubble">
+										<div >
 											<c:forEach var="i" items="${b.items}">
-												<div class="row">
+												<div class="row singleOrderBooking">
 													<div class="col-xs-1"></div>
 													<div class="col-xs-1">
 														<b>${i.number}</b>

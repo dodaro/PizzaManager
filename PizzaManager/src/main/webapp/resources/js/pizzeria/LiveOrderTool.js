@@ -556,7 +556,7 @@ var LiveOrderTool = function(){
 			return $("#bookingNameInput").val();
 			break;
 		case "date":
-			return $("#datetimepicker1").data("DateTimePicker").date().format('DD/MM/YYYY h:mm');
+			return $("#datetimepicker1").data("DateTimePicker").date().format('DD/MM/YYYY hh:mm');
 			break;
 
 		default:
