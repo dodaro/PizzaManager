@@ -18,10 +18,12 @@ import it.unical.pizzamanager.forms.PizzeriaSignUpForm;
 import it.unical.pizzamanager.forms.UserSignUpForm;
 import it.unical.pizzamanager.persistence.dao.AccountDAO;
 import it.unical.pizzamanager.persistence.dao.AddressDAO;
+import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Account;
 import it.unical.pizzamanager.persistence.dto.Address;
+import it.unical.pizzamanager.persistence.dto.Cart;
 import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
@@ -55,6 +57,9 @@ public class SignUpController {
 
 		UserDAO dao = (UserDAO) context.getBean("userDAO");
 		dao.create(user);
+
+		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
+		cartDAO.create(new Cart(user));
 
 		SessionUtils.storeUserIdInSession(session, user);
 
