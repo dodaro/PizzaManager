@@ -48,14 +48,14 @@
 <script type="text/javascript">
 $(document).ready(function() {
 	$(".addBook").on('click', function() {
-		var id = $(this).closest('div').find('input').val();
+		var id = parseInt($(this).closest('div').find('input').val());
 		var pizzeria = parseInt($(this).data("pizzeria"), 10);
 		alert($(this).closest('div').find('input').val());
 		$.ajax({
 			type : "POST",
 			url : "/pizzeriamainview/booking",
 			data : {
-				itemToBook : id
+				placeToBook : id
 
 			},
 			success : function(response) {
@@ -67,7 +67,8 @@ $(document).ready(function() {
 
 					},
 					success : function(response) {
-
+						$("#modalMessage").text("Booked");
+						$('#modalAlert').modal('show');
 					}
 				});
 			}
@@ -109,7 +110,7 @@ $(document).ready(function() {
 						<span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
 					<div class="pizzeria-buttons-container">
 					<input type="text" class="form-control" name="numeroPosti" placeholder="Inserire numero di posti da prenotare">
-						<button data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}" class="btn btn-primary button-bookatable addBook">Book a table</button>
+						<a href="#" data-pizzeria="${pizzeriaResult.id}" class="btn btn-primary button-bookatable addBook">Book a table</a>
 					</div>
 				</div>
 				<div class="bubble feedbacks-bubble">

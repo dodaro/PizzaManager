@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.forms.FeedbackForm;
@@ -75,14 +76,15 @@ public class PizzeriaMainViewController {
 		return "redirect:/pizzeriamainview?id=" + id;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "/pizzeriamainview/booking", method = RequestMethod.POST)
-	public String pizzeriamainviewbooking(HttpSession session, @RequestParam Integer id) 
+	public String pizzeriamainviewbooking(@RequestParam("placeToBook") int id,HttpSession session) 
 	{
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		System.out.println(id);
 		
-		return "pizzeriamainview";
+		return "{\"success\" : true}";
 	}
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(@ModelAttribute SearchForm form, HttpSession session, Model model) {
