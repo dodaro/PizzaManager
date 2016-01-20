@@ -52,24 +52,30 @@
 												<div class="col-xs-3 rating-name">Quality</div>
 												<div class="col-xs-9">
 													<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
-															<img src="resources/images/star.png">
-														</c:forEach></span>
+													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.qualityRating}" end="4">
+													<img src="resources/images/star_grey.png">
+												</c:forEach></span>
 												</div>
 											</div>
 											<div class="rating row">
 												<div class="col-xs-3 rating-name">Fastness</div>
 												<div class="col-xs-9">
 													<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
-															<img src="resources/images/star.png">
-														</c:forEach></span>
+													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.fastnessRating}" end="4">
+													<img src="resources/images/star_grey.png">
+												</c:forEach></span>
 												</div>
 											</div>
 											<div class="rating row">
 												<div class="col-xs-3 rating-name">Hospitality</div>
 												<div class="col-xs-9">
 													<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
-															<img src="resources/images/star.png">
-														</c:forEach></span>
+													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.hospitalityRating}" end="4">
+													<img src="resources/images/star_grey.png">
+												</c:forEach></span>
 												</div>
 											</div>
 										</div>
