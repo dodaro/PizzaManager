@@ -36,7 +36,7 @@
 												value="${i.number}">
 										</div>
 										<div class="col-xs-3">
-											<div >
+											<div class="item-price">
 												${i.getCostLabel()} &#8364
 											</div>
 										</div>
@@ -46,7 +46,7 @@
 										</div>
 									</div>
 								</c:forEach>
-								<div class="row">
+								<div class="row confirm-container">
 									<input id="bookCart" class="btn btn-default pull-right" type="submit" value="Confirm" />
 								</div>
 							</c:when>

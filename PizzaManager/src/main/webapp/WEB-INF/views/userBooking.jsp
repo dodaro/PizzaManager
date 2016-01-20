@@ -5,8 +5,7 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="resources/js/moment.js"></script>
-<script type="text/javascript"
-	src="resources/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap-datepicker.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -67,20 +66,24 @@
 	});
 </script>
 <script type="text/javascript" src="resources/js/user/cart.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap.css" />
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap-datepicker.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap-datepicker.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/userBooking.css" />
 </head>
 <body>
 	<jsp:include page="includes/navbarAccount.jsp"></jsp:include>
 
-	<div id="container">
+	<div id="container" class="container">
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
-			<div class="col-xs-9">
-				<div id="content" class="container">
+			<div class="col-xs-9 wrapper">
+				<div id="content" >
+				
+				
+				
+				
+				
 					<jsp:include page="includes/cartBook.jsp"></jsp:include></div>
 			</div>
 		</div>
