@@ -1,6 +1,8 @@
 package it.unical.pizzamanager.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,7 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.utils.BookingUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
@@ -42,7 +46,23 @@ public class PizzeriaLiveOrderController {
 
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+		
+		List<Pizza> uniquePizzaForName=new ArrayList<>();
+		for (RelationPizzeriaPizza pizzaPrice : pizzeria.getPizzasPriceList()) {
+			 Pizza pizza=pizzaPrice.getPizza();
+			 boolean found=false;
+			 for (Pizza pizza1 : uniquePizzaForName) {
+				 if(pizza.getName().equals(pizza1.getName()))
+					found=true;
+			 }
+			 
+			 if(found==false){
+				 uniquePizzaForName.add(pizza);
+			 }
+		}
+		
 		model.addAttribute("pizzeria", pizzeria);
+		model.addAttribute("pizzas", uniquePizzaForName);
 		
 		return "pizzerialiveorder";
 	}
