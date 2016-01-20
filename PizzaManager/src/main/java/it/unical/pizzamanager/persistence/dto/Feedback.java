@@ -39,6 +39,12 @@ public abstract class Feedback implements Serializable {
 
 	@Column(name = "comment")
 	private String comment;
+	
+	public Feedback(User user, Integer qualityRating, String comment) {
+		this.user = user;
+		this.qualityRating = qualityRating;
+		this.comment = comment;
+	}
 
 	public Feedback() {
 		this.id = DatabaseHandler.NO_ID;

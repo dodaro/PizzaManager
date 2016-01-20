@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <%@ page session="false"%>
 <html>
@@ -64,11 +65,14 @@
 					<div class="name-container">${pizzeriaResult.name}</div>
 					<div class="address-container">
 						<div class="address-route">
-							<span class="glyphicon glyphicon-map-marker"></span><span>${pizzeriaResult.address.street} ${pizzeriaResult.address.number}, ${pizzeriaResult.address.city}</span>
+							<span class="glyphicon glyphicon-map-marker"></span><span>${pizzeriaResult.address.street}
+								${pizzeriaResult.address.number}, ${pizzeriaResult.address.city}</span>
 						</div>
 					</div>
-					<div class="email-container"><span class="glyphicon glyphicon-envelope"></span>${pizzeriaResult.email}</div>
-					<div class="phone-container"><span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
+					<div class="email-container">
+						<span class="glyphicon glyphicon-envelope"></span>${pizzeriaResult.email}</div>
+					<div class="phone-container">
+						<span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
 					<div class="pizzeria-buttons-container">
 						<button class="btn btn-primary button-bookatable">Book a table</button>
 					</div>
@@ -76,6 +80,9 @@
 				<div class="bubble feedbacks-bubble">
 					<div class="bubble-title">Feedbacks</div>
 					<div class="feedbacks">
+						<c:if test="${pizzeriaResult.feedbacks.size() == 0}">
+							<div>This pizzeria has not received feedbacks.</div>
+						</c:if>
 						<c:forEach items="${pizzeriaResult.feedbacks}" var="feedback">
 							<div class="feedback">
 								<div class="user-name">
@@ -87,6 +94,8 @@
 										<div class="col-xs-9">
 											<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
 													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.qualityRating}" end="4">
+													<img src="resources/images/star_grey.png">
 												</c:forEach></span>
 										</div>
 									</div>
@@ -95,6 +104,8 @@
 										<div class="col-xs-9">
 											<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
 													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.fastnessRating}" end="4">
+													<img src="resources/images/star_grey.png">
 												</c:forEach></span>
 										</div>
 									</div>
@@ -103,11 +114,15 @@
 										<div class="col-xs-9">
 											<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
 													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.hospitalityRating}" end="4">
+													<img src="resources/images/star_grey.png">
 												</c:forEach></span>
 										</div>
 									</div>
 								</div>
-								<div class="comment">"${feedback.comment}"</div>
+								<c:if test="${feedback.comment.length() > 0}">
+									<div class="comment">"${feedback.comment}"</div>
+								</c:if>
 							</div>
 						</c:forEach>
 					</div>
@@ -118,6 +133,45 @@
 					<div class="bubble-title">Location</div>
 					<div id="map"></div>
 				</div>
+				<c:if test="${userLogged}">
+					<div class="bubble">
+						<div class="bubble-title">Leave a feedback</div>
+						<form:form method="post" modelAttribute="feedbackForm">
+							<div class="ratings">
+								<div class="rating row">
+									<div class="col-xs-2 rating-name">Quality</div>
+									<div class="col-xs-10">
+										<span class="givefeedback-stars stars"><c:forEach begin="1" end="5" var="i">
+												<img src="resources/images/star_grey.png" class="givefeedback-star" data-index="${i}">
+											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden path="quality" value="0" /></span>
+									</div>
+								</div>
+								<div class="rating row">
+									<div class="col-xs-2 rating-name">Fastness</div>
+									<div class="col-xs-10">
+										<span class="givefeedback-stars stars"><c:forEach begin="1" end="5" var="i">
+												<img src="resources/images/star_grey.png" class="givefeedback-star" data-index="${i}">
+											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden path="fastness" value="0" /></span>
+									</div>
+
+								</div>
+								<div class="rating row">
+									<div class="col-xs-2 rating-name">Hospitality</div>
+									<div class="col-xs-10">
+										<span class="givefeedback-stars stars"><c:forEach begin="1" end="5" var="i">
+												<img src="resources/images/star_grey.png" class="givefeedback-star" data-index="${i}">
+											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden path="hospitality" value="0" /></span>
+									</div>
+								</div>
+							</div>
+							<form:textarea path="comment" class="form-control comment-textarea" rows="2"
+								placeholder="Leave a comment"></form:textarea>
+							<div class="button-feedback-container">
+								<button type="submit" class="btn btn-default">Give feedback</button>
+							</div>
+						</form:form>
+					</div>
+				</c:if>
 				<div class="bubble">
 					<div class="bubble-title">Menu</div>
 					<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
@@ -139,7 +193,8 @@
 									&euro;
 									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
 								</div>
-								<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}" class="btn btn-default button-addtocart addToCart">Add to cart</a>
+								<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
+									class="btn btn-default button-addtocart addToCart">Add to cart</a>
 							</div>
 						</div>
 					</c:forEach>

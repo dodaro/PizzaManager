@@ -22,6 +22,14 @@ public class FeedbackPizzeria extends Feedback {
 	@Column(name = "hospitality_rating", nullable = false)
 	private Integer hospitalityRating;
 
+	public FeedbackPizzeria(User user, Pizzeria pizzeria, Integer qualityRating,
+			Integer fastnessRating, Integer hospitalityRating, String comment) {
+		super(user, qualityRating, comment);
+		this.pizzeria = pizzeria;
+		this.fastnessRating = fastnessRating;
+		this.hospitalityRating = hospitalityRating;
+	}
+
 	public FeedbackPizzeria() {
 		super();
 		this.pizzeria = new Pizzeria();

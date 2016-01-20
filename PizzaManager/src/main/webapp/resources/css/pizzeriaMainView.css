@@ -1,3 +1,16 @@
+textarea {
+	resize: none;
+}
+
+form {
+	margin-bottom: 0;
+}
+
+.button-feedback-container {
+	margin-top: 15px;
+	text-align: right;
+}
+
 #map {
 	height: 300px;
 }
@@ -71,4 +84,20 @@
 
 .pizzeria-info-bubble .glyphicon {
 	margin-right: 10px;
+}
+
+.comment-textarea {
+	margin-top: 20px;
+}
+
+.givefeedback-stars {
+	cursor: pointer;
+}
+
+.glyphicon-ok {
+	color: #008800;
+	position: relative;
+	top: 5;
+	left: 12;
+	display: none;
 }
