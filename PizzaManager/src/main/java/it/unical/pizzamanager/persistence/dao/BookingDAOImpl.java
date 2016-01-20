@@ -240,9 +240,10 @@ public class BookingDAOImpl implements BookingDAO {
 	public List<Booking> getOrderedBookings(Pizzeria pizzeria) {
 		Session session = databaseHandler.getSessionFactory().openSession();
 
-		String queryString = "from Booking where pizzeria = :pizzeria ORDER BY priority DESC";
+		String queryString = "from Booking where pizzeria = :pizzeria and confirmed = :confirmed ORDER BY priority DESC";
 		Query query = session.createQuery(queryString);
 		query.setParameter("pizzeria", pizzeria);
+		query.setParameter("confirmed", true);
 		List<Booking> bookings = (List<Booking>) query.list();
 		for (Booking booking : bookings) {
 			booking.getOrderItems().size();

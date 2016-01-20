@@ -30,6 +30,8 @@ public class BookingUserDisplay {
 	
 	private String paypalUrl;
 
+	private boolean payed;
+	
 	public BookingUserDisplay() {
 		this.id = 0;
 		this.bookingType = "";
@@ -42,6 +44,7 @@ public class BookingUserDisplay {
 		this.identifier = "";
 		this.paypalUrl="";
 		this.completationTime="";
+		this.payed=false;
 
 	}
 
@@ -137,6 +140,14 @@ public class BookingUserDisplay {
 
 	public void setCompletationTime(String completationTime) {
 		this.completationTime = completationTime;
+	}
+
+	public boolean isPayed() {
+		return payed;
+	}
+
+	public void setPayed(boolean payed) {
+		this.payed = payed;
 	}
 
 	
