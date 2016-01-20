@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,6 +36,7 @@ import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.BookingUserDisplayUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
@@ -63,26 +64,25 @@ public class UserBookingController {
 
 	@ResponseBody
 	@RequestMapping(value = "/userBooking/book", method = RequestMethod.POST)
-	public String book(@RequestParam("pizzeriaCartBook") String pizzeriaCartBook, Model model, HttpSession session) {
+	public String book(@RequestParam("pizzeriaCartBook") String pizzeriaCartBook, @RequestParam("date") Date date,
+			Model model, HttpSession session) {
 
 		System.out.println(pizzeriaCartBook);
 		String[] value = pizzeriaCartBook.split(";");
 		PizzeriaCartBooking pizzeriaBook = new PizzeriaCartBooking();
 		pizzeriaBook.setPizzeria(value[0]);
 		pizzeriaBook.setBookingType(value[1]);
-		DateFormat format = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-		try {
-			pizzeriaBook.setDate(format.parse(value[2]));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Exception " + e);
-		}
+		System.out.println(date);
+
+		pizzeriaBook.setDate(date);
+
+		// set correctly date
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
-		System.out.println(pizzeriaBook.getDate());
+
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		Cart cart = cartDAO.getUserCart(user);
 		ArrayList<OrderItem> toBook = itemToBook(pizzeriaBook, cart);
@@ -96,6 +96,7 @@ public class UserBookingController {
 
 		if (booking instanceof BookingDelivery)
 			((BookingDelivery) booking).setDeliveryAddress(user.getAddress());
+		booking.setBill(BookingUserDisplayUtils.calculateBill(toBook));
 		bookingDAO.create(booking);
 		for (OrderItem orderItem : toBook) {
 			orderItem.setBooking(booking);
@@ -104,8 +105,8 @@ public class UserBookingController {
 
 		}
 
-		ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
-		model.addAttribute("bookings", bookings);
+		// ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
+		// model.addAttribute("bookings", bookings);
 		model.addAttribute("user", user);
 		return "{\"success\" : true}";
 	}
@@ -184,17 +185,17 @@ public class UserBookingController {
 
 	private String stringFyIngredientsList(List<RelationPizzaIngredient> pizzaIngredients,
 			List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients) {
-		String ingredients="(";
+		String ingredients = "(";
 		for (RelationPizzaIngredient relationPizzaIngredient : pizzaIngredients) {
-				ingredients=ingredients.concat(relationPizzaIngredient.getIngredient().getName());
-				ingredients=ingredients.concat(",");
+			ingredients = ingredients.concat(relationPizzaIngredient.getIngredient().getName());
+			ingredients = ingredients.concat(",");
 		}
 		for (RelationPizzaOrderItemIngredient relationPizzaOrderItemIngredient : pizzaOrderIngredients) {
-			ingredients=ingredients.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
-			ingredients=ingredients.concat(",");
+			ingredients = ingredients.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
+			ingredients = ingredients.concat(",");
 		}
-		ingredients=ingredients.substring(0, ingredients.length()-1);
-		ingredients=ingredients.concat(")");
+		ingredients = ingredients.substring(0, ingredients.length() - 1);
+		ingredients = ingredients.concat(")");
 		System.out.println(ingredients);
 		return ingredients;
 	}

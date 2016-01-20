@@ -17,12 +17,14 @@ import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 
 public class BookingUserDisplayUtils {
 
-	public static BookingUserDisplay createBookingUserDisplay(Booking booking,List<Booking> activeBooking) {
+	public static BookingUserDisplay createBookingUserDisplay(Booking booking, List<Booking> activeBooking) {
 		BookingUserDisplay userBooking = new BookingUserDisplay();
 		userBooking.setId(booking.getId());
 		userBooking.setIdentifier("Booking" + booking.getId());
 		userBooking.setActived(booking.getConfirmed());
 		userBooking.setBill(calculateBill(booking.getOrderItems()));
+		if (booking.getPayment() != null)
+			userBooking.setPayed(true);
 		if (booking instanceof BookingDelivery)
 			userBooking.setBookingType("Delivery");
 		else if (booking instanceof BookingTakeAway)
@@ -33,18 +35,18 @@ public class BookingUserDisplayUtils {
 		userBooking.setPizzeria(booking.getPizzeria().getName());
 		userBooking.setPreparationTime(getPreparationTimeString(evaluatePreparationTime(booking.getOrderItems())));
 		// include my preparation time?
-		userBooking.setCompletationTime(evalueteCompletationTime(activeBooking,booking.getId()));
+		userBooking.setCompletationTime(evalueteCompletationTime(activeBooking, booking.getId()));
 		userBooking.setItems(createItemList(booking.getOrderItems()));
 		return userBooking;
 	}
 
-	private static String evalueteCompletationTime(List<Booking> activeBooking,Integer myId) {
-		Integer completationTime=0;
-		for(Booking b:activeBooking){
-			if(b.getId()==myId){
+	private static String evalueteCompletationTime(List<Booking> activeBooking, Integer myId) {
+		Integer completationTime = 0;
+		for (Booking b : activeBooking) {
+			if (b.getId() == myId) {
 				break;
 			}
-			completationTime+=BookingUserDisplayUtils.evaluatePreparationTime(b.getOrderItems());
+			completationTime += BookingUserDisplayUtils.evaluatePreparationTime(b.getOrderItems());
 		}
 		return BookingUserDisplayUtils.getPreparationTimeString(completationTime);
 	}
@@ -74,11 +76,11 @@ public class BookingUserDisplayUtils {
 		}
 		return bill;
 	}
-	
+
 	public static Double getCostPizzaPlusIngredients(PizzaOrderItem order) {
-		Double cost=order.getCost();
+		Double cost = order.getCost();
 		for (RelationPizzaOrderItemIngredient ingredient : order.getPizzaOrderIngredients()) {
-			cost+=ingredient.getCost();
+			cost += ingredient.getCost();
 		}
 		return cost;
 	}
@@ -154,7 +156,7 @@ public class BookingUserDisplayUtils {
 		userBooking.setItems(createSimpleItemList(booking.getOrderItems()));
 		return userBooking;
 	}
-	
+
 	private static List<OrderItemDisplay> createSimpleItemList(List<OrderItem> orderItems) {
 		List<OrderItemDisplay> itemsToDisplay = new ArrayList<>();
 		for (OrderItem item : orderItems) {

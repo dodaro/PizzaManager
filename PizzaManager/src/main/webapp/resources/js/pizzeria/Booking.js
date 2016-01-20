@@ -248,7 +248,7 @@ var Booking = function(){
 								+"<td>"+booking.pizzas[int2].priceEach+" &euro;</td>";
 								
 								var total=new Number(booking.pizzas[int2].number)*new Number(booking.pizzas[int2].priceEach);
-								string+="<td>"+total.toFixed(2)+ " &euro;</td>"
+								string+="<td>"+total+ " &euro;</td>"
 								+"</tr>";
 					}
 					string+='</table>';

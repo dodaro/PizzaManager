@@ -17,11 +17,12 @@
 	$(document).ready(function() {
 		$(".addToCart").on('click', function(e) {
 			e.preventDefault();
+			var target = $(this).data('target');
 			var id = parseInt($(this).data("id"), 10);
 			var pizzeria = parseInt($(this).data("pizzeria"), 10);
 			$.ajax({
 				type : "POST",
-				url : "/cart/addItem",
+				url : "/cart/add" + target,
 				data : {
 					itemToBook : id
 
@@ -176,7 +177,7 @@
 					</div>
 				</c:if>
 				<div class="bubble">
-					<div class="bubble-title">Menu</div>
+					<div class="bubble-title">Pizzas</div>
 					<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
 						<div class="row menu-entry">
 							<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
@@ -199,7 +200,29 @@
 									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
 								</div>
 								<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
-									class="btn btn-default button-addtocart addToCart">Add to cart</a>
+									class="btn btn-default button-addtocart addToCart" data-target="Item">Add to cart</a>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+				<div class="bubble">
+					<div class="bubble-title">Beverages</div>
+					<c:forEach items="${pizzeriaResult.beveragesPriceList}" var="pizzeriaBeverage">
+						<div class="row menu-entry">
+							<div class="beverage-name">${pizzeriaBeverage.beverage.name}</div>
+							<div class="beverage-brand">
+								<span class="pizzeriaPizza-label">Brand:</span> <span>${pizzeriaBeverage.beverage.brand}</span>
+							</div>
+							<div class="beverage-size">
+								<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaBeverage.beverage.size.string}</span>
+							</div>
+							<div class="right-container">
+								<div class="beverage-price">
+									&euro;
+									<fmt:formatNumber value="${pizzeriaBeverage.price}" pattern="0.00" />
+								</div>
+								<a href="#" data-id="${pizzeriaBeverage.id}" data-pizzeria="${pizzeriaResult.id}"
+									class="btn btn-default button-addtocart addToCart" data-target="Beverage">Add to cart</a>
 							</div>
 						</div>
 					</c:forEach>

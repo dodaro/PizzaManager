@@ -30,8 +30,6 @@ pizzeriaTableManager = function() {
 						'data' : 'minSeats'
 					}, {
 						'data' : 'maxSeats'
-					}, {
-						'data' : 'available'
 					} ],
 					/*
 					 * Renders "Yes" or "No" instead of "true" or "false" in the
