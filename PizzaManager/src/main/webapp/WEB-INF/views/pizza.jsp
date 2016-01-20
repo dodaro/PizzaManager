@@ -61,10 +61,12 @@
 					<div class="pizza-image-container">
 						<img src="resources/images/pizza-twitter.png" class="img">
 					</div>
-					<div>Ingredients:</div>
-					<c:forEach items="${searchedPizza.pizzaIngredients}" var="i">
-						<div>${i.ingredient.name}</div>
-					</c:forEach>
+					<div>
+						<div class="label-ingredients">Ingredients:</div>
+						<c:forEach items="${searchedPizza.pizzaIngredients}" var="i">
+							<div>${i.ingredient.name}</div>
+						</c:forEach>
+					</div>
 				</div>
 			</div>
 			<div class="col-xs-8 wrapper">

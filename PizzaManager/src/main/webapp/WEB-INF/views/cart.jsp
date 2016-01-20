@@ -41,7 +41,7 @@
 											</div>
 										</div>
 										<div class="col-xs-2">
-											<input class="btn btn-default removeButton" type="button" value="remove"
+											<input class="btn btn-default removeButton" type="button" value="Remove"
 												data-id="${i.id}">
 										</div>
 									</div>
