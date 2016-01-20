@@ -38,7 +38,6 @@ var Booking = function(){
 			url : "/pizzeriabookingAjax",
 			type : 'GET',
 			success : function(data) {
-				//alert(data);
 				console.log(data);
 				//inizialize table
 				bookingFromServer=data;
@@ -131,14 +130,15 @@ var Booking = function(){
 				tr.removeClass('shown');
 			} else {
 				
-				loadInfoBooking(2,function (){
-					tableBooking.row('.selected');
-					tableBooking.row('.selected').child(format(row.data()[columnId])).show();
+				row.child("<img src='resources/gifs/loading.gif' width='50px' height='50px'></img>").show();
+				tr.addClass('shown');
+				loadInfoBooking(function (){
+					var tableString=format(row.data()[columnId]);
+					row.child(tableString).show();
 					console.log("callback");
 				});
 				
-				row.child("<img src='resources/gifs/loading.gif' width='50px' height='50px'></img>").show();
-				tr.addClass('shown');
+				
 			}
 		});
 
@@ -162,7 +162,8 @@ var Booking = function(){
 			var idBooking=tableBooking.row('.selected').data()[columnId];
 			sendRequest('conferme', findBooking(idBooking), function(response) {
 				tableBooking.row('.selected').remove().draw(false);
-				alert('booking'+idBooking + response);
+				//alert('booking'+idBooking + response);
+				callAndSetModal("Booking "+response+"!");
 			});	
 		});
 		
@@ -171,7 +172,6 @@ var Booking = function(){
 				$('#operationOnPaidBookingModal').modal('show');
 			else
 				editBooking();
-			//com
 		});
 		
 		$("#removeButtonBooking").on('click',function(){
@@ -179,27 +179,19 @@ var Booking = function(){
 			var idBooking=tableBooking.row('.selected').data()[columnId];
 			sendRequest('remove', findBooking(idBooking), function(response) {
 				tableBooking.row('.selected').remove().draw(false);
-				alert('booking'+idBooking + response);
+				//alert('booking'+idBooking + response);
+				callAndSetModal("Booking "+response+"!");
 			});
-		});
-		
-		//TODO LATO SERVER GESTIRE IL SAVE
-		$("#saveButtonBooking").on('click',function(){
-			var idBooking=tableBooking.row('.selected').data()[columnId];
-			
-			//simulazione salvataggio e rimozione tupla
-			
-			tableBooking.row('.selected').remove().draw(true);
-			/*sendRequest('save', findBooking(idBooking), function(response) {
-				tableBooking.row('.selected').remove().draw(false);
-				alert('booking'+idBooking + response);
-			});*/	
-		});
-		
+		});	
+	}
+	
+	function loadInfoBooking(loading){
+		console.log("chiamata");
+		setTimeout(function(){loading();},300);
 	}
 	
 	function format(idBooking) {
-	
+		console.log("format")
 		string="";
 		for (var int = 0; int < bookingFromServer.length; int++) {
 			if(bookingFromServer[int].id==idBooking){
@@ -293,11 +285,6 @@ var Booking = function(){
 		return string;
 	}
 
-	function loadInfoBooking(bookingId,loading){
-		console.log("chiamata");
-		setTimeout(function(){loading();},300);
-	}
-
 	var sendRequest = function(action, bookingResume, onSuccess) {
 		var reducedBooking=reduceBooking(bookingResume);
 		var stringB=JSON.stringify(reducedBooking);
@@ -357,18 +344,22 @@ var Booking = function(){
 		var idBooking=tableBooking.row('.selected').data()[columnId];
 		communicator.bookingToEdit=findBooking(idBooking);
 		
-		//TODO pezza da sistemare
-		console.log($('#liLiveOrderTool'))
-		$('#liLiveOrderTool').click();	
+		$('#content').load("pizzerialiveorder", function(data) {
+			$('.nav-pills .active').removeClass('active');
+			$("#liLiveOrderTool").addClass('active');
+		});
 	}	
-	
-	
 	
 	var setControlButtons = function(boolButtonConferme, boolButtonEdit, boolButtonRemove, boolButtonSave ){
 		
 		$("#confermeButtonBooking").prop('disabled', boolButtonConferme);
 		$("#editButtonBooking").prop('disabled', boolButtonEdit);
 		$("#removeButtonBooking").prop('disabled', boolButtonRemove);
+	}
+	
+	var callAndSetModal = function(message){
+		$("#modalMessage").text(message);
+		$('#modalAlert').modal('show');
 	}
 	
 	return {

@@ -348,12 +348,20 @@ var LiveOrderTool = function(){
 				booking : stringBooking
 			},
 			success : function(data) {
-				console.log(data)
-				alert(data);
-				if(confirmedBooking)
-					$('#liLiveRestaurant').click();
-				else
-					$('#liManageBooking').click();
+				//console.log(data)
+				//callAndSetModal("Booking "+data+"!");
+				if(confirmedBooking){
+					$('#content').load("pizzerialiverestaurant", function(data) {
+						$('.nav-pills .active').removeClass('active');
+						$("#liLiveRestaurant").addClass('active');
+					});					
+				}
+				else{
+					$('#content').load("pizzeriabooking", function(data) {
+						$('.nav-pills .active').removeClass('active');
+						$("#liManageBooking").addClass('active');
+					});					
+				}
 				
 			},
 			error : function(data, status, er) {
@@ -619,27 +627,30 @@ var LiveOrderTool = function(){
 		$("#removeIngredients.js-example-basic-multiple").select2('data',pizza.getIngredientsRemoved());
 		$('#counterPizza').val(number);
 		
+		console.log(pizza.getSize());
+		
 		$('#sizeButtons .active').removeClass("active");
 		switch (pizza.getSize()) {
-		case "s":			
+		case "SMALL":			
 			$('#sizeButtons > label:eq(0)').addClass("active");
 			break;
-		case "m":
+		case "NORMAL":
 			$('#sizeButtons > label:eq(1)').addClass("active");
 			break;
-		case "l":
+		case "MAXI":
 			$('#sizeButtons > label:eq(2)').addClass("active");
 			break;
 		default:
 			break;
 		}
-				
+			
+		console.log(pizza.getGlutenFree());
 		$('#glutenButtons .active').removeClass("active");
 		switch (pizza.getGlutenFree()) {
-		case "no":
+		case "false":
 			$('#glutenButtons > label:eq(0)').addClass("active");	
 			break;
-		case "yes":
+		case "true":
 			$('#glutenButtons > label:eq(1)').addClass("active");		
 			break;
 		default:
@@ -699,7 +710,7 @@ var LiveOrderTool = function(){
 			
 			var namePizzaSelected = $("#pizzaList.js-example-basic-single").select2("data").text;
 			if (namePizzaSelected == "Select Pizza") {
-				$('#selectionModal').modal('show');
+				callAndSetModal("Select pizza please!");
 				return;
 			}
 			
@@ -1025,7 +1036,7 @@ var LiveOrderTool = function(){
 		if(beverageFromBooking===undefined){
 			
 			if ($("#beverageList.js-example-basic-single").select2("data").text == "Select Beverage") {
-				$('#selectionModal').modal('show');
+				callAndSetModal("Select beverage please!");
 				return;
 			}
 			
@@ -1171,7 +1182,7 @@ var LiveOrderTool = function(){
 		else{
 			var dateSelected=$("#datetimepicker1").data("DateTimePicker").date();
 			if(dateSelected<moment().valueOf()){
-				alert("data improbabile");
+				callAndSetModal("Only him can go into the past! Do you have a Delorean? Not seem..",true);
 				return false;
 			}
 		}
@@ -1228,16 +1239,26 @@ var LiveOrderTool = function(){
 				return false;
 			}
 		}
-		
 		if(pizzaList.length==0){
-			alert("Book a pizza!")
+			callAndSetModal("You have to add at least one pizza!");
 			return false;
 		}
-		
 		return true;
 	}
 	
-
+	var callAndSetModal = function(message,special){
+		$("#modalMessage").empty();
+		if(special==true){
+			$("#modalMessage").html("<h4>"+message+"</h4><img src='resources/images/backToTheFuture.png' width='500px' height='350px'></img>");
+		}
+		else{
+			$("#modalMessage").text(message);				
+		}
+		$('#modalAlert').modal('show');
+	}
+	
+	
+	
 	return {
 		init : function() {
 			initVar();

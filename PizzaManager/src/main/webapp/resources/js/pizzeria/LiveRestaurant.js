@@ -96,14 +96,13 @@ var LiveRestaurant = function(){
 				tr.removeClass('shown');
 			} 
 			else{
-				loadInfoLiveRestaurant(2,function (){
-					tableLiveRestaurant.row('.selected');
-					tableLiveRestaurant.row('.selected').child(format(row.data()[columnId])).show();
-					console.log("callback");
-				});
-				
 				row.child("<img src='resources/gifs/loading.gif' width='50px' height='50px'></img>").show();
 				tr.addClass('shown');
+				loadInfoBooking(function (){
+					var tableString=format(row.data()[columnId]);
+					row.child(tableString).show();
+					console.log("callback");
+				});
 			}
 		});
 
@@ -130,7 +129,7 @@ var LiveRestaurant = function(){
 			var idBookingConfermed=tableLiveRestaurant.row('.selected').data()[columnId];
 			sendRequest('collect', findBookingConfermed(idBookingConfermed), function(response) {
 				tableLiveRestaurant.row('.selected').remove().draw(false);
-				alert('Transaction Completed'+idBookingConfermed + response);
+				callAndSetModal("Booking "+response+"!");
 			});
 		});
 		
@@ -142,7 +141,7 @@ var LiveRestaurant = function(){
 			var idBookingConfermed=tableLiveRestaurant.row('.selected').data()[columnId];
 			sendRequest('remove', findBookingConfermed(idBookingConfermed), function(response) {
 				tableLiveRestaurant.row('.selected').remove().draw(false);
-				alert('Transaction Completed'+idBookingConfermed + response);
+				callAndSetModal("Booking "+response+"!");
 			});
 		});
 		
@@ -150,7 +149,7 @@ var LiveRestaurant = function(){
 			var idBookingConfermed=tableLiveRestaurant.row('.selected').data()[columnId];
 			sendRequest('sendBack', findBookingConfermed(idBookingConfermed), function(response) {
 				tableLiveRestaurant.row('.selected').remove().draw(false);
-				alert('Transaction Completed'+idBookingConfermed + response);
+				callAndSetModal("Booking "+response+"!");
 			});
 		});
 		
@@ -288,13 +287,12 @@ var LiveRestaurant = function(){
 				}
 			}
 		}
-		console.log(string);
 		return string;
 	}
 
-	function loadInfoLiveRestaurant(idBookingConfermed,loading){
+	function loadInfoBooking(loading){
 		console.log("chiamata");
-		setTimeout(function(){loading();},200);
+		setTimeout(function(){loading();},300);
 	}
 	
 	var sendRequest = function(action, bookingResume, onSuccess) {
@@ -356,12 +354,11 @@ var LiveRestaurant = function(){
 		var idLiveRestaurant=tableLiveRestaurant.row('.selected').data()[columnId];
 		communicator.bookingToEdit=findBookingConfermed(idLiveRestaurant);
 		
-		//TODO pezza da sistemare
-		console.log($('#liLiveOrderTool'))
-		$('#liLiveOrderTool').click();	
+		$('#content').load("pizzerialiveorder", function(data) {
+			$('.nav-pills .active').removeClass('active');
+			$("#liLiveOrderTool").addClass('active');
+		});
 	}
-	
-	
 	
 	var setControlButtons = function(boolButtonComplete, boolButtonUpdate, boolButtonRemove, boolButtonSendBack){
 		
@@ -369,6 +366,11 @@ var LiveRestaurant = function(){
 		$("#updateButtonLiveRestaurant").prop('disabled', boolButtonUpdate);
 		$("#removeButtonLiveRestaurant").prop('disabled', boolButtonRemove);
 		$("#sendBackButtonLiveRestaurant").prop('disabled', boolButtonSendBack);
+	}
+	
+	var callAndSetModal = function(message){
+		$("#modalMessage").text(message);
+		$('#modalAlert').modal('show');
 	}
 	
 	return {

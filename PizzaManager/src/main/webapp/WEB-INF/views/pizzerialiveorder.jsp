@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<jsp:include page="includes/modalMessage.jsp" />
 <div id="live-order-tool">
 	<div class="row booking-data">
 		<div class="col-md-4 left-col">
@@ -219,28 +219,6 @@
 		<button id="confermeOrder" type="submit" class="btn btn-default">Complete</button>
 	</div>
 </div>
-
-
-
-<div id="selectionModal" class="modal fade" tabindex="-1" role="dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title">Error</h4>
-			</div>
-			<div class="modal-body">
-				<p>Select pizza or beverage, please.</p>
-			</div>
-			<div class="modal-footer"></div>
-		</div>
-		<!-- /.modal-content -->
-	</div>
-	<!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
 <script type="text/javascript">
 	LiveOrderTool.init();
 </script>
