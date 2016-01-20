@@ -51,6 +51,7 @@
 </head>
 <body>
 	<jsp:include page="includes/navbar${typeSession}.jsp" />
+	<jsp:include page="includes/modalMessage.jsp" />
 
 	<div class="container">
 		<div class="row">
