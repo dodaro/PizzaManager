@@ -70,7 +70,13 @@
 		        <artifactId>jackson-databind</artifactId>
 		        <version>2.4.3</version>
 		    </dependency>
-
+		    
+		<!-- Paypal -->
+		<dependency>
+			<groupId>com.paypal.sdk</groupId>
+			<artifactId>rest-api-sdk</artifactId>
+			<version>1.4.1</version>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.validation</groupId>

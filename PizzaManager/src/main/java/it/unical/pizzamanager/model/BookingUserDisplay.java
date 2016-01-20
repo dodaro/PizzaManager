@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BookingUserDispay {
+public class BookingUserDisplay {
 
 	private int id;
 
@@ -25,8 +25,10 @@ public class BookingUserDispay {
 	private String preparationTime;
 
 	private String identifier;
+	
+	private String paypalUrl;
 
-	public BookingUserDispay() {
+	public BookingUserDisplay() {
 		this.id = 0;
 		this.bookingType = "";
 		this.pizzeria = "";
@@ -36,6 +38,7 @@ public class BookingUserDispay {
 		this.bill = 0.0;
 		this.preparationTime = "";
 		this.identifier = "";
+		this.paypalUrl="";
 
 	}
 
@@ -115,6 +118,14 @@ public class BookingUserDispay {
 		NumberFormat formatter = new DecimalFormat("#0.00");
 		return formatter.format(bill);
 
+	}
+
+	public String getPaypalUrl() {
+		return paypalUrl;
+	}
+
+	public void setPaypalUrl(String paypalUrl) {
+		this.paypalUrl = paypalUrl;
 	}
 
 }

@@ -3,6 +3,7 @@ package it.unical.pizzamanager.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.model.BookingUserDispay;
+import it.unical.pizzamanager.model.BookingUserDisplay;
 import it.unical.pizzamanager.model.OrderItemDisplay;
+import it.unical.pizzamanager.paypal.PaymentWithPayPal;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
@@ -37,7 +39,7 @@ public class BookingListController {
 	WebApplicationContext context;
 
 	@RequestMapping(value = "/orders", method = RequestMethod.GET)
-	public String orders(Model model, HttpSession session) {
+	public String orders(Model model, HttpSession session,HttpServletRequest request) {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
@@ -48,8 +50,11 @@ public class BookingListController {
 		model.addAttribute("user", user);
 		List<Booking> bookings = bookingDAO.getUserBookings(user);
 
-		List<BookingUserDispay> bookingsList = createBookingList(bookings);
-		System.out.println(bookings.size());
+		List<BookingUserDisplay> bookingsList = createBookingList(bookings);
+		PaymentWithPayPal.init();
+		for (BookingUserDisplay bookingUserDisplay : bookingsList) {
+			PaymentWithPayPal.createPayment(bookingUserDisplay,request);
+		}
 		model.addAttribute("bookings", bookingsList);
 		return "orders";
 	}
@@ -81,10 +86,10 @@ public class BookingListController {
 		return "orders";
 	}
 
-	private List<BookingUserDispay> createBookingList(List<Booking> bookings) {
-		List<BookingUserDispay> bookingList = new ArrayList<>();
+	private List<BookingUserDisplay> createBookingList(List<Booking> bookings) {
+		List<BookingUserDisplay> bookingList = new ArrayList<>();
 		for (Booking booking : bookings) {
-			BookingUserDispay userBooking = new BookingUserDispay();
+			BookingUserDisplay userBooking = new BookingUserDisplay();
 			userBooking.setId(booking.getId());
 			userBooking.setIdentifier("Booking"+booking.getId());
 			userBooking.setActived(booking.getConfirmed());
@@ -141,7 +146,6 @@ public class BookingListController {
 		}
 		ingredients = ingredients.substring(0, ingredients.length() - 1);
 		ingredients = ingredients.concat(")");
-		System.out.println(ingredients);
 		return ingredients;
 	}
 	

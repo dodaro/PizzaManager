@@ -12,7 +12,37 @@
 <script type="text/javascript" src="resources/js/maps.js"></script>
 
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaMainView.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".addToCart").on('click', function() {
+			var id = parseInt($(this).data("id"), 10);
+			var pizzeria = parseInt($(this).data("pizzeria"), 10);
+			alert($(this).data("pizzeria"));
+			$.ajax({
+				type : "POST",
+				url : "/cart/addItem",
+				data : {
+					itemToBook : id
 
+				},
+				success : function(response) {
+					$.ajax({
+						type : "GET",
+						url : "/pizzeriamainview",
+						data : {
+							id : pizzeria
+
+						},
+						success : function(response) {
+
+						}
+					});
+				}
+			});
+		});
+
+	});
+</script>
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pizzeriaMainView.css" />
@@ -109,7 +139,7 @@
 									&euro;
 									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
 								</div>
-								<a href="#" class="btn btn-default button-addtocart">Add to cart</a>
+								<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}" class="btn btn-default button-addtocart addToCart">Add to cart</a>
 							</div>
 						</div>
 					</c:forEach>

@@ -65,7 +65,7 @@
 								</div>
 								<div class="col-xs-2">${b.getBillLabel()}&#8364</div>
 								<div class="col-xs-2">
-									<button class="btn btn-default">Paypal</button>
+									<a href="${b.paypalUrl}" class="btn btn-default">Buy Now</a>
 								</div>
 							</div>
 							<div id="${b.identifier}" class="collapse">
