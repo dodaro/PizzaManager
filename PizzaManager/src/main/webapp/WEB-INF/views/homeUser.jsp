@@ -42,7 +42,7 @@
 								<a href="usermainview?id=${user.id}">View all feedbacks.</a>
 							</div>
 							<div class="feedbacks">
-								<c:forEach begin="1" end="${numberOfFeedbacks}" items="${user.feedbacks}" var="feedback">
+								<c:forEach items="${user.feedbacks}" var="feedback">
 									<div class="feedback">
 										<div class="pizzeria-name">
 											<a href="pizzeriamainview?id=${feedback.pizzeria.id}">${feedback.pizzeria.name}</a>
