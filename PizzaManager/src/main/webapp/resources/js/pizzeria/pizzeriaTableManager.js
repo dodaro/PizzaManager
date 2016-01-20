@@ -83,7 +83,7 @@ pizzeriaTableManager = function() {
 			},
 
 			selectRow : function($row) {
-				var $tablesTable = $row.closest('#beverage-table #tables-table');
+				var $tablesTable = $row.closest('#pizzeria-table #tables-table');
 				$tablesTable.find('.selected').removeClass('selected');
 				$row.addClass('selected');
 			},
