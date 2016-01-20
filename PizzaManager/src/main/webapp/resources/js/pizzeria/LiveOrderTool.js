@@ -339,7 +339,6 @@ var LiveOrderTool = function(){
 		var booking=createBooking();
 		console.log(booking);
 		
-		//TODO se si tratta di modifica di un booking basta richiamare la pagina booking ed appendere il booking al comunicator
 		var stringBooking = JSON.stringify(booking);		
 		$.ajax({
 			url : "/pizzerialiveorderConferme",
@@ -627,7 +626,6 @@ var LiveOrderTool = function(){
 		$("#removeIngredients.js-example-basic-multiple").select2('data',pizza.getIngredientsRemoved());
 		$('#counterPizza').val(number);
 		
-		console.log(pizza.getSize());
 		
 		$('#sizeButtons .active').removeClass("active");
 		switch (pizza.getSize()) {
@@ -644,7 +642,6 @@ var LiveOrderTool = function(){
 			break;
 		}
 			
-		console.log(pizza.getGlutenFree());
 		$('#glutenButtons .active').removeClass("active");
 		switch (pizza.getGlutenFree()) {
 		case "false":
@@ -695,6 +692,7 @@ var LiveOrderTool = function(){
 									+ pizzeFromServer[int].ingredients[int2].name
 									+ "</option>");
 				}
+				return;
 			}
 		}
 	}
@@ -872,8 +870,6 @@ var LiveOrderTool = function(){
 		                     n.toString(),
 		                     pizza.getCode() ]).draw(false);
 
-		//FACCIAMO scrollare la scroll fino alla nuova riga aggiunta
-		//TODO: fare il sorting di default della tabella sempre per id
 		$('.dataTables_scrollBody').animate({
 			scrollTop : $('#resumeTablePizza tbody > tr:last-child').offset().top
 		}, 100);

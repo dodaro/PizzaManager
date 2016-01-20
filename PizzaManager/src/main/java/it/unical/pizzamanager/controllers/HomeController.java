@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.controllers;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,11 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
+import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Location;
+import it.unical.pizzamanager.persistence.dto.Pizza;
+import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.PizzaUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
@@ -50,14 +56,28 @@ public class HomeController {
 	private void populateUserModel(HttpSession session, Model model) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		PizzaDAO pizzaDAO = (PizzaDAO) context.getBean("pizzaDAO");
+		List<Pizza> pizze = pizzaDAO.getAll();
+		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO"); 
+		List<PizzaUtils> p= new ArrayList<>();
 		
-		List<Pizzeria> pizzeriasRated = pizzeriaDAO.getAll();
+		List<Pizza> pizzaRated= new ArrayList<>(); 
 		
+		for(int i=0; i<pizze.size(); i++)
+		{
+			p.add(new PizzaUtils(orderItemDAO.getNumberOfOrderPizza(pizze.get(i).getName()), pizze.get(i)));
+		}
+		p.sort(new Comparator<PizzaUtils>() {
+			public int compare(PizzaUtils p1, PizzaUtils p2) 
+			{ return Integer.compare(p1.getNumberOccurrence(),p2.getNumberOccurrence());}
+		});
+		
+		for(int i=0; i<p.size(); i++)
+			pizzaRated.add(p.get(i).getPizza());
 		model.addAttribute(MODEL_ATTRIBUTE_USER, user);
 		model.addAttribute("radius", 5);
 		model.addAttribute("numberOfFeedbacks", 5);
-		model.addAttribute("top", pizzeriasRated);
+		model.addAttribute("top", pizzaRated);
 	}
 
 	private void populatePizzeriaModel(HttpSession session, Model model) {

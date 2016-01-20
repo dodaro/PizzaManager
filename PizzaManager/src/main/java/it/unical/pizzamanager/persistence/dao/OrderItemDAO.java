@@ -4,6 +4,7 @@ import java.util.List;
 
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
+import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
 public interface OrderItemDAO {
@@ -15,6 +16,8 @@ public interface OrderItemDAO {
 	public void update(OrderItem orderItem);
 
 	public List<PizzaOrderItem> getOrderPizza();
+	
+	public Integer getNumberOfOrderPizza(String pizza);
 
 	public List<BeverageOrderItem> getOrderBeverage();
 
