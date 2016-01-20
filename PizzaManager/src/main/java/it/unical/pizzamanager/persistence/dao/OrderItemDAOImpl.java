@@ -2,10 +2,12 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
+import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 
 public class OrderItemDAOImpl implements OrderItemDAO {
@@ -45,6 +47,18 @@ public class OrderItemDAOImpl implements OrderItemDAO {
 		return pizzaItems;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getNumberOfOrderPizza(String name) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+		Query query = session.createQuery("from Pizza where name = :name");
+		query.setParameter("name", name);
+		List<PizzaOrderItem> pizzaItems = (List<PizzaOrderItem>) query.list();
+		int result = pizzaItems.size();
+		session.close();
+		return result;
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<BeverageOrderItem> getOrderBeverage() {

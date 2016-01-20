@@ -42,6 +42,8 @@
 										<div class="col-xs-10">
 											<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
 													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.qualityRating}" end="4">
+													<img src="resources/images/star_grey.png">
 												</c:forEach></span>
 										</div>
 									</div>
@@ -50,6 +52,8 @@
 										<div class="col-xs-10">
 											<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
 													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.fastnessRating}" end="4">
+													<img src="resources/images/star_grey.png">
 												</c:forEach></span>
 										</div>
 									</div>
@@ -58,12 +62,15 @@
 										<div class="col-xs-10">
 											<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
 													<img src="resources/images/star.png">
+												</c:forEach> <c:forEach begin="${feedback.hospitalityRating}" end="4">
+													<img src="resources/images/star_grey.png">
 												</c:forEach></span>
 										</div>
 									</div>
 								</div>
-
-								<div class="comment">"${feedback.comment}"</div>
+								<c:if test="${feedback.comment.length() > 0}">
+									<div class="comment">"${feedback.comment}"</div>
+								</c:if>
 							</div>
 						</c:forEach>
 
