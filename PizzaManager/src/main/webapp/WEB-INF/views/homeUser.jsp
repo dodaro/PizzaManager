@@ -31,7 +31,7 @@
 					<div class="profile-image-container">
 						<img src="resources/images/no-image.png" class="img-circle">
 					</div>
-					<div class="name-container">${user.firstName}${user.lastName}</div>
+					<div class="name-container">${user.firstName}<span> </span>${user.lastName}</div>
 					<div class="username-container">${user.name}</div>
 				</div>
 				<div class="bubble feedbacks-bubble">
@@ -88,9 +88,9 @@
 				<div class="bubble">
 					<div class="bubble-title">Book a pizza now!</div>
 					<c:forEach begin="0" end="4" items="${top}" var="p">
-					<div class="row">
-						<a class="myref" href="pizzeriamainview?id=${p.getId()}">${p.name}</a>
-					</div>
+						<div class="row">
+							<a class="myref" href="pizzeriamainview?id=${p.getId()}">${p.name}</a>
+						</div>
 					</c:forEach>
 				</div>
 				<div class="bubble">
