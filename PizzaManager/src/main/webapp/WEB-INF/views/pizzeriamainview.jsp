@@ -44,6 +44,37 @@
 
 	});
 </script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$(".addBook").on('click', function() {
+		var id = $(this).closest('div').find('input').val();
+		var pizzeria = parseInt($(this).data("pizzeria"), 10);
+		alert($(this).closest('div').find('input').val());
+		$.ajax({
+			type : "POST",
+			url : "/pizzeriamainview/booking",
+			data : {
+				itemToBook : id
+
+			},
+			success : function(response) {
+				$.ajax({
+					type : "GET",
+					url : "/pizzeriamainview",
+					data : {
+						id : pizzeria
+
+					},
+					success : function(response) {
+
+					}
+				});
+			}
+		});
+	});
+
+});
+</script>
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/pizzeriaMainView.css" />
@@ -74,7 +105,8 @@
 					<div class="phone-container">
 						<span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
 					<div class="pizzeria-buttons-container">
-						<button class="btn btn-primary button-bookatable">Book a table</button>
+					<input type="text" class="form-control" name="numeroPosti" placeholder="Inserire numero di posti da prenotare">
+						<button data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}" class="btn btn-primary button-bookatable addBook">Book a table</button>
 					</div>
 				</div>
 				<div class="bubble feedbacks-bubble">

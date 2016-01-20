@@ -75,6 +75,15 @@ public class PizzeriaMainViewController {
 		return "redirect:/pizzeriamainview?id=" + id;
 	}
 
+	@RequestMapping(value = "/pizzeriamainview/booking", method = RequestMethod.POST)
+	public String pizzeriamainviewbooking(HttpSession session, @RequestParam Integer id) 
+	{
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		System.out.println(id);
+		
+		return "pizzeriamainview";
+	}
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(@ModelAttribute SearchForm form, HttpSession session, Model model) {
 

@@ -87,7 +87,7 @@
 			<div class="col-xs-8 wrapper">
 				<div class="bubble">
 					<div class="bubble-title">Book a pizza now!</div>
-					<h4>Most Selled:</h4>
+					<h4>Most Sold:</h4>
 					<c:forEach begin="0" end="4" items="${top}" var="p">
 						<div class="row">
 							<a class="myref" href="pizza?id=${p.getId()}">${p.name}</a>
