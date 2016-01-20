@@ -4,7 +4,6 @@
 			<li><a href="/cart">My Cart</a></li>
 			<li><a href="/userBooking">Book Cart</a></li>
 			<li><a href="/orders">My Order</a></li>
-			<li><a href="/settings">Settings</a></li>
 		</ul>
 	</div>
 </div>

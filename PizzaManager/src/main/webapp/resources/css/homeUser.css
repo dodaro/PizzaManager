@@ -6,6 +6,19 @@
 	text-align: center;
 }
 
+.top-pizza {
+	margin-top: 15px;
+}
+
+.myref {
+	font-size: 130%;
+	font-weight: bold;
+}
+
+.pizzeriaPizza-label {
+	font-weight: bold;
+}
+
 .name-container {
 	font-size: 140%;
 	font-weight: bold;

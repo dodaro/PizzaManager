@@ -95,8 +95,12 @@
 					<div class="bubble-title">Book a pizza now!</div>
 					<h4>Most Selled:</h4>
 					<c:forEach begin="0" end="4" items="${top}" var="p">
-						<div class="row">
+						<div class="top-pizza">
 							<a class="myref" href="pizza?id=${p.getId()}">${p.name}</a>
+							<div>
+								<span class="pizzeriaPizza-label">Ingredients:</span>
+									<c:forEach var="i" begin="0" end="${p.pizzaIngredients.size() - 1}"><span>${p.pizzaIngredients[i].ingredient.name}</span><c:if test="${i != p.pizzaIngredients.size() -1 }">, </c:if></c:forEach>
+							</div>
 						</div>
 					</c:forEach>
 				</div>

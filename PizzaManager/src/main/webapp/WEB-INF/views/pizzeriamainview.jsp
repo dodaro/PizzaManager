@@ -15,10 +15,10 @@
 <script type="text/javascript" src="resources/js/pizzeria/pizzeriaMainView.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		$(".addToCart").on('click', function() {
+		$(".addToCart").on('click', function(e) {
+			e.preventDefault();
 			var id = parseInt($(this).data("id"), 10);
 			var pizzeria = parseInt($(this).data("pizzeria"), 10);
-			alert($(this).data("pizzeria"));
 			$.ajax({
 				type : "POST",
 				url : "/cart/addItem",
@@ -35,7 +35,8 @@
 
 						},
 						success : function(response) {
-
+							$("#modalMessage").text("Added to cart.");
+							$('#modalAlert').modal('show');
 						}
 					});
 				}
@@ -57,6 +58,8 @@
 </head>
 <body>
 	<jsp:include page="includes/navbar${typeSession}.jsp" />
+
+	<jsp:include page="includes/modalMessage.jsp" />
 
 	<div class="container">
 		<div class="row">
@@ -179,7 +182,9 @@
 							<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
 							<div class="pizza-ingredients">
 								<span class="pizzeriaPizza-label">Ingredients:</span>
-								<c:forEach var="i" begin="0" end="${pizzeriaPizza.pizza.pizzaIngredients.size() - 1}"><span>${pizzeriaPizza.pizza.pizzaIngredients[i].ingredient.name}</span><c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">,</c:if>
+								<c:forEach var="i" begin="0" end="${pizzeriaPizza.pizza.pizzaIngredients.size() - 1}">
+									<span>${pizzeriaPizza.pizza.pizzaIngredients[i].ingredient.name}</span>
+									<c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">,</c:if>
 								</c:forEach>
 							</div>
 							<div class="pizza-size">

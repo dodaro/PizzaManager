@@ -26,12 +26,10 @@ public class RelationBookingTablePizzeriaTable implements Serializable {
 	@Column(name = "id")
 	private Integer id;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "booking")
 	private BookingPizzeriaTable booking;
 
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "pizzeriaTable")
 	private PizzeriaTable pizzeriaTable;
