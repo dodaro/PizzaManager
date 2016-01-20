@@ -50,6 +50,6 @@
 				</c:forEach>
 			</div>
 		</c:when>
-		<c:otherwise>You booked all items in your cart.</c:otherwise>
+		<c:otherwise>You have no items to book.</c:otherwise>
 	</c:choose>
 </div>
