@@ -1,12 +1,16 @@
 package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 
 public class PizzeriaPizzaSerializer extends JsonSerializer<RelationPizzeriaPizza> {
@@ -23,6 +27,19 @@ public class PizzeriaPizzaSerializer extends JsonSerializer<RelationPizzeriaPizz
 		jgen.writeStringField("preparationTime", relation.getPreparationTimeString());
 		jgen.writeBooleanField("glutenFree", relation.getGlutenFree());
 		jgen.writeNumberField("price", relation.getPrice());
+		
+		List<PizzaOrderItem> orderItems = relation.getOrderItems();
+		List<PizzaOrderItem> activeOrderItems = new ArrayList<>();
+
+		for (PizzaOrderItem o : orderItems) {
+			Booking booking = o.getBooking();
+			if (booking != null && booking.getCompletionDate() == null) {
+				activeOrderItems.add(o);
+			}
+		}
+
+		jgen.writeNumberField("orderItems", activeOrderItems.size());
+		
 		jgen.writeEndObject();
 	}
 }

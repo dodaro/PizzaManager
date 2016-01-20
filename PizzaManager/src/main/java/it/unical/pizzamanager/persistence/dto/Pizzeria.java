@@ -116,12 +116,36 @@ public class Pizzeria extends Account {
 		return beveragesPriceList;
 	}
 
+	public List<RelationPizzeriaBeverage> getAvailableBeveragesPriceList() {
+		List<RelationPizzeriaBeverage> availablePizzeriaBeverages = new ArrayList<>();
+
+		for (RelationPizzeriaBeverage r : beveragesPriceList) {
+			if (r.getAvailable()) {
+				availablePizzeriaBeverages.add(r);
+			}
+		}
+
+		return availablePizzeriaBeverages;
+	}
+
 	public void setBeveragesPriceList(List<RelationPizzeriaBeverage> beveragesPriceList) {
 		this.beveragesPriceList = beveragesPriceList;
 	}
 
 	public List<RelationPizzeriaPizza> getPizzasPriceList() {
 		return pizzasPriceList;
+	}
+
+	public List<RelationPizzeriaPizza> getAvailablePizzasPriceList() {
+		List<RelationPizzeriaPizza> availablePizzeriaPizzas = new ArrayList<>();
+
+		for (RelationPizzeriaPizza r : pizzasPriceList) {
+			if (r.getAvailable()) {
+				availablePizzeriaPizzas.add(r);
+			}
+		}
+
+		return availablePizzeriaPizzas;
 	}
 
 	public void setPizzasPriceList(List<RelationPizzeriaPizza> pizzasPriceList) {

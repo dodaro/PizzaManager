@@ -62,6 +62,9 @@ public class RelationPizzeriaPizza implements Serializable {
 	@Column(name = "gluten_free", nullable = false)
 	private Boolean glutenFree;
 
+	@Column(name = "available", nullable = false)
+	private Boolean available;
+
 	@ElementCollection
 	@CollectionTable(name = "images", joinColumns = @JoinColumn(name = "pizza_images") )
 	private List<Image> images;
@@ -80,6 +83,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.glutenFree = false;
 		this.images = new ArrayList<Image>();
 		this.orderItems = new ArrayList<>();
+		this.available = true;
 	}
 
 	public RelationPizzeriaPizza(Pizzeria pizzeria, Pizza pizza, Double price, PizzaSize pizzaSize,
@@ -93,6 +97,7 @@ public class RelationPizzeriaPizza implements Serializable {
 		this.glutenFree = glutenFree;
 		this.images = new ArrayList<Image>();
 		this.orderItems = new ArrayList<>();
+		this.available = true;
 	}
 
 	public int getId() {
@@ -185,5 +190,13 @@ public class RelationPizzeriaPizza implements Serializable {
 
 	public void setOrderItems(List<PizzaOrderItem> orderItems) {
 		this.orderItems = orderItems;
+	}
+	
+	public Boolean getAvailable() {
+		return available;
+	}
+	
+	public void setAvailable(Boolean available) {
+		this.available = available;
 	}
 }

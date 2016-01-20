@@ -23,6 +23,7 @@ public class RelationPizzeriaBeverageDAOImpl implements RelationPizzeriaBeverage
 		return pizzeriaBeverage;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<RelationPizzeriaBeverage> get() {
 		Session session = databaseHandler.getSessionFactory().openSession();

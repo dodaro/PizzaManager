@@ -47,6 +47,9 @@ public class RelationPizzeriaBeverage implements Serializable {
 	@Column(name = "price")
 	private Double price;
 
+	@Column(name = "available")
+	private Boolean available;
+
 	/**
 	 * OrderItems which contain a beverage.
 	 */
@@ -60,6 +63,7 @@ public class RelationPizzeriaBeverage implements Serializable {
 		this.beverage = null;
 		this.price = 0.0;
 		this.orderItems = new ArrayList<>();
+		this.available = true;
 	}
 
 	public RelationPizzeriaBeverage(Pizzeria pizzeria, Beverage beverage, Double price) {
@@ -68,6 +72,7 @@ public class RelationPizzeriaBeverage implements Serializable {
 		this.beverage = beverage;
 		this.price = price;
 		this.orderItems = new ArrayList<>();
+		this.available = true;
 	}
 
 	public int getId() {
@@ -110,5 +115,13 @@ public class RelationPizzeriaBeverage implements Serializable {
 
 	public void setOrderItems(List<BeverageOrderItem> orderItems) {
 		this.orderItems = orderItems;
+	}
+	
+	public Boolean getAvailable() {
+		return available;
+	}
+	
+	public void setAvailable(Boolean available) {
+		this.available = available;
 	}
 }

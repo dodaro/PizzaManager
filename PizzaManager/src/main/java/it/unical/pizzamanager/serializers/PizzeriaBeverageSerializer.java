@@ -1,12 +1,16 @@
 package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
+import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
 
 public class PizzeriaBeverageSerializer extends JsonSerializer<RelationPizzeriaBeverage> {
@@ -24,7 +28,18 @@ public class PizzeriaBeverageSerializer extends JsonSerializer<RelationPizzeriaB
 		jgen.writeStringField("size", relation.getBeverage().getSize().toString());
 		jgen.writeStringField("type", relation.getBeverage().getType().toString());
 		jgen.writeNumberField("price", relation.getPrice());
-		jgen.writeNumberField("orderItems", relation.getOrderItems().size());
+
+		List<BeverageOrderItem> orderItems = relation.getOrderItems();
+		List<BeverageOrderItem> activeOrderItems = new ArrayList<>();
+
+		for (BeverageOrderItem o : orderItems) {
+			Booking booking = o.getBooking();
+			if (booking != null && booking.getCompletionDate() == null) {
+				activeOrderItems.add(o);
+			}
+		}
+
+		jgen.writeNumberField("orderItems", activeOrderItems.size());
 		jgen.writeEndObject();
 	}
 }

@@ -47,7 +47,8 @@ public class PizzeriaPizzaManagerController {
 	@RequestMapping(value = "/pizzeria/pizzasList", method = RequestMethod.GET)
 	public @ResponseBody List<RelationPizzeriaPizza> getPizzas(HttpSession session) {
 		/*
-		 * If the author of the request is not logged in as a pizzeria, negate the information.
+		 * If the author of the request is not logged in as a pizzeria, negate
+		 * the information.
 		 */
 		if (!SessionUtils.isPizzeria(session)) {
 			return null;
@@ -56,7 +57,7 @@ public class PizzeriaPizzaManagerController {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 
-		return pizzeria.getPizzasPriceList();
+		return pizzeria.getAvailablePizzasPriceList();
 	}
 
 	@ResponseBody
@@ -89,14 +90,18 @@ public class PizzeriaPizzaManagerController {
 				form.getPrice(), form.getSize(), form.getPreparationTimeInSeconds(),
 				form.getGlutenFree());
 
-		// FIXME - Validate data: user can't add an entry that already exists (same data).
+		// FIXME - Validate data: user can't add an entry that already exists
+		// (same data).
 
 		RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
 				.getBean("relationPizzeriaPizzaDAO");
 
 		dao.create(pizzeriaPizza);
 
-		/* Now the pizzeriaPizza object contains the id of the newly created instance. */
+		/*
+		 * Now the pizzeriaPizza object contains the id of the newly created
+		 * instance.
+		 */
 		return buildOkResponse(pizzeriaPizza);
 	}
 
@@ -104,8 +109,8 @@ public class PizzeriaPizzaManagerController {
 		List<RelationPizzeriaPizza> pizzeriaPizzas = pizzeria.getPizzasPriceList();
 
 		/*
-		 * Only update the pizza if the pizzeria has already a RelationPizzeriaPizza with the same
-		 * id.
+		 * Only update the pizza if the pizzeria has already a
+		 * RelationPizzeriaPizza with the same id.
 		 */
 		for (RelationPizzeriaPizza pizzeriaPizza : pizzeriaPizzas) {
 			if (pizzeriaPizza.getId() == form.getId()) {
@@ -130,20 +135,22 @@ public class PizzeriaPizzaManagerController {
 		List<RelationPizzeriaPizza> pizzeriaPizzas = pizzeria.getPizzasPriceList();
 
 		/*
-		 * Only update the pizza if the pizzeria has already a RelationPizzeriaPizza with the same
-		 * id.
+		 * Only update the pizza if the pizzeria has already a
+		 * RelationPizzeriaPizza with the same id.
 		 */
 		for (RelationPizzeriaPizza pizzeriaPizza : pizzeriaPizzas) {
 			if (pizzeriaPizza.getId() == form.getId()) {
 
 				/*
-				 * FIXME - Prevent the elimination of RelationPizzeriaPizzas which belong to an
-				 * OrderItem which has not yet been collected.
+				 * FIXME - Prevent the elimination of RelationPizzeriaPizzas
+				 * which belong to an OrderItem which has not yet been
+				 * collected.
 				 */
 
 				RelationPizzeriaPizzaDAO dao = (RelationPizzeriaPizzaDAO) context
 						.getBean("relationPizzeriaPizzaDAO");
-				dao.delete(pizzeriaPizza);
+				pizzeriaPizza.setAvailable(false);
+				dao.update(pizzeriaPizza);
 				return buildOkResponse(pizzeriaPizza);
 			}
 		}

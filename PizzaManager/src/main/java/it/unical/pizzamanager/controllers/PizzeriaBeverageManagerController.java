@@ -79,7 +79,7 @@ public class PizzeriaBeverageManagerController {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 
-		List<RelationPizzeriaBeverage> beverages = pizzeria.getBeveragesPriceList();
+		List<RelationPizzeriaBeverage> beverages = pizzeria.getAvailableBeveragesPriceList();
 
 		return beverages;
 	}
@@ -128,7 +128,8 @@ public class PizzeriaBeverageManagerController {
 		if (pizzeriaBeverage.getOrderItems().size() > 0) {
 			return buildErrorResponse();
 		} else {
-			dao.delete(pizzeriaBeverage);
+			pizzeriaBeverage.setAvailable(false);
+			dao.update(pizzeriaBeverage);
 			return buildOkResponse(pizzeriaBeverage);
 		}
 	}
