@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<div class="wrapper">
+<div class="bubble">
 	<c:if test="${not empty bookings }">
 		<div class="panel-group" id="accordion">
 			<c:forEach var="b" varStatus="status" items="${bookings}">

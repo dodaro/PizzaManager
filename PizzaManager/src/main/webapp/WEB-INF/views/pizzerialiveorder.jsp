@@ -98,9 +98,9 @@
 						<label for="pizzaList">Pizza</label> <select id="pizzaList" class="js-example-basic-single">
 							<option value="notSelectable">Select Pizza</option>
 							<c:choose>
-								<c:when test="${pizzeria.getPizzasPriceList().size() > 0}">
-									<c:forEach var="pizza_prezzo" items="${pizzeria.getPizzasPriceList()}">
-										<option value="${pizza_prezzo.getPizza().getId()}">${pizza_prezzo.getPizza().getName()}</option>
+								<c:when test="${pizzas.size() > 0}">
+									<c:forEach var="pizza" items="${pizzas}">
+										<option value="${pizza.getId()}">${pizza.getName()}</option>
 									</c:forEach>
 								</c:when>
 								<c:otherwise>

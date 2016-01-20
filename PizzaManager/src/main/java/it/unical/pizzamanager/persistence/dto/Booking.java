@@ -234,48 +234,5 @@ public abstract class Booking implements Serializable {
 		this.completionDate = completionDate;
 	}
 
-	public Double calculateBill() {
-		Double bill = 0.0;
-		for (OrderItem orderItem : orderItems) {
-			Double itemCost = 0.0;
-			if (orderItem instanceof BeverageOrderItem) {
-				itemCost = orderItem.getCost();
-			} else if (orderItem instanceof PizzaOrderItem) {
-				PizzaOrderItem order = (PizzaOrderItem) orderItem;
-				itemCost = order.getCostPizzaPlusIngredients();
-			}
-			bill += itemCost * orderItem.getNumber();
-		}
-		return bill;
-	}
-
-	public Integer evaluatePreparationTime() {
-		Integer preparationTime = 0;
-		for (OrderItem orderItem : orderItems) {
-			if (orderItem instanceof PizzaOrderItem)
-				preparationTime += ((PizzaOrderItem) orderItem).getPizzeria_pizza().getPreparationTime()
-						* orderItem.getNumber();
-		}
-
-		return preparationTime;
-	}
-
-	public String getPreparationTimeString(Integer preparationTime) {
-		Integer minutes = preparationTime / 60;
-		Integer seconds = preparationTime % 60;
-
-		String minutesString = Integer.toString(minutes);
-		String secondsString = Integer.toString(seconds);
-
-		if (minutes <= 9) {
-			minutesString = "0" + minutesString;
-		}
-
-		if (seconds <= 9) {
-			secondsString = "0" + secondsString;
-		}
-
-		return minutesString + ":" + secondsString;
-	}
 
 }

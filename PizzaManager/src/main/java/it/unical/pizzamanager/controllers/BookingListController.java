@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,24 +13,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.model.BookingUserDisplay;
-import it.unical.pizzamanager.model.OrderItemDisplay;
-import it.unical.pizzamanager.paypal.PaymentWithPayPal;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.BookingUserDisplayUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
@@ -48,18 +42,20 @@ public class BookingListController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 
 		model.addAttribute("user", user);
-		List<Booking> bookings = bookingDAO.getUserBookings(user);
-
-		List<BookingUserDisplay> bookingsList = createBookingList(bookings);
-		PaymentWithPayPal.init();
-		for (BookingUserDisplay bookingUserDisplay : bookingsList) {
-			PaymentWithPayPal.createPayment(bookingUserDisplay,request);
-		}
+		List<Booking> bookings = bookingDAO.getActiveUserBookings(user);
+		List<BookingUserDisplay> bookingsList = createBookingList(bookings,bookingDAO);
 		model.addAttribute("bookings", bookingsList);
 		return "orders";
 	}
 	
-	@RequestMapping(value="/orders/removeItem")
+	@ResponseBody
+	@RequestMapping(value="/orders/pay",method=RequestMethod.POST)
+	public String pay(@RequestParam Integer bookingId,HttpServletRequest request,HttpServletResponse response){
+		
+		
+		return "forward:/paymentwithpaypal";
+	}
+	@RequestMapping(value="/orders/removeItem",method=RequestMethod.POST)
 	public String removeItem(@RequestParam String toRemove,Model model,HttpSession session){
 		System.out.println(toRemove);
 		if (!SessionUtils.isUser(session)) {
@@ -86,68 +82,18 @@ public class BookingListController {
 		return "orders";
 	}
 
-	private List<BookingUserDisplay> createBookingList(List<Booking> bookings) {
+	private List<BookingUserDisplay> createBookingList(List<Booking> bookings, BookingDAO bookingDAO) {
 		List<BookingUserDisplay> bookingList = new ArrayList<>();
+	
 		for (Booking booking : bookings) {
-			BookingUserDisplay userBooking = new BookingUserDisplay();
-			userBooking.setId(booking.getId());
-			userBooking.setIdentifier("Booking"+booking.getId());
-			userBooking.setActived(booking.getConfirmed());
-			userBooking.setBill(booking.calculateBill());
-			if (booking instanceof BookingDelivery)
-				userBooking.setBookingType("Delivery");
-			else if (booking instanceof BookingTakeAway)
-				userBooking.setBookingType("Take Away");
-			else if (booking instanceof BookingPizzeriaTable)
-				userBooking.setBookingType("Table");
-			userBooking.setDate(booking.getDate());
-			userBooking.setPizzeria(booking.getPizzeria().getName());
-			userBooking.setPreparationTime(booking.getPreparationTimeString(booking.evaluatePreparationTime()));
-			userBooking.setItems(createItemList(booking.getOrderItems()));
-			bookingList.add(userBooking);
+			List<Booking> activeBooking=bookingDAO.getOrderedBookings(booking.getPizzeria());
+			BookingUserDisplay bookingUserDisplay=BookingUserDisplayUtils.createBookingUserDisplay(booking,activeBooking);
+			bookingList.add(bookingUserDisplay);
 		}
 		return bookingList;
 	}
 
-	private List<OrderItemDisplay> createItemList(List<OrderItem> orderItems) {
-		List<OrderItemDisplay> itemsToDisplay = new ArrayList<>();
-		for (OrderItem item : orderItems) {
-			OrderItemDisplay itemToDisplay = new OrderItemDisplay();
-			itemToDisplay.setId(item.getId());
-			if (item instanceof PizzaOrderItem) {
-				itemToDisplay.setItemName(((PizzaOrderItem) item).pizzaName());
-				itemToDisplay.setPizzeria(((PizzaOrderItem) item).pizzeriaName());
-				itemToDisplay.setIngredients(stringFyIngredientsList(
-						((PizzaOrderItem) item).getPizzeria_pizza().getPizza().getPizzaIngredients(),
-						((PizzaOrderItem) item).getPizzaOrderIngredients()));
-			} else if (item instanceof BeverageOrderItem) {
-				itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
-				itemToDisplay.setPizzeria(((BeverageOrderItem) item).pizzeriaName());
-			}
-			itemToDisplay.setCost(item.getCost());
-			itemToDisplay.setNumber(item.getNumber());
-			itemToDisplay.setImageItem("not found");
-			itemsToDisplay.add(itemToDisplay);
-		}
-
-		return itemsToDisplay;
-	}
-
-	private String stringFyIngredientsList(List<RelationPizzaIngredient> pizzaIngredients,
-			List<RelationPizzaOrderItemIngredient> pizzaOrderIngredients) {
-		String ingredients = "(";
-		for (RelationPizzaIngredient relationPizzaIngredient : pizzaIngredients) {
-			ingredients = ingredients.concat(relationPizzaIngredient.getIngredient().getName());
-			ingredients = ingredients.concat(",");
-		}
-		for (RelationPizzaOrderItemIngredient relationPizzaOrderItemIngredient : pizzaOrderIngredients) {
-			ingredients = ingredients.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
-			ingredients = ingredients.concat(",");
-		}
-		ingredients = ingredients.substring(0, ingredients.length() - 1);
-		ingredients = ingredients.concat(")");
-		return ingredients;
-	}
+	
 	
 	
 }

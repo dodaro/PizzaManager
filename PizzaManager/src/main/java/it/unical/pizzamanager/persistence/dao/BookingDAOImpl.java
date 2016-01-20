@@ -44,7 +44,7 @@ public class BookingDAOImpl implements BookingDAO {
 		String queryString = "from Booking where id = :id ";
 		Query query = session.createQuery(queryString);
 		query.setParameter("id", id);
-		
+
 		Booking booking = (Booking) query.uniqueResult();
 		booking.getOrderItems().size();
 
@@ -60,7 +60,7 @@ public class BookingDAOImpl implements BookingDAO {
 		String queryString = "from Booking where pizzeria = :pizzeria ";
 		Query query = session.createQuery(queryString);
 		query.setParameter("pizzeria", pizzeria);
-		
+
 		List<Booking> bookings = (List<Booking>) query.list();
 		for (Booking booking : bookings) {
 			booking.getOrderItems().size();
@@ -69,7 +69,7 @@ public class BookingDAOImpl implements BookingDAO {
 		session.close();
 		return bookings;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getUserBookings(User user) {
@@ -78,7 +78,7 @@ public class BookingDAOImpl implements BookingDAO {
 		String queryString = "from Booking where user = :user ";
 		Query query = session.createQuery(queryString);
 		query.setParameter("user", user);
-		
+
 		List<Booking> bookings = (List<Booking>) query.list();
 		for (Booking booking : bookings) {
 			booking.getOrderItems().size();
@@ -87,7 +87,7 @@ public class BookingDAOImpl implements BookingDAO {
 		session.close();
 		return bookings;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getBookingList() {
@@ -144,10 +144,11 @@ public class BookingDAOImpl implements BookingDAO {
 		session.close();
 		return bookings;
 	}
-	
+
 	public DatabaseHandler getDatabaseHandler() {
 		return databaseHandler;
 	}
+
 	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
 		this.databaseHandler = databaseHandler;
 	}
@@ -155,7 +156,7 @@ public class BookingDAOImpl implements BookingDAO {
 	@SuppressWarnings({ "unchecked", "deprecation" })
 	@Override
 	public List<Booking> BookingInYear(Pizzeria pizzeria, Date date) {
-		
+
 		Session session = databaseHandler.getSessionFactory().openSession();
 
 		String queryString = "from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY') = :date";
@@ -190,7 +191,7 @@ public class BookingDAOImpl implements BookingDAO {
 
 	@Override
 	public Integer NumberOfBookingInAYearForType(Pizzeria pizzeria, Date date, String type) {
-		
+
 		Session session = databaseHandler.getSessionFactory().openSession();
 
 		String queryString = "select count(*) from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY') = :date and type= :type";
@@ -198,14 +199,14 @@ public class BookingDAOImpl implements BookingDAO {
 		query.setParameter("pizzeria", pizzeria);
 		query.setParameter("date", new SimpleDateFormat("YYYY").format(date));
 		query.setParameter("type", type);
-		Long number=(Long) query.uniqueResult();
+		Long number = (Long) query.uniqueResult();
 		session.close();
 		return (int) (long) number;
 	}
 
 	@Override
 	public Integer NumberOfBookingInAMonthsForType(Pizzeria pizzeria, Date date, String type) {
-	
+
 		Session session = databaseHandler.getSessionFactory().openSession();
 
 		String queryString = "select count(*) from Booking where pizzeria = :pizzeria and to_char(completionDate,'YYYY/MM') = :date and type= :type";
@@ -213,12 +214,41 @@ public class BookingDAOImpl implements BookingDAO {
 		query.setParameter("pizzeria", pizzeria);
 		query.setParameter("date", new SimpleDateFormat("YYYY/MM").format(date));
 		query.setParameter("type", type);
-		Long number=(Long) query.uniqueResult();
+		Long number = (Long) query.uniqueResult();
 		session.close();
 		return (int) (long) number;
 	}
 
+	@Override
+	public List<Booking> getActiveUserBookings(User user) {
+		Session session = databaseHandler.getSessionFactory().openSession();
 
-	
+		String queryString = "from Booking where user = :user and completion_date = null";
+		Query query = session.createQuery(queryString);
+		query.setParameter("user", user);
+
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+
+		session.close();
+		return bookings;
+	}
+
+	@Override
+	public List<Booking> getOrderedBookings(Pizzeria pizzeria) {
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where pizzeria = :pizzeria ORDER BY priority DESC";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+		session.close();
+		return bookings;
+	}
 
 }

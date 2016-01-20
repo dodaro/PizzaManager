@@ -8,11 +8,24 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$(".moreDetails").click(function(event) {
-			$(this).text(function(i, old) {
+			$(this).find("b").text(function(i, old) {
 				return old == '+' ? '-' : '+';
 			});
 		});
+		$(".paypalButton").on('click', function() {
+			var idBooking = $(this).data('booking');
+			$.ajax({
+				type : "POST",
+				url : "orders/pay",
+				data : {
+					bookingId : idBooking
+				},
+				success : function(response) {
+					console.log(response);
 
+				}
+			});
+		});
 		$(".removeItem").on('click', function() {
 			var item = $(this).data('id');
 			var booking = $(this).data('booking');
@@ -26,7 +39,7 @@
 				},
 				success : function(response) {
 					console.log(response);
-					window.location="orders";
+					window.location = "orders";
 				}
 			});
 		});
@@ -43,61 +56,73 @@
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
 			<div class="col-xs-9">
-				<div class="bubble">
-					<h2>My Orders</h2>
-					<c:if test="${not empty bookings}">
-						<c:forEach var="b" items="${bookings}">
-							<div class="row">
-								<div data-toggle="collapse" data-target="#${b.identifier}"
-									class="clickable col-xs-1">
-									<b class="moreDetails">+</b>
-								</div>
-								<div class="col-xs-2">${b.pizzeria}</div>
-								<div class="col-xs-1">${b.bookingType}</div>
-								<div class="col-xs-2">${b.date}</div>
-								<div class="col-xs-2">
-									<c:choose>
-										<c:when test="${not b.actived}">
-									${b.preparationTime}</c:when>
-										<c:otherwise>Not yet Active</c:otherwise>
-									</c:choose>
-
-								</div>
-								<div class="col-xs-2">${b.getBillLabel()}&#8364</div>
-								<div class="col-xs-2">
-									<a href="${b.paypalUrl}" class="btn btn-default">Buy Now</a>
-								</div>
-							</div>
-							<div id="${b.identifier}" class="collapse">
-								<c:if test="${not empty b.items}">
-									<div class="bubble">
-										<c:forEach var="i" items="${b.items}">
-											<div class="row">
-												<div class="col-xs-1"></div>
-												<div class="col-xs-1">
-													<b>${i.number}</b>
-												</div>
-												<div class="col-xs-2">
-													<b>${i.itemName}</b>
-												</div>
-												<div class="col-xs-2">
-													<b>${i.getCostLabel()} &#8364</b>
-												</div>
-												<div class="col-xs-4">
-													<b>${i.ingredients}</b>
-												</div>
-												<div class="col-xs-2">
-													<button data-id="${i.id}" data-booking="${b.id}"
-														class="btn btn-default removeItem">Remove</button>
-												</div>
-											</div>
-										</c:forEach>
+				<div class="container">
+					<div class="bubble">
+						<h2>My Orders</h2>
+						<c:if test="${not empty bookings}">
+							<c:forEach var="b" items="${bookings}">
+								<div class="row">
+									<div data-toggle="collapse" data-target="#${b.identifier}"
+										class="moreDetails clickable col-xs-1">
+										<b>+</b>
 									</div>
-								</c:if>
-							</div>
-						</c:forEach>
-					</c:if>
+									<div class="col-xs-2">${b.pizzeria}</div>
+									<div class="col-xs-1">${b.bookingType}</div>
+									<div class="col-xs-2">${b.date}</div>
+									<div class="col-xs-1">
+										<c:choose>
+											<c:when test="${not b.actived}">
+									${b.completationTime}</c:when>
+											<c:otherwise>Not yet Active</c:otherwise>
+										</c:choose>
 
+									</div>
+									<div class="col-xs-1">${b.preparationTime}</div>
+									<div class="col-xs-2">${b.getBillLabel()}&#8364</div>
+									<div class="col-xs-2">
+										<%-- 									 										if (request.getAttribute("redirectURL") != null) {
+<!-- 									<div> -->
+<!-- 										<a class="btn btn-default paypalButton" -->
+<%-- 											href=<%=(String) request.getAttribute("redirectURL")%>>Buy --%>
+										<!-- 											Now</a> -->
+										<!-- 									</div> -->
+										<%-- 								
+// 										}
+--%>
+										<a data-id="${b.id}" class="btn btn-default">Buy Now</a>
+									</div>
+								</div>
+								<div id="${b.identifier}" class="collapse">
+									<c:if test="${not empty b.items}">
+										<div class="bubble">
+											<c:forEach var="i" items="${b.items}">
+												<div class="row">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-1">
+														<b>${i.number}</b>
+													</div>
+													<div class="col-xs-2">
+														<b>${i.itemName}</b>
+													</div>
+													<div class="col-xs-2">
+														<b>${i.getCostLabel()} &#8364</b>
+													</div>
+													<div class="col-xs-4">
+														<b>${i.ingredients}</b>
+													</div>
+													<div class="col-xs-2">
+														<button data-id="${i.id}" data-booking="${b.id}"
+															class="btn btn-default removeItem">Remove</button>
+													</div>
+												</div>
+											</c:forEach>
+										</div>
+									</c:if>
+								</div>
+							</c:forEach>
+						</c:if>
+
+					</div>
 				</div>
 			</div>
 		</div>

@@ -3,7 +3,6 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 
-<script type="text/javascript" src="resources/js/user/cart.js"></script>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places"></script>
 <script type="text/javascript"
