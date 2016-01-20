@@ -140,7 +140,7 @@ public class BookingUtils {
 			
 			for (int i = 0; i < pizzeria.getTables().size(); i++) {
 				for (int j = 0; j < model.getTables().size(); j++) {
-					if(pizzeria.getTables().get(i).getNumber()==model.getTables().get(j)){
+					if(pizzeria.getTables().get(i).getId()==model.getTables().get(j)){
 						tablesBooking.add(new RelationBookingTablePizzeriaTable(pizzeria.getTables().get(i),bookingPizzeriaTable));						
 					}
 				}
