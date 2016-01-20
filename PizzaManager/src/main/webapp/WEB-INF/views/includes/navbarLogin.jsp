@@ -25,9 +25,6 @@
 							<input type="text" class="form-control" name="password" placeholder="Password">
 						</div>
 						<input type="submit" class="btn btn-primary button-login" value="Log in" />
-						<a href="signup" class="btn btn-success button-login">
-							Create an account
-						</a>
 					</form:form>
 				</li>
 			</ul>
