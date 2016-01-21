@@ -37,6 +37,11 @@ public class BookingUserDisplayUtils {
 		// include my preparation time?
 		userBooking.setCompletationTime(evalueteCompletationTime(activeBooking, booking.getId()));
 		userBooking.setItems(createItemList(booking.getOrderItems()));
+		if (booking.getPayment() != null){
+			System.out.println("payed");
+			userBooking.setPayed(true);
+		}
+		System.out.println(userBooking.isPayed());
 		return userBooking;
 	}
 

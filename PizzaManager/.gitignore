@@ -1,6 +1,7 @@
 /bin
 /target
 /.settings
+/.classpath
 /src/main/webapp/META-INF
 /database.mv.db
 /database.trace.db

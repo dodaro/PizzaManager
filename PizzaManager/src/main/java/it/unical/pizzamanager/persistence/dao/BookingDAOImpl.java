@@ -219,6 +219,7 @@ public class BookingDAOImpl implements BookingDAO {
 		return (int) (long) number;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getActiveUserBookings(User user) {
 		Session session = databaseHandler.getSessionFactory().openSession();
@@ -230,8 +231,8 @@ public class BookingDAOImpl implements BookingDAO {
 		List<Booking> bookings = (List<Booking>) query.list();
 		for (Booking booking : bookings) {
 			booking.getOrderItems().size();
+			booking.getPayment();
 		}
-
 		session.close();
 		return bookings;
 	}

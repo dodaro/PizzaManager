@@ -65,5 +65,13 @@ private DatabaseHandler databaseHandler;
 		session.close();
 		return size;
 	}
+
+	public DatabaseHandler getDatabaseHandler() {
+		return databaseHandler;
+	}
+
+	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+		this.databaseHandler = databaseHandler;
+	}
 	
 }

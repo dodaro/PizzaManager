@@ -13,16 +13,18 @@
 			});
 		});
 		$(".paypalButton").on('click', function() {
-			var idBooking = $(this).data('booking');
+			var idBooking = $(this).data('id');
+			console.log(idBooking);
+
 			$.ajax({
 				type : "POST",
-				url : "orders/pay",
+				url : "/payment/createPayment",
 				data : {
 					bookingId : idBooking
 				},
 				success : function(response) {
 					console.log(response);
-
+					window.location = response;
 				}
 			});
 		});
@@ -45,7 +47,8 @@
 		});
 	});
 </script>
-<link rel="stylesheet" type="text/css" href="resources/css/pageCSS/orders.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/pageCSS/orders.css" />
 <link rel="stylesheet" type="text/css"
 	href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -81,12 +84,14 @@
 									<div class="col-xs-1">${b.preparationTime}</div>
 									<div class="col-xs-1">${b.getBillLabel()}&#8364</div>
 									<div class="col-xs-1">
-										<a data-id="${b.id}" class="btn btn-default">Buy Now</a>
+										<c:if test="${not b.payed}">
+										<a data-id="${b.id}" class="btn btn-default paypalButton">Buy
+											Now</a></c:if>
 									</div>
 								</div>
 								<div id="${b.identifier}" class="collapse">
 									<c:if test="${not empty b.items}">
-										<div >
+										<div>
 											<c:forEach var="i" items="${b.items}">
 												<div class="row singleOrderBooking">
 													<div class="col-xs-1"></div>

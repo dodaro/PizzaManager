@@ -21,7 +21,7 @@
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.H2Dialect</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
-<!-- 				<prop key="hibernate.show_sql">true</prop> -->
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
 			</props>
 		</property>
 	</bean>
@@ -51,12 +51,14 @@
 	<bean id="feedbackDAO" class="it.unical.pizzamanager.persistence.dao.FeedbackDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	
+
 	<bean id="ingredientDAO"
 		class="it.unical.pizzamanager.persistence.dao.IngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-
+	<bean id="paymentDAO" class="it.unical.pizzamanager.persistence.dao.PaymentDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
 	<bean id="orderItemDAO" class="it.unical.pizzamanager.persistence.dao.OrderItemDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
@@ -82,12 +84,12 @@
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	
+
 	<bean id="relationPizzaOrderItemIngredientDAO"
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzaOrderItemIngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-	
+
 	<bean id="relationPizzeriaPizzaDAO"
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
