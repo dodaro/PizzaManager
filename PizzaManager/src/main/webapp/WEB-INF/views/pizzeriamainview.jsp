@@ -7,7 +7,9 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-
+<script type="text/javascript" src="resources/js/moment.js"></script>
+<script type="text/javascript"
+	src="resources/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
 <script type="text/javascript" src="resources/js/maps.js"></script>
@@ -42,7 +44,10 @@
 				}
 			});
 		});
-
+		$('.datetimepicker').datetimepicker({
+			defaultDate : new Date(),
+			locale : 'it'
+		});
 	});
 </script>
 <script type="text/javascript">
@@ -50,12 +55,14 @@ $(document).ready(function() {
 	$(".addBook").on('click', function() {
 		var id = parseInt($(this).closest('div').find('input').val());
 		var pizzeria = parseInt($(this).data("pizzeria"), 10);
-		alert($(this).closest('div').find('input').val());
+		var date =$(this).closest('div').find('div').find('.datetimepicker').data("DateTimePicker").date().format("YYYY/MM/DD HH:mm");
 		$.ajax({
 			type : "POST",
 			url : "/pizzeriamainview/booking",
 			data : {
-				placeToBook : id
+				placeToBook : id,
+				date : date,
+				pizzeria : pizzeria
 
 			},
 			success : function(response) {
@@ -110,6 +117,14 @@ $(document).ready(function() {
 						<span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
 					<div class="pizzeria-buttons-container">
 					<input type="text" class="form-control" name="numeroPosti" placeholder="Inserire numero di posti da prenotare">
+					<div class="form-group">
+									<div class='input-group date datetimepicker'>
+										<input type='text' class="form-control" /> <span
+											class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
+									</div>
+								</div>
 						<a href="#" data-pizzeria="${pizzeriaResult.id}" class="btn btn-primary button-bookatable addBook">Book a table</a>
 					</div>
 				</div>

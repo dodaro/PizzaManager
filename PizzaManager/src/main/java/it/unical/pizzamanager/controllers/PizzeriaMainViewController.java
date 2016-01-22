@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -19,14 +20,18 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.forms.FeedbackForm;
 import it.unical.pizzamanager.forms.SearchForm;
+import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.FeedbackDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dao.PizzeriaTableDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.Feedback;
 import it.unical.pizzamanager.persistence.dto.FeedbackPizzeria;
 import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
@@ -78,11 +83,28 @@ public class PizzeriaMainViewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/pizzeriamainview/booking", method = RequestMethod.POST)
-	public String pizzeriamainviewbooking(@RequestParam("placeToBook") int id,HttpSession session) 
+	public String pizzeriamainviewbooking(@RequestParam("placeToBook") int seats, @RequestParam("date") Date d,@RequestParam("pizzeria") int p,HttpSession session) 
 	{
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		System.out.println(id);
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(p);
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		BookingPizzeriaTable booking = new BookingPizzeriaTable();
+		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
+		List<PizzeriaTable> pizzeriaTables = pizzeriaTableDAO.getTablesOfPizzeria(pizzeria);
+		for(int i=0; i<pizzeriaTables.size(); i++)
+		{
+			if(seats <= pizzeriaTables.get(i).getMaxSeats())
+			{//prenoto
+				booking.setBookerName(user.getName());
+				booking.setDate(d);
+				booking.setTime(d);
+				booking.setPizzeria(pizzeria);
+				booking.setUser(user);
+				
+			}	
+		}
 		
 		return "{\"success\" : true}";
 	}

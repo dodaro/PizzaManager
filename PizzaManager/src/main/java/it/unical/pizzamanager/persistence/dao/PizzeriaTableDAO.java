@@ -18,4 +18,5 @@ public interface PizzeriaTableDAO {
 	public List<PizzeriaTable> getAllTablesList();
 
 	List<PizzeriaTable> getTablesOfPizzeria(Pizzeria pizzeria);
+	
 }
