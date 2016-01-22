@@ -19,12 +19,14 @@ import it.unical.pizzamanager.model.CartDisplay;
 import it.unical.pizzamanager.model.OrderItemDisplay;
 import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
+import it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Cart;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
@@ -64,7 +66,6 @@ public class CartController {
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		OrderItem item = orderItemDAO.getItem(id);
 
-
 		orderItemDAO.delete(item);
 
 		Cart cart = cartDAO.getUserCart(user);
@@ -78,7 +79,8 @@ public class CartController {
 
 	@ResponseBody
 	@RequestMapping(value = "/bookCart", method = RequestMethod.POST)
-	public String bookCart(@RequestParam("itemToBook") String itemToBook, Model model, HttpSession session) {
+	public String bookCart(@RequestParam("itemToBook") String itemToBook, Model model,
+			HttpSession session) {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
@@ -104,37 +106,81 @@ public class CartController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
 		Cart cart = cartDAO.getUserCart(user);
-		
-		RelationPizzeriaPizzaDAO menuDAO=(RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO");
-		RelationPizzeriaPizza pizza=menuDAO.get(id);
-		
+
+		RelationPizzeriaPizzaDAO menuDAO = (RelationPizzeriaPizzaDAO) context
+				.getBean("relationPizzeriaPizzaDAO");
+		RelationPizzeriaPizza pizza = menuDAO.get(id);
+
 		addToCart(pizza, cart);
-		
-		
-		model.addAttribute("user",user);
+
+		model.addAttribute("user", user);
 		return "{\"success\" : true}";
 	}
-	
-	private void addToCart(RelationPizzeriaPizza pizza, Cart cart){
-		OrderItemDAO orderItemDAO=(OrderItemDAO) context.getBean("orderItemDAO");
+
+	@ResponseBody
+	@RequestMapping(value = "/cart/addBeverage", method = RequestMethod.POST)
+	public String addBeverage(@RequestParam("itemToBook") int id, Model model,
+			HttpSession session) {
+		if (!SessionUtils.isUser(session)) {
+			return "index";
+		}
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
+		Cart cart = cartDAO.getUserCart(user);
+
+		RelationPizzeriaBeverageDAO menuDAO = (RelationPizzeriaBeverageDAO) context
+				.getBean("relationPizzeriaBeverageDAO");
+		RelationPizzeriaBeverage beverage = menuDAO.get(id);
+
+		addToCart(beverage, cart);
+
+		model.addAttribute("user", user);
+		return "{\"success\" : true}";
+	}
+
+	private void addToCart(RelationPizzeriaPizza pizza, Cart cart) {
+		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		for (OrderItem o : cart.getOrderItems()) {
-			if(o instanceof PizzaOrderItem){
-				if(((PizzaOrderItem) o).getPizzeria_pizza().getId()==pizza.getId()){
-					o.setNumber(o.getNumber()+1);
+			if (o instanceof PizzaOrderItem) {
+				if (((PizzaOrderItem) o).getPizzeria_pizza().getId() == pizza.getId()) {
+					o.setNumber(o.getNumber() + 1);
 					orderItemDAO.update(o);
 					return;
 				}
 			}
 		}
-		PizzaOrderItem item=new PizzaOrderItem();
+		PizzaOrderItem item = new PizzaOrderItem();
 		item.setCart(cart);
 		item.setCost(pizza.getPrice());
 		item.setPizzeria_pizza(pizza);
 		item.setNumber(1);
-		
-		
+
 		orderItemDAO.create(item);
 	}
+
+	private void addToCart(RelationPizzeriaBeverage beverage, Cart cart) {
+		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
+		for (OrderItem o : cart.getOrderItems()) {
+			if (o instanceof BeverageOrderItem) {
+				if (((BeverageOrderItem) o).getPizzeria_beverage().getId() == beverage.getId()) {
+					o.setNumber(o.getNumber() + 1);
+					orderItemDAO.update(o);
+					return;
+				}
+			}
+		}
+		
+		System.out.println("CIAO");
+		BeverageOrderItem item = new BeverageOrderItem();
+		item.setCart(cart);
+		item.setCost(beverage.getPrice());
+		item.setPizzeria_beverage(beverage);
+		item.setNumber(1);
+
+		orderItemDAO.create(item);
+	}
+
 	private ArrayList<CartBooking> createBookingsToDisplay(Cart cart) {
 		ArrayList<CartBooking> bookings = new ArrayList<>();
 		int numb = 0;
@@ -165,7 +211,7 @@ public class CartController {
 	}
 
 	private void updateCart(String[] itemsToBook, Cart cart, CartDAO cartDAO) {
-		
+
 		System.out.println(itemsToBook.length);
 		for (int j = 0; j < itemsToBook.length; j++) {
 			String[] i = itemsToBook[j].split("-");

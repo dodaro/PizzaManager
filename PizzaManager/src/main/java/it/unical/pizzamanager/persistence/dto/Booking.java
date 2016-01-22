@@ -24,6 +24,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -95,10 +97,10 @@ public abstract class Booking implements Serializable {
 	// (relazione 0_to_1)
 	@OneToOne
 	@JoinColumn(name = "payment")
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Payment payment;
 
 	@OneToMany(mappedBy = "booking", fetch = FetchType.LAZY, orphanRemoval = true)
+	@Cascade(value=CascadeType.SAVE_UPDATE)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<OrderItem> orderItems;
 

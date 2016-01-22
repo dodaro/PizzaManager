@@ -29,7 +29,17 @@ public class Beverage implements Serializable {
 	private static final long serialVersionUID = 3542955027496737446L;
 
 	public enum BeverageSize {
-		SMALL, MEDIUM, LARGE, NOT_SPECIFIED
+		SMALL("Small"), MEDIUM("Large"), LARGE("Large"), NOT_SPECIFIED("Not specified");
+		
+		private String string;
+		
+		BeverageSize(String string) {
+			this.string = string;
+		}
+		
+		public String getString() {
+			return string;
+		}
 	}
 
 	public enum BeverageContainer {
@@ -64,16 +74,16 @@ public class Beverage implements Serializable {
 	 * How much the beverage costs in each pizzeria which sells it. Coincidentally, list of the
 	 * pizzerias who sell this beverage.
 	 */
-	
-	//TODO: convertire EAGER in LAZY e sistemare il dao, non toccate il jsonIgnore
-		//vado di fretta per testare le jsp --> by David
-	
+
+	// TODO: convertire EAGER in LAZY e sistemare il dao, non toccate il jsonIgnore
+	// vado di fretta per testare le jsp --> by David
+
 	@OneToMany(mappedBy = "beverage", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private List<RelationPizzeriaBeverage> beveragePriceList;
 
-	//rimosse beverageorderitems
+	// rimosse beverageorderitems
 
 	public Beverage() {
 		this.id = DatabaseHandler.NO_ID;
@@ -95,7 +105,7 @@ public class Beverage implements Serializable {
 		this.type = type;
 		this.beveragePriceList = new ArrayList<>();
 	}
-	
+
 	public Integer getId() {
 		return id;
 	}

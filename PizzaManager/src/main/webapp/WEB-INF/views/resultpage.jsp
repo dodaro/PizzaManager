@@ -11,33 +11,39 @@
 <title>Result Page</title>
 
 <meta name="viewport" content="width=device-width" />
-
+<style>
+h2 {
+	margin-top: 0;
+	margin-bottom: 20px;
+}
+</style>
 
 </head>
 <body>
-	<jsp:include page="includes/navbar${typeSession}.jsp"/> 
+	<jsp:include page="includes/navbar${typeSession}.jsp" />
 
 	<div class="container">
 
 		<div class="row">
-<div id="wrapper" class="col-xs-10">
-				<div class="card">
-					<div id="content"><h2>Result </h2>
-				 	<c:forEach var="r" items="${pizzeriaResult}">
-					<div class="row">
-						<a class="myref" href="pizzeriamainview?id=${r.getId()}">${r.getName()} (Pizzeria)</a>
-					</div>
-					</c:forEach>
-					<c:forEach var="r" items="${pizzeriaResult2}">
-					<div class="row">
-						<a class="myref" href="pizza?id=${r.getId()}">${r.getName()} (Pizza)</a>
-					</div>
-					</c:forEach>
+			<div id="wrapper" class="col-xs-10">
+				<div class="bubble">
+					<div id="content">
+						<h2>Results</h2>
+						<c:forEach var="r" items="${pizzeriaResult}">
+							<div class="row">
+								<a class="myref" href="pizzeriamainview?id=${r.getId()}">${r.getName()} (Pizzeria)</a>
+							</div>
+						</c:forEach>
+						<c:forEach var="r" items="${pizzeriaResult2}">
+							<div class="row">
+								<a class="myref" href="pizza?id=${r.getId()}">${r.getName()} (Pizza)</a>
+							</div>
+						</c:forEach>
 					</div>
 				</div>
-				</div>
 			</div>
-			</div>
-			
-			</body>
-			</html>
+		</div>
+	</div>
+
+</body>
+</html>

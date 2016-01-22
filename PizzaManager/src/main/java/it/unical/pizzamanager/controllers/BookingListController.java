@@ -48,13 +48,7 @@ public class BookingListController {
 		return "orders";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="/orders/pay",method=RequestMethod.POST)
-	public String pay(@RequestParam Integer bookingId,HttpServletRequest request,HttpServletResponse response){
-		
-		
-		return "forward:/paymentwithpaypal";
-	}
+	
 	@RequestMapping(value="/orders/removeItem",method=RequestMethod.POST)
 	public String removeItem(@RequestParam String toRemove,Model model,HttpSession session){
 		System.out.println(toRemove);

@@ -31,7 +31,7 @@
 					</form:form></li>
 				<!-- <li><a href="#">Adv.Search</a></li> -->
 				<c:if test="${user != null}">
-					<li><a href="/user">Profile</a></li>
+					<li><a href="/cart">Cart</a></li>
 				</c:if>
 				<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span
 						class="glyphicon glyphicon-user button-glyphicon"></span> <!-- One will be empty and won't be printed. -->

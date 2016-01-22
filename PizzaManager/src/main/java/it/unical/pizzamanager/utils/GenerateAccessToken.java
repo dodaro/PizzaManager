@@ -1,4 +1,4 @@
-package it.unical.pizzamanager.paypal;
+package it.unical.pizzamanager.utils;
 
 import com.paypal.base.ConfigManager;
 import com.paypal.base.Constants;
@@ -7,6 +7,7 @@ import com.paypal.base.rest.PayPalRESTException;
 
 public class GenerateAccessToken { 
 
+		
 	@SuppressWarnings("deprecation")
 	public static String getAccessToken() throws PayPalRESTException {
 
@@ -21,4 +22,6 @@ public class GenerateAccessToken {
 		return new OAuthTokenCredential(clientID, clientSecret)
 				.getAccessToken();
 	}
+	
+	
 }

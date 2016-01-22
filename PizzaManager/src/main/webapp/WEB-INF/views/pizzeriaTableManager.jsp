@@ -10,7 +10,6 @@
 						<th>Table number</th>
 						<th>Minimum seats</th>
 						<th>Maximum seats</th>
-						<th>Available</th>
 					</tr>
 				</thead>
 				<tbody>

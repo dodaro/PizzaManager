@@ -30,6 +30,7 @@ import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.serializers.BookingSerializer;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
+import it.unical.pizzamanager.utils.mail.MailSenderUtils;
 
 
 @Controller
@@ -125,6 +126,9 @@ public class PizzeriaBookingController {
 			case "remove":
 				
 				booking=bookingDAO.getBooking(book.getId());
+				if(booking.getUser().getEmail()!=null || booking.getUser().getEmail()!="")
+					//MailSenderUtils.SendMail("Booking Elimination",booking.getUser().getEmail(), booking);
+					MailSenderUtils.SendMail("Booking Elimination","cosentinomarco90@gmail.com", booking);
 				bookingDAO.delete(booking);
 				message="removed";
 				break;
