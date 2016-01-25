@@ -1,7 +1,10 @@
 package it.unical.pizzamanager.controllers;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +27,10 @@ import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.utils.BookingUtils;
+import it.unical.pizzamanager.utils.PizzeriaTableUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
 
@@ -127,5 +132,36 @@ public class PizzeriaLiveOrderController {
 		}*/
 
 		return pizzeria;
+	}
+	
+	@RequestMapping(value = "/pizzerialiveorderTable", method = RequestMethod.GET)
+	public @ResponseBody List<PizzeriaTable> processAJAXTableRequest(HttpServletRequest request, Model model, HttpSession session,@RequestParam("date") String datePicker,@RequestParam("time") String timePicker) {
+		logger.info("Live order Ajax request pizzeria");
+		if (!SessionUtils.isPizzeria(session)) {
+			return null;
+		}
+
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+		
+		System.out.println(datePicker);
+		System.out.println(timePicker);
+		
+		SimpleDateFormat sdfDate = new SimpleDateFormat("dd/M/yyyy");
+		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
+		Date date=null;
+		Date time=null;
+		try {
+			date = sdfDate.parse(datePicker);
+			time = sdfTime.parse(timePicker);
+			
+			return PizzeriaTableUtils.getAvailableTables(pizzeria, date, time, context);
+			
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }

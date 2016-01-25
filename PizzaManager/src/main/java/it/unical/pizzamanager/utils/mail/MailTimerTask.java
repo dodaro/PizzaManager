@@ -17,7 +17,7 @@ public class MailTimerTask {
 	@Scheduled(fixedDelay = 900000)
     public void demoServiceMethod(){
 	
-		System.out.println("Method executed at every 15 seconds. Current time is :: "+ new Date());
+		System.out.println("Method executed at every 15 minutes. Current time is :: "+ new Date());
         BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
         List<Booking> bookings=bookingDAO.getAllBookingListFromData(new Date());
         for (Booking booking : bookings) {

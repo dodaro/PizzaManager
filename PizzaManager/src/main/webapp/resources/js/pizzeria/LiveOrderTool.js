@@ -44,6 +44,14 @@ var LiveOrderTool = function(){
 			$('#datetimepicker1').datetimepicker({
 				format: 'DD/MM/YYYY HH:mm',
 			});
+			$('#datetimepicker1').data("DateTimePicker").date(moment());
+			$('#datetimepicker1').focusout(function(){
+				if($("#datetimepicker1").data("DateTimePicker").date()==null)
+					$('#datetimepicker1').data("DateTimePicker").date(moment());
+				console.log($("#datetimepicker1").data("DateTimePicker").date());
+				
+				getAvailableTableAndSetOnSelect();
+			});
 			//creazione SELECT2
 			$(".js-example-basic-single").select2();
 			$(".js-example-basic-multiple").select2();
@@ -139,6 +147,8 @@ var LiveOrderTool = function(){
 						//Eliminare subito l'oggetto dal communicator
 						communicator.bookingToEdit=undefined;
 					}
+					else
+						getAvailableTableAndSetOnSelect();
 				},
 				error : function(data, status, er) {
 					alert("error: " + data + " status: "
@@ -466,7 +476,7 @@ var LiveOrderTool = function(){
 		console.log(date);
 		var time=booking.time.split(":");
 		date.setHours(time[0], time[1], time[2]);
-		$('#datetimepicker1').data("DateTimePicker").defaultDate(date);
+		$('#datetimepicker1').data("DateTimePicker").date(date);
 		
 		//set User or Name
 		if(booking.user!=undefined){
@@ -492,8 +502,11 @@ var LiveOrderTool = function(){
 				tablesId.push(booking.tables[int].id);
 			}
 			console.log(tablesId);
-			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");		
+			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");
+			//DISABILITARE i tavoli non disponibili
 		}
+		
+		getAvailableTableAndSetOnSelect();
 	}
 	
 	var extractData = function(dataType){
@@ -539,7 +552,6 @@ var LiveOrderTool = function(){
 			break;
 		case "tables":
 			var tables= $("#tables").select2("val");
-			console.log(tables);
 			return tables;
 		break;
 		case "address":
@@ -1253,7 +1265,55 @@ var LiveOrderTool = function(){
 		$('#modalAlert').modal('show');
 	}
 	
-	
+	var getAvailableTableAndSetOnSelect = function(){
+		var selectedTablesId= $("#tables").select2("val");
+		var dateTime=extractData("date");
+		var date=dateTime.split(" ")[0];
+		var time=dateTime.split(" ")[1];
+		console.log(selectedTablesId);
+		$.ajax({
+			url : "/pizzerialiveorderTable",
+			type : 'GET',
+			data : {
+				date : date,
+				time : time
+			},
+			success : function(data) {
+				console.log(data);
+				//resettare tutti gli option
+				$("#tables > option").each(function(){
+					$(this).prop("disabled",false);
+				});
+				
+				$("#tables > option").each(function(){
+					
+					var idTable=$(this).val();
+					var setDisability=true;
+					for (var int2 = 0; int2 < selectedTablesId.length; int2++) {
+						if(idTable==selectedTablesId[int2])
+							setDisability=false;
+					}
+					
+					if(setDisability){
+						var availability=false;
+						for (var int = 0; int < data.length; int++) {
+							var idTableFromServer=data[int].id;
+							if(idTableFromServer==idTable)
+								availability=true;
+						}	
+						
+						if(availability==false){
+							$(this).prop("disabled",true);
+						}
+					}
+				});
+				
+			},
+			error : function(data, status, er) {
+				alert("error: " + data + " status: " + status + " er:" + er);
+			}
+		});
+	}
 	
 	return {
 		init : function() {
