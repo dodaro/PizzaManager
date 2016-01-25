@@ -6,46 +6,66 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$(".moreDetails").click(function(event) {
-			$(this).find("b").text(function(i, old) {
-				return old == '+' ? '-' : '+';
-			});
-		});
-		$(".paypalButton").on('click', function() {
-			var idBooking = $(this).data('id');
-			console.log(idBooking);
-
-			$.ajax({
-				type : "POST",
-				url : "/payment/createPayment",
-				data : {
-					bookingId : idBooking
-				},
-				success : function(response) {
-					console.log(response);
-					window.location = response;
-				}
-			});
-		});
-		$(".removeItem").on('click', function() {
-			var item = $(this).data('id');
-			var booking = $(this).data('booking');
-			var toRemove = item + ";" + booking;
-			alert(toRemove);
-			$.ajax({
-				type : "POST",
-				url : "/orders/removeItem",
-				data : {
-					toRemove : toRemove
-				},
-				success : function(response) {
-					console.log(response);
-					window.location = "orders";
-				}
-			});
-		});
-	});
+	$(document)
+			.ready(
+					function() {
+						$(".moreDetails").click(function(event) {
+							$(this).find("b").text(function(i, old) {
+								return old == '+' ? '-' : '+';
+							});
+						});
+						$(".paypalButton")
+								.on(
+										'click',
+										function() {
+											var idBooking = $(this).data('id');
+											var token = $(this).data('token');
+											if (token == null) {
+												$
+														.ajax({
+															type : "POST",
+															url : "/payment/createPayment",
+															data : {
+																bookingId : idBooking
+															},
+															success : function(
+																	response) {
+																console
+																		.log(response);
+																if (response == "Failed Creation")
+																	console
+																			.log(response);
+																else if (response == "Failed inizialization")
+																	console
+																			.log(response);
+																else
+																	window.location = response;
+															}
+														});
+											} else {
+												var redirect = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
+														+ token;
+												console.log(redirect);
+												window.location = redirect;
+											}
+										});
+						$(".removeItem").on('click', function() {
+							var item = $(this).data('id');
+							var booking = $(this).data('booking');
+							$.ajax({
+								type : "POST",
+								url : "/orders/removeItem",
+								data : {
+									iditem : item,
+									idbooking : booking
+								},
+								success : function(response) {
+									console.log(response);
+									window.location = "orders";
+								}
+							});
+						});
+					});
 </script>
 <link rel="stylesheet" type="text/css"
 	href="resources/css/pageCSS/orders.css" />
@@ -84,9 +104,13 @@
 									<div class="col-xs-1">${b.preparationTime}</div>
 									<div class="col-xs-1">${b.getBillLabel()}&#8364</div>
 									<div class="col-xs-1">
-										<c:if test="${not b.payed}">
-										<a data-id="${b.id}" class="btn btn-default paypalButton">Buy
-											Now</a></c:if>
+										<c:choose>
+											<c:when test="${not b.payed}">
+												<a data-id="${b.id}" data-token="${b.token}"
+													class="btn btn-default paypalButton">Buy Now</a>
+											</c:when>
+											<c:otherwise>Payed</c:otherwise>
+										</c:choose>
 									</div>
 								</div>
 								<div id="${b.identifier}" class="collapse">

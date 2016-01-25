@@ -35,12 +35,16 @@ public class Payment implements Serializable {
 
 	@Column(name = "paid", nullable = false)
 	private Boolean paid;
+	
+	@Column(name = "token")
+	private String token;
 
 	public Payment() {
 		id = DatabaseHandler.NO_ID;
 		booking = null;
 		saved = false;
 		paid = false;
+		token=null;
 	}
 
 	public Integer getId() {
@@ -73,5 +77,13 @@ public class Payment implements Serializable {
 
 	public void setPaid(Boolean paid) {
 		this.paid = paid;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 }

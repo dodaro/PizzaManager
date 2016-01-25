@@ -93,6 +93,7 @@ public class UserDAOImpl implements UserDAO {
 			if (booking.getId() == bookingId) {
 				Hibernate.initialize(booking);
 				booking.getOrderItems().size();
+				booking.getPayment();
 				book = booking;
 			}
 

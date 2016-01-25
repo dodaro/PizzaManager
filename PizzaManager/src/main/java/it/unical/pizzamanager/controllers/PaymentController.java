@@ -55,29 +55,28 @@ public class PaymentController {
 		}
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		PaymentDAO paymentDAO=(PaymentDAO) context.getBean("paymentDAO");
 		
 		model.addAttribute("user",user);
 		
-		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-		Booking booking = bookingDAO.getBooking(id);
-				
-		it.unical.pizzamanager.persistence.dto.Payment payment = new it.unical.pizzamanager.persistence.dto.Payment();
-		payment.setPaid(true);
-		PaymentDAO paymentDAO=(PaymentDAO) context.getBean("paymentDAO");
-		paymentDAO.create(payment);
-		booking.setPayment(payment);
-		bookingDAO.update(booking);
+		BookingUserDisplayUtils.createPayment(id,bookingDAO,paymentDAO,null);
+		
 		return "redirect:/orders";
 	}
 
+
 	@RequestMapping(value = "/payment/cancel")
-	public String cancelPayment(HttpServletRequest request,Model model,HttpSession session) {
+	public String cancelPayment(@RequestParam Integer id,HttpServletRequest request,Model model,HttpSession session) {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		PaymentDAO paymentDAO=(PaymentDAO) context.getBean("paymentDAO");
 		
+		BookingUserDisplayUtils.createPayment(id, bookingDAO, paymentDAO, request.getParameter("token"));
 		model.addAttribute("user",user);
 		return "redirect:/orders";
 	}
@@ -93,12 +92,12 @@ public class PaymentController {
 			apiContext = new APIContext(accessToken);
 
 		} catch (PayPalRESTException e) {
-			return "Failed inizialization: " + e.getMessage();
+			return "Failed inizialization";
 		}
 
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		Booking booking = bookingDAO.getBooking(bookingId);
-
+		
 		BookingUserDisplay userBooking = BookingUserDisplayUtils.createSimpleBookingUserDisplay(booking);
 		List<Transaction> transactions = createBookingTransaction(userBooking);
 
@@ -129,7 +128,7 @@ public class PaymentController {
 				}
 			}
 		} catch (PayPalRESTException e) {
-			return "Failed Creation: " + e.getMessage();
+			return "Failed Creation";
 		}
 
 		return "Unknown fail";
@@ -138,7 +137,7 @@ public class PaymentController {
 	private RedirectUrls createRedirectUrls(HttpServletRequest request,int id) {
 		RedirectUrls redirectUrls = new RedirectUrls();
 		redirectUrls.setCancelUrl(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-				+ request.getContextPath() + "/payment/cancel");
+				+ request.getContextPath() + "/payment/cancel?id="+id);
 		redirectUrls.setReturnUrl(request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 				+ request.getContextPath() + "/payment/return?id="+id);
 		return redirectUrls;
