@@ -129,7 +129,7 @@ public class PizzeriaMainViewController {
 		
 		for (Booking booking : bookings) {
 			if (booking instanceof BookingPizzeriaTable) {
-				if (Math.abs(booking.getDate().getTime() - d.getTime()) < 3600000) {
+				if (Math.abs(booking.getDate().getTime()+booking.getTime().getTime() - d.getTime()) < 3600000) {
 					for (RelationBookingTablePizzeriaTable t : ((BookingPizzeriaTable) booking).getTableBooking())
 						freeTable.remove(t.getPizzeriaTable());
 				}
