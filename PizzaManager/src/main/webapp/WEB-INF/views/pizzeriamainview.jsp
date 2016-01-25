@@ -199,8 +199,10 @@
 									&euro;
 									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
 								</div>
-								<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
-									class="btn btn-default button-addtocart addToCart" data-target="Item">Add to cart</a>
+								<c:if test="${userLogged}">
+									<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
+										class="btn btn-default button-addtocart addToCart" data-target="Item">Add to cart</a>
+								</c:if>
 							</div>
 						</div>
 					</c:forEach>
@@ -221,8 +223,10 @@
 									&euro;
 									<fmt:formatNumber value="${pizzeriaBeverage.price}" pattern="0.00" />
 								</div>
-								<a href="#" data-id="${pizzeriaBeverage.id}" data-pizzeria="${pizzeriaResult.id}"
-									class="btn btn-default button-addtocart addToCart" data-target="Beverage">Add to cart</a>
+								<c:if test="${userLogged}">
+									<a href="#" data-id="${pizzeriaBeverage.id}" data-pizzeria="${pizzeriaResult.id}"
+										class="btn btn-default button-addtocart addToCart" data-target="Beverage">Add to cart</a>
+								</c:if>
 							</div>
 						</div>
 					</c:forEach>

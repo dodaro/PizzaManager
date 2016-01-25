@@ -6,11 +6,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
+
 public class BookingUserDisplay {
 
 	private int id;
 
 	private String bookingType;
+	
+	private Integer pizzeriaId;
 
 	private String pizzeria;
 
@@ -35,6 +39,7 @@ public class BookingUserDisplay {
 	public BookingUserDisplay() {
 		this.id = 0;
 		this.bookingType = "";
+		this.pizzeriaId = DatabaseHandler.NO_ID;
 		this.pizzeria = "";
 		this.date = null;
 		this.items = new ArrayList<>();
@@ -45,7 +50,6 @@ public class BookingUserDisplay {
 		this.token="";
 		this.completationTime="";
 		this.payed=false;
-
 	}
 
 	public String getBookingType() {
@@ -150,6 +154,11 @@ public class BookingUserDisplay {
 		this.token = token;
 	}
 
+	public void setPizzeriaId(Integer pizzeriaId) {
+		this.pizzeriaId = pizzeriaId;
+	}
 	
-
+	public Integer getPizzeriaId() {
+		return pizzeriaId;
+	}
 }

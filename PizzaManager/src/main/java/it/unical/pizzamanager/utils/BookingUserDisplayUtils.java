@@ -20,7 +20,8 @@ import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 
 public class BookingUserDisplayUtils {
 
-	public static void createPayment(Integer id, BookingDAO bookingDAO, PaymentDAO paymentDAO, String token) {
+	public static void createPayment(Integer id, BookingDAO bookingDAO, PaymentDAO paymentDAO,
+			String token) {
 
 		Booking booking = bookingDAO.getBooking(id);
 		Payment payment = booking.getPayment();
@@ -38,9 +39,11 @@ public class BookingUserDisplayUtils {
 		bookingDAO.update(booking);
 	}
 
-	public static BookingUserDisplay createBookingUserDisplay(Booking booking, List<Booking> activeBooking) {
+	public static BookingUserDisplay createBookingUserDisplay(Booking booking,
+			List<Booking> activeBooking) {
 		BookingUserDisplay userBooking = new BookingUserDisplay();
 		userBooking.setId(booking.getId());
+		userBooking.setPizzeriaId(booking.getPizzeria().getId());
 		userBooking.setIdentifier("Booking" + booking.getId());
 		userBooking.setActived(booking.getConfirmed());
 		userBooking.setBill(calculateBill(booking.getOrderItems()));
@@ -54,9 +57,11 @@ public class BookingUserDisplayUtils {
 			userBooking.setBookingType("Table");
 		userBooking.setDate(booking.getDate());
 		userBooking.setPizzeria(booking.getPizzeria().getName());
-		userBooking.setPreparationTime(getPreparationTimeString(evaluatePreparationTime(booking.getOrderItems())));
+		int prepTime = evaluatePreparationTime(booking.getOrderItems());
+		userBooking.setPreparationTime(getPreparationTimeString(prepTime));
 		// include my preparation time?
-		userBooking.setCompletationTime(evalueteCompletationTime(activeBooking, booking.getId()));
+		userBooking.setCompletationTime(
+				evalueteCompletationTime(activeBooking, booking.getId(), prepTime));
 		userBooking.setItems(createItemList(booking.getOrderItems()));
 		if (booking.getPayment() != null) {
 			if (booking.getPayment().getPaid())
@@ -78,7 +83,8 @@ public class BookingUserDisplayUtils {
 		return userBooking;
 	}
 
-	private static String evalueteCompletationTime(List<Booking> activeBooking, Integer myId) {
+	private static String evalueteCompletationTime(List<Booking> activeBooking, Integer myId,
+			int prepTime) {
 		Integer completationTime = 0;
 		for (Booking b : activeBooking) {
 			if (b.getId() == myId) {
@@ -86,6 +92,7 @@ public class BookingUserDisplayUtils {
 			}
 			completationTime += BookingUserDisplayUtils.evaluatePreparationTime(b.getOrderItems());
 		}
+		completationTime += prepTime;
 		return BookingUserDisplayUtils.getPreparationTimeString(completationTime);
 	}
 
@@ -93,8 +100,8 @@ public class BookingUserDisplayUtils {
 		Integer preparationTime = 0;
 		for (OrderItem orderItem : orderItems) {
 			if (orderItem instanceof PizzaOrderItem)
-				preparationTime += ((PizzaOrderItem) orderItem).getPizzeria_pizza().getPreparationTime()
-						* orderItem.getNumber();
+				preparationTime += ((PizzaOrderItem) orderItem).getPizzeria_pizza()
+						.getPreparationTime() * orderItem.getNumber();
 		}
 
 		return preparationTime;
@@ -150,7 +157,8 @@ public class BookingUserDisplayUtils {
 				itemToDisplay.setItemName(((PizzaOrderItem) item).pizzaName());
 				itemToDisplay.setPizzeria(((PizzaOrderItem) item).pizzeriaName());
 				itemToDisplay.setIngredients(stringfyIngredientsList(
-						((PizzaOrderItem) item).getPizzeria_pizza().getPizza().getPizzaIngredients(),
+						((PizzaOrderItem) item).getPizzeria_pizza().getPizza()
+								.getPizzaIngredients(),
 						((PizzaOrderItem) item).getPizzaOrderIngredients()));
 			} else if (item instanceof BeverageOrderItem) {
 				itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
@@ -173,7 +181,8 @@ public class BookingUserDisplayUtils {
 			ingredients = ingredients.concat(",");
 		}
 		for (RelationPizzaOrderItemIngredient relationPizzaOrderItemIngredient : pizzaOrderIngredients) {
-			ingredients = ingredients.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
+			ingredients = ingredients
+					.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
 			ingredients = ingredients.concat(",");
 		}
 		ingredients = ingredients.substring(0, ingredients.length() - 1);
@@ -216,7 +225,9 @@ public class BookingUserDisplayUtils {
 	public static void cancelPayment(Booking booking, PaymentDAO paymentDAO) {
 		Payment payment = booking.getPayment();
 
-		payment.setToken(null);
-		paymentDAO.update(payment);
+		if (payment != null) {
+			payment.setToken(null);
+			paymentDAO.update(payment);
+		}
 	}
 }

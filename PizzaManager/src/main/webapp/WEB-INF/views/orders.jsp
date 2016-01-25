@@ -28,16 +28,12 @@
 															data : {
 																bookingId : idBooking
 															},
-															success : function(
-																	response) {
-																console
-																		.log(response);
+															success : function(response) {
+																console.log(response);
 																if (response == "Failed Creation")
-																	console
-																			.log(response);
+																	console.log(response);
 																else if (response == "Failed inizialization")
-																	console
-																			.log(response);
+																	console.log(response);
 																else
 																	window.location = response;
 															}
@@ -67,83 +63,72 @@
 						});
 					});
 </script>
-<link rel="stylesheet" type="text/css"
-	href="resources/css/pageCSS/orders.css" />
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/pageCSS/orders.css" />
 </head>
 <body>
 	<jsp:include page="includes/navbarAccount.jsp"></jsp:include>
 
-	<div id="container">
+	<div class="container">
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>
-			<div class="col-xs-9">
-				<div id="container">
-					<div class="bubble">
-						<h2>My Orders</h2>
-						<c:if test="${not empty bookings}">
-							<c:forEach var="b" items="${bookings}">
-								<div class="row itemRow">
-									<div data-toggle="collapse" data-target="#${b.identifier}"
-										class="moreDetails clickable col-xs-1">
-										<b>+</b>
-									</div>
-									<div class="col-xs-2">${b.pizzeria}</div>
-									<div class="col-xs-2">${b.bookingType}</div>
-									<div class="col-xs-2">${b.date}</div>
-									<div class="col-xs-2">
-										<c:choose>
-											<c:when test="${b.actived}">
+			<div class="col-xs-9 wrapper">
+				<div class="bubble">
+					<div class="bubble-title">My Orders</div>
+					<c:if test="${not empty bookings}">
+						<c:forEach var="b" items="${bookings}">
+							<div class="row itemRow">
+								<div class="col-xs-4 pizzeria-name-container">
+									<span data-toggle="collapse" data-target="#${b.identifier}"
+										class="glyphicon glyphicon-plus moreDetails clickable col-xs-1"></span><a
+										href="pizzeriamainview?id=${b.pizzeriaId}">${b.pizzeria}</a>
+								</div>
+								<div class="col-xs-2">${b.bookingType}</div>
+								<div class="col-xs-2">${b.date}</div>
+								<div class="col-xs-2">
+									<c:choose>
+										<c:when test="${b.actived}">
 									${b.completationTime}</c:when>
-											<c:otherwise>Not yet Active</c:otherwise>
-										</c:choose>
+										<c:otherwise>Not yet active</c:otherwise>
+									</c:choose>
 
-									</div>
-									<div class="col-xs-1">${b.preparationTime}</div>
-									<div class="col-xs-1">${b.getBillLabel()}&#8364</div>
-									<div class="col-xs-1">
-										<c:choose>
-											<c:when test="${not b.payed}">
-												<a data-id="${b.id}" data-token="${b.token}"
-													class="btn btn-default paypalButton">Buy Now</a>
-											</c:when>
-											<c:otherwise>Payed</c:otherwise>
-										</c:choose>
-									</div>
 								</div>
-								<div id="${b.identifier}" class="collapse">
-									<c:if test="${not empty b.items}">
-										<div>
-											<c:forEach var="i" items="${b.items}">
-												<div class="row singleOrderBooking">
-													<div class="col-xs-1"></div>
-													<div class="col-xs-1">
-														<b>${i.number}</b>
-													</div>
-													<div class="col-xs-2">
-														<b>${i.itemName}</b>
-													</div>
-													<div class="col-xs-2">
-														<b>${i.getCostLabel()} &#8364</b>
-													</div>
-													<div class="col-xs-4">
-														<b>${i.ingredients}</b>
-													</div>
-													<div class="col-xs-2">
-														<button data-id="${i.id}" data-booking="${b.id}"
-															class="btn btn-default removeItem">Remove</button>
-													</div>
+								<%-- <div class="col-xs-1">${b.preparationTime}</div> --%>
+								<div class="col-xs-1 price-container">${b.getBillLabel()}&#8364</div>
+								<div class="col-xs-1 pay-container">
+									<c:choose>
+										<c:when test="${not b.payed}">
+											<a data-id="${b.id}" data-token="${b.token}" class="btn btn-success paypalButton">Buy</a>
+										</c:when>
+										<c:otherwise>Paid</c:otherwise>
+									</c:choose>
+								</div>
+							</div>
+							<div id="${b.identifier}" class="collapse">
+								<c:if test="${not empty b.items}">
+									<div>
+										<c:forEach var="i" items="${b.items}">
+											<div class="row singleOrderBooking">
+												<div class="col-xs-1"></div>
+												<div class="col-xs-7">
+													<span class="quantity">${i.number}</span> <span class="item-name">${i.itemName}</span>
 												</div>
-											</c:forEach>
-										</div>
-									</c:if>
-								</div>
-							</c:forEach>
-						</c:if>
+												<div class="col-xs-1 price-container-small">
+													<span>${i.getCostLabel()} &#8364</span>
+												</div>
+												<div class="col-xs-3 remove-container">
+													<button data-id="${i.id}" data-booking="${b.id}"
+														class="btn btn-danger btn-sm removeItem">Remove</button>
+												</div>
+											</div>
+										</c:forEach>
+									</div>
+								</c:if>
+							</div>
+						</c:forEach>
+					</c:if>
 
-					</div>
 				</div>
 			</div>
 		</div>
