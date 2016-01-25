@@ -115,20 +115,13 @@ public class PizzeriaBookingController {
 				message="confermed";
 				break;
 				
-			//IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER
-			/*case "edit":
-				
-				BookingUtils.createBookingFromBookingModel(book, booking.getPizzeria(), context);
-				message="updated";
-				break;*/
-				
-				
+			//IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER				
 			case "remove":
 				
 				booking=bookingDAO.getBooking(book.getId());
 				if(booking.getUser().getEmail()!=null || booking.getUser().getEmail()!="")
-					//MailSenderUtils.SendMail("Booking Elimination",booking.getUser().getEmail(), booking);
-					MailSenderUtils.SendMail("Booking Elimination","cosentinomarco90@gmail.com", booking);
+					MailSenderUtils.SendMail("Booking Elimination",booking.getUser().getEmail(), booking,MailSenderUtils.DELETE);
+					//MailSenderUtils.SendMail("Booking Elimination","cosentinomarco90@gmail.com", booking);
 				bookingDAO.delete(booking);
 				message="removed";
 				break;
@@ -144,5 +137,4 @@ public class PizzeriaBookingController {
 		}
 		return message;
 	}
-	
 }

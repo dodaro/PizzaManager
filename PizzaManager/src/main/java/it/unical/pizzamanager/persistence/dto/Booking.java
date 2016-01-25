@@ -59,10 +59,6 @@ public abstract class Booking implements Serializable {
 	@Column(name = "completion_date")
 	private Date completionDate;
 
-	/*
-	 * FIXME - Non abbiamo realmente bisogno di un altro attributo time: l'ora
-	 * è già inclusa in un oggetto Date.
-	 */
 	@Temporal(TemporalType.TIME)
 	@Column(name = "time", nullable = false)
 	private Date time;
@@ -88,6 +84,9 @@ public abstract class Booking implements Serializable {
 
 	@Column(name = "bill")
 	private Double bill;
+	
+	@Column(name = "notified")
+	private Boolean notified;
 
 	@ManyToOne
 	@JoinColumn(name = "pizzeria")
@@ -121,6 +120,7 @@ public abstract class Booking implements Serializable {
 		this.bookerName = null;
 		this.completionDate = null;
 		this.orderItems = new ArrayList<OrderItem>();
+		this.notified=false;
 	}
 
 	public Booking(Date date, Date time, Boolean confirmed, Integer priority) {
@@ -133,10 +133,10 @@ public abstract class Booking implements Serializable {
 		this.user = null;
 		this.pizzeria = null;
 		this.payment = null;
-
 		this.bookerName = null;
 		this.completionDate = null;
 		this.orderItems = new ArrayList<OrderItem>();
+		this.notified=false;
 	}
 
 	public Integer getId() {
@@ -236,5 +236,11 @@ public abstract class Booking implements Serializable {
 		this.completionDate = completionDate;
 	}
 
+	public Boolean getNotified() {
+		return notified;
+	}
 
+	public void setNotified(Boolean notified) {
+		this.notified = notified;
+	}
 }

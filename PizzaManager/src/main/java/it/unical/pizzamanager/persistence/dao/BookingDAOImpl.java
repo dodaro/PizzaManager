@@ -153,7 +153,7 @@ public class BookingDAOImpl implements BookingDAO {
 		this.databaseHandler = databaseHandler;
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> BookingInYear(Pizzeria pizzeria, Date date) {
 
@@ -171,7 +171,7 @@ public class BookingDAOImpl implements BookingDAO {
 		return bookings;
 	}
 
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> BookingInMonths(Pizzeria pizzeria, Date date) {
 		// TODO Auto-generated method stub
@@ -237,6 +237,7 @@ public class BookingDAOImpl implements BookingDAO {
 		return bookings;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getOrderedBookings(Pizzeria pizzeria) {
 		Session session = databaseHandler.getSessionFactory().openSession();
@@ -253,4 +254,38 @@ public class BookingDAOImpl implements BookingDAO {
 		return bookings;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Booking> getBookingListFromDataAndPizzeria(Pizzeria pizzeria, Date date) {
+		
+		Session session = databaseHandler.getSessionFactory().openSession();
+
+		String queryString = "from Booking where pizzeria = :pizzeria and to_char(date,'YYYY/MM') = :date";
+		Query query = session.createQuery(queryString);
+		query.setParameter("pizzeria", pizzeria);
+		query.setParameter("date", new SimpleDateFormat("YYYY/MM").format(date));
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+		session.close();
+		return bookings;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Booking> getAllBookingListFromData(Date date) {
+		
+		Session session = databaseHandler.getSessionFactory().openSession();
+		
+		String queryString = "from Booking where to_char(date,'YYYY/MM') = :date";
+		Query query = session.createQuery(queryString);
+		query.setParameter("date", new SimpleDateFormat("YYYY/MM").format(date));
+		List<Booking> bookings = (List<Booking>) query.list();
+		for (Booking booking : bookings) {
+			booking.getOrderItems().size();
+		}
+		session.close();
+		return bookings;
+	}
 }
