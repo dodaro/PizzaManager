@@ -256,7 +256,6 @@ var Booking = function(){
 								string+="<td>"+listIngredients+"</td>"
 								+"<td>"+booking.pizzas[int2].number+"</td>"
 								+"<td>"+booking.pizzas[int2].priceEach+" &euro;</td>";
-								
 								var total=new Number(booking.pizzas[int2].number)*new Number(booking.pizzas[int2].priceEach);
 								string+="<td>"+total+ " &euro;</td>"
 								+"</tr>";
