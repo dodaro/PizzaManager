@@ -176,58 +176,58 @@
 							<a href="#" data-pizzeria="${pizzeriaResult.id}" data-toggle="modal" data-target="#myModal"
 								class="btn btn-primary button-bookatable createBook">Book a table</a>
 						</c:if>
-						<div id="myModal" class="modal fade">
-							<div class="modal-dialog">
-								<div class="modal-content">
-									<div class="modal-header">
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-										<h4 class="modal-title">Book also your Pizzas!</h4>
-									</div>
-									<div class="modal-body">
-										<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
-											<div class="row menu-entry">
-												<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
-												<div class="pizza-ingredients">
-													<span class="pizzeriaPizza-label">Ingredients:</span>
-													<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
-														varStatus="status">
-														<c:out value="${pizzaIngredient.ingredient.name}" />
-														<c:if test="${!status.last}">,</c:if>
-													</c:forEach>
-												</div>
-												<div class="pizza-size">
-													<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaPizza.pizzaSize.string}</span>
-												</div>
-												<c:if test="${pizzeriaPizza.glutenFree}">
-													<div class="pizza-gluten-free">Gluten free</div>
-												</c:if>
-												<div class="right-container">
-													<div class="pizza-price">
-														&euro;
-														<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
-													</div>
-													<a href="#" data-id="${pizzeriaPizza.id}"
-														class="btn btn-default button-addtocart addItemToBook" data-target="Item">Add to
-														Book</a>
-												</div>
-											</div>
-										</c:forEach>
-									</div>
-									<div class="modal-footer">
-										<input type="text" class="form-control" name="numeroPosti"
-											placeholder="Inserire numero di posti da prenotare">
-										<div class="form-group">
-											<div class='input-group date datetimepicker'>
-												<input type='text' class="form-control" /> <span class="input-group-addon"> <span
-													class="glyphicon glyphicon-calendar"></span>
-												</span>
-											</div>
+					</div>
+				</div>
+				<div id="myModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Book also your Pizzas!</h4>
+							</div>
+							<div class="modal-body">
+								<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
+									<div class="row menu-entry">
+										<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
+										<div class="pizza-ingredients">
+											<span class="pizzeriaPizza-label">Ingredients:</span>
+											<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
+												varStatus="status">
+												<c:out value="${pizzaIngredient.ingredient.name}" />
+												<c:if test="${!status.last}">,</c:if>
+											</c:forEach>
 										</div>
-										<button type="button" class="btn btn-default cancelBook" data-dismiss="modal">Chiudi</button>
-										<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
-											data-dismiss="modal" class="btn btn-primary button-bookatable addbook">Conferma</a>
+										<div class="pizza-size">
+											<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaPizza.pizzaSize.string}</span>
+										</div>
+										<c:if test="${pizzeriaPizza.glutenFree}">
+											<div class="pizza-gluten-free">Gluten free</div>
+										</c:if>
+										<div class="right-container">
+											<div class="pizza-price">
+												&euro;
+												<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
+											</div>
+											<a href="#" data-id="${pizzeriaPizza.id}"
+												class="btn btn-default button-addtocart addItemToBook" data-target="Item">Add to
+												Book</a>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+							<div class="modal-footer">
+								<input type="text" class="form-control" name="numeroPosti"
+									placeholder="Inserire numero di posti da prenotare">
+								<div class="form-group">
+									<div class='input-group date datetimepicker'>
+										<input type='text' class="form-control" /> <span class="input-group-addon"> <span
+											class="glyphicon glyphicon-calendar"></span>
+										</span>
 									</div>
 								</div>
+								<button type="button" class="btn btn-default cancelBook" data-dismiss="modal">Chiudi</button>
+								<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
+									data-dismiss="modal" class="btn btn-primary button-bookatable addbook">Conferma</a>
 							</div>
 						</div>
 					</div>
@@ -334,9 +334,10 @@
 							<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
 							<div class="pizza-ingredients">
 								<span class="pizzeriaPizza-label">Ingredients:</span>
-								<c:forEach var="i" begin="0" end="${pizzeriaPizza.pizza.pizzaIngredients.size() - 1}">
-									<span>${pizzeriaPizza.pizza.pizzaIngredients[i].ingredient.name}</span>
-									<c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">,</c:if>
+								<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
+									varStatus="status">
+									<c:out value="${pizzaIngredient.ingredient.name}" />
+									<c:if test="${!status.last}">,</c:if>
 								</c:forEach>
 							</div>
 							<div class="pizza-size">
