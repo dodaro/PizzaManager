@@ -128,7 +128,7 @@ public class PizzeriaBookingController {
 				booking=bookingDAO.getBooking(book.getId());
 				if(booking.getUser().getEmail()!=null || booking.getUser().getEmail()!="")
 					//MailSenderUtils.SendMail("Booking Elimination",booking.getUser().getEmail(), booking);
-					MailSenderUtils.SendMail("Booking Elimination","cosentinomarco90@gmail.com", booking);
+					MailSenderUtils.SendMail("Booking Elimination","coentinomarco90@gmail.com", booking);
 				bookingDAO.delete(booking);
 				message="removed";
 				break;
