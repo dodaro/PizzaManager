@@ -78,8 +78,10 @@
 						'click',
 						function() {
 							var seats = parseInt($(this).closest('div').find('input').val());
-							var date = $(this).closest('div').find('div').find('.datetimepicker')
+							var dateTime = $(this).closest('div').find('div').find('.datetimepicker')
 									.data("DateTimePicker").date().format("YYYY/MM/DD HH:mm");
+								var d=dateTime.split(" ")[0];
+								var	t=dateTime.split(" ")[1];
 							var pizzeria = $(this).data('pizzeria');
 							alert(idBooking);
 							$.ajax({
@@ -87,7 +89,8 @@
 								url : "/pizzeriamainview/booking",
 								data : {
 									seats : seats,
-									date : date,
+									date : d,
+									time : t,
 									idbooking : idBooking
 
 								},

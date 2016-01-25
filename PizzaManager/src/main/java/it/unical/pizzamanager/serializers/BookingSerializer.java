@@ -2,9 +2,11 @@ package it.unical.pizzamanager.serializers;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -40,6 +42,11 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 	@Override
 	public void serialize(Booking booking, JsonGenerator jgen, SerializerProvider arg2)
 			throws IOException, JsonProcessingException {
+		
+		DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.ITALIAN);
+		otherSymbols.setDecimalSeparator('.');
+		otherSymbols.setGroupingSeparator(',');
+		DecimalFormat df = new DecimalFormat("0.00", otherSymbols);
 		
 		jgen.writeStartObject();
 			if(booking.getUser()!=null)
@@ -90,7 +97,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				jgen.writeEndArray();
 			}
 			
-		
+			
 			jgen.writeArrayFieldStart("pizzas");
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof PizzaOrderItem){
@@ -98,7 +105,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 						//TODO FIX cost Pizza
 						Double singlePrice=pizzabooking.getCost()/pizzabooking.getNumber();
 						jgen.writeStartObject();
-							jgen.writeStringField("priceEach",new DecimalFormat("#0.00").format(singlePrice));
+							jgen.writeStringField("priceEach",df.format(singlePrice));
 							jgen.writeStringField("name",pizzabooking.getPizzeria_pizza().getPizza().getName());
 							jgen.writeStringField("glutenFree",pizzabooking.getPizzeria_pizza().getGlutenFree().toString());
 							jgen.writeStringField("size",pizzabooking.getPizzeria_pizza().getPizzaSize().toString());
@@ -156,7 +163,7 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 					}
 				}
 			jgen.writeEndArray();
-			jgen.writeStringField("bill", new DecimalFormat("#0.00").format(booking.getBill()));
+			jgen.writeStringField("bill", df.format(booking.getBill()));
 		jgen.writeEndObject();
 		
 	}

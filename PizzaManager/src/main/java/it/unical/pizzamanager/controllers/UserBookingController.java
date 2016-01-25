@@ -116,9 +116,8 @@ public class UserBookingController {
 			orderItemDAO.update(orderItem);
 
 		}
-		BookingUtils.calculateBill(booking, pizzerias);
-		bookingDAO.update(booking);
-
+		booking.setOrderItems(toBook);
+		bookingDAO.update(BookingUtils.calculateBill(booking, pizzerias));
 		// ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
 		// model.addAttribute("bookings", bookings);
 		model.addAttribute("user", user);
