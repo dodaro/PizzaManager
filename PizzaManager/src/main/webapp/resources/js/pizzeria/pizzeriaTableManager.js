@@ -30,17 +30,24 @@ pizzeriaTableManager = function() {
 						'data' : 'minSeats'
 					}, {
 						'data' : 'maxSeats'
-					} ]
+					}, {
+						'data' : 'available'
+					} ],
 					/*
 					 * Renders "Yes" or "No" instead of "true" or "false" in the
 					 * "Available" column.
 					 */
-//					columnDefs : [ {
-//						render : function(data, type, row) {
-//							return data ? 'Yes' : 'No';
-//						},
-//						targets : 3
-//					} ]
+					columnDefs : [ {
+						render : function(data, type, row) {
+							return data ? 'Yes' : 'No';
+						},
+						targets : 3
+					} ],
+					createdRow : function(row, data, index) {
+						if (!data.available) {
+							$(row).addClass('highlighted');
+						}
+					},
 				});
 			},
 
@@ -88,6 +95,10 @@ pizzeriaTableManager = function() {
 
 			clearRowSelection : function() {
 				$('#pizzeria-table #tables-table tr.selected').removeClass('selected');
+			},
+
+			isAvailable : function($row) {
+				return $dataTable.row($row).data().available;
 			},
 
 			addRow : function(rowData) {
@@ -286,11 +297,19 @@ pizzeriaTableManager = function() {
 		return canAdd;
 	}
 
-	var canUpdate = function() {
+	var canUpdate = function($row) {
 		var canUpdate = true;
 
 		/* Check if all the form fields are filled. */
 		if (!form.isFilled()) {
+			return false;
+		}
+
+		/*
+		 * Check if, according to the data received by the server, the table
+		 * belongs to a Booking
+		 */
+		if (!table.isAvailable($row)) {
 			return false;
 		}
 
@@ -338,6 +357,28 @@ pizzeriaTableManager = function() {
 		}
 
 		return canUpdate;
+	}
+
+	var canDelete = function($row) {
+		/* Check if all the form fields are filled. */
+		if (!form.isFilled()) {
+			return false;
+		}
+
+		/* Check if form data is equal to the selected row data. */
+		if (!formDataEqualsSelectedRowData()) {
+			return false;
+		}
+
+		/*
+		 * Check if, according to the data received by the server, the table is
+		 * contained in a booking.
+		 */
+		if (!table.isAvailable($row)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	var getDataForRequest = function() {
@@ -406,17 +447,22 @@ pizzeriaTableManager = function() {
 			form.clearForm();
 			form.setAddButtonEnabled(false);
 			form.setUpdateButtonEnabled(false);
-			form.setDeleteButtonEnabled(false);
 		} else {
 			var rowData = table.getRowData($row);
 			table.selectRow($row);
 			form.fillForm(rowData);
 			form.setAddButtonEnabled(false);
 			form.setUpdateButtonEnabled(false);
-			form.setDeleteButtonEnabled(true);
+		}
+		
+		if (!table.isAvailable($row)) {
+			form.showTooltip('button-update', 'Can\'t update or delete this table'
+					+ ' because it belongs to at least one active booking.');
+		} else {
+			form.hideTooltips();
 		}
 
-		form.hideTooltips();
+		form.setDeleteButtonEnabled(canDelete($row));
 
 		form.setNumberFieldHighlighted(false);
 		form.setSeatsFieldsHighlighted(false);
@@ -430,16 +476,16 @@ pizzeriaTableManager = function() {
 		 * or disable the buttons accordingly.
 		 */
 		if ($selectedRow != undefined) {
-			form.setUpdateButtonEnabled(canUpdate());
+			form.setUpdateButtonEnabled(canUpdate($selectedRow));
 		} else {
 			form.setAddButtonEnabled(canAdd());
 		}
 
 		/*
-		 * Delete button is always disabled unless the form AND the selected
-		 * table contain the same data.
+		 * Delete button is always disabled unless the form AND the selected row
+		 * contain the same data.
 		 */
-		form.setDeleteButtonEnabled(formDataEqualsSelectedRowData());
+		form.setDeleteButtonEnabled(canDelete($selectedRow));
 	}
 
 	var addTable = function() {

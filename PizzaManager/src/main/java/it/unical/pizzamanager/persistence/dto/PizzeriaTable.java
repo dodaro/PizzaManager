@@ -55,7 +55,7 @@ public class PizzeriaTable implements Serializable {
 	@Column(name = "available", nullable = false)
 	private Boolean available;
 
-	@OneToMany(mappedBy = "pizzeriaTable", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "pizzeriaTable", fetch = FetchType.EAGER)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private List<RelationBookingTablePizzeriaTable> bookings;
 
