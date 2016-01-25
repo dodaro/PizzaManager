@@ -136,13 +136,12 @@ public class PizzeriaMainViewController {
 				BookingUtils.calculateBill(booking, booking.getPizzeria());
 				bookingDAO.update(booking);
 
-				return "{\"success\" = true}";
+				return "true";
 
 			}
 		}
 		bookingDAO.delete(booking);
-		System.out.println("non prenoto");
-		return "{\"success\" = false}";
+		return "false";
 	}
 
 

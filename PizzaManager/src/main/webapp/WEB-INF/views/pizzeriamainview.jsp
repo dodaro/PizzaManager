@@ -83,7 +83,6 @@
 								var d=dateTime.split(" ")[0];
 								var	t=dateTime.split(" ")[1];
 							var pizzeria = $(this).data('pizzeria');
-							alert(idBooking);
 							$.ajax({
 								type : "POST",
 								url : "/pizzeriamainview/booking",
@@ -103,8 +102,12 @@
 
 										},
 										success : function(response) {
-											if (response.success) {
+											if (response == "true") {
 												$("#modalMessage").text("Booked");
+												$('#modalAlert').modal('show');
+											}
+											else if(response=="false"){
+												$("#modalMessage").text("Number of seats not available.");
 												$('#modalAlert').modal('show');
 											}
 										}
