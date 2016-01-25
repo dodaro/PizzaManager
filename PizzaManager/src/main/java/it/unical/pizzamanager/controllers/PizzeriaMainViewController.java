@@ -1,5 +1,8 @@
 package it.unical.pizzamanager.controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -93,7 +96,7 @@ public class PizzeriaMainViewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/pizzeriamainview/booking", method = RequestMethod.POST)
-	public String pizzeriamainviewbooking(@RequestParam int seats, @RequestParam Date date,
+	public String pizzeriamainviewbooking(@RequestParam int seats, @RequestParam String date,
 			@RequestParam int idbooking, HttpSession session) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
@@ -103,30 +106,41 @@ public class PizzeriaMainViewController {
 		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
 		List<PizzeriaTable> pizzeriaTables = pizzeriaTableDAO
 				.getTablesOfPizzeria(booking.getPizzeria());
-		List<RelationBookingTablePizzeriaTable> tables = getBookingTables(date, seats,
-				booking.getPizzeria(), booking);
-		if (tables != null) {
-			booking.setDate(date);
-			booking.setTime(date);
-			bookingDAO.create(booking);
-			booking.setTableBooking(tables);
-			BookingUtils.calculateBill(booking, booking.getPizzeria());
-			bookingDAO.update(booking);
-
-			return "{\"success\" = true}";
-
+		DateFormat format = new SimpleDateFormat("YYYY/MM/DD HH:mm");
+		Pizzeria pizzeria = pizzeriaDAO.get(booking.getPizzeria().getId());
+		Date d = null;
+		try {
+			d = format.parse(date);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		if (d != null) {
+			List<RelationBookingTablePizzeriaTable> tables = getBookingTables(d, seats, pizzeria,
+					booking, pizzeriaTables);
+			if (tables != null) {
 
+				booking.setDate(d);
+				booking.setTime(d);
+				bookingDAO.create(booking);
+				booking.setTableBooking(tables);
+				BookingUtils.calculateBill(booking, booking.getPizzeria());
+				bookingDAO.update(booking);
+
+				return "{\"success\" = true}";
+
+			}
+		}
 		System.out.println("non prenoto");
 		return "{\"success\" = false}";
 	}
 
 	private List<RelationBookingTablePizzeriaTable> getBookingTables(Date d, int seats,
-			Pizzeria pizzeria, BookingPizzeriaTable mybooking) {
+			Pizzeria pizzeria, BookingPizzeriaTable mybooking, List<PizzeriaTable> tables) {
 		// get only today booking
 		List<Booking> bookings = pizzeria.getBookings();
 		List<PizzeriaTable> freeTable = new ArrayList<>();
-		for (PizzeriaTable pizzeriaTable : pizzeria.getTables()) {
+		for (PizzeriaTable pizzeriaTable : tables) {
 			freeTable.add(pizzeriaTable);
 		}
 
@@ -171,6 +185,7 @@ public class PizzeriaMainViewController {
 		return tablesToBook;
 	}
 
+	@ResponseBody
 	@RequestMapping(value = "/pizzeriamainview/addPizza", method = RequestMethod.POST)
 	public void addPizzaToBook(@RequestParam int idpizza, @RequestParam int idbooking,
 			HttpSession session) {
@@ -181,32 +196,38 @@ public class PizzeriaMainViewController {
 		RelationPizzeriaPizzaDAO pizzaDAO = (RelationPizzeriaPizzaDAO) context
 				.getBean("relationPizzeriaPizzaDAO");
 		RelationPizzeriaPizza pizza = pizzaDAO.get(idpizza);
-		if (findItem(idpizza, booking))
-			return;
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(booking.getPizzeria().getId());
+		if (findItem(idpizza, booking, pizzeria)) {
 
+			return;
+		}
 		OrderItem item = new PizzaOrderItem();
 		item.setBooking(booking);
-		OrderItemUtils.setPizzaOrderCost((PizzaOrderItem) item, booking.getPizzeria());
 		item.setNumber(1);
 		if (item instanceof PizzaOrderItem)
 			((PizzaOrderItem) item).setPizzeria_pizza(pizza);
+		item.setCost(pizza.getPrice());
+
 		OrderItemDAO itemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		itemDAO.create(item);
 		booking.getOrderItems().add(item);
 		bookingDAO.update(booking);
 	}
 
-	private boolean findItem(int idpizza, BookingPizzeriaTable booking) {
+	private boolean findItem(int idpizza, BookingPizzeriaTable booking, Pizzeria pizzeria) {
 		OrderItemDAO itemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		for (OrderItem bookItem : booking.getOrderItems()) {
 			if (bookItem instanceof PizzaOrderItem)
 				if (((PizzaOrderItem) bookItem).getPizzeria_pizza().getId() == idpizza) {
 					bookItem.setNumber(bookItem.getNumber() + 1);
+					OrderItemUtils.setPizzaOrderCost((PizzaOrderItem) bookItem, pizzeria);
 					itemDAO.update(bookItem);
 					return true;
 				} else if (bookItem instanceof BeverageOrderItem)
 					if (((BeverageOrderItem) bookItem).getPizzeria_beverage().getId() == idpizza) {
 						bookItem.setNumber(bookItem.getNumber() + 1);
+						OrderItemUtils.setBeverageOrderCost((BeverageOrderItem) bookItem, pizzeria);
 						itemDAO.update(bookItem);
 						return true;
 					}

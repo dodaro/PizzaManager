@@ -191,7 +191,9 @@
 													<span class="pizzeriaPizza-label">Ingredients:</span>
 													<c:forEach var="i" begin="0" end="${pizzeriaPizza.pizza.pizzaIngredients.size() - 1}">
 														<span>${pizzeriaPizza.pizza.pizzaIngredients[i].ingredient.name}</span>
-														<c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">,</c:if>
+														<c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">
+															<span>,</span>
+														</c:if>
 													</c:forEach>
 												</div>
 												<div class="pizza-size">

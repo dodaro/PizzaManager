@@ -79,8 +79,7 @@ public class CartController {
 
 	@ResponseBody
 	@RequestMapping(value = "/bookCart", method = RequestMethod.POST)
-	public String bookCart(@RequestParam("itemToBook") String itemToBook, Model model,
-			HttpSession session) {
+	public String bookCart(@RequestParam("itemToBook") String itemToBook, Model model, HttpSession session) {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
@@ -107,8 +106,7 @@ public class CartController {
 		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
 		Cart cart = cartDAO.getUserCart(user);
 
-		RelationPizzeriaPizzaDAO menuDAO = (RelationPizzeriaPizzaDAO) context
-				.getBean("relationPizzeriaPizzaDAO");
+		RelationPizzeriaPizzaDAO menuDAO = (RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO");
 		RelationPizzeriaPizza pizza = menuDAO.get(id);
 
 		addToCart(pizza, cart);
@@ -119,8 +117,7 @@ public class CartController {
 
 	@ResponseBody
 	@RequestMapping(value = "/cart/addBeverage", method = RequestMethod.POST)
-	public String addBeverage(@RequestParam("itemToBook") int id, Model model,
-			HttpSession session) {
+	public String addBeverage(@RequestParam("itemToBook") int id, Model model, HttpSession session) {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
@@ -170,7 +167,7 @@ public class CartController {
 				}
 			}
 		}
-		
+
 		System.out.println("CIAO");
 		BeverageOrderItem item = new BeverageOrderItem();
 		item.setCart(cart);

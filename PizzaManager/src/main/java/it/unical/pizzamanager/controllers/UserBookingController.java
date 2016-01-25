@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -18,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
+
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.utils.*;
 import it.unical.pizzamanager.model.CartBooking;
 import it.unical.pizzamanager.model.OrderItemDisplay;
 import it.unical.pizzamanager.model.PizzeriaCartBooking;
@@ -64,17 +66,21 @@ public class UserBookingController {
 
 	@ResponseBody
 	@RequestMapping(value = "/userBooking/book", method = RequestMethod.POST)
-	public String book(@RequestParam("pizzeriaCartBook") String pizzeriaCartBook, @RequestParam("date") Date date,
+	public String book(@RequestParam String type, @RequestParam String pizzeria, @RequestParam("date") String date,
 			Model model, HttpSession session) {
 
-		System.out.println(pizzeriaCartBook);
-		String[] value = pizzeriaCartBook.split(";");
-		PizzeriaCartBooking pizzeriaBook = new PizzeriaCartBooking();
-		pizzeriaBook.setPizzeria(value[0]);
-		pizzeriaBook.setBookingType(value[1]);
-		System.out.println(date);
+		DateFormat format = new SimpleDateFormat("YYYY/MM/DD HH:mm");
 
-		pizzeriaBook.setDate(date);
+		PizzeriaCartBooking pizzeriaBook = new PizzeriaCartBooking();
+		pizzeriaBook.setPizzeria(pizzeria);
+		pizzeriaBook.setBookingType(type);
+
+		try {
+			pizzeriaBook.setDate(format.parse(date));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// set correctly date
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
@@ -86,24 +92,32 @@ public class UserBookingController {
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		Cart cart = cartDAO.getUserCart(user);
 		ArrayList<OrderItem> toBook = itemToBook(pizzeriaBook, cart);
-
+		Pizzeria pizzerias = pizzeriaDAO.getByName(pizzeriaBook.getPizzeria());
 		Booking booking = createBooking(pizzeriaBook.getBookingType());
 		booking.setConfirmed(false);
 		booking.setDate(pizzeriaBook.getDate());
 		booking.setTime(pizzeriaBook.getDate());
-		booking.setPizzeria(pizzeriaDAO.getByName(pizzeriaBook.getPizzeria()));
+		booking.setPizzeria(pizzerias);
 		booking.setUser(user);
 
 		if (booking instanceof BookingDelivery)
 			((BookingDelivery) booking).setDeliveryAddress(user.getAddress());
 		booking.setBill(BookingUserDisplayUtils.calculateBill(toBook));
+
 		bookingDAO.create(booking);
+
 		for (OrderItem orderItem : toBook) {
 			orderItem.setBooking(booking);
 			orderItem.setCart(null);
+			if (orderItem instanceof PizzaOrderItem)
+				OrderItemUtils.setPizzaOrderCost((PizzaOrderItem) orderItem, pizzerias);
+			else if (orderItem instanceof BeverageOrderItem)
+				OrderItemUtils.setBeverageOrderCost((BeverageOrderItem) orderItem, pizzerias);
 			orderItemDAO.update(orderItem);
 
 		}
+		BookingUtils.calculateBill(booking, pizzerias);
+		bookingDAO.update(booking);
 
 		// ArrayList<CartBooking> bookings = createBookingsToDisplay(cart);
 		// model.addAttribute("bookings", bookings);

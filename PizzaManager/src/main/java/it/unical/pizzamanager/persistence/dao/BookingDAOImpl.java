@@ -47,7 +47,6 @@ public class BookingDAOImpl implements BookingDAO {
 
 		Booking booking = (Booking) query.uniqueResult();
 		booking.getOrderItems().size();
-
 		session.close();
 		return booking;
 	}
@@ -257,7 +256,7 @@ public class BookingDAOImpl implements BookingDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getBookingListFromDataAndPizzeria(Pizzeria pizzeria, Date date) {
-		
+
 		Session session = databaseHandler.getSessionFactory().openSession();
 
 		String queryString = "from Booking where pizzeria = :pizzeria and to_char(date,'YYYY/MM') = :date";
@@ -271,13 +270,13 @@ public class BookingDAOImpl implements BookingDAO {
 		session.close();
 		return bookings;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getAllBookingListFromData(Date date) {
-		
+
 		Session session = databaseHandler.getSessionFactory().openSession();
-		
+
 		String queryString = "from Booking where to_char(date,'YYYY/MM') = :date";
 		Query query = session.createQuery(queryString);
 		query.setParameter("date", new SimpleDateFormat("YYYY/MM").format(date));
