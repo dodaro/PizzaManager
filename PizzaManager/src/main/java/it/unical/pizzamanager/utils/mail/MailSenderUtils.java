@@ -47,11 +47,11 @@ public class MailSenderUtils {
 				message.setText(createNotifyMessageFromBooking(booking));
 			
 			Transport.send(message);
-			System.out.println("mail to "+to+" is SENDED");
+			System.out.println("mail to "+to+" is SENT");
 			return true;
 
 		} catch (MessagingException e) {
-			System.out.println("mail to "+to+" is not sended");
+			System.out.println("mail to "+to+" is not sent");
 			return false;
 			//throw new RuntimeException(e);
 		}

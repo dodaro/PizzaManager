@@ -193,8 +193,7 @@
 											<span class="pizzeriaPizza-label">Ingredients:</span>
 											<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
 												varStatus="status">
-												<c:out value="${pizzaIngredient.ingredient.name}" />
-												<c:if test="${!status.last}">,</c:if>
+												<c:out value="${pizzaIngredient.ingredient.name}" /><c:if test="${!status.last}">,</c:if>
 											</c:forEach>
 										</div>
 										<div class="pizza-size">
@@ -336,8 +335,7 @@
 								<span class="pizzeriaPizza-label">Ingredients:</span>
 								<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
 									varStatus="status">
-									<c:out value="${pizzaIngredient.ingredient.name}" />
-									<c:if test="${!status.last}">,</c:if>
+									<c:out value="${pizzaIngredient.ingredient.name}" /><c:if test="${!status.last}">,</c:if>
 								</c:forEach>
 							</div>
 							<div class="pizza-size">

@@ -98,10 +98,10 @@
 				<div class="bubble">
 					<div id="content">
 						<div class="bubble-title">Welcome to your home page!</div>
-					</div>
-					<div>Use the column on the left to manage your pizzeria and your bookings.</div>
-					<div class="pizzeria-link">
-						<a href="pizzeriamainview?id=${pizzeria.id}">Check how users see your page.</a>
+						<div>Use the column on the left to manage your pizzeria and your bookings.</div>
+						<div class="pizzeria-link">
+							<a href="pizzeriamainview?id=${pizzeria.id}">Check how users see your page.</a>
+						</div>
 					</div>
 				</div>
 			</div>
