@@ -28,11 +28,20 @@ import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
+import it.unical.pizzamanager.utils.ValidatorUtils;
 
 @Controller
 public class SignUpController {
 
 	private static final Logger logger = LoggerFactory.getLogger(SignUpController.class);
+
+	private static final String EMAIL_REGEX = "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$";
+	private static final String USER_NAME_REGEX = "^[A-Za-z]+$";
+	private static final String USER_USERNAME_REGEX = "^[A-Za-z0-9_-]{4,}$";
+
+	private static final String PIZZERIA_NAME_REGEX = "^[A-Za-z0-9 -]+$";
+	private static final String PIZZERIA_PHONE_REGEX = "^[0-9]+([- ][0-9]+)*$";
+	private static final String PIZZERIA_ADDRESS_REGEX = "^[A-Za-z0-9 ]+$";
 
 	@Autowired
 	private WebApplicationContext context;
@@ -46,51 +55,61 @@ public class SignUpController {
 	}
 
 	@RequestMapping(value = "/userSignup", method = RequestMethod.POST)
-	public String userSignUp(HttpSession session,
+	public String userSignUp(Model model, HttpSession session,
 			@ModelAttribute("userSignUpForm") UserSignUpForm form) {
 		logger.info("Adding a new user to the database");
 
-		User user = new User(form.getEmail(), form.getPassword());
-		user.setName(form.getUsername());
-		user.setFirstName(form.getFirstName());
-		user.setLastName(form.getLastName());
+		if (validateUser(form)) {
+			User user = new User(form.getEmail(), form.getPassword());
+			user.setName(form.getUsername());
+			user.setFirstName(form.getFirstName());
+			user.setLastName(form.getLastName());
 
-		UserDAO dao = (UserDAO) context.getBean("userDAO");
-		dao.create(user);
+			UserDAO dao = (UserDAO) context.getBean("userDAO");
+			dao.create(user);
 
-		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
-		cartDAO.create(new Cart(user));
+			CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
+			cartDAO.create(new Cart(user));
 
-		SessionUtils.storeUserIdInSession(session, user);
+			SessionUtils.storeUserIdInSession(session, user);
 
-		return "redirect:/";
+			return "redirect:/";
+		} else {
+			model.addAttribute("signUpError", true);
+			return "signup";
+		}
 	}
 
 	@RequestMapping(value = "/pizzeriaSignup", method = RequestMethod.POST)
-	public String pizzeriaSignUp(HttpSession session,
+	public String pizzeriaSignUp(Model model, HttpSession session,
 			@ModelAttribute("pizzeriaSignUpForm") PizzeriaSignUpForm form) {
 		logger.info("Adding a new pizzeria to the database.");
 
-		Address address = new Address(form.getStreet(), form.getNumber(), form.getCity());
-		Location location = new Location(form.getLatitude(), form.getLongitude());
+		if (validatePizzeria(form)) {
+			Address address = new Address(form.getStreet(), form.getNumber(), form.getCity());
+			Location location = new Location(form.getLatitude(), form.getLongitude());
 
-		Pizzeria pizzeria = new Pizzeria(form.getEmail(), form.getPassword());
-		pizzeria.setName(form.getName());
-		pizzeria.setPhoneNumber(form.getPhoneNumber());
+			Pizzeria pizzeria = new Pizzeria(form.getEmail(), form.getPassword());
+			pizzeria.setName(form.getName());
+			pizzeria.setPhoneNumber(form.getPhoneNumber());
 
-		AddressDAO addressDAO = (AddressDAO) context.getBean("addressDAO");
-		addressDAO.create(address);
+			AddressDAO addressDAO = (AddressDAO) context.getBean("addressDAO");
+			addressDAO.create(address);
 
-		pizzeria.setAddress(address);
-		pizzeria.setLocation(location);
+			pizzeria.setAddress(address);
+			pizzeria.setLocation(location);
 
-		PizzeriaDAO dao = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+			PizzeriaDAO dao = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 
-		dao.create(pizzeria);
+			dao.create(pizzeria);
 
-		SessionUtils.storePizzeriaIdInSession(session, pizzeria);
+			SessionUtils.storePizzeriaIdInSession(session, pizzeria);
 
-		return "redirect:/";
+			return "redirect:/";
+		} else {
+			model.addAttribute("signUpError", true);
+			return "signup";
+		}
 	}
 
 	@ResponseBody
@@ -124,5 +143,20 @@ public class SignUpController {
 		taken = user != null && user.getName().equals(username);
 
 		return "{\"username\" : \"" + username + "\", \"taken\" : " + taken + "}";
+	}
+
+	private Boolean validateUser(UserSignUpForm form) {
+		return ValidatorUtils.ValidateString(EMAIL_REGEX, form.getEmail())
+				&& ValidatorUtils.ValidateString(USER_USERNAME_REGEX, form.getUsername())
+				&& ValidatorUtils.ValidateString(USER_NAME_REGEX, form.getFirstName())
+				&& ValidatorUtils.ValidateString(USER_NAME_REGEX, form.getLastName());
+	}
+
+	private Boolean validatePizzeria(PizzeriaSignUpForm form) {
+		return ValidatorUtils.ValidateString(EMAIL_REGEX, form.getEmail())
+				&& ValidatorUtils.ValidateString(PIZZERIA_NAME_REGEX, form.getName())
+				&& ValidatorUtils.ValidateString(PIZZERIA_ADDRESS_REGEX, form.getStreet())
+				&& ValidatorUtils.ValidateString(PIZZERIA_ADDRESS_REGEX, form.getCity())
+				&& ValidatorUtils.ValidateString(PIZZERIA_PHONE_REGEX, form.getPhoneNumber());
 	}
 }

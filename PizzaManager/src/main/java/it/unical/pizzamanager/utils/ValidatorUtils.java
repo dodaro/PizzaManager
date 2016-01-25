@@ -4,7 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ValidatorUtils {
-
+	
 	public static Boolean ValidateString(String regex,String toValidate){
 		
 		 Pattern pattern = Pattern.compile(regex);

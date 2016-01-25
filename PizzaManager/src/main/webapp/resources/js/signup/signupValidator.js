@@ -58,7 +58,8 @@ var signupValidator = function() {
 		},
 
 		usernameValidate : function(username) {
-			return username.length >= 4;
+			var regex = /^[A-Za-z0-9_-]{4,}$/;
+			return regex.test(username);
 		},
 
 		usernameTaken : function(username, onResponse) {
@@ -66,19 +67,23 @@ var signupValidator = function() {
 		},
 
 		firstNameValidate : function(firstName) {
-			return firstName.length > 0;
+			var regex = /^[A-Za-z]+$/;
+			return regex.test(firstName);
 		},
 
 		lastNameValidate : function(lastName) {
-			return lastName.length > 0;
+			var regex = /^[A-Za-z]+$/;
+			return regex.test(lastName);
 		},
 
 		nameValidate : function(name) {
-			return name.length > 0;
+			var regex = /^[A-Za-z0-9 -]+$/;
+			return regex.test(name);
 		},
 
 		phoneNumberValidate : function(phoneNumber) {
-			return phoneNumber.length > 0;
+			var regex = /^[0-9]+([- ][0-9]+)*$/;
+			return regex.test(phoneNumber);
 		},
 
 		locationValidate : function(locationString) {

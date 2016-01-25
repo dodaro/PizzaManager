@@ -45,6 +45,7 @@ public class UserDAOImpl implements UserDAO {
 		query.setParameter("id", id);
 		User user = (User) query.uniqueResult();
 		user.getFeedbacks().size();
+		user.getBookings().size();
 		// user.getBookings().size();
 		// if (user != null) {
 		// for (Booking b : user.getBookings()) {
@@ -70,7 +71,7 @@ public class UserDAOImpl implements UserDAO {
 		session.close();
 		return user;
 	}
-
+	
 	@Override
 	public User getByUsername(String username) {
 		Session session = databaseHandler.getSessionFactory().openSession();

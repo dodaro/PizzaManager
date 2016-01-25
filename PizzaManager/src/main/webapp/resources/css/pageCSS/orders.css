@@ -59,6 +59,14 @@
 	padding-left: 15px;
 }
 
+.loader {
+	display: none;
+	position: absolute;
+	top: 11;
+	left: -5;
+	width: 12px;
+}
+
 .quantity {
 	font-size: 120%;
 	margin-right: 10px;
@@ -67,4 +75,10 @@
 
 .item-name {
 	font-size: 110%;
+}
+
+.paid-container {
+	font-weight: bold;
+	font-size: 110%;
+	margin-right: 8px;	
 }

@@ -3,6 +3,18 @@ h2 {
 	margin-bottom: 50px;
 }
 
+.message.message-multiline {
+	position: absolute;
+	top: -10px;	
+}
+
+.sign-up-error {
+	font-size: 120%;
+	font-weight: bold;
+	color: #BB0000;
+	margin-bottom: 30px;
+}
+
 .loader {
 	display: none;
 	width: 14px;

@@ -13,6 +13,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
 
@@ -35,7 +37,7 @@ public class Payment implements Serializable {
 
 	@Column(name = "paid", nullable = false)
 	private Boolean paid;
-	
+
 	@Column(name = "token")
 	private String token;
 
@@ -44,7 +46,7 @@ public class Payment implements Serializable {
 		booking = null;
 		saved = false;
 		paid = false;
-		token=null;
+		token = null;
 	}
 
 	public Integer getId() {

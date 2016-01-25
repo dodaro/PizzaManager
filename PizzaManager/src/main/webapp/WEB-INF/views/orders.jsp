@@ -18,6 +18,8 @@
 								.on(
 										'click',
 										function() {
+											$(this).attr("disabled", "disabled");
+											$(this).siblings("img").show();
 											var idBooking = $(this).data('id');
 											var token = $(this).data('token');
 											if (token == null) {
@@ -99,9 +101,12 @@
 								<div class="col-xs-1 pay-container">
 									<c:choose>
 										<c:when test="${not b.payed}">
+											<img class="loader" src="resources/img/loader.gif"></img>
 											<a data-id="${b.id}" data-token="${b.token}" class="btn btn-success paypalButton">Buy</a>
 										</c:when>
-										<c:otherwise>Paid</c:otherwise>
+										<c:otherwise>
+											<div class="paid-container">Paid</div>
+										</c:otherwise>
 									</c:choose>
 								</div>
 							</div>
@@ -118,8 +123,10 @@
 													<span>${i.getCostLabel()} &#8364</span>
 												</div>
 												<div class="col-xs-3 remove-container">
-													<button data-id="${i.id}" data-booking="${b.id}"
-														class="btn btn-danger btn-sm removeItem">Remove</button>
+													<c:if test="${not b.payed}">
+														<button data-id="${i.id}" data-booking="${b.id}"
+															class="btn btn-danger btn-sm removeItem">Remove</button>
+													</c:if>
 												</div>
 											</div>
 										</c:forEach>
