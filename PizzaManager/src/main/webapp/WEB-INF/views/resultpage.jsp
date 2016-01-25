@@ -7,6 +7,8 @@
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/userMainView.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/pizza.css" />
 
 <title>Result Page</title>
 
@@ -25,7 +27,37 @@ h2 {
 	<div class="container">
 
 		<div class="row">
-			<div id="wrapper" class="col-xs-10">
+		<div class="col-xs-2"></div>
+		<div class="col-xs-8 wrapper">
+				<div class="bubble bubble-feedbacks">
+					<div class="bubble-title">Result found:</div>
+					<c:forEach items="${pizzeriaResult}" var="pizzeria">
+						<div class="row menu-entry">
+							<div class="pizzeria-name">
+								<a href="pizzeriamainview?id=${pizzeria.id}">${pizzeria.name}</a>
+							</div>
+							<div class="pizza-size"> <span>${pizzeria.address.street}
+								${pizzeria.address.number}, ${pizzeria.address.city}</span>
+							</div>
+							
+							<div class="right-container">
+								<h4>(Pizzeria)</h4>
+							</div>
+						</div>
+					</c:forEach>
+					<c:forEach var="pizza" items="${pizzeriaResult2}">
+						<div class="row menu-entry">
+							<div class="pizzeria-name">
+								<a href="pizza?id=${pizza.id}">${pizza.name}</a>
+							</div>							
+							<div class="right-container">
+								<h4>(Pizza)</h4>
+							</div>
+						</div>
+					</c:forEach>
+				</div>
+			</div>
+		<!-- 	<div id="wrapper" class="col-xs-10">
 				<div class="bubble">
 					<div id="content">
 						<h2>Results</h2>
@@ -41,7 +73,7 @@ h2 {
 						</c:forEach>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 	</div>
 
