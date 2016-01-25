@@ -5,17 +5,38 @@ import java.util.List;
 
 import it.unical.pizzamanager.model.BookingUserDisplay;
 import it.unical.pizzamanager.model.OrderItemDisplay;
+import it.unical.pizzamanager.persistence.dao.BookingDAO;
+import it.unical.pizzamanager.persistence.dao.PaymentDAO;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
+import it.unical.pizzamanager.persistence.dto.Payment;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
 import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 
 public class BookingUserDisplayUtils {
+
+	public static void createPayment(Integer id, BookingDAO bookingDAO, PaymentDAO paymentDAO, String token) {
+
+		Booking booking = bookingDAO.getBooking(id);
+		Payment payment = booking.getPayment();
+		if (payment == null) {
+			payment = new Payment();
+			paymentDAO.create(payment);
+		}
+		if (token == null)
+			payment.setPaid(true);
+		else {
+			payment.setToken(token);
+		}
+		paymentDAO.update(payment);
+		booking.setPayment(payment);
+		bookingDAO.update(booking);
+	}
 
 	public static BookingUserDisplay createBookingUserDisplay(Booking booking, List<Booking> activeBooking) {
 		BookingUserDisplay userBooking = new BookingUserDisplay();
@@ -37,11 +58,23 @@ public class BookingUserDisplayUtils {
 		// include my preparation time?
 		userBooking.setCompletationTime(evalueteCompletationTime(activeBooking, booking.getId()));
 		userBooking.setItems(createItemList(booking.getOrderItems()));
-		if (booking.getPayment() != null){
-			System.out.println("payed");
-			userBooking.setPayed(true);
+		if (booking.getPayment() != null) {
+			if (booking.getPayment().getPaid())
+				userBooking.setPayed(true);
+			else if (booking.getPayment().getToken() != null) {
+
+				userBooking.setPayed(false);
+				userBooking.setToken(booking.getPayment().getToken());
+			} else {
+				userBooking.setToken("null");
+				userBooking.setPayed(false);
+			}
+
+		} else {
+			userBooking.setToken("null");
+			userBooking.setPayed(false);
 		}
-		System.out.println(userBooking.isPayed());
+
 		return userBooking;
 	}
 
@@ -178,5 +211,12 @@ public class BookingUserDisplayUtils {
 		}
 
 		return itemsToDisplay;
+	}
+
+	public static void cancelPayment(Booking booking, PaymentDAO paymentDAO) {
+		Payment payment = booking.getPayment();
+
+		payment.setToken(null);
+		paymentDAO.update(payment);
 	}
 }

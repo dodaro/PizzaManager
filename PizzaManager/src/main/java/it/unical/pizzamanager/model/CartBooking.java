@@ -68,7 +68,6 @@ public class CartBooking {
 	public String performTotal() {
 		for (OrderItemDisplay orderItemDisplay : items) {
 			this.total += (orderItemDisplay.getCost() * orderItemDisplay.getNumber());
-			System.out.println(total);
 		}
 		NumberFormat formatter = new DecimalFormat("#0.00");
 		return formatter.format(total);

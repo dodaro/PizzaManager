@@ -28,7 +28,7 @@ public class BookingUserDisplay {
 
 	private String identifier;
 	
-	private String paypalUrl;
+	private String token;
 
 	private boolean payed;
 	
@@ -42,7 +42,7 @@ public class BookingUserDisplay {
 		this.bill = 0.0;
 		this.preparationTime = "";
 		this.identifier = "";
-		this.paypalUrl="";
+		this.token="";
 		this.completationTime="";
 		this.payed=false;
 
@@ -126,14 +126,6 @@ public class BookingUserDisplay {
 
 	}
 
-	public String getPaypalUrl() {
-		return paypalUrl;
-	}
-
-	public void setPaypalUrl(String paypalUrl) {
-		this.paypalUrl = paypalUrl;
-	}
-
 	public String getCompletationTime() {
 		return completationTime;
 	}
@@ -148,6 +140,14 @@ public class BookingUserDisplay {
 
 	public void setPayed(boolean payed) {
 		this.payed = payed;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	

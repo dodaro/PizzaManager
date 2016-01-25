@@ -556,7 +556,7 @@ var LiveOrderTool = function(){
 			return $("#bookingNameInput").val();
 			break;
 		case "date":
-			return $("#datetimepicker1").data("DateTimePicker").date().format('DD/MM/YYYY hh:mm');
+			return $("#datetimepicker1").data("DateTimePicker").date().format('DD/MM/YYYY HH:mm');
 			break;
 
 		default:
@@ -1178,7 +1178,7 @@ var LiveOrderTool = function(){
 		else{
 			var dateSelected=$("#datetimepicker1").data("DateTimePicker").date();
 			if(dateSelected<moment().valueOf()){
-				callAndSetModal("Only him can go into the past! Do you have a Delorean? Not seem..",true);
+				callAndSetModal("Only him can go into the past! Do you have a Delorean? It doesen't seem..",true);
 				return false;
 			}
 		}

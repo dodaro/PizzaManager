@@ -50,7 +50,7 @@ private DatabaseHandler databaseHandler;
 	@Override
 	public Payment getPayment(Integer i) {
 		Session session = databaseHandler.getSessionFactory().openSession();
-		String queryString = "from Payment p where p.codice = :id_payment";
+		String queryString = "from Payment where id = :id_payment";
 		Query query = session.createQuery(queryString);
 		query.setParameter("id_payment", i);
 		Payment p = (Payment) query.uniqueResult();

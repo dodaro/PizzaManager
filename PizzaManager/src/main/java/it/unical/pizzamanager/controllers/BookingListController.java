@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import it.unical.pizzamanager.model.BookingUserDisplay;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
+import it.unical.pizzamanager.persistence.dao.PaymentDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.OrderItem;
@@ -40,7 +41,6 @@ public class BookingListController {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-
 		model.addAttribute("user", user);
 		List<Booking> bookings = bookingDAO.getActiveUserBookings(user);
 		List<BookingUserDisplay> bookingsList = createBookingList(bookings,bookingDAO);
@@ -50,8 +50,7 @@ public class BookingListController {
 	
 	
 	@RequestMapping(value="/orders/removeItem",method=RequestMethod.POST)
-	public String removeItem(@RequestParam String toRemove,Model model,HttpSession session){
-		System.out.println(toRemove);
+	public String removeItem(@RequestParam int iditem,@RequestParam int idbooking,Model model,HttpSession session){
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
@@ -59,9 +58,8 @@ public class BookingListController {
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		String[] ids=toRemove.split(";");
-		int itemId=Integer.valueOf(ids[0]);
-		int bookingId=Integer.valueOf(ids[1]);
+		int itemId=iditem;
+		int bookingId=idbooking;
 		Booking booking=userDAO.getBooking(bookingId,user.getId());
 		if(booking==null)
 			return "index";
@@ -69,8 +67,16 @@ public class BookingListController {
 		for (OrderItem item : booking.getOrderItems()) {
 			if(item.getId()==itemId){
 				orderItemDAO.delete(item);
+				booking.getOrderItems().remove(item);
+				break;
 			}		
 		}
+		if(booking.getOrderItems().isEmpty()){
+			bookingDAO.delete(booking);
+			return "orders";
+		}
+		PaymentDAO paymentDAO=(PaymentDAO) context.getBean("paymentDAO");
+		BookingUserDisplayUtils.cancelPayment(booking,paymentDAO);
 		bookingDAO.update(booking);
 		model.addAttribute("user", user);
 		return "orders";
