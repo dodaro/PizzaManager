@@ -14,7 +14,7 @@ public class MailTimerTask {
 	@Autowired
 	private ApplicationContext context;
 	
-	@Scheduled(fixedDelay = 15000)
+	@Scheduled(fixedDelay = 900000)
     public void demoServiceMethod(){
 	
 		System.out.println("Method executed at every 15 seconds. Current time is :: "+ new Date());

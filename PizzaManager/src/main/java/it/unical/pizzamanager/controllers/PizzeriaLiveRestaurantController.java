@@ -24,11 +24,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
+import it.unical.pizzamanager.persistence.dao.PaymentDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dto.Booking;
 import it.unical.pizzamanager.persistence.dto.BookingDelivery;
 import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
+import it.unical.pizzamanager.persistence.dto.Payment;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
@@ -90,8 +92,8 @@ public class PizzeriaLiveRestaurantController {
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
 			System.out.println(book.getId());
-			//TODO prendere la sessione e solo i booking della pizzeria loggata
 			BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+			PaymentDAO paymentDAO = (PaymentDAO) context.getBean("paymentDAO");
 			
 			Booking booking=bookingDAO.getBooking(book.getId());
 			switch (jsonAction) {
@@ -99,6 +101,10 @@ public class PizzeriaLiveRestaurantController {
 
 				//TODO set format data per aggiungere ora
 				booking.setCompletionDate(Calendar.getInstance().getTime());
+				Payment payment=new Payment();
+				payment.setPaid(true);
+				paymentDAO.create(payment);
+				booking.setPayment(payment);
 				bookingDAO.update(booking);
 				message="collected";
 				break;
