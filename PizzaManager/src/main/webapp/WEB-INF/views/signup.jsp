@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -29,6 +30,10 @@
 			<div class="col-md-7">
 				<div class="bubble">
 					<h2>Sign up to Pizza Manager!</h2>
+					<c:if test="${signUpError}">
+						<div class="sign-up-error">There was an error in your request. Please repeat the sign up
+							process.</div>
+					</c:if>
 					<form id="sign-up-form" action="signup" method="post">
 						<div class="row js-email-container">
 							<div class="col-md-5 input-container">
@@ -87,7 +92,8 @@
 				<div class="message valid">Username is ok.</div>
 				<div class="message validating">Validating...</div>
 				<div class="message taken">An user with this username already exists.</div>
-				<div class="message error">Your username must be at least 4 characters long.</div>
+				<div class="message message-multiline error">Username must contain only letters, numbers,
+					_ and - and must be at least 4 characters long.</div>
 			</div>
 		</div>
 		<div class="row js-firstName-container js-simple-container">
@@ -100,6 +106,7 @@
 			<div class="col-md-7">
 				<div class="message hint visible">Insert your first name.</div>
 				<div class="message valid">First name is ok.</div>
+				<div class="message error">First name must contain only letters.</div>
 			</div>
 		</div>
 		<div class="row js-lastName-container js-simple-container">
@@ -112,6 +119,7 @@
 			<div class="col-md-7">
 				<div class="message hint visible">Insert your last name.</div>
 				<div class="message valid">Last name is ok.</div>
+				<div class="message error">Last name must contain only letters.</div>
 			</div>
 		</div>
 		<div class="button-submit-container">
@@ -129,6 +137,7 @@
 			<div class="col-md-7">
 				<div class="message hint visible">Insert the name of your pizzeria.</div>
 				<div class="message valid">Name is ok.</div>
+				<div class="message error">Name must contain only letters, numbers or -.</div>
 			</div>
 		</div>
 		<div class="row js-phoneNumber-container js-simple-container">
@@ -158,11 +167,10 @@
 			</div>
 		</div>
 		<div class="hidden-fields-container">
-			<input class="js-street-input" type="hidden" name="street" />
-			<input class="js-number-input" type="hidden" name="number" />
-			<input class="js-city-input" type="hidden" name="city" />
-			<input class="js-latitude-input" type="hidden" name="latitude" />
-			<input class="js-longitude-input" type="hidden" name="longitude" />
+			<input class="js-street-input" type="hidden" name="street" /> <input class="js-number-input"
+				type="hidden" name="number" /> <input class="js-city-input" type="hidden" name="city" /> <input
+				class="js-latitude-input" type="hidden" name="latitude" /> <input class="js-longitude-input"
+				type="hidden" name="longitude" />
 		</div>
 		<div class="button-submit-container">
 			<button type="submit" class="btn btn-primary button-submit" disabled>Sign up</button>
