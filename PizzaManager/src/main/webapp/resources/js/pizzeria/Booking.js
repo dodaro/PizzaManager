@@ -29,7 +29,17 @@ var Booking = function(){
 				    {"string" : "Bill"}
 				   
 				    ],
-				order : [ [ 3, 'desc' ] ]
+			columnDefs : [ {
+				/* Shows glutenFree as 'Yes' or 'No. */
+				render : function(data, type, row) {
+					if(data==false)
+						return 'No'
+					else
+						return 'Yes'	
+				},
+				targets : 5
+			} ],
+			order : [ [ 3, 'desc' ] ]
 			});
 		tableBooking.columns(columnId).visible(false);
 		

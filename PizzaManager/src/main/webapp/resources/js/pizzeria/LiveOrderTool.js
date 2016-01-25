@@ -84,6 +84,17 @@ var LiveOrderTool = function(){
 				}, {
 					"string" : "id"
 				} ],
+				columnDefs : [ {
+					/* Shows glutenFree as 'Yes' or 'No. */
+					render : function(data, type, row) {
+						console.log(data)
+						if(data=="false")
+							return 'No'
+						else
+							return 'Yes'	
+					},
+					targets : 2
+				} ],
 				order : [ [ 5, 'asc' ] ]
 			});
 

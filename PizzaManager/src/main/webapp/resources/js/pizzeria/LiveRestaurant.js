@@ -27,7 +27,17 @@ var LiveRestaurant = function(){
 				    {"string" : "Id"}
 				   
 				    ],
-				order : [ [ 3, 'desc' ] ]
+		    columnDefs : [ {
+				/* Shows glutenFree as 'Yes' or 'No. */
+				render : function(data, type, row) {
+					if(data==false)
+						return 'No'
+					else
+						return 'Yes'	
+				},
+				targets : 6
+			} ],
+			order : [ [ 3, 'desc' ] ]
 			});
 		tableLiveRestaurant.columns(columnId).visible(false);
 		
