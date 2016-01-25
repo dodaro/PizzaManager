@@ -22,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.forms.FeedbackForm;
 import it.unical.pizzamanager.forms.SearchForm;
+import it.unical.pizzamanager.persistence.dao.RelationTableBookingTablePizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.FeedbackDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
@@ -126,7 +127,7 @@ public class PizzeriaMainViewController {
 		if (d != null && t!=null) {
 			List<RelationBookingTablePizzeriaTable> tables = getBookingTables(d, t, seats, pizzeria, booking,
 					pizzeriaTables);
-
+			
 			if (tables != null) {
 
 				booking.setDate(d);
@@ -179,6 +180,10 @@ public class PizzeriaMainViewController {
 			}
 			if (currSeats > 0)
 				return null;
+		}
+		RelationTableBookingTablePizzeriaDAO tableManagerDAO=(RelationTableBookingTablePizzeriaDAO)context.getBean("relationTableBookingTablePizzeriaDAO");
+		for (RelationBookingTablePizzeriaTable relationBookingTablePizzeriaTable : tablesToBook) {
+			tableManagerDAO.create(relationBookingTablePizzeriaTable);
 		}
 		return tablesToBook;
 	}
