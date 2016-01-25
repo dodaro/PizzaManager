@@ -277,11 +277,11 @@ public class PizzeriaMainViewController {
 		List<Pizzeria> result = new ArrayList<>();
 		List<Pizza> result2 = new ArrayList<>();
 		for (int i = 0; i < pizzerias.size(); i++) {
-			if (pizzerias.get(i).getName().contains(form.getWord()))
+			if (pizzerias.get(i).getName().toLowerCase().contains(form.getWord().toLowerCase()))
 				result.add(pizzerias.get(i));
 		}
 		for (int j = 0; j < pizze.size(); j++) {
-			if (pizze.get(j).getName().contains(form.getWord()))
+			if (pizze.get(j).getName().toLowerCase().contains(form.getWord().toLowerCase()))
 				result2.add(pizze.get(j));
 		}
 		setAccountAttribute(session, model);
