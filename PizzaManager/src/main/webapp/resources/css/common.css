@@ -37,6 +37,12 @@ body {
 	margin-right: 0;
 }
 
+.navbar-brand img {
+	position: relative;
+	width: 40px;
+	top: -10px;
+}
+
 .button-login {
 	margin-left: 8px;
 }
