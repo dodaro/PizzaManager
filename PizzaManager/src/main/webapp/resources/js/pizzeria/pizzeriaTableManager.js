@@ -30,17 +30,17 @@ pizzeriaTableManager = function() {
 						'data' : 'minSeats'
 					}, {
 						'data' : 'maxSeats'
-					} ],
+					} ]
 					/*
 					 * Renders "Yes" or "No" instead of "true" or "false" in the
 					 * "Available" column.
 					 */
-					columnDefs : [ {
-						render : function(data, type, row) {
-							return data ? 'Yes' : 'No';
-						},
-						targets : 3
-					} ]
+//					columnDefs : [ {
+//						render : function(data, type, row) {
+//							return data ? 'Yes' : 'No';
+//						},
+//						targets : 3
+//					} ]
 				});
 			},
 
