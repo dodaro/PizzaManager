@@ -43,4 +43,12 @@ public class RelationTableBookingTablePizzeriaDAOImpl
 		session.close();
 		return tableBooking;
 	}
+
+	public DatabaseHandler getDatabaseHandler() {
+		return databaseHandler;
+	}
+
+	public void setDatabaseHandler(DatabaseHandler databaseHandler) {
+		this.databaseHandler = databaseHandler;
+	}
 }

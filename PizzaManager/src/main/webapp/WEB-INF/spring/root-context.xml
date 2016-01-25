@@ -95,7 +95,10 @@
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzaOrderItemIngredientDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
 	</bean>
-
+	<bean id="relationTableBookingTablePizzeriaDAO"
+		class="it.unical.pizzamanager.persistence.dao.RelationTableBookingTablePizzeriaDAOImpl">
+		<property name="databaseHandler" ref="databaseHandler" />
+	</bean>
 	<bean id="relationPizzeriaPizzaDAO"
 		class="it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAOImpl">
 		<property name="databaseHandler" ref="databaseHandler" />
