@@ -1,6 +1,7 @@
 package it.unical.pizzamanager.controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -14,19 +15,34 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.forms.FeedbackForm;
 import it.unical.pizzamanager.forms.SearchForm;
+import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.FeedbackDAO;
+import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
+import it.unical.pizzamanager.persistence.dao.PizzeriaTableDAO;
+import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
+import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
 import it.unical.pizzamanager.persistence.dto.Feedback;
 import it.unical.pizzamanager.persistence.dto.FeedbackPizzeria;
+import it.unical.pizzamanager.persistence.dto.OrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizza;
+import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
+import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
+import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.BookingUtils;
+import it.unical.pizzamanager.utils.OrderItemUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
@@ -54,8 +70,7 @@ public class PizzeriaMainViewController {
 	}
 
 	@RequestMapping(value = "/pizzeriamainview", method = RequestMethod.POST)
-	public String pizzeriamainview(HttpSession session, @RequestParam Integer id,
-			@ModelAttribute FeedbackForm form) {
+	public String pizzeriamainview(HttpSession session, @RequestParam Integer id, @ModelAttribute FeedbackForm form) {
 
 		if (SessionUtils.isUser(session)) {
 			UserDAO userDAO = (UserDAO) context.getBean("userDAO");
@@ -65,14 +80,161 @@ public class PizzeriaMainViewController {
 			Pizzeria pizzeria = pizzeriaDAO.get(id);
 
 			FeedbackDAO feedbackDAO = (FeedbackDAO) context.getBean("feedbackDAO");
-			Feedback feedback = new FeedbackPizzeria(user, pizzeria, form.getQuality(),
-					form.getFastness(), form.getHospitality(), form.getComment());
+			Feedback feedback = new FeedbackPizzeria(user, pizzeria, form.getQuality(), form.getFastness(),
+					form.getHospitality(), form.getComment());
 
 			feedbackDAO.create(feedback);
 			System.out.println("CREATED");
 		}
 
 		return "redirect:/pizzeriamainview?id=" + id;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/pizzeriamainview/booking", method = RequestMethod.POST)
+	public String pizzeriamainviewbooking(@RequestParam int seats, @RequestParam Date date,
+			@RequestParam int idbooking, HttpSession session) {
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		BookingPizzeriaTable booking = (BookingPizzeriaTable) bookingDAO.getBooking(idbooking);
+		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
+		List<PizzeriaTable> pizzeriaTables = pizzeriaTableDAO.getTablesOfPizzeria(booking.getPizzeria());
+		List<RelationBookingTablePizzeriaTable> tables = getBookingTables(date, seats, booking.getPizzeria(), booking);
+		if (tables != null) {
+			booking.setDate(date);
+			booking.setTime(date);
+			bookingDAO.create(booking);
+			booking.setTableBooking(tables);
+			BookingUtils.calculateBill(booking, booking.getPizzeria());
+			bookingDAO.update(booking);
+			
+			return "{\"success\" = true}";
+
+		}
+
+		System.out.println("non prenoto");
+		return "{\"success\" = false}";
+	}
+
+	private List<RelationBookingTablePizzeriaTable> getBookingTables(Date d, int seats, Pizzeria pizzeria,
+			BookingPizzeriaTable mybooking) {
+		// get only today booking
+		List<Booking> bookings = pizzeria.getBookings();
+		List<PizzeriaTable> freeTable = new ArrayList<>();
+		for (PizzeriaTable pizzeriaTable : pizzeria.getTables()) {
+			freeTable.add(pizzeriaTable);
+		}
+		
+		for (Booking booking : bookings) {
+			if (booking instanceof BookingPizzeriaTable) {
+				if (Math.abs(booking.getDate().getTime() - d.getTime()) < 3600000) {
+					for (RelationBookingTablePizzeriaTable t : ((BookingPizzeriaTable) booking).getTableBooking())
+						freeTable.remove(t.getPizzeriaTable());
+				}
+			}
+		}
+
+		List<RelationBookingTablePizzeriaTable> tablesToBook = new ArrayList<>();
+		for (PizzeriaTable pizzeriaTable : freeTable) {
+			if (pizzeriaTable.getMaxSeats() > seats) {
+				RelationBookingTablePizzeriaTable tab = new RelationBookingTablePizzeriaTable();
+				tab.setPizzeriaTable(pizzeriaTable);
+				tab.setBooking(mybooking);
+				tablesToBook.add(tab);
+			}
+
+		}
+		// se nessun tavolo può contenere i posti richiesti
+		if (tablesToBook.size() == 0) {
+			int currSeats = seats;
+			for (PizzeriaTable pizzeriaTable : freeTable) {
+
+				RelationBookingTablePizzeriaTable tab = new RelationBookingTablePizzeriaTable();
+				tab.setPizzeriaTable(pizzeriaTable);
+				tab.setBooking(mybooking);
+				tablesToBook.add(tab);
+				currSeats -= pizzeriaTable.getMaxSeats();
+				if (currSeats <= 0)
+					break;
+
+			}
+			if (currSeats > 0)
+				return null;
+		}
+		return tablesToBook;
+	}
+
+	@RequestMapping(value = "/pizzeriamainview/addPizza", method = RequestMethod.POST)
+	public void addPizzaToBook(@RequestParam int idpizza, @RequestParam int idbooking, HttpSession session) {
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		BookingPizzeriaTable booking = (BookingPizzeriaTable) bookingDAO.getBooking(idbooking);
+		RelationPizzeriaPizzaDAO pizzaDAO = (RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO");
+		RelationPizzeriaPizza pizza = pizzaDAO.get(idpizza);
+		if (findItem(idpizza, booking))
+			return;
+
+		OrderItem item = new PizzaOrderItem();
+		item.setBooking(booking);
+		OrderItemUtils.setPizzaOrderCost((PizzaOrderItem)item, booking.getPizzeria());
+		item.setNumber(1);
+		if(item instanceof PizzaOrderItem)
+			((PizzaOrderItem) item).setPizzeria_pizza(pizza);
+		OrderItemDAO itemDAO =(OrderItemDAO) context.getBean("orderItemDAO");
+		itemDAO.create(item);
+		booking.getOrderItems().add(item);
+		bookingDAO.update(booking);
+	}
+
+	private boolean findItem(int idpizza, BookingPizzeriaTable booking) {
+		OrderItemDAO itemDAO =(OrderItemDAO) context.getBean("orderItemDAO");
+		for (OrderItem bookItem : booking.getOrderItems()) {
+			if (bookItem instanceof PizzaOrderItem)
+				if (((PizzaOrderItem) bookItem).getPizzeria_pizza().getId() == idpizza) {
+					bookItem.setNumber(bookItem.getNumber() + 1);
+					itemDAO.update(bookItem);
+					return true;
+				} else if (bookItem instanceof BeverageOrderItem)
+					if (((BeverageOrderItem) bookItem).getPizzeria_beverage().getId() == idpizza) {
+						bookItem.setNumber(bookItem.getNumber() + 1);
+						itemDAO.update(bookItem);
+						return true;
+					}
+		}
+		return false;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/pizzeriamainview/createBook", method = RequestMethod.POST)
+	public int pizzeriamainviewbooking(@RequestParam int idPizzeria, HttpSession session) {
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+		Pizzeria pizzeria = pizzeriaDAO.get(idPizzeria);
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		BookingPizzeriaTable booking = new BookingPizzeriaTable();
+		booking.setPizzeria(pizzeria);
+		booking.setUser(user);
+		bookingDAO.create(booking);
+
+		return booking.getId();
+
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/pizzeriamainview/cancelBook", method = RequestMethod.POST)
+	public void cancel(@RequestParam int idbooking, HttpSession session) {
+		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
+		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
+		Booking booking = (BookingPizzeriaTable) bookingDAO.getBooking(idbooking);
+		
+		bookingDAO.delete(booking);
+		
+
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)

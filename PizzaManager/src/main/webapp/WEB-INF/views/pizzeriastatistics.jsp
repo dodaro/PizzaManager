@@ -60,7 +60,7 @@
 								data-toggle="buttons">
 								<label class="btn btn-primary active"> <input
 									type="radio" name="options" value="Line" id="option11"
-									autocomplete="off" checked> Line
+									autocomplete="off" checked> Lin
 								</label> <label class="btn btn-primary"> <input type="radio"
 									name="options" value="Bar" id="option22" autocomplete="off">
 									Bar
@@ -105,7 +105,7 @@
 								data-toggle="buttons">
 								<label class="btn btn-primary active"> <input
 									type="radio" name="options" value="Line" id="option11"
-									autocomplete="off" checked> Line
+									autocomplete="off" checked> Lin
 								</label> <label class="btn btn-primary"> <input type="radio"
 									name="options" value="Bar" id="option22" autocomplete="off">
 									Bar

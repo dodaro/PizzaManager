@@ -7,7 +7,8 @@
 <head>
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
-
+<script type="text/javascript" src="resources/js/moment.js"></script>
+<script type="text/javascript" src="resources/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
 
 <script type="text/javascript" src="resources/js/maps.js"></script>
@@ -43,8 +44,101 @@
 				}
 			});
 		});
-
+		$('.datetimepicker').datetimepicker({
+			defaultDate : new Date(),
+			locale : 'it'
+		});
 	});
+</script>
+<script type="text/javascript">
+	// function modal
+	$(document).ready(
+			function() {
+				var idBooking;
+				//createBook
+				$(".createBook").on('click', function() {
+					var id = parseInt($(this).data("pizzeria"));
+
+					$.ajax({
+						type : "POST",
+						url : "/pizzeriamainview/createBook",
+						data : {
+							idPizzeria : id
+
+						},
+						success : function(response) {
+							idBooking = response;
+							console.log(idBooking);
+
+						}
+					});
+				});
+
+				$(".addBook").on(
+						'click',
+						function() {
+							var seats = parseInt($(this).closest('div').find('input').val());
+							var date = $(this).closest('div').find('div').find('.datetimepicker')
+									.data("DateTimePicker").date().format("YYYY/MM/DD HH:mm");
+							var pizzeria = $(this).data('pizzeria');
+							alert(idBooking);
+							$.ajax({
+								type : "POST",
+								url : "/pizzeriamainview/booking",
+								data : {
+									seats : seats,
+									date : date,
+									idbooking : idBooking
+
+								},
+								success : function(response) {
+									$.ajax({
+										type : "GET",
+										url : "/pizzeriamainview",
+										data : {
+											id : pizzeria
+
+										},
+										success : function(response) {
+											if (response.success) {
+												$("#modalMessage").text("Booked");
+												$('#modalAlert').modal('show');
+											}
+										}
+									});
+								},
+
+							});
+						});
+				$(".cancelBook").on('click', function() {
+					$.ajax({
+						type : "POST",
+						url : "/pizzeriamainview/cancelBook",
+						data : {
+							idbooking : idBooking
+						},
+						success : function(response) {
+
+						}
+					});
+				});
+				$(".addItemToBook").on('click', function() {
+					var idpizza = $(this).data('id');
+
+					$.ajax({
+						type : "POST",
+						url : "/pizzeriamainview/addPizza",
+						data : {
+							idpizza : idpizza,
+							idbooking : idBooking
+						},
+						success : function(response) {
+
+						}
+					});
+				})
+
+			});
 </script>
 <link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
@@ -78,7 +172,63 @@
 					<div class="phone-container">
 						<span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
 					<div class="pizzeria-buttons-container">
-						<button class="btn btn-primary button-bookatable">Book a table</button>
+						<c:if test="${userLogged}">
+							<a href="#" data-pizzeria="${pizzeriaResult.id}" data-toggle="modal" data-target="#myModal"
+								class="btn btn-primary button-bookatable createBook">Book a table</a>
+						</c:if>
+						<div id="myModal" class="modal fade">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+										<h4 class="modal-title">Book also your Pizzas!</h4>
+									</div>
+									<div class="modal-body">
+										<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
+											<div class="row menu-entry">
+												<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
+												<div class="pizza-ingredients">
+													<span class="pizzeriaPizza-label">Ingredients:</span>
+													<c:forEach var="i" begin="0" end="${pizzeriaPizza.pizza.pizzaIngredients.size() - 1}">
+														<span>${pizzeriaPizza.pizza.pizzaIngredients[i].ingredient.name}</span>
+														<c:if test="${i != pizzeriaPizza.pizza.pizzaIngredients.size() -1 }">,</c:if>
+													</c:forEach>
+												</div>
+												<div class="pizza-size">
+													<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaPizza.pizzaSize.string}</span>
+												</div>
+												<c:if test="${pizzeriaPizza.glutenFree}">
+													<div class="pizza-gluten-free">Gluten free</div>
+												</c:if>
+												<div class="right-container">
+													<div class="pizza-price">
+														&euro;
+														<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
+													</div>
+													<a href="#" data-id="${pizzeriaPizza.id}"
+														class="btn btn-default button-addtocart addItemToBook" data-target="Item">Add to
+														Book</a>
+												</div>
+											</div>
+										</c:forEach>
+									</div>
+									<div class="modal-footer">
+										<input type="text" class="form-control" name="numeroPosti"
+											placeholder="Inserire numero di posti da prenotare">
+										<div class="form-group">
+											<div class='input-group date datetimepicker'>
+												<input type='text' class="form-control" /> <span class="input-group-addon"> <span
+													class="glyphicon glyphicon-calendar"></span>
+												</span>
+											</div>
+										</div>
+										<button type="button" class="btn btn-default cancelBook" data-dismiss="modal">Chiudi</button>
+										<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
+											data-dismiss="modal" class="btn btn-primary button-bookatable addbook">Conferma</a>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<div class="bubble feedbacks-bubble">

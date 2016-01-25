@@ -41,11 +41,7 @@ public class BookController {
 		return "errorRedirect";
 	}
 	
-	/*private void setUserAttribute(HttpSession session, Model model) {
-		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-		model.addAttribute("user", user);
-	}*/
+
 	private boolean setUserAttribute(HttpSession session, Model model) {
 		if(!SessionUtils.isUser(session))
 		{

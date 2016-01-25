@@ -32,7 +32,6 @@ import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
 import it.unical.pizzamanager.utils.mail.MailSenderUtils;
 
-
 @Controller
 public class PizzeriaBookingController {
 
@@ -42,7 +41,7 @@ public class PizzeriaBookingController {
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/pizzeriabooking", method = RequestMethod.GET)
-	public String pizzeriaBooking(Model model,HttpSession session) {
+	public String pizzeriaBooking(Model model, HttpSession session) {
 		logger.info("Booking controller page requested. Loading list of users.");
 		if (!SessionUtils.isPizzeria(session)) {
 			return null;
@@ -51,8 +50,9 @@ public class PizzeriaBookingController {
 	}
 
 	@RequestMapping(value = "/pizzeriabookingAjax", method = RequestMethod.GET)
-	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model,HttpSession session) {
-		
+	public @ResponseBody List<Booking> processAJAXRequest(HttpServletRequest request, Model model,
+			HttpSession session) {
+
 		if (!SessionUtils.isPizzeria(session)) {
 			return null;
 		}
@@ -62,12 +62,12 @@ public class PizzeriaBookingController {
 
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		List<Booking> allBookings = (List<Booking>) bookingDAO.getBookingsFromPizzeria(pizzeria);
-		List<Booking> filteredBookings=new ArrayList<>();
+		List<Booking> filteredBookings = new ArrayList<>();
 		for (Booking booking : allBookings) {
-			if(booking.getConfirmed()==false && booking.getCompletionDate()==null)
+			if (booking.getConfirmed() == false && booking.getCompletionDate() == null)
 				filteredBookings.add(booking);
 		}
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(Booking.class, new BookingSerializer());
@@ -75,68 +75,65 @@ public class PizzeriaBookingController {
 		try {
 			for (int i = 0; i < filteredBookings.size(); i++) {
 				String serialized = mapper.writeValueAsString(filteredBookings.get(i));
-				System.out.println(serialized);				
+				System.out.println(serialized);
 			}
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return filteredBookings;
 	}
-	
+
 	@RequestMapping(value = "/pizzeriabookingAction", method = RequestMethod.POST)
-	public @ResponseBody String actionOnBooking(HttpServletRequest request,@RequestParam("action") String jsonAction, @RequestParam("booking") String jsonBooking){
-		
+	public @ResponseBody String actionOnBooking(HttpServletRequest request, @RequestParam("action") String jsonAction,
+			@RequestParam("booking") String jsonBooking) {
+
 		System.out.println(jsonAction);
 		System.out.println(jsonBooking);
-		
+
 		String REGEX = "[^&%$#!~]*";
-		if(ValidatorUtils.ValidateString(REGEX, jsonAction)==false || ValidatorUtils.ValidateString(REGEX, jsonBooking)==false){
+		if (ValidatorUtils.ValidateString(REGEX, jsonAction) == false
+				|| ValidatorUtils.ValidateString(REGEX, jsonBooking) == false) {
 			return null;
 		}
-		
+
 		ObjectMapper objectMapper = new ObjectMapper();
 		BookingModel book;
-		String message="error";
+		String message = "error";
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
 			System.out.println(book.getId());
-			//TODO prendere la sessione e solo i booking della pizzeria loggata
+			// TODO prendere la sessione e solo i booking della pizzeria loggata
 			BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-			
-			Booking booking=bookingDAO.getBooking(book.getId());
+
+			Booking booking = bookingDAO.getBooking(book.getId());
 			switch (jsonAction) {
 			case "conferme":
 
-				//IL CAST è necessario?
+				// IL CAST è necessario?
 				booking.setConfirmed(true);
 				bookingDAO.update(booking);
-				message="confermed";
+				message = "confermed";
 				break;
-				
-			//IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER
-			/*case "edit":
-				
-				BookingUtils.createBookingFromBookingModel(book, booking.getPizzeria(), context);
-				message="updated";
-				break;*/
-				
-				
+
+			// IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER
 			case "remove":
-				
-				booking=bookingDAO.getBooking(book.getId());
-				if(booking.getUser().getEmail()!=null || booking.getUser().getEmail()!="")
-					//MailSenderUtils.SendMail("Booking Elimination",booking.getUser().getEmail(), booking);
-					MailSenderUtils.SendMail("Booking Elimination","cosentinomarco90@gmail.com", booking);
+
+				booking = bookingDAO.getBooking(book.getId());
+				if (booking.getUser().getEmail() != null || booking.getUser().getEmail() != "")
+
+					MailSenderUtils.SendMail("Booking Elimination", booking.getUser().getEmail(), booking,
+							MailSenderUtils.DELETE);
+
 				bookingDAO.delete(booking);
-				message="removed";
+				message = "removed";
 				break;
 
 			default:
 				break;
 			}
-			
+
 			System.out.println(book.getId());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -144,5 +141,4 @@ public class PizzeriaBookingController {
 		}
 		return message;
 	}
-	
 }
