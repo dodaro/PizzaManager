@@ -24,6 +24,13 @@
 				}
 			});
 		});
+		$(".number-control").on('change',function(){
+			var value=$(this).val();
+			if(value<1)
+				$(this).val(1);
+			else if(value>99)
+				$(this).val(99);
+		});
 		$('#bookCart').on('click', function() {
 			var clickedElement = $(this);
 			var items = "";

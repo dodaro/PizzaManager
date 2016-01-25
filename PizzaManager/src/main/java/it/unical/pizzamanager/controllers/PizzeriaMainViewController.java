@@ -1,5 +1,6 @@
 package it.unical.pizzamanager.controllers;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,7 +109,6 @@ public class PizzeriaMainViewController {
 
 		List<PizzeriaTable> pizzeriaTables = pizzeriaTableDAO.getTablesOfPizzeria(booking.getPizzeria());
 		Pizzeria pizzeria = pizzeriaDAO.get(booking.getPizzeria().getId());
-		
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd/M/yyyy");
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
 		Date d=null;
@@ -122,27 +122,31 @@ public class PizzeriaMainViewController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		
-		if (d != null && t!=null) {
+		DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm");
+		Date today = new Date();
+		
+		if ((d != null && t!=null)&& (today.getTime()<d.getTime()+t.getTime())) {
 			List<RelationBookingTablePizzeriaTable> tables = getBookingTables(d, t, seats, pizzeria, booking,
 					pizzeriaTables);
 			
 			if (tables != null) {
 
 				booking.setDate(d);
-				booking.setTime(d);
+				booking.setTime(t);
 				bookingDAO.create(booking);
 				booking.setTableBooking(tables);
 				BookingUtils.calculateBill(booking, booking.getPizzeria());
 				bookingDAO.update(booking);
 
-				return "true";
+				return "booked";
 
 			}
+			else{
+				return "errortables";
+			}
 		}
-		bookingDAO.delete(booking);
-		return "false";
+		return "errordate";
 	}
 
 

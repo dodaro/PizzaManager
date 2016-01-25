@@ -19,28 +19,37 @@
 					});
 				});
 
-
 				$('.takeAway').on(
 						'click',
 						function() {
+							var button = $(this);
 							var type = "takeAway";
 							var pizzeria = $(this).data('pizzeria');
-							var date = $(this).closest('.row').find(
+							var dateTime = $(this).closest('.row').find(
 									'.datetimepicker').data('DateTimePicker')
-									.date().format('YYYY/MM/DD HH:mm');
-							console.log(date);
+									.date().format('DD/MM/YYYY HH:mm');
+							var d = dateTime.split(" ")[0];
+							var t = dateTime.split(" ")[1];
 							$.ajax({
 								type : "POST",
 								url : "/userBooking/book",
 								data : {
 									pizzeria : pizzeria,
 									type : type,
-									date : date
+									date : d,
+									time : t
 
 								},
 								success : function(response) {
-									console.log(response)
-									window.location = 'userBooking'
+									console.log(response);
+									if (response == "dateError") {
+										button.closest('.row').find(
+												'.dateErrorMessage').text(
+												"Select a valid date.");
+									} else {
+										console.log(response);
+										window.location = 'userBooking'
+									}
 								}
 							});
 
@@ -49,25 +58,35 @@
 				$('.delivery').on(
 						'click',
 						function() {
+							var button = $(this);
 							var pizzeria = $(this).data('pizzeria');
 							var type = "delivery";
-							var date = $(this).closest('.row').find(
+							var dateTime = $(this).closest('.row').find(
 									'.datetimepicker').data('DateTimePicker')
-									.date().format('YYYY/MM/DD HH:mm');
+									.date().format("DD/MM/YYYY HH:mm");
+							var d = dateTime.split(" ")[0];
+							var t = dateTime.split(" ")[1];
+							console.log(d + "" + t)
 							$.ajax({
 								type : "POST",
 								url : "/userBooking/book",
 								data : {
 									pizzeria : pizzeria,
 									type : type,
-									date : date
+									date : d,
+									time : t
 
 								},
 								success : function(response) {
-
 									console.log(response)
-									window.location = 'userBooking'
-
+									if (response == "dateError") {
+										button.$(this).closest('.row').find(
+												'.dateErrorMessage').text(
+												"Select a valid date.");
+									} else {
+										console.log(response);
+										window.location = 'userBooking'
+									}
 								}
 							});
 						});

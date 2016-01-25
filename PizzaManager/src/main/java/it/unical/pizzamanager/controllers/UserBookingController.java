@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -66,22 +67,27 @@ public class UserBookingController {
 
 	@ResponseBody
 	@RequestMapping(value = "/userBooking/book", method = RequestMethod.POST)
-	public String book(@RequestParam String type, @RequestParam String pizzeria, @RequestParam("date") String date,
-			Model model, HttpSession session) {
+	public String book(@RequestParam String type, @RequestParam String pizzeria, @RequestParam String date,
+			@RequestParam String time,Model model, HttpSession session) {
 
-		DateFormat format = new SimpleDateFormat("YYYY/MM/DD HH:mm");
-
-		PizzeriaCartBooking pizzeriaBook = new PizzeriaCartBooking();
-		pizzeriaBook.setPizzeria(pizzeria);
-		pizzeriaBook.setBookingType(type);
-
+		SimpleDateFormat sdfDate = new SimpleDateFormat("dd/M/yyyy");
+		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
+		Date d=null;
+		Date t=null;
+		System.out.println(date+" "+time);
 		try {
-			pizzeriaBook.setDate(format.parse(date));
+			d = sdfDate.parse(date);
+			t = sdfTime.parse(time);
+			
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
+		DateFormat dateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm");
+		Date today = new Date();
+		if(today.getTime()>d.getTime()+t.getTime())
+			return "dateError";
 		// set correctly date
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
@@ -91,12 +97,12 @@ public class UserBookingController {
 
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		Cart cart = cartDAO.getUserCart(user);
-		ArrayList<OrderItem> toBook = itemToBook(pizzeriaBook, cart);
-		Pizzeria pizzerias = pizzeriaDAO.getByName(pizzeriaBook.getPizzeria());
-		Booking booking = createBooking(pizzeriaBook.getBookingType());
+		ArrayList<OrderItem> toBook = itemToBook(pizzeria, cart);
+		Pizzeria pizzerias = pizzeriaDAO.getByName(pizzeria);
+		Booking booking = createBooking(type);
 		booking.setConfirmed(false);
-		booking.setDate(pizzeriaBook.getDate());
-		booking.setTime(pizzeriaBook.getDate());
+		booking.setDate(d);
+		booking.setTime(t);
 		booking.setPizzeria(pizzerias);
 		booking.setUser(user);
 
@@ -159,17 +165,17 @@ public class UserBookingController {
 
 	}
 
-	private ArrayList<OrderItem> itemToBook(PizzeriaCartBooking pizzeriaBook, Cart cart) {
+	private ArrayList<OrderItem> itemToBook(String pizzeria,Cart cart) {
 		ArrayList<OrderItem> toBook = new ArrayList<>();
 		for (OrderItem item : cart.getOrderItems()) {
 			if (item instanceof PizzaOrderItem) {
 				if (((PizzaOrderItem) item).getPizzeria_pizza().getPizzeria().getName()
-						.equals(pizzeriaBook.getPizzeria())) {
+						.equals(pizzeria)) {
 					toBook.add(item);
 				}
 			} else if (item instanceof BeverageOrderItem) {
 				if (((BeverageOrderItem) item).getPizzeria_beverage().getPizzeria().getName()
-						.equals(pizzeriaBook.getPizzeria())) {
+						.equals(pizzeria)) {
 					toBook.add(item);
 				}
 			}

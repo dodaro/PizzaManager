@@ -37,6 +37,8 @@
 										</div>
 									</div>
 								</div>
+								<div class="col-xs-1"></div>
+								<div class="col-xs-3 dateErrorMessage"></div>
 								<div class="pull-right">
 									<button data-pizzeria="${b.pizzeria}" class="btn btn-default takeAway">Take Away</button>
 									<button data-pizzeria="${b.pizzeria}" class="btn btn-default delivery">Deliver</button>
