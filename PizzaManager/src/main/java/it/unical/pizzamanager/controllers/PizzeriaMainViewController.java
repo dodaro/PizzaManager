@@ -61,7 +61,7 @@ public class PizzeriaMainViewController {
 
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(id);
-		setUserAttribute(session, model);
+		setAccountAttribute(session, model);
 		model.addAttribute("pizzeriaResult", pizzeria);
 
 		if (SessionUtils.isUser(session)) {
@@ -73,7 +73,8 @@ public class PizzeriaMainViewController {
 	}
 
 	@RequestMapping(value = "/pizzeriamainview", method = RequestMethod.POST)
-	public String pizzeriamainview(HttpSession session, @RequestParam Integer id, @ModelAttribute FeedbackForm form) {
+	public String pizzeriamainview(HttpSession session, @RequestParam Integer id,
+			@ModelAttribute FeedbackForm form) {
 
 		if (SessionUtils.isUser(session)) {
 			UserDAO userDAO = (UserDAO) context.getBean("userDAO");
@@ -83,8 +84,8 @@ public class PizzeriaMainViewController {
 			Pizzeria pizzeria = pizzeriaDAO.get(id);
 
 			FeedbackDAO feedbackDAO = (FeedbackDAO) context.getBean("feedbackDAO");
-			Feedback feedback = new FeedbackPizzeria(user, pizzeria, form.getQuality(), form.getFastness(),
-					form.getHospitality(), form.getComment());
+			Feedback feedback = new FeedbackPizzeria(user, pizzeria, form.getQuality(),
+					form.getFastness(), form.getHospitality(), form.getComment());
 
 			feedbackDAO.create(feedback);
 			System.out.println("CREATED");
@@ -103,6 +104,7 @@ public class PizzeriaMainViewController {
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		BookingPizzeriaTable booking = (BookingPizzeriaTable) bookingDAO.getBooking(idbooking);
 		PizzeriaTableDAO pizzeriaTableDAO = (PizzeriaTableDAO) context.getBean("pizzeriaTableDAO");
+
 		List<PizzeriaTable> pizzeriaTables = pizzeriaTableDAO.getTablesOfPizzeria(booking.getPizzeria());
 		Pizzeria pizzeria = pizzeriaDAO.get(booking.getPizzeria().getId());
 		
@@ -110,6 +112,7 @@ public class PizzeriaMainViewController {
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
 		Date d=null;
 		Date t=null;
+
 		try {
 			d = sdfDate.parse(date);
 			t = sdfTime.parse(time);
@@ -118,10 +121,12 @@ public class PizzeriaMainViewController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		
 		if (d != null && t!=null) {
 			List<RelationBookingTablePizzeriaTable> tables = getBookingTables(d, t, seats, pizzeria, booking,
 					pizzeriaTables);
+
 			if (tables != null) {
 
 				booking.setDate(d);
@@ -140,11 +145,15 @@ public class PizzeriaMainViewController {
 		return "{\"success\" = false}";
 	}
 
+
 	private List<RelationBookingTablePizzeriaTable> getBookingTables(Date d, Date time, int seats, Pizzeria pizzeria,
 			BookingPizzeriaTable mybooking, List<PizzeriaTable> tables) {
+
 		// get only today booking
 		List<Booking> bookings = pizzeria.getBookings();
+
 		List<PizzeriaTable> freeTable = PizzeriaTableUtils.getAvailableTables(pizzeria, d, time, context);
+
 		List<RelationBookingTablePizzeriaTable> tablesToBook = new ArrayList<>();
 		for (PizzeriaTable pizzeriaTable : freeTable) {
 			if (pizzeriaTable.getMaxSeats() > seats) {
@@ -177,12 +186,14 @@ public class PizzeriaMainViewController {
 
 	@ResponseBody
 	@RequestMapping(value = "/pizzeriamainview/addPizza", method = RequestMethod.POST)
-	public void addPizzaToBook(@RequestParam int idpizza, @RequestParam int idbooking, HttpSession session) {
+	public void addPizzaToBook(@RequestParam int idpizza, @RequestParam int idbooking,
+			HttpSession session) {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		BookingPizzeriaTable booking = (BookingPizzeriaTable) bookingDAO.getBooking(idbooking);
-		RelationPizzeriaPizzaDAO pizzaDAO = (RelationPizzeriaPizzaDAO) context.getBean("relationPizzeriaPizzaDAO");
+		RelationPizzeriaPizzaDAO pizzaDAO = (RelationPizzeriaPizzaDAO) context
+				.getBean("relationPizzeriaPizzaDAO");
 		RelationPizzeriaPizza pizza = pizzaDAO.get(idpizza);
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(booking.getPizzeria().getId());
@@ -269,23 +280,27 @@ public class PizzeriaMainViewController {
 			if (pizze.get(j).getName().contains(form.getWord()))
 				result2.add(pizze.get(j));
 		}
-		setUserAttribute(session, model);
+		setAccountAttribute(session, model);
 		model.addAttribute("pizzeriaResult", result);
 		model.addAttribute("pizzeriaResult2", result2);
 
 		return "resultpage";
 	}
 
-	private void setUserAttribute(HttpSession session, Model model) {
-		if (!SessionUtils.isUser(session)) {
-			String login = "Login";
-			model.addAttribute("typeSession", login);
-		} else {
+	private void setAccountAttribute(HttpSession session, Model model) {
+		if (SessionUtils.isPizzeria(session)) {
+			PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+			Pizzeria pizzeria = pizzeriaDAO
+					.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+			model.addAttribute("pizzeria", pizzeria);
+			model.addAttribute("typeSession", "Account");
+		} else if (SessionUtils.isUser(session)) {
 			UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 			User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-			String account = "Account";
-			model.addAttribute("typeSession", account);
 			model.addAttribute("user", user);
+			model.addAttribute("typeSession", "Account");
+		} else {
+			model.addAttribute("typeSession", "Login");
 		}
 	}
 }

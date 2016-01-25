@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
+import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Feedback;
+import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
@@ -23,36 +25,36 @@ import it.unical.pizzamanager.utils.SessionUtils;
 public class UserMainViewController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LogInController.class);
-	
+
 	@Autowired
 	private WebApplicationContext context;
 
 	@RequestMapping(value = "/usermainview", method = RequestMethod.GET)
-	public String usermainview(@RequestParam Integer id, HttpSession session,Model model) {
-		
+	public String usermainview(@RequestParam Integer id, HttpSession session, Model model) {
+
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(id);
-		List <Feedback> feedbacks = user.getFeedbacks();
-		setUserAttribute(session, model);
+		List<Feedback> feedbacks = user.getFeedbacks();
+		setAccountAttribute(session, model);
 		model.addAttribute("feedbacksuser", feedbacks);
 		model.addAttribute("searchedUser", user);
 		return "usermainview";
 	}
-	
-	
-	private void setUserAttribute(HttpSession session, Model model) {
-		if(!SessionUtils.isUser(session))
-		{
-			String login = "Login";
-			model.addAttribute("typeSession", login);
-		}
-		else
-			{
+
+	private void setAccountAttribute(HttpSession session, Model model) {
+		if (SessionUtils.isPizzeria(session)) {
+			PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+			Pizzeria pizzeria = pizzeriaDAO
+					.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+			model.addAttribute("pizzeria", pizzeria);
+			model.addAttribute("typeSession", "Account");
+		} else if (SessionUtils.isUser(session)) {
 			UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 			User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
-			String account = "Account";
-			model.addAttribute("typeSession", account);
-			model.addAttribute("user", user);}
+			model.addAttribute("user", user);
+			model.addAttribute("typeSession", "Account");
+		} else {
+			model.addAttribute("typeSession", "Login");
+		}
 	}
-
 }

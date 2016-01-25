@@ -50,12 +50,12 @@ public class User extends Account {
 		this.feedbacks = new ArrayList<Feedback>();
 	}
 
-	public User(String email, String password) {
-		super(email, password);
+	public User(String email, String password, String salt) {
+		super(email, password, salt);
 	}
 
-	public User(String email, String password, String username, String firstName, String lastName) {
-		super(email, password);
+	public User(String email, String password, String salt, String username, String firstName, String lastName) {
+		super(email, password, salt);
 
 		this.name = username;
 		this.firstName = firstName;

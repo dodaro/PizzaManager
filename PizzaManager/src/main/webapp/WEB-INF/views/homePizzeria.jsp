@@ -87,7 +87,8 @@
 						<li data-content="pizzeriaBeverageManager"><a href="#">Manage Beverages</a></li>
 						<li id="liManageBooking" data-content="pizzeriabooking"><a href="#">Manage Bookings</a></li>
 						<!-- PER DANILO: ho aggiunto un id per poter triggerare il tasto, è una soluzione sporca però, che ne dici? -->
-						<li id="liLiveRestaurant" data-content="pizzerialiverestaurant"><a href="#">Live Restaurant</a></li>
+						<li id="liLiveRestaurant" data-content="pizzerialiverestaurant"><a href="#">Live
+								Restaurant</a></li>
 						<li id="liLiveOrderTool" data-content="pizzerialiveorder"><a href="#">Live Order Tool</a></li>
 						<li data-content="pizzeriastatistics"><a href="#">Statistics</a></li>
 					</ul>
@@ -95,7 +96,13 @@
 			</div>
 			<div id="wrapper" class="col-xs-10">
 				<div class="bubble">
-					<div id="content">Home Pizzeria ${pizzeria.name}</div>
+					<div id="content">
+						<div class="bubble-title">Welcome to your home page!</div>
+					</div>
+					<div>Use the column on the left to manage your pizzeria and your bookings.</div>
+					<div class="pizzeria-link">
+						<a href="pizzeriamainview?id=${pizzeria.id}">Check how users see your page.</a>
+					</div>
 				</div>
 			</div>
 		</div>
