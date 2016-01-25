@@ -78,13 +78,13 @@ public class Pizzeria extends Account {
 		this.images = new ArrayList<Image>();
 	}
 
-	public Pizzeria(String email, String password) {
-		super(email, password);
+	public Pizzeria(String email, String password, String salt) {
+		super(email, password, salt);
 	}
 
-	public Pizzeria(String email, String password, String name, String phoneNumber, Address address,
-			Location location) {
-		super(email, password, address, location);
+	public Pizzeria(String email, String password, String salt, String name, String phoneNumber,
+			Address address, Location location) {
+		super(email, password, salt, address, location);
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.beveragesPriceList = new ArrayList<RelationPizzeriaBeverage>();

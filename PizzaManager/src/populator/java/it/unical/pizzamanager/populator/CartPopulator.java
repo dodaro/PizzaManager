@@ -1,6 +1,5 @@
 package it.unical.pizzamanager.populator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -8,21 +7,17 @@ import org.springframework.context.ApplicationContext;
 import it.unical.pizzamanager.persistence.dao.AddressDAO;
 import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
-import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Address;
 import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
 import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizza;
 import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
 import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
 import it.unical.pizzamanager.persistence.dto.User;
-import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
+import it.unical.pizzamanager.utils.PasswordHashing;
 
 public class CartPopulator extends Populator {
 
@@ -55,16 +50,17 @@ public class CartPopulator extends Populator {
 
 		// to change if init function will be removed
 
-		createOrderItemList( pizzerias, pizzeriaDAO, cart, 0);
-		createOrderItemList( pizzerias, pizzeriaDAO, cart, 1);
+		createOrderItemList(pizzerias, pizzeriaDAO, cart, 0);
+		createOrderItemList(pizzerias, pizzeriaDAO, cart, 1);
 
 	}
 
-	private void createOrderItemList( List<Pizzeria> pizzerias, PizzeriaDAO pizzeriaDAO,
-			Cart cart, int i) {
+	private void createOrderItemList(List<Pizzeria> pizzerias, PizzeriaDAO pizzeriaDAO, Cart cart,
+			int i) {
 		OrderItemDAO orderItemDAO = (OrderItemDAO) context.getBean("orderItemDAO");
 		List<RelationPizzeriaPizza> pizzeriaMenuPriceList = pizzerias.get(i).getPizzasPriceList();
-		List<RelationPizzeriaBeverage> pizzeriaBeveragePriceList = pizzerias.get(i).getBeveragesPriceList();
+		List<RelationPizzeriaBeverage> pizzeriaBeveragePriceList = pizzerias.get(i)
+				.getBeveragesPriceList();
 		for (int j = 0; j < (i + 1); j++) {
 			PizzaOrderItem pizzaItem = new PizzaOrderItem();
 			pizzaItem.setPizzeria_pizza(pizzeriaMenuPriceList.get(j));
@@ -85,15 +81,19 @@ public class CartPopulator extends Populator {
 
 	private User addUser() {
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-		AddressDAO addressDAO= (AddressDAO) context.getBean("addressDAO");
-		User user = new User("mar@mail.com", "password33");
+		AddressDAO addressDAO = (AddressDAO) context.getBean("addressDAO");
+
+		PasswordHashing hashing = (PasswordHashing) context.getBean("passwordHashing");
+		String[] tokens = hashing.getHashAndSalt("password33").split(":");
+
+		User user = new User("mar@mail.com", tokens[0], tokens[1]);
 		user.setName("Marco");
 		userDAO.create(user);
-		Address address=new Address();
+		Address address = new Address();
 		address.setStreet("Via Giovanni Nova");
 		address.setNumber(41);
 		address.setCity("Cosenza");
-		addressDAO.create(address);	
+		addressDAO.create(address);
 		user.setAddress(address);
 		userDAO.update(user);
 		return user;

@@ -9,6 +9,7 @@ import it.unical.pizzamanager.persistence.dto.Address;
 import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
+import it.unical.pizzamanager.utils.PasswordHashing;
 
 public class PizzeriaPopulator extends Populator {
 
@@ -52,7 +53,11 @@ public class PizzeriaPopulator extends Populator {
 		AddressDAO addressDAO = (AddressDAO) context.getBean("addressDAO");
 		addressDAO.create(address);
 
-		Pizzeria pizzeria = new Pizzeria(mail, password, name, phone, address, location);
+		PasswordHashing hashing = (PasswordHashing) context.getBean("passwordHashing");
+
+		String[] tokens = hashing.getHashAndSalt(password).split(":");
+		Pizzeria pizzeria = new Pizzeria(mail, tokens[0], tokens[1], name, phone, address,
+				location);
 		pizzeriaDAO.create(pizzeria);
 
 		// Create 5 tables for the pizzeria.

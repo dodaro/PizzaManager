@@ -37,6 +37,9 @@ public abstract class Account implements Serializable {
 
 	@Column(name = "password", length = 255, nullable = false)
 	private String password;
+	
+	@Column(name = "salt", nullable = false)
+	private String salt;
 
 	@OneToOne
 	@JoinColumn(name = "address")
@@ -53,30 +56,25 @@ public abstract class Account implements Serializable {
 		this.id = DatabaseHandler.NO_ID;
 		this.email = "";
 		this.password = "";
+		this.salt = "";
 		this.address = null;
 		this.location = null;
 	}
 
-	public Account(String email, String password) {
+	public Account(String email, String password, String salt) {
 		this.id = DatabaseHandler.NO_ID;
 		this.email = email;
 		this.password = password;
+		this.salt = salt;
 		this.address = null;
 		this.location = null;
 	}
 
-	public Account(String email, String password, Location location) {
+	public Account(String email, String password, String salt, Address address, Location location) {
 		this.id = DatabaseHandler.NO_ID;
 		this.email = email;
 		this.password = password;
-		this.address = null;
-		this.location = location;
-	}
-
-	public Account(String email, String password, Address address, Location location) {
-		this.id = DatabaseHandler.NO_ID;
-		this.email = email;
-		this.password = password;
+		this.salt = salt;
 		this.address = address;
 		this.location = location;
 	}
@@ -103,6 +101,14 @@ public abstract class Account implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public String getSalt() {
+		return salt;
+	}
+	
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 	public Address getAddress() {

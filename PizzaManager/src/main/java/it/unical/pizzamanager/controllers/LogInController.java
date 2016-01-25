@@ -18,6 +18,7 @@ import it.unical.pizzamanager.persistence.dao.UserDAO;
 import it.unical.pizzamanager.persistence.dto.Account;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.PasswordHashing;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller
@@ -34,25 +35,31 @@ public class LogInController {
 		AccountDAO accountDAO = (AccountDAO) context.getBean("accountDAO");
 		Account account = accountDAO.get(form.getEmail());
 
-		if (account != null && account.getPassword().equals(form.getPassword())) {
-			/*
-			 * Check if the account is a User or a Pizzeria. We also need to retrieve the full User
-			 * or the full Pizzeria before storing it into the session.
-			 */
-			if (account instanceof User) {
-				UserDAO userDAO = (UserDAO) context.getBean("userDAO");
-				User user = userDAO.get(account.getId());
-				SessionUtils.storeUserIdInSession(session, user);
-			} else if (account instanceof Pizzeria) {
-				PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
-				Pizzeria pizzeria = pizzeriaDAO.get(account.getId());
-				SessionUtils.storePizzeriaIdInSession(session, pizzeria);
+		if (account != null) {
+			PasswordHashing hashing = (PasswordHashing) context.getBean("passwordHashing");
+			String passwordHash = hashing.getHash(form.getPassword(), account.getSalt());
+
+			if (passwordHash.equals(account.getPassword())) {
+				/*
+				 * Check if the account is a User or a Pizzeria. We also need to retrieve the full
+				 * User or the full Pizzeria before storing it into the session.
+				 */
+				if (account instanceof User) {
+					UserDAO userDAO = (UserDAO) context.getBean("userDAO");
+					User user = userDAO.get(account.getId());
+					SessionUtils.storeUserIdInSession(session, user);
+				} else if (account instanceof Pizzeria) {
+					PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
+					Pizzeria pizzeria = pizzeriaDAO.get(account.getId());
+					SessionUtils.storePizzeriaIdInSession(session, pizzeria);
+				}
+			} else {
+				logger.info("Login failed");
 			}
-		} else {
-			logger.info("Login failed");
 		}
 
 		return "redirect:/";
+
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)

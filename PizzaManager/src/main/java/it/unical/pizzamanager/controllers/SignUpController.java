@@ -27,6 +27,7 @@ import it.unical.pizzamanager.persistence.dto.Cart;
 import it.unical.pizzamanager.persistence.dto.Location;
 import it.unical.pizzamanager.persistence.dto.Pizzeria;
 import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.utils.PasswordHashing;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
 
@@ -60,7 +61,13 @@ public class SignUpController {
 		logger.info("Adding a new user to the database");
 
 		if (validateUser(form)) {
-			User user = new User(form.getEmail(), form.getPassword());
+			PasswordHashing hashing = (PasswordHashing) context.getBean("passwordHashing");
+			String[] tokens = hashing.getHashAndSalt(form.getPassword()).split(":");
+
+			String passwordHash = tokens[0];
+			String salt = tokens[1];
+
+			User user = new User(form.getEmail(), passwordHash, salt);
 			user.setName(form.getUsername());
 			user.setFirstName(form.getFirstName());
 			user.setLastName(form.getLastName());
@@ -89,7 +96,13 @@ public class SignUpController {
 			Address address = new Address(form.getStreet(), form.getNumber(), form.getCity());
 			Location location = new Location(form.getLatitude(), form.getLongitude());
 
-			Pizzeria pizzeria = new Pizzeria(form.getEmail(), form.getPassword());
+			PasswordHashing hashing = (PasswordHashing) context.getBean("passwordHashing");
+			String[] tokens = hashing.getHashAndSalt(form.getPassword()).split(":");
+
+			String passwordHash = tokens[0];
+			String salt = tokens[1];
+
+			Pizzeria pizzeria = new Pizzeria(form.getEmail(), passwordHash, salt);
 			pizzeria.setName(form.getName());
 			pizzeria.setPhoneNumber(form.getPhoneNumber());
 
