@@ -34,11 +34,8 @@
 				items = items + ";" + item;
 
 			});
-			alert(items);
 
 			var itemToBook = items.substring(1, items.length);
-
-			console.log(itemToBook);
 
 			$.ajax({
 				type : "POST",

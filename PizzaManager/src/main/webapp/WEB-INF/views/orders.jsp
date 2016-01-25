@@ -18,7 +18,9 @@
 								.on(
 										'click',
 										function() {
-											$(this).attr("disabled", "disabled");
+											$(this)
+													.attr("disabled",
+															"disabled");
 											$(this).siblings("img").show();
 											var idBooking = $(this).data('id');
 											var token = $(this).data('token');
@@ -30,12 +32,16 @@
 															data : {
 																bookingId : idBooking
 															},
-															success : function(response) {
-																console.log(response);
+															success : function(
+																	response) {
+																console
+																		.log(response);
 																if (response == "Failed Creation")
-																	console.log(response);
+																	console
+																			.log(response);
 																else if (response == "Failed inizialization")
-																	console.log(response);
+																	console
+																			.log(response);
 																else
 																	window.location = response;
 															}
@@ -43,7 +49,7 @@
 											} else {
 												var redirect = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token="
 														+ token;
-												console.log(redirect);
+												//console.log(redirect);
 												window.location = redirect;
 											}
 										});
@@ -65,9 +71,11 @@
 						});
 					});
 </script>
-<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
-<link rel="stylesheet" type="text/css" href="resources/css/pageCSS/orders.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/pageCSS/orders.css" />
 </head>
 <body>
 	<jsp:include page="includes/navbarAccount.jsp"></jsp:include>
@@ -78,63 +86,70 @@
 			<div class="col-xs-9 wrapper">
 				<div class="bubble">
 					<div class="bubble-title">My Orders</div>
-					<c:if test="${not empty bookings}">
-						<c:forEach var="b" items="${bookings}">
-							<div class="row itemRow">
-								<div class="col-xs-4 pizzeria-name-container">
-									<span data-toggle="collapse" data-target="#${b.identifier}"
-										class="glyphicon glyphicon-plus moreDetails clickable col-xs-1"></span><a
-										href="pizzeriamainview?id=${b.pizzeriaId}">${b.pizzeria}</a>
-								</div>
-								<div class="col-xs-2">${b.bookingType}</div>
-								<div class="col-xs-2">${b.date}</div>
-								<div class="col-xs-2">
-									<c:choose>
-										<c:when test="${b.actived}">
-									${b.completationTime}</c:when>
-										<c:otherwise>Not yet active</c:otherwise>
-									</c:choose>
-
-								</div>
-								<%-- <div class="col-xs-1">${b.preparationTime}</div> --%>
-								<div class="col-xs-1 price-container">${b.getBillLabel()}&#8364</div>
-								<div class="col-xs-1 pay-container">
-									<c:choose>
-										<c:when test="${not b.payed}">
-											<img class="loader" src="resources/img/loader.gif"></img>
-											<a data-id="${b.id}" data-token="${b.token}" class="btn btn-success paypalButton">Buy</a>
-										</c:when>
-										<c:otherwise>
-											<div class="paid-container">Paid</div>
-										</c:otherwise>
-									</c:choose>
-								</div>
-							</div>
-							<div id="${b.identifier}" class="collapse">
-								<c:if test="${not empty b.items}">
-									<div>
-										<c:forEach var="i" items="${b.items}">
-											<div class="row singleOrderBooking">
-												<div class="col-xs-1"></div>
-												<div class="col-xs-7">
-													<span class="quantity">${i.number}</span> <span class="item-name">${i.itemName}</span>
-												</div>
-												<div class="col-xs-1 price-container-small">
-													<span>${i.getCostLabel()} &#8364</span>
-												</div>
-												<div class="col-xs-3 remove-container">
-													<c:if test="${not b.payed}">
-														<button data-id="${i.id}" data-booking="${b.id}"
-															class="btn btn-danger btn-sm removeItem">Remove</button>
-													</c:if>
-												</div>
-											</div>
-										</c:forEach>
+					<c:choose>
+						<c:when test="${not empty bookings}">
+							<c:forEach var="b" items="${bookings}">
+								<div class="row itemRow">
+									<div class="col-xs-4 pizzeria-name-container">
+										<span data-toggle="collapse" data-target="#${b.identifier}"
+											class="glyphicon glyphicon-plus moreDetails clickable col-xs-1"></span><a
+											href="pizzeriamainview?id=${b.pizzeriaId}">${b.pizzeria}</a>
 									</div>
-								</c:if>
-							</div>
-						</c:forEach>
-					</c:if>
+									<div class="col-xs-2">${b.bookingType}</div>
+									<div class="col-xs-2">${b.date}</div>
+									<div class="col-xs-2">
+										<c:choose>
+											<c:when test="${b.actived}">
+									${b.completationTime}</c:when>
+											<c:otherwise>Not yet active</c:otherwise>
+										</c:choose>
+
+									</div>
+									<%-- <div class="col-xs-1">${b.preparationTime}</div> --%>
+									<div class="col-xs-1 price-container">${b.getBillLabel()}&#8364</div>
+									<div class="col-xs-1 pay-container">
+										<c:choose>
+											<c:when test="${not b.payed}">
+												<img class="loader" src="resources/img/loader.gif"></img>
+												<a data-id="${b.id}" data-token="${b.token}"
+													class="btn btn-success paypalButton">Buy</a>
+											</c:when>
+											<c:otherwise>
+												<div class="paid-container">Paid</div>
+											</c:otherwise>
+										</c:choose>
+									</div>
+								</div>
+								<div id="${b.identifier}" class="collapse">
+									<c:if test="${not empty b.items}">
+										<div>
+											<c:forEach var="i" items="${b.items}">
+												<div class="row singleOrderBooking">
+													<div class="col-xs-1"></div>
+													<div class="col-xs-7">
+														<span class="quantity">${i.number}</span> <span
+															class="item-name">${i.itemName}</span>
+													</div>
+													<div class="col-xs-1 price-container-small">
+														<span>${i.getCostLabel()} &#8364</span>
+													</div>
+													<div class="col-xs-3 remove-container">
+														<c:if test="${not b.payed}">
+															<button data-id="${i.id}" data-booking="${b.id}"
+																class="btn btn-danger btn-sm removeItem">Remove</button>
+														</c:if>
+													</div>
+												</div>
+											</c:forEach>
+										</div>
+									</c:if>
+								</div>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<div>You don't have any orders.</div>
+						</c:otherwise>
+					</c:choose>
 
 				</div>
 			</div>

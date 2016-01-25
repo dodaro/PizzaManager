@@ -20,8 +20,7 @@ import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
 
 public class BookingUserDisplayUtils {
 
-	public static void createPayment(Integer id, BookingDAO bookingDAO, PaymentDAO paymentDAO,
-			String token) {
+	public static void createPayment(Integer id, BookingDAO bookingDAO, PaymentDAO paymentDAO, String token) {
 
 		Booking booking = bookingDAO.getBooking(id);
 		Payment payment = booking.getPayment();
@@ -39,8 +38,7 @@ public class BookingUserDisplayUtils {
 		bookingDAO.update(booking);
 	}
 
-	public static BookingUserDisplay createBookingUserDisplay(Booking booking,
-			List<Booking> activeBooking) {
+	public static BookingUserDisplay createBookingUserDisplay(Booking booking, List<Booking> activeBooking) {
 		BookingUserDisplay userBooking = new BookingUserDisplay();
 		userBooking.setId(booking.getId());
 		userBooking.setPizzeriaId(booking.getPizzeria().getId());
@@ -60,8 +58,7 @@ public class BookingUserDisplayUtils {
 		int prepTime = evaluatePreparationTime(booking.getOrderItems());
 		userBooking.setPreparationTime(getPreparationTimeString(prepTime));
 		// include my preparation time?
-		userBooking.setCompletationTime(
-				evalueteCompletationTime(activeBooking, booking.getId(), prepTime));
+		userBooking.setCompletationTime(evalueteCompletationTime(activeBooking, booking.getId(), prepTime));
 		userBooking.setItems(createItemList(booking.getOrderItems()));
 		if (booking.getPayment() != null) {
 			if (booking.getPayment().getPaid())
@@ -83,8 +80,7 @@ public class BookingUserDisplayUtils {
 		return userBooking;
 	}
 
-	private static String evalueteCompletationTime(List<Booking> activeBooking, Integer myId,
-			int prepTime) {
+	private static String evalueteCompletationTime(List<Booking> activeBooking, Integer myId, int prepTime) {
 		Integer completationTime = 0;
 		for (Booking b : activeBooking) {
 			if (b.getId() == myId) {
@@ -100,8 +96,8 @@ public class BookingUserDisplayUtils {
 		Integer preparationTime = 0;
 		for (OrderItem orderItem : orderItems) {
 			if (orderItem instanceof PizzaOrderItem)
-				preparationTime += ((PizzaOrderItem) orderItem).getPizzeria_pizza()
-						.getPreparationTime() * orderItem.getNumber();
+				preparationTime += ((PizzaOrderItem) orderItem).getPizzeria_pizza().getPreparationTime()
+						* orderItem.getNumber();
 		}
 
 		return preparationTime;
@@ -110,14 +106,8 @@ public class BookingUserDisplayUtils {
 	public static Double calculateBill(List<OrderItem> orderItems) {
 		Double bill = 0.0;
 		for (OrderItem orderItem : orderItems) {
-			Double itemCost = 0.0;
-			if (orderItem instanceof BeverageOrderItem) {
-				itemCost = orderItem.getCost();
-			} else if (orderItem instanceof PizzaOrderItem) {
-				PizzaOrderItem order = (PizzaOrderItem) orderItem;
-				itemCost = getCostPizzaPlusIngredients(order);
-			}
-			bill += itemCost * orderItem.getNumber();
+			
+			bill += orderItem.getCost();
 		}
 		return bill;
 	}
@@ -157,14 +147,13 @@ public class BookingUserDisplayUtils {
 				itemToDisplay.setItemName(((PizzaOrderItem) item).pizzaName());
 				itemToDisplay.setPizzeria(((PizzaOrderItem) item).pizzeriaName());
 				itemToDisplay.setIngredients(stringfyIngredientsList(
-						((PizzaOrderItem) item).getPizzeria_pizza().getPizza()
-								.getPizzaIngredients(),
+						((PizzaOrderItem) item).getPizzeria_pizza().getPizza().getPizzaIngredients(),
 						((PizzaOrderItem) item).getPizzaOrderIngredients()));
 			} else if (item instanceof BeverageOrderItem) {
 				itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
 				itemToDisplay.setPizzeria(((BeverageOrderItem) item).pizzeriaName());
 			}
-			itemToDisplay.setCost(item.getCost());
+			itemToDisplay.setCost(item.getCost()/item.getNumber());
 			itemToDisplay.setNumber(item.getNumber());
 			itemToDisplay.setImageItem("not found");
 			itemsToDisplay.add(itemToDisplay);
@@ -181,8 +170,7 @@ public class BookingUserDisplayUtils {
 			ingredients = ingredients.concat(",");
 		}
 		for (RelationPizzaOrderItemIngredient relationPizzaOrderItemIngredient : pizzaOrderIngredients) {
-			ingredients = ingredients
-					.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
+			ingredients = ingredients.concat(relationPizzaOrderItemIngredient.getIngredient().getName());
 			ingredients = ingredients.concat(",");
 		}
 		ingredients = ingredients.substring(0, ingredients.length() - 1);
@@ -214,7 +202,7 @@ public class BookingUserDisplayUtils {
 			} else if (item instanceof BeverageOrderItem) {
 				itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
 			}
-			itemToDisplay.setCost(item.getCost());
+			itemToDisplay.setCost(item.getCost()/item.getNumber());
 			itemToDisplay.setNumber(item.getNumber());
 			itemsToDisplay.add(itemToDisplay);
 		}
