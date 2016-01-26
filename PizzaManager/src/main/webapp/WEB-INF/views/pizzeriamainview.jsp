@@ -73,7 +73,6 @@
 						},
 						success : function(response) {
 							idBooking = response;
-							console.log(idBooking);
 
 						}
 					});

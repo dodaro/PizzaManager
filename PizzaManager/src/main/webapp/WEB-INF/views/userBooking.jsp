@@ -41,13 +41,13 @@
 
 								},
 								success : function(response) {
-									console.log(response);
+								
 									if (response == "dateError") {
 										button.closest('.row').find(
 												'.dateErrorMessage').text(
 												"Select a valid date.");
 									} else {
-										console.log(response);
+									
 										window.location = 'userBooking'
 									}
 								}
@@ -66,7 +66,7 @@
 									.date().format("DD/MM/YYYY HH:mm");
 							var d = dateTime.split(" ")[0];
 							var t = dateTime.split(" ")[1];
-							console.log(d + "" + t)
+							
 							$.ajax({
 								type : "POST",
 								url : "/userBooking/book",
@@ -78,13 +78,13 @@
 
 								},
 								success : function(response) {
-									console.log(response)
+									
 									if (response == "dateError") {
 										button.closest('.row').find(
 												'.dateErrorMessage').text(
 												"Select a valid date.");
 									} else {
-										console.log(response);
+										
 										window.location = 'userBooking'
 									}
 								}

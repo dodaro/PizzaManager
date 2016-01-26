@@ -73,7 +73,6 @@ public class UserBookingController {
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
 		Date d=null;
 		Date t=null;
-		System.out.println(date+" "+time);
 		try {
 			d = sdfDate.parse(date);
 			t = sdfTime.parse(time);
@@ -214,7 +213,6 @@ public class UserBookingController {
 		}
 		ingredients = ingredients.substring(0, ingredients.length() - 1);
 		ingredients = ingredients.concat(")");
-		System.out.println(ingredients);
 		return ingredients;
 	}
 }

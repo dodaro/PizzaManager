@@ -28,7 +28,6 @@ public class PizzeriaTableUtils {
 		for (Booking booking : bookings) {
 			if (booking instanceof BookingPizzeriaTable) {
 				if (Math.abs((booking.getDate().getTime()+booking.getTime().getTime()) - (date.getTime()+time.getTime())) < 3600000) {
-					System.out.println("Bookingid:"+booking.getId()+ "  bookDate:"+(booking.getDate().getTime()+booking.getTime().getTime())+"  dateReq:"+(date.getTime()+time.getTime()));
 					for (RelationBookingTablePizzeriaTable t : ((BookingPizzeriaTable) booking).getTableBooking()){
 						Iterator<PizzeriaTable> i = freeTable.listIterator();
 						while (i.hasNext()) {

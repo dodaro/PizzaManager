@@ -117,13 +117,10 @@ public class PaymentController {
 
 		try {
 			createdPayment = payment.create(apiContext);
-			System.out.println("Created payment with id = " + createdPayment.getId() + " and status = "
-					+ createdPayment.getState());
 			Iterator<Links> links = createdPayment.getLinks().iterator();
 			while (links.hasNext()) {
 				Links link = links.next();
 				if (link.getRel().equalsIgnoreCase("approval_url")) {
-					System.out.println(link.getHref());
 					return link.getHref();
 				}
 			}
@@ -166,7 +163,6 @@ public class PaymentController {
 		// Total must be equal to sum of shipping, tax and subtotal.s
 		amount.setTotal(df.format(total));
 		// amount.setDetails(details);
-		System.out.println(df.format(total));
 		Transaction transaction = new Transaction();
 		transaction.setAmount(amount);
 		transaction.setDescription("This is the payment transaction description.");

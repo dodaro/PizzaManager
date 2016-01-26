@@ -90,7 +90,6 @@ public class PizzeriaMainViewController {
 					form.getFastness(), form.getHospitality(), form.getComment());
 
 			feedbackDAO.create(feedback);
-			System.out.println("CREATED");
 		}
 
 		return "redirect:/pizzeriamainview?id=" + id;
