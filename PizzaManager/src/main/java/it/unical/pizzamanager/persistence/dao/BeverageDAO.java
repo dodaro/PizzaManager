@@ -2,7 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.Beverage;
+import it.unical.pizzamanager.persistence.entities.Beverage;
 
 public interface BeverageDAO {
 

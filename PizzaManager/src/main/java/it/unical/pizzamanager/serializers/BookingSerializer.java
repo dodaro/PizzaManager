@@ -13,12 +13,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.BookingDelivery;
+import it.unical.pizzamanager.persistence.entities.BookingPizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.BookingTakeAway;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
 
 public class BookingSerializer extends JsonSerializer<Booking>{
 

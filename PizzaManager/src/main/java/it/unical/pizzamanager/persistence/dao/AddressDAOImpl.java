@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Address;
+import it.unical.pizzamanager.persistence.entities.Address;
 
 public class AddressDAOImpl implements AddressDAO{
 	private DatabaseHandler databaseHandler;

@@ -26,12 +26,12 @@ import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.PaymentDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.Payment;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.BookingDelivery;
+import it.unical.pizzamanager.persistence.entities.BookingPizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.BookingTakeAway;
+import it.unical.pizzamanager.persistence.entities.Payment;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
 

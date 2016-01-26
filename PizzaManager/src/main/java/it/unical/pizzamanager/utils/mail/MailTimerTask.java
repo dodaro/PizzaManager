@@ -8,7 +8,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
-import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.entities.Booking;
 
 public class MailTimerTask {
 	@Autowired

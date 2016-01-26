@@ -9,12 +9,12 @@ import it.unical.pizzamanager.persistence.dao.IngredientDAO;
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
-import it.unical.pizzamanager.persistence.dto.Ingredient;
-import it.unical.pizzamanager.persistence.dto.Pizza;
-import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.Ingredient;
+import it.unical.pizzamanager.persistence.entities.Pizza;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzaIngredient;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.Pizza.PizzaSize;
 
 public class PizzaPopulator extends Populator {
 

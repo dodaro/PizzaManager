@@ -4,8 +4,9 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.User;
+
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.User;
 
 public class UserDAOImpl implements UserDAO {
 

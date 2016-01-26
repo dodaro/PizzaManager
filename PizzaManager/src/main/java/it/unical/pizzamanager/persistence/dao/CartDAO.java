@@ -1,7 +1,7 @@
 package it.unical.pizzamanager.persistence.dao;
 
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Cart;
+import it.unical.pizzamanager.persistence.entities.User;
 
 public interface CartDAO { ///add other methods!!!
 	public void delete(Cart cart);

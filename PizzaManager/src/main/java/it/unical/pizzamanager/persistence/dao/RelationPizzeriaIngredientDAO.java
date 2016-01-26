@@ -2,7 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaIngredient;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaIngredient;
 
 public interface RelationPizzeriaIngredientDAO {
 

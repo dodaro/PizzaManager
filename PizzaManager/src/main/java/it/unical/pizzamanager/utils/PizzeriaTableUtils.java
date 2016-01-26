@@ -8,11 +8,11 @@ import java.util.List;
 import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.BookingPizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.PizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.RelationBookingTablePizzeriaTable;
 
 public class PizzeriaTableUtils {
 

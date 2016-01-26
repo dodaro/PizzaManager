@@ -9,9 +9,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
 
 public class PizzeriaPizzaSerializer extends JsonSerializer<RelationPizzeriaPizza> {
 

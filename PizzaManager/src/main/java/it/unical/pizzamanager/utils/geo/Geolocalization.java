@@ -1,6 +1,6 @@
 package it.unical.pizzamanager.utils.geo;
 
-import it.unical.pizzamanager.persistence.dto.Location;
+import it.unical.pizzamanager.persistence.entities.Location;
 
 public class Geolocalization {
 	private static final double RADIUS_OF_EARTH = 6371.0072;

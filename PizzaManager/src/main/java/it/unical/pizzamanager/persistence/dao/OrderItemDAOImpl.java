@@ -5,10 +5,10 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizza;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.OrderItem;
+import it.unical.pizzamanager.persistence.entities.Pizza;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
 
 public class OrderItemDAOImpl implements OrderItemDAO {
 

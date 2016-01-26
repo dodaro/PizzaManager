@@ -14,8 +14,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 import it.unical.pizzamanager.forms.NearbyPizzeriasForm;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Location;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.Location;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
 
 @Controller
 public class PizzeriaController {

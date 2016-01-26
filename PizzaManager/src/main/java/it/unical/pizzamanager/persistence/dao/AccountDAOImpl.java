@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Account;
+import it.unical.pizzamanager.persistence.entities.Account;
 
 public class AccountDAOImpl implements AccountDAO {
 

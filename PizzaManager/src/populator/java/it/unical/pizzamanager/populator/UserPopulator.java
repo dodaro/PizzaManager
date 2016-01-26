@@ -4,8 +4,8 @@ import org.springframework.context.ApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Cart;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.PasswordHashing;
 
 public class UserPopulator extends Populator {

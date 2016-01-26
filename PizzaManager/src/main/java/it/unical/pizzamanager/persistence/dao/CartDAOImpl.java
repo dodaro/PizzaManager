@@ -3,9 +3,9 @@ package it.unical.pizzamanager.persistence.dao;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Cart;
+import it.unical.pizzamanager.persistence.entities.OrderItem;
+import it.unical.pizzamanager.persistence.entities.User;
 
 public class CartDAOImpl implements CartDAO {
 

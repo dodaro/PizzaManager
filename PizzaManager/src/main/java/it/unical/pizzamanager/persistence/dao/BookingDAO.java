@@ -4,12 +4,12 @@ package it.unical.pizzamanager.persistence.dao;
 import java.util.Date;
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.BookingDelivery;
+import it.unical.pizzamanager.persistence.entities.BookingPizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.BookingTakeAway;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.User;
 
 public interface BookingDAO {
 

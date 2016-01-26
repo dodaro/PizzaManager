@@ -1,7 +1,8 @@
 package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
-import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
+
+import it.unical.pizzamanager.persistence.entities.RelationBookingTablePizzeriaTable;
 
 public interface RelationTableBookingTablePizzeriaDAO {
 	

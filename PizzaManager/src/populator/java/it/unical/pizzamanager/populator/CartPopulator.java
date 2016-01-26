@@ -9,14 +9,14 @@ import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Address;
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Address;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.Cart;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaBeverage;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.PasswordHashing;
 
 public class CartPopulator extends Populator {

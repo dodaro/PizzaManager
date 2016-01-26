@@ -62,9 +62,9 @@
 .loader {
 	display: none;
 	position: absolute;
-	top: 11;
-	left: -5;
-	width: 12px;
+	top: 12;
+	left: 1;
+	width: 10px;
 }
 
 .quantity {

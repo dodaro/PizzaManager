@@ -22,6 +22,10 @@ body {
 	background-color: #D4E3E9;
 }
 
+body.modal-open {
+    overflow: visible;
+}
+
 #map {
 	height: 100%;
 }

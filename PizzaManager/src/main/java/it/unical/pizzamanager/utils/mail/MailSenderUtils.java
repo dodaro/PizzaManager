@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import it.unical.pizzamanager.persistence.dto.Booking;
+import it.unical.pizzamanager.persistence.entities.Booking;
 
 public class MailSenderUtils {
 
