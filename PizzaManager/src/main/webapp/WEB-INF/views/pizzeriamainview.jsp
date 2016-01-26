@@ -79,8 +79,8 @@
 				$(".addBook").on(
 						'click',
 						function() {
-							var seats = $("bookInputSeats").val();
-							var dateTime = $("bookDatetimePicker").data("DateTimePicker").date().format("DD/MM/YYYY HH:mm");
+							var seats = $("#bookInputSeats").val();
+							var dateTime = $("#bookDatetimePicker").data('DateTimePicker').date().format('DD/MM/YYYY HH:mm');
 							var d = dateTime.split(" ")[0];
 							var t = dateTime.split(" ")[1];
 							var pizzeria = $(this).data('pizzeria');
@@ -96,16 +96,10 @@
 								},
 								success : function(response) {
 									if (response == "booked") {
-										$.ajax({
-											type : "GET",
-											url : "/pizzeriamainview",
-											data : {
-												id : pizzeria
-
-											},
-											success : function(response) {
-											}
-										});
+										$("#myModal").modal('toggle');
+										$('.datetimepicker').data('DateTimePicker').date(new Date());
+										$("#bookInputSeats").val(1);
+										
 									} else if (response == "errordate") {
 										$(".errorBookingMessage").text("Invalid Date. Please select a valid Date.");
 									} else if (response == "errortables") {
@@ -230,7 +224,7 @@
 								<div class="row">
 									<div class="seatsDiv col-xs-3">
 										<input id="bookInputSeats" type="number" class="form-control" name="numeroPosti"
-											placeholder="Inserire numero di posti da prenotare">
+											value="1">
 									</div>
 									<div class="form-group col-xs-5">
 										<div id="bookDatetimePicker" class='input-group date datetimepicker'>
@@ -245,7 +239,7 @@
 								<button type="button" class="btn btn-default cancelBook"
 									data-dismiss="modal">Chiudi</button>
 								<a href="#" data-id="${pizzeriaPizza.id}"
-									data-pizzeria="${pizzeriaResult.id}" class="btn btn-primary button-bookatable addbook">Conferma</a>
+									data-pizzeria="${pizzeriaResult.id}" data-dismiss="" class="btn btn-primary button-bookatable addbook">Conferma</a>
 							</div>
 						</div>
 					</div>
