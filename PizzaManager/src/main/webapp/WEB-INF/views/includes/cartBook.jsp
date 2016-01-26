@@ -15,7 +15,7 @@
 							</h4>
 						</div>
 
-						<div id="${ b.identifier}" class="panel-collapse collapse bubble">
+						<div id="${ b.identifier}" class="panel-collapse collapse">
 							<ul class="list-group">
 								<li class="list-group-item row"><b class="col-xs-3">Item Name </b><b class="col-xs-3">
 										Quantity </b><b class="col-xs-3"> Unit Price </b><b class="pull-right">Total</b></li>

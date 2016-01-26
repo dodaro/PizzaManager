@@ -21,6 +21,7 @@
 	$(document).ready(function() {
 		$(".addToCart").on('click', function(e) {
 			e.preventDefault();
+			var button = $(this);
 			var target = $(this).data('target');
 			var id = parseInt($(this).data("id"), 10);
 			var pizzeria = parseInt($(this).data("pizzeria"), 10);
@@ -42,6 +43,7 @@
 						success : function(response) {
 							$("#modalMessage").text("Added to cart.");
 							$('#modalAlert').modal('show');
+							button.attr('disabled', 'disabled');
 						}
 					});
 				}
@@ -121,6 +123,7 @@
 							});
 						});
 						$(".addItemToBook").on('click', function() {
+							var button = $(this);
 							var idpizza = $(this).data('id');
 
 							$.ajax({
@@ -131,15 +134,16 @@
 									idbooking : idBooking
 								},
 								success : function(response) {
-
+									button.siblings('.glyphicon-ok').show();
+									button.attr('disabled', 'disabled');
 								}
 							});
 						})
 
 					});
 </script>
-<link rel="stylesheet" type="text/css"
-	href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="resources/css/bootstrap-datepicker.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
 <link rel="stylesheet" type="text/css"
 	href="resources/css/pizzeriaMainView.css" />
@@ -300,8 +304,7 @@
 								<span class="pizzeriaPizza-label">Ingredients:</span>
 								<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}"
 									var="pizzaIngredient" varStatus="status">
-									<c:out value="${pizzaIngredient.ingredient.name}" />
-									<c:if test="${!status.last}">,</c:if>
+									<c:out value="${pizzaIngredient.ingredient.name}" /><c:if test="${!status.last}">,</c:if>
 								</c:forEach>
 							</div>
 							<div class="pizza-size">
@@ -372,8 +375,7 @@
 											<span class="pizzeriaPizza-label">Ingredients:</span>
 											<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}"
 												var="pizzaIngredient" varStatus="status">
-												<c:out value="${pizzaIngredient.ingredient.name}" />
-												<c:if test="${!status.last}">,</c:if>
+												<c:out value="${pizzaIngredient.ingredient.name}" /><c:if test="${!status.last}">,</c:if>
 											</c:forEach>
 										</div>
 										<div class="pizza-size">
@@ -388,9 +390,10 @@
 												<fmt:formatNumber value="${pizzeriaPizza.price}"
 													pattern="0.00" />
 											</div>
+											<span class="glyphicon glyphicon-ok"></span>
 											<a href="#" data-id="${pizzeriaPizza.id}"
 												class="btn btn-default button-addtocart addItemToBook"
-												data-target="Item">Add to Book</a>
+												data-target="Item">Book</a>
 										</div>
 									</div>
 								</c:forEach>

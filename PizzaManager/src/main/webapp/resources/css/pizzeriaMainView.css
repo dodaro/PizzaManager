@@ -6,6 +6,10 @@ form {
 	margin-bottom: 0;
 }
 
+#myModal .menu-entry {
+	padding-right: 120px;
+}
+
 .button-feedback-container {
 	margin-top: 15px;
 	text-align: right;
@@ -100,4 +104,9 @@ form {
 	top: 5;
 	left: 12;
 	display: none;
+}
+
+#myModal .glyphicon-ok {
+	top: 3;
+	left: -5;
 }

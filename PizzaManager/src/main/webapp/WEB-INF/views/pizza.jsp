@@ -19,6 +19,7 @@
 	$(document).ready(function() {
 		$(".addToCart").on('click', function(e) {
 			e.preventDefault();
+			var button = $(this);
 			var id = parseInt($(this).data("id"), 10);
 			var pizzeria = parseInt($(this).data("pizzeria"), 10);
 			$.ajax({
@@ -39,6 +40,7 @@
 						success : function(response) {
 							$("#modalMessage").text("Added to cart.");
 							$('#modalAlert').modal('show');
+							button.attr('disabled', 'disabled');
 						}
 					});
 				}
