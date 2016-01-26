@@ -14,19 +14,19 @@ import it.unical.pizzamanager.persistence.dao.AddressDAO;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Address;
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Address;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.BookingDelivery;
+import it.unical.pizzamanager.persistence.entities.BookingPizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.BookingTakeAway;
+import it.unical.pizzamanager.persistence.entities.OrderItem;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationBookingTablePizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.RelationPizzaOrderItemIngredient;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.User;
 
 public class BookingUtils {
 

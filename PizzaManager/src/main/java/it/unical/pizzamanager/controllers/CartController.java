@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.model.CartBooking;
-import it.unical.pizzamanager.model.CartDisplay;
-import it.unical.pizzamanager.model.OrderItemDisplay;
+import it.unical.pizzamanager.models.CartBooking;
+import it.unical.pizzamanager.models.CartDisplay;
+import it.unical.pizzamanager.models.OrderItemDisplay;
 import it.unical.pizzamanager.persistence.dao.CartDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.Cart;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.Cart;
+import it.unical.pizzamanager.persistence.entities.OrderItem;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaBeverage;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller

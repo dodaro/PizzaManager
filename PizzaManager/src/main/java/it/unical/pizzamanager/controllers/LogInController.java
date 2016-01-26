@@ -15,9 +15,9 @@ import it.unical.pizzamanager.forms.LogInForm;
 import it.unical.pizzamanager.persistence.dao.AccountDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Account;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Account;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.PasswordHashing;
 import it.unical.pizzamanager.utils.SessionUtils;
 

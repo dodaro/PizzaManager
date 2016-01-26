@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.Pizza;
+import it.unical.pizzamanager.persistence.entities.Pizza;
 
 public class PizzaUtils {
 

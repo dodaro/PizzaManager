@@ -14,8 +14,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import it.unical.pizzamanager.persistence.dao.PizzaDAO;
-import it.unical.pizzamanager.persistence.dto.Ingredient.IngredientType;
-import it.unical.pizzamanager.persistence.dto.Pizza;
+import it.unical.pizzamanager.persistence.entities.Pizza;
+import it.unical.pizzamanager.persistence.entities.Ingredient.IngredientType;
 
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
 @RunWith(SpringJUnit4ClassRunner.class)

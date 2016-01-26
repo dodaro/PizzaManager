@@ -3,20 +3,20 @@ package it.unical.pizzamanager.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.unical.pizzamanager.model.BookingUserDisplay;
-import it.unical.pizzamanager.model.OrderItemDisplay;
+import it.unical.pizzamanager.models.BookingUserDisplay;
+import it.unical.pizzamanager.models.OrderItemDisplay;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.PaymentDAO;
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.BookingDelivery;
-import it.unical.pizzamanager.persistence.dto.BookingPizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.BookingTakeAway;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.Payment;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaIngredient;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.BookingDelivery;
+import it.unical.pizzamanager.persistence.entities.BookingPizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.BookingTakeAway;
+import it.unical.pizzamanager.persistence.entities.OrderItem;
+import it.unical.pizzamanager.persistence.entities.Payment;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.RelationPizzaIngredient;
+import it.unical.pizzamanager.persistence.entities.RelationPizzaOrderItemIngredient;
 
 public class BookingUserDisplayUtils {
 

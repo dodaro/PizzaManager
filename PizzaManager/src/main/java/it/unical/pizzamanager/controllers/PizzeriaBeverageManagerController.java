@@ -17,9 +17,9 @@ import it.unical.pizzamanager.forms.PizzeriaBeverageForm;
 import it.unical.pizzamanager.persistence.dao.BeverageDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaBeverageDAO;
-import it.unical.pizzamanager.persistence.dto.Beverage;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
+import it.unical.pizzamanager.persistence.entities.Beverage;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaBeverage;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller

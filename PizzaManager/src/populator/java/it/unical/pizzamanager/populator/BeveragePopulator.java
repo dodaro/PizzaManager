@@ -7,12 +7,12 @@ import org.springframework.context.ApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.BeverageDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Beverage;
-import it.unical.pizzamanager.persistence.dto.Beverage.BeverageContainer;
-import it.unical.pizzamanager.persistence.dto.Beverage.BeverageSize;
-import it.unical.pizzamanager.persistence.dto.Beverage.BeverageType;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaBeverage;
+import it.unical.pizzamanager.persistence.entities.Beverage;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaBeverage;
+import it.unical.pizzamanager.persistence.entities.Beverage.BeverageContainer;
+import it.unical.pizzamanager.persistence.entities.Beverage.BeverageSize;
+import it.unical.pizzamanager.persistence.entities.Beverage.BeverageType;
 
 public class BeveragePopulator extends Populator {
 

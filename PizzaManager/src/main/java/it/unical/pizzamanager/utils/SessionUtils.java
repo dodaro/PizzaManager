@@ -2,8 +2,8 @@ package it.unical.pizzamanager.utils;
 
 import javax.servlet.http.HttpSession;
 
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.User;
 
 /**
  * Use this class to interact with the session (get and store attributes, etc.).
