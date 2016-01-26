@@ -108,16 +108,18 @@
 									<%-- <div class="col-xs-1">${b.preparationTime}</div> --%>
 									<div class="col-xs-1 price-container">${b.getBillLabel()}&#8364</div>
 									<div class="col-xs-1 pay-container">
-										<c:choose>
-											<c:when test="${not b.payed}">
-												<img class="loader" src="resources/img/loader.gif"></img>
-												<a data-id="${b.id}" data-token="${b.token}"
-													class="btn btn-success paypalButton">Buy</a>
-											</c:when>
-											<c:otherwise>
-												<div class="paid-container">Paid</div>
-											</c:otherwise>
-										</c:choose>
+										<c:if test="${not empty b.items}">
+											<c:choose>
+												<c:when test="${not b.payed}">
+													<img class="loader" src="resources/img/loader.gif"></img>
+													<a data-id="${b.id}" data-token="${b.token}"
+														class="btn btn-success paypalButton">Buy</a>
+												</c:when>
+												<c:otherwise>
+													<div class="paid-container">Paid</div>
+												</c:otherwise>
+											</c:choose>
+										</c:if>
 									</div>
 								</div>
 								<div id="${b.identifier}" class="collapse">
@@ -134,7 +136,7 @@
 														<span>${i.getCostLabel()} &#8364</span>
 													</div>
 													<div class="col-xs-3 remove-container">
-														<c:if test="${not b.payed}">
+														<c:if test="${not b.payed} ">
 															<button data-id="${i.id}" data-booking="${b.id}"
 																class="btn btn-danger btn-sm removeItem">Remove</button>
 														</c:if>

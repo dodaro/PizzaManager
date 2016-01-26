@@ -12,8 +12,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Location;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.Location;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
 import it.unical.pizzamanager.utils.geo.Geolocalization;
 
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })

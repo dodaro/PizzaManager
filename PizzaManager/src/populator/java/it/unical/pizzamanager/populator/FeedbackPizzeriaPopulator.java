@@ -5,9 +5,9 @@ import org.springframework.context.ApplicationContext;
 import it.unical.pizzamanager.persistence.dao.FeedbackDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.FeedbackPizzeria;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.FeedbackPizzeria;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.User;
 
 public class FeedbackPizzeriaPopulator extends Populator {
 

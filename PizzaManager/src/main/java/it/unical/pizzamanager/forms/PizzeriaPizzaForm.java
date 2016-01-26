@@ -1,7 +1,7 @@
 package it.unical.pizzamanager.forms;
 
 import it.unical.pizzamanager.persistence.dao.DatabaseHandler;
-import it.unical.pizzamanager.persistence.dto.Pizza.PizzaSize;
+import it.unical.pizzamanager.persistence.entities.Pizza.PizzaSize;
 
 public class PizzeriaPizzaForm {
 

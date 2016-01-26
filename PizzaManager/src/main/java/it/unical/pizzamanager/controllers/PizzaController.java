@@ -17,10 +17,10 @@ import it.unical.pizzamanager.persistence.dao.PizzaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.RelationPizzeriaPizzaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Pizza;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Pizza;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.SessionUtils;
 
 @Controller

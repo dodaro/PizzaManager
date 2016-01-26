@@ -2,7 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.Address;
+import it.unical.pizzamanager.persistence.entities.Address;
 
 
 public interface AddressDAO {

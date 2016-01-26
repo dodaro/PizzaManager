@@ -5,10 +5,10 @@ import org.springframework.context.ApplicationContext;
 import it.unical.pizzamanager.persistence.dao.AddressDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaTableDAO;
-import it.unical.pizzamanager.persistence.dto.Address;
-import it.unical.pizzamanager.persistence.dto.Location;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.Address;
+import it.unical.pizzamanager.persistence.entities.Location;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.PizzeriaTable;
 import it.unical.pizzamanager.utils.PasswordHashing;
 
 public class PizzeriaPopulator extends Populator {

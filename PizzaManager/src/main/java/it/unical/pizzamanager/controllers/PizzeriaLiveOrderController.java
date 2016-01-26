@@ -25,10 +25,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Pizza;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.Pizza;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.PizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
 import it.unical.pizzamanager.utils.BookingUtils;
 import it.unical.pizzamanager.utils.PizzeriaTableUtils;
 import it.unical.pizzamanager.utils.SessionUtils;

@@ -2,7 +2,7 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.Feedback;
+import it.unical.pizzamanager.persistence.entities.Feedback;
 
 public interface FeedbackDAO { ///add other methods!!!
 	public void delete(Feedback feedback);

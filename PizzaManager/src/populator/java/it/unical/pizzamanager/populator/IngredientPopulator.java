@@ -7,10 +7,10 @@ import org.springframework.context.ApplicationContext;
 
 import it.unical.pizzamanager.persistence.dao.IngredientDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
-import it.unical.pizzamanager.persistence.dto.Ingredient;
-import it.unical.pizzamanager.persistence.dto.Ingredient.IngredientType;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaIngredient;
+import it.unical.pizzamanager.persistence.entities.Ingredient;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaIngredient;
+import it.unical.pizzamanager.persistence.entities.Ingredient.IngredientType;
 
 public class IngredientPopulator extends Populator {
 

@@ -5,8 +5,8 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.PizzeriaTable;
-import it.unical.pizzamanager.persistence.dto.RelationBookingTablePizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.PizzeriaTable;
+import it.unical.pizzamanager.persistence.entities.RelationBookingTablePizzeriaTable;
 
 public class RelationTableBookingTablePizzeriaDAOImpl
 		implements RelationTableBookingTablePizzeriaDAO {

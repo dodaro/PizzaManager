@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 
-import it.unical.pizzamanager.model.BookingUserDisplay;
+import it.unical.pizzamanager.models.BookingUserDisplay;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.OrderItemDAO;
 import it.unical.pizzamanager.persistence.dao.PaymentDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.OrderItem;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.OrderItem;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.BookingUserDisplayUtils;
 import it.unical.pizzamanager.utils.SessionUtils;
 

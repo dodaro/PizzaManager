@@ -6,9 +6,9 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Location;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzeriaPizza;
+import it.unical.pizzamanager.persistence.entities.Location;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzeriaPizza;
 import it.unical.pizzamanager.utils.geo.BoundingRectangle;
 import it.unical.pizzamanager.utils.geo.Geolocalization;
 

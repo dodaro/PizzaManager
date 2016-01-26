@@ -31,13 +31,13 @@ import com.paypal.api.payments.Transaction;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
 
-import it.unical.pizzamanager.model.BookingUserDisplay;
-import it.unical.pizzamanager.model.OrderItemDisplay;
+import it.unical.pizzamanager.models.BookingUserDisplay;
+import it.unical.pizzamanager.models.OrderItemDisplay;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.PaymentDAO;
 import it.unical.pizzamanager.persistence.dao.UserDAO;
-import it.unical.pizzamanager.persistence.dto.Booking;
-import it.unical.pizzamanager.persistence.dto.User;
+import it.unical.pizzamanager.persistence.entities.Booking;
+import it.unical.pizzamanager.persistence.entities.User;
 import it.unical.pizzamanager.utils.BookingUserDisplayUtils;
 import it.unical.pizzamanager.utils.GenerateAccessToken;
 import it.unical.pizzamanager.utils.SessionUtils;

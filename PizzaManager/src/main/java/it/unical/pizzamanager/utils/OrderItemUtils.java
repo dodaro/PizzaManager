@@ -1,9 +1,9 @@
 package it.unical.pizzamanager.utils;
 
-import it.unical.pizzamanager.persistence.dto.BeverageOrderItem;
-import it.unical.pizzamanager.persistence.dto.PizzaOrderItem;
-import it.unical.pizzamanager.persistence.dto.Pizzeria;
-import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
+import it.unical.pizzamanager.persistence.entities.BeverageOrderItem;
+import it.unical.pizzamanager.persistence.entities.PizzaOrderItem;
+import it.unical.pizzamanager.persistence.entities.Pizzeria;
+import it.unical.pizzamanager.persistence.entities.RelationPizzaOrderItemIngredient;
 
 public class OrderItemUtils {
 	

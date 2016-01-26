@@ -2,8 +2,8 @@ package it.unical.pizzamanager.persistence.dao;
 
 import java.util.List;
 
-import it.unical.pizzamanager.persistence.dto.Ingredient.IngredientType;
-import it.unical.pizzamanager.persistence.dto.Pizza;
+import it.unical.pizzamanager.persistence.entities.Pizza;
+import it.unical.pizzamanager.persistence.entities.Ingredient.IngredientType;
 
 public interface PizzaDAO {
 

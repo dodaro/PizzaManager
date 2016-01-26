@@ -5,7 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.Ingredient;
+import it.unical.pizzamanager.persistence.entities.Ingredient;
 
 public class IngredientDAOImpl implements IngredientDAO {
 

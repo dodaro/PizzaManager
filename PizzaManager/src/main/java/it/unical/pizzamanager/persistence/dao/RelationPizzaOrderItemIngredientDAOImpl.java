@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 
-import it.unical.pizzamanager.persistence.dto.RelationPizzaOrderItemIngredient;
+import it.unical.pizzamanager.persistence.entities.RelationPizzaOrderItemIngredient;
 
 public class RelationPizzaOrderItemIngredientDAOImpl implements RelationPizzaOrderItemIngredientDAO {
 
