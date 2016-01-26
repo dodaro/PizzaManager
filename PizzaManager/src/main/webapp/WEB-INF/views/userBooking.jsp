@@ -80,7 +80,7 @@
 								success : function(response) {
 									console.log(response)
 									if (response == "dateError") {
-										$(this).closest('.row').find(
+										button.closest('.row').find(
 												'.dateErrorMessage').text(
 												"Select a valid date.");
 									} else {
