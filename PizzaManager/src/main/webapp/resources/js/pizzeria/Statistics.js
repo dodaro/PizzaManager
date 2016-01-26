@@ -80,6 +80,14 @@ var Statistics = function(){
 		rgbSet.push([200,200,200]);
 		rgbSet.push([150,0,150]);
 		rgbSet.push([100,200,200]);
+		rgbSet.push([255,0,0]);//rosso
+		rgbSet.push([0,255,0]);//verde
+		rgbSet.push([0,0,255]);//blu
+		rgbSet.push([255,255,0]);//giallo
+		rgbSet.push([255,125,0]);//arancio
+		rgbSet.push([125,0,255]);
+		rgbSet.push([255,100,100]);
+		rgbSet.push([0,100,100]);
 		return rgbSet;
 	}
 	
@@ -361,6 +369,7 @@ var Statistics = function(){
 		
 		for (var int = 0; int < keys.length; int++) {
 			var object=new Object();
+			console.log()
 			object.label=keys[int];
 			object.color= "rgba("+rgb[int][0]+","+rgb[int][1]+","+rgb[int][2]+",1)";
 			object.fillColor= "rgba("+rgb[int][0]+","+rgb[int][1]+","+rgb[int][2]+",0.2)";

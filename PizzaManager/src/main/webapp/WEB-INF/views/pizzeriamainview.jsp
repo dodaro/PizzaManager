@@ -8,12 +8,15 @@
 <script type="text/javascript" src="resources/js/jquery.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>
 <script type="text/javascript" src="resources/js/moment.js"></script>
-<script type="text/javascript" src="resources/js/bootstrap-datepicker.js"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+<script type="text/javascript"
+	src="resources/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript"
+	src="https://maps.googleapis.com/maps/api/js"></script>
 
 <script type="text/javascript" src="resources/js/maps.js"></script>
 
-<script type="text/javascript" src="resources/js/pizzeria/pizzeriaMainView.js"></script>
+<script type="text/javascript"
+	src="resources/js/pizzeria/pizzeriaMainView.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
 		$(".addToCart").on('click', function(e) {
@@ -59,69 +62,52 @@
 						//createBook
 						$(".createBook").on('click', function() {
 							var id = parseInt($(this).data("pizzeria"));
+					$.ajax({
+						type : "POST",
+						url : "/pizzeriamainview/createBook",
+						data : {
+							idPizzeria : id
 
+						},
+						success : function(response) {
+							idBooking = response;
+							console.log(idBooking);
+
+						}
+					});
+				});
+
+				$(".addBook").on('click',function() {
+							var seats = $("#bookInputSeats").val();
+							var dateTime = $("#bookDatetimePicker").data('DateTimePicker').date().format('DD/MM/YYYY HH:mm');
+							var d = dateTime.split(" ")[0];
+							var t = dateTime.split(" ")[1];
+							var pizzeria = $(this).data('pizzeria');					
 							$.ajax({
 								type : "POST",
-								url : "/pizzeriamainview/createBook",
+								url : "/pizzeriamainview/booking",
 								data : {
-									idPizzeria : id
+									seats : seats,
+									date : d,
+									time : t,
+									idbooking : idBooking
 
 								},
 								success : function(response) {
-									idBooking = response;
-									console.log(idBooking);
-
+									if (response == "booked") {
+										$("#myModal").modal('toggle');
+										$('.datetimepicker').data('DateTimePicker').date(new Date());
+										$("#bookInputSeats").val(1);
+										
+									} else if (response == "errordate") {
+										$(".errorBookingMessage").text("Invalid Date. Please select a valid Date.");
+									} else if (response == "errortables") {
+										$(".errorBookingMessage").text("No tables available.Please check number of required seats and date.");
+									}
 								}
 							});
 						});
 
-						$(".addBook")
-								.on(
-										'click',
-										function() {
-											var seats = $("bookInputSeats").val();
-											var dateTime = $("bookDatetimePicker").data(
-													"DateTimePicker").date().format(
-													"DD/MM/YYYY HH:mm");
-											var d = dateTime.split(" ")[0];
-											var t = dateTime.split(" ")[1];
-											var pizzeria = $(this).data('pizzeria');
-											$
-													.ajax({
-														type : "POST",
-														url : "/pizzeriamainview/booking",
-														data : {
-															seats : seats,
-															date : d,
-															time : t,
-															idbooking : idBooking
-
-														},
-														success : function(response) {
-															if (response == "booked") {
-																$.ajax({
-																	type : "GET",
-																	url : "/pizzeriamainview",
-																	data : {
-																		id : pizzeria
-
-																	},
-																	success : function(response) {
-																	}
-																});
-															} else if (response == "errordate") {
-																$(".errorBookingMessage")
-																		.text(
-																				"Invalid Date. Please select a valid Date.");
-															} else if (response == "errortables") {
-																$(".errorBookingMessage")
-																		.text(
-																				"No tables available.Please check number of required seats and date.");
-															}
-														}
-
-													});
-										});
 						$(".cancelBook").on('click', function() {
 							$.ajax({
 								type : "POST",
@@ -152,9 +138,11 @@
 
 					});
 </script>
-<link rel="stylesheet" type="text/css" href="resources/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="resources/css/common.css" />
-<link rel="stylesheet" type="text/css" href="resources/css/pizzeriaMainView.css" />
+<link rel="stylesheet" type="text/css"
+	href="resources/css/pizzeriaMainView.css" />
 
 <title>${pizzeriaResult.name}</title>
 
@@ -185,11 +173,14 @@
 						<span class="glyphicon glyphicon-earphone"></span>${pizzeriaResult.phoneNumber}</div>
 					<div class="pizzeria-buttons-container">
 						<c:if test="${userLogged}">
-							<a href="#" data-pizzeria="${pizzeriaResult.id}" data-toggle="modal" data-target="#myModal"
-								class="btn btn-primary button-bookatable createBook">Book a table</a>
+							<a href="#" data-pizzeria="${pizzeriaResult.id}"
+								data-toggle="modal" data-target="#myModal"
+								class="btn btn-primary button-bookatable createBook">Book a
+								table</a>
 						</c:if>
 					</div>
 				</div>
+				
 				<div class="bubble feedbacks-bubble">
 					<div class="bubble-title">Feedbacks</div>
 					<div class="feedbacks">
@@ -205,7 +196,8 @@
 									<div class="rating row">
 										<div class="col-xs-3 rating-name">Quality</div>
 										<div class="col-xs-9">
-											<span class="stars"><c:forEach begin="1" end="${feedback.qualityRating}">
+											<span class="stars"><c:forEach begin="1"
+													end="${feedback.qualityRating}">
 													<img src="resources/images/star.png">
 												</c:forEach> <c:forEach begin="${feedback.qualityRating}" end="4">
 													<img src="resources/images/star_grey.png">
@@ -215,7 +207,8 @@
 									<div class="rating row">
 										<div class="col-xs-3 rating-name">Fastness</div>
 										<div class="col-xs-9">
-											<span class="stars"><c:forEach begin="1" end="${feedback.fastnessRating}">
+											<span class="stars"><c:forEach begin="1"
+													end="${feedback.fastnessRating}">
 													<img src="resources/images/star.png">
 												</c:forEach> <c:forEach begin="${feedback.fastnessRating}" end="4">
 													<img src="resources/images/star_grey.png">
@@ -225,7 +218,8 @@
 									<div class="rating row">
 										<div class="col-xs-3 rating-name">Hospitality</div>
 										<div class="col-xs-9">
-											<span class="stars"><c:forEach begin="1" end="${feedback.hospitalityRating}">
+											<span class="stars"><c:forEach begin="1"
+													end="${feedback.hospitalityRating}">
 													<img src="resources/images/star.png">
 												</c:forEach> <c:forEach begin="${feedback.hospitalityRating}" end="4">
 													<img src="resources/images/star_grey.png">
@@ -254,47 +248,60 @@
 								<div class="rating row">
 									<div class="col-xs-2 rating-name">Quality</div>
 									<div class="col-xs-10">
-										<span class="givefeedback-stars stars"><c:forEach begin="1" end="5" var="i">
-												<img src="resources/images/star_grey.png" class="givefeedback-star" data-index="${i}">
-											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden path="quality" value="0" /></span>
+										<span class="givefeedback-stars stars"><c:forEach
+												begin="1" end="5" var="i">
+												<img src="resources/images/star_grey.png"
+													class="givefeedback-star" data-index="${i}">
+											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden
+												path="quality" value="0" /></span>
 									</div>
 								</div>
 								<div class="rating row">
 									<div class="col-xs-2 rating-name">Fastness</div>
 									<div class="col-xs-10">
-										<span class="givefeedback-stars stars"><c:forEach begin="1" end="5" var="i">
-												<img src="resources/images/star_grey.png" class="givefeedback-star" data-index="${i}">
-											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden path="fastness" value="0" /></span>
+										<span class="givefeedback-stars stars"><c:forEach
+												begin="1" end="5" var="i">
+												<img src="resources/images/star_grey.png"
+													class="givefeedback-star" data-index="${i}">
+											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden
+												path="fastness" value="0" /></span>
 									</div>
 
 								</div>
 								<div class="rating row">
 									<div class="col-xs-2 rating-name">Hospitality</div>
 									<div class="col-xs-10">
-										<span class="givefeedback-stars stars"><c:forEach begin="1" end="5" var="i">
-												<img src="resources/images/star_grey.png" class="givefeedback-star" data-index="${i}">
-											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden path="hospitality" value="0" /></span>
+										<span class="givefeedback-stars stars"><c:forEach
+												begin="1" end="5" var="i">
+												<img src="resources/images/star_grey.png"
+													class="givefeedback-star" data-index="${i}">
+											</c:forEach><span class="glyphicon glyphicon-ok"></span> <form:hidden
+												path="hospitality" value="0" /></span>
 									</div>
 								</div>
 							</div>
-							<form:textarea path="comment" class="form-control comment-textarea" rows="2"
+							<form:textarea path="comment"
+								class="form-control comment-textarea" rows="2"
 								placeholder="Leave a comment"></form:textarea>
 							<div class="button-feedback-container">
-								<button type="submit" class="btn btn-default">Give feedback</button>
+								<button type="submit" class="btn btn-default">Give
+									feedback</button>
 							</div>
 						</form:form>
 					</div>
 				</c:if>
 				<div class="bubble">
 					<div class="bubble-title">Pizzas</div>
-					<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
+					<c:forEach items="${pizzeriaResult.pizzasPriceList}"
+						var="pizzeriaPizza">
 						<div class="row menu-entry">
 							<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
 							<div class="pizza-ingredients">
 								<span class="pizzeriaPizza-label">Ingredients:</span>
-								<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
-									varStatus="status">
-									<c:out value="${pizzaIngredient.ingredient.name}" /><c:if test="${!status.last}">,</c:if>
+								<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}"
+									var="pizzaIngredient" varStatus="status">
+									<c:out value="${pizzaIngredient.ingredient.name}" />
+									<c:if test="${!status.last}">,</c:if>
 								</c:forEach>
 							</div>
 							<div class="pizza-size">
@@ -309,8 +316,10 @@
 									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
 								</div>
 								<c:if test="${userLogged}">
-									<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
-										class="btn btn-default button-addtocart addToCart" data-target="Item">Add to cart</a>
+									<a href="#" data-id="${pizzeriaPizza.id}"
+										data-pizzeria="${pizzeriaResult.id}"
+										class="btn btn-default button-addtocart addToCart"
+										data-target="Item">Add to cart</a>
 								</c:if>
 							</div>
 						</div>
@@ -318,7 +327,8 @@
 				</div>
 				<div class="bubble">
 					<div class="bubble-title">Beverages</div>
-					<c:forEach items="${pizzeriaResult.beveragesPriceList}" var="pizzeriaBeverage">
+					<c:forEach items="${pizzeriaResult.beveragesPriceList}"
+						var="pizzeriaBeverage">
 						<div class="row menu-entry">
 							<div class="beverage-name">${pizzeriaBeverage.beverage.name}</div>
 							<div class="beverage-brand">
@@ -330,11 +340,14 @@
 							<div class="right-container">
 								<div class="beverage-price">
 									&euro;
-									<fmt:formatNumber value="${pizzeriaBeverage.price}" pattern="0.00" />
+									<fmt:formatNumber value="${pizzeriaBeverage.price}"
+										pattern="0.00" />
 								</div>
 								<c:if test="${userLogged}">
-									<a href="#" data-id="${pizzeriaBeverage.id}" data-pizzeria="${pizzeriaResult.id}"
-										class="btn btn-default button-addtocart addToCart" data-target="Beverage">Add to cart</a>
+									<a href="#" data-id="${pizzeriaBeverage.id}"
+										data-pizzeria="${pizzeriaResult.id}"
+										class="btn btn-default button-addtocart addToCart"
+										data-target="Beverage">Add to cart</a>
 								</c:if>
 							</div>
 						</div>
@@ -344,62 +357,70 @@
 		</div>
 	</div>
 	<div id="myModal" class="modal fade">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">Book also your Pizzas!</h4>
-				</div>
-				<div class="modal-body">
-					<c:forEach items="${pizzeriaResult.pizzasPriceList}" var="pizzeriaPizza">
-						<div class="row menu-entry">
-							<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
-							<div class="pizza-ingredients">
-								<span class="pizzeriaPizza-label">Ingredients:</span>
-								<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}" var="pizzaIngredient"
-									varStatus="status">
-									<c:out value="${pizzaIngredient.ingredient.name}" /><c:if test="${!status.last}">,</c:if>
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Book also your Pizzas!</h4>
+							</div>
+							<div class="modal-body">
+								<c:forEach items="${pizzeriaResult.pizzasPriceList}"
+									var="pizzeriaPizza">
+									<div class="row menu-entry">
+										<div class="pizza-name">${pizzeriaPizza.pizza.name}</div>
+										<div class="pizza-ingredients">
+											<span class="pizzeriaPizza-label">Ingredients:</span>
+											<c:forEach items="${pizzeriaPizza.pizza.pizzaIngredients}"
+												var="pizzaIngredient" varStatus="status">
+												<c:out value="${pizzaIngredient.ingredient.name}" />
+												<c:if test="${!status.last}">,</c:if>
+											</c:forEach>
+										</div>
+										<div class="pizza-size">
+											<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaPizza.pizzaSize.string}</span>
+										</div>
+										<c:if test="${pizzeriaPizza.glutenFree}">
+											<div class="pizza-gluten-free">Gluten free</div>
+										</c:if>
+										<div class="right-container">
+											<div class="pizza-price">
+												&euro;
+												<fmt:formatNumber value="${pizzeriaPizza.price}"
+													pattern="0.00" />
+											</div>
+											<a href="#" data-id="${pizzeriaPizza.id}"
+												class="btn btn-default button-addtocart addItemToBook"
+												data-target="Item">Add to Book</a>
+										</div>
+									</div>
 								</c:forEach>
 							</div>
-							<div class="pizza-size">
-								<span class="pizzeriaPizza-label">Size:</span> <span>${pizzeriaPizza.pizzaSize.string}</span>
-							</div>
-							<c:if test="${pizzeriaPizza.glutenFree}">
-								<div class="pizza-gluten-free">Gluten free</div>
-							</c:if>
-							<div class="right-container">
-								<div class="pizza-price">
-									&euro;
-									<fmt:formatNumber value="${pizzeriaPizza.price}" pattern="0.00" />
+							<div class="modal-footer">
+								<div class="row">
+									<div class="seatsDiv col-xs-3">
+										<input id="bookInputSeats" type="number" class="form-control"
+											name="numeroPosti" value="1">
+									</div>
+									<div class="form-group col-xs-5">
+										<div id="bookDatetimePicker"
+											class='input-group date datetimepicker'>
+											<input type='text' class="form-control" /> <span
+												class="input-group-addon"> <span
+												class="glyphicon glyphicon-calendar"></span>
+											</span>
+										</div>
+									</div>
 								</div>
+								<div class="row errorBookingMessage"></div>
+								<button type="button" class="btn btn-default cancelBook"
+									data-dismiss="modal">Chiudi</button>
 								<a href="#" data-id="${pizzeriaPizza.id}"
-									class="btn btn-default button-addtocart addItemToBook" data-target="Item">Add to Book</a>
-							</div>
-						</div>
-					</c:forEach>
-				</div>
-				<div class="modal-footer">
-					<div class="row">
-						<div class="seatsDiv col-xs-3">
-							<input id="bookInputSeats" type="number" class="form-control" name="numeroPosti"
-								placeholder="Inserire numero di posti da prenotare">
-						</div>
-						<div class="form-group col-xs-5">
-							<div id="bookDatetimePicker" class='input-group date datetimepicker'>
-								<input type='text' class="form-control" /> <span class="input-group-addon"> <span
-									class="glyphicon glyphicon-calendar"></span>
-								</span>
+									data-pizzeria="${pizzeriaResult.id}" data-dismiss=""
+									class="btn btn-primary button-bookatable addBook">Conferma</a>
 							</div>
 						</div>
 					</div>
-					<div class="row errorBookingMessage"></div>
-					<button type="button" class="btn btn-default cancelBook" data-dismiss="modal">Chiudi</button>
-					<a href="#" data-id="${pizzeriaPizza.id}" data-pizzeria="${pizzeriaResult.id}"
-						class="btn btn-primary button-bookatable addbook">Conferma</a>
 				</div>
-			</div>
-		</div>
-	</div>
 	<script>
 		pizzeriaMainView.init({
 			latitude : <c:out value="${pizzeriaResult.location.latitude}" />,
