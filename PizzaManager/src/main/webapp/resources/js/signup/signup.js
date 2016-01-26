@@ -20,9 +20,4 @@ $(function() {
 	$('.js-location-input').on('input', function() {
 		signupController.onLocationInput();
 	});
-
-	mapsAutocomplete.initMaps('maps-autocomplete-input');
-	mapsAutocomplete.setOnPlaceChangedListener(function(latitude, longitude) {
-		signupController.onPlaceChanged(latitude, longitude);
-	});
 });

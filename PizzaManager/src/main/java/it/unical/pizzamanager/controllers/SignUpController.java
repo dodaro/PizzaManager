@@ -42,7 +42,7 @@ public class SignUpController {
 
 	private static final String PIZZERIA_NAME_REGEX = "^[A-Za-z0-9 -]+$";
 	private static final String PIZZERIA_PHONE_REGEX = "^[0-9]+([- ][0-9]+)*$";
-	private static final String PIZZERIA_ADDRESS_REGEX = "^[A-Za-z0-9 ]+$";
+	private static final String ADDRESS_REGEX = "^[A-Za-z0-9 ]+$";
 
 	@Autowired
 	private WebApplicationContext context;
@@ -71,6 +71,15 @@ public class SignUpController {
 			user.setName(form.getUsername());
 			user.setFirstName(form.getFirstName());
 			user.setLastName(form.getLastName());
+
+			AddressDAO addressDAO = (AddressDAO) context.getBean("addressDAO");
+			Address address = new Address(form.getStreet(), form.getNumber(), form.getCity());
+			Location location = new Location(form.getLatitude(), form.getLongitude());
+
+			addressDAO.create(address);
+
+			user.setAddress(address);
+			user.setLocation(location);
 
 			UserDAO dao = (UserDAO) context.getBean("userDAO");
 			dao.create(user);
@@ -162,14 +171,16 @@ public class SignUpController {
 		return ValidatorUtils.ValidateString(EMAIL_REGEX, form.getEmail())
 				&& ValidatorUtils.ValidateString(USER_USERNAME_REGEX, form.getUsername())
 				&& ValidatorUtils.ValidateString(USER_NAME_REGEX, form.getFirstName())
-				&& ValidatorUtils.ValidateString(USER_NAME_REGEX, form.getLastName());
+				&& ValidatorUtils.ValidateString(USER_NAME_REGEX, form.getLastName())
+				&& ValidatorUtils.ValidateString(ADDRESS_REGEX, form.getStreet())
+				&& ValidatorUtils.ValidateString(ADDRESS_REGEX, form.getCity());
 	}
 
 	private Boolean validatePizzeria(PizzeriaSignUpForm form) {
 		return ValidatorUtils.ValidateString(EMAIL_REGEX, form.getEmail())
 				&& ValidatorUtils.ValidateString(PIZZERIA_NAME_REGEX, form.getName())
-				&& ValidatorUtils.ValidateString(PIZZERIA_ADDRESS_REGEX, form.getStreet())
-				&& ValidatorUtils.ValidateString(PIZZERIA_ADDRESS_REGEX, form.getCity())
+				&& ValidatorUtils.ValidateString(ADDRESS_REGEX, form.getStreet())
+				&& ValidatorUtils.ValidateString(ADDRESS_REGEX, form.getCity())
 				&& ValidatorUtils.ValidateString(PIZZERIA_PHONE_REGEX, form.getPhoneNumber());
 	}
 }

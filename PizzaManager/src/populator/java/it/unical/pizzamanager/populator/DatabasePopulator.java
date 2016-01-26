@@ -52,5 +52,8 @@ public class DatabasePopulator {
 		System.out.println("Started populating.");
 		new DatabasePopulator().populateDatabase();
 		System.out.println("Done.");
+		
+		// Quick fix to avoid the automatic mail sender to keep the program running.
+		System.exit(0);
 	}
 }

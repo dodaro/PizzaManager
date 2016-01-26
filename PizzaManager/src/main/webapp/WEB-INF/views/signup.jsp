@@ -122,6 +122,25 @@
 				<div class="message error">Last name must contain only letters.</div>
 			</div>
 		</div>
+		<div class="row js-location-container">
+			<div class="col-md-8 input-container">
+				<div class="form-group has-feedback js-location-form">
+					<input type="text" name="location" id="maps-autocomplete-user"
+						class="form-control js-location-input" placeholder="Search for your address" /><span
+						class="glyphicon form-control-feedback"></span>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="message hint visible">Select your address.</div>
+				<div class="message valid">Address selected.</div>
+			</div>
+		</div>
+		<div class="hidden-fields-container">
+			<input class="js-street-input" type="hidden" name="street" /> <input class="js-number-input"
+				type="hidden" name="number" /> <input class="js-city-input" type="hidden" name="city" /> <input
+				class="js-latitude-input" type="hidden" name="latitude" /> <input class="js-longitude-input"
+				type="hidden" name="longitude" />
+		</div>
 		<div class="button-submit-container">
 			<button type="submit" class="btn btn-primary button-submit" disabled>Sign up</button>
 		</div>
@@ -156,7 +175,7 @@
 		<div class="row js-location-container">
 			<div class="col-md-8 input-container">
 				<div class="form-group has-feedback js-location-form">
-					<input type="text" name="location" id="maps-autocomplete-input"
+					<input type="text" name="location" id="maps-autocomplete-pizzeria"
 						class="form-control js-location-input" placeholder="Search for your address" /><span
 						class="glyphicon form-control-feedback"></span>
 				</div>

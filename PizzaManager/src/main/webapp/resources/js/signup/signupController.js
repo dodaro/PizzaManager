@@ -181,20 +181,20 @@ var signupController = function() {
 		},
 
 		onPlaceChanged : function(address, location) {
-			$('.js-street-input').val(address.street);
-			$('.js-number-input').val(address.number);
-			$('.js-city-input').val(address.city);
-			$('.js-latitude-input').val(location.latitude);
-			$('.js-longitude-input').val(location.longitude);
+			$('#sign-up-form .js-street-input').val(address.street);
+			$('#sign-up-form .js-number-input').val(address.number);
+			$('#sign-up-form .js-city-input').val(address.city);
+			$('#sign-up-form .js-latitude-input').val(location.latitude);
+			$('#sign-up-form .js-longitude-input').val(location.longitude);
 
-			var $container = $('.js-location-container');
+			var $container = $('#sign-up-form .js-location-container');
 			setValidationSuccess($container);
 		},
 
 		onLocationInput : function() {
-			var $container = $('.js-location-container');
+			var $container = $('#sign-up-form .js-location-container');
 
-			if ($container.find('.js-location-form').hasClass('has-success')) {
+			if ($container.find('#sign-up-form .js-location-form').hasClass('has-success')) {
 				clearValidationState($container);
 			}
 		},
@@ -202,7 +202,7 @@ var signupController = function() {
 		onPillClicked : function($li) {
 			$li.addClass('active');
 			$li.siblings('li').removeClass('active');
-
+			
 			var $form = $('#sign-up-form');
 			var accountType = $li.data('additional');
 
@@ -223,6 +223,12 @@ var signupController = function() {
 			 * to the form, and make it visible.
 			 */
 			$('.additional.additional-' + accountType).detach().appendTo('#sign-up-form').show();
+			
+			/* Initialize maps autocomplete. */
+			mapsAutocomplete.initMaps('maps-autocomplete-' + accountType);
+			mapsAutocomplete.setOnPlaceChangedListener(function(latitude, longitude) {
+				signupController.onPlaceChanged(latitude, longitude);
+			});
 
 			/* Check the sign up button at the end. */
 			checkButton();
