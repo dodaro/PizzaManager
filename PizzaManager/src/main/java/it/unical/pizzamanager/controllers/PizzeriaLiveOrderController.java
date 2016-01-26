@@ -60,7 +60,6 @@ public class PizzeriaLiveOrderController {
 				 if(pizza.getName().equals(pizza1.getName()))
 					found=true;
 			 }
-			 
 			 if(found==false){
 				 uniquePizzaForName.add(pizza);
 			 }

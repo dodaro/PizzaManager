@@ -119,13 +119,13 @@ public class PizzeriaBookingController {
 
 			// IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER
 			case "remove":
-
 				booking = bookingDAO.getBooking(book.getId());
-				if (booking.getUser().getEmail() != null || booking.getUser().getEmail() != "")
-
-					MailSenderUtils.SendMail("Booking Elimination", booking.getUser().getEmail(), booking,
-							MailSenderUtils.DELETE);
-
+				if (booking.getUser()!= null)
+					if(booking.getUser().getEmail()!=null)
+						MailSenderUtils.SendMail("Booking Elimination", booking.getUser().getEmail(), booking,MailSenderUtils.DELETE);
+					else
+						System.out.println("user: "+booking.getUser().getId()+" non ha email");
+				
 				bookingDAO.delete(booking);
 				message = "removed";
 				break;

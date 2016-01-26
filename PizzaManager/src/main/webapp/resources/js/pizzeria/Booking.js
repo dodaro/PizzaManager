@@ -48,7 +48,6 @@ var Booking = function(){
 			url : "/pizzeriabookingAjax",
 			type : 'GET',
 			success : function(data) {
-				console.log(data);
 				//inizialize table
 				bookingFromServer=data;
 				initializeBookingTable(data);
@@ -87,7 +86,7 @@ var Booking = function(){
 						  bookings[int].id];
 			
 			if(bookings[int].type=="takeAway"){
-				rowToAdd.push("TAKE_AWAY");
+				rowToAdd.push("TAKE AWAY");
 				rowToAdd.push("-");//Tables
 				rowToAdd.push("-");//AddressTo
 			}
@@ -123,7 +122,7 @@ var Booking = function(){
 			date.setHours(splitTime[0], splitTime[1], 0, 0);
 			
 			if(new Date()>date){
-				$(this.node()).css("color","red");
+				$(this.node()).css("color","rgb(207,48,45)");
 			}
 		} );
 	}
@@ -145,7 +144,6 @@ var Booking = function(){
 				loadInfoBooking(function (){
 					var tableString=format(row.data()[columnId]);
 					row.child(tableString).show();
-					console.log("callback");
 				});
 				
 				
@@ -155,7 +153,6 @@ var Booking = function(){
 		$('#bookingTable tbody').on('click', 'tr', function() {
 			 
 			if ($(this).hasClass('selected')&& tableBooking.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even"))) {
-				console.log();
 				$(this).removeClass('selected');
 				setControlButtons(true,true,true);
 			
@@ -163,7 +160,6 @@ var Booking = function(){
 			else if(!$(this).hasClass('selected') && tableBooking.row(this).data()!=undefined &&($(this).hasClass("odd")|| $(this).hasClass("even")) ){
 				tableBooking.$('tr.selected').removeClass('selected');
 				$(this).addClass('selected');
-				console.log(tableBooking.row(this).data()[columnPaid]);
 				setControlButtons(false,false,false);
 			}//end else if
 		});
@@ -196,12 +192,10 @@ var Booking = function(){
 	}
 	
 	function loadInfoBooking(loading){
-		console.log("chiamata");
 		setTimeout(function(){loading();},300);
 	}
 	
 	function format(idBooking) {
-		console.log("format")
 		string="";
 		for (var int = 0; int < bookingFromServer.length; int++) {
 			if(bookingFromServer[int].id==idBooking){
@@ -224,7 +218,6 @@ var Booking = function(){
 								+"<td>"+booking.pizzas[int2].name+"</td>"
 								+"<td>"+booking.pizzas[int2].glutenFree+"</td>"
 								+"<td>"+booking.pizzas[int2].size+"</td>";
-								console.log(booking.pizzas[int2].ingredientsAdded.length);
 								if(booking.pizzas[int2].ingredientsAdded.length>0 || booking.pizzas[int2].ingredientsRemoved.length>0)
 									string+="<td>yes</td>";	
 								else
@@ -305,7 +298,6 @@ var Booking = function(){
 				booking: stringB
 			},
 			success : function(response) {
-				console.log(response);
 				onSuccess(response);
 			}
 		});
@@ -325,10 +317,8 @@ var Booking = function(){
 		
 		if(booking.type=="delivery"){
 			addressId=booking.address['id'];
-			console.log(addressId);
 			newBooking.address=new Object();
 			newBooking.address.id=addressId;
-			console.log(newBooking)
 		}
 		else if(booking.type=="table"){
 		
@@ -337,8 +327,6 @@ var Booking = function(){
 			}
 			newBooking.tables=tables;
 		}
-		console.log(newBooking);
-		console.log(booking);
 		return newBooking;
 	}
 	

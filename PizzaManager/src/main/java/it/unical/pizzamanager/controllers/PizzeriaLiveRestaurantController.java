@@ -141,37 +141,30 @@ public class PizzeriaLiveRestaurantController {
 	
 	private void settingPriorityToBookingList(List<Booking> bookings,WebApplicationContext context ){
 		
-		//controllo principale sull'orario:
-			//se è scaduto : +3
-			//se non è scaduto e mancano più di 15 minuti: +0
-			//se mancano meno di 15 minuti:+1
-		
-		//delivery: +3
-		//take away: +2
-		//table:+1
-		//priorità da 1 a 5
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		
 		Date currentDate=new Date();
 		for (Booking booking : bookings) {
 			Integer priority=0;
 			
-			if(booking.getDate().before(currentDate)){
-				System.out.println(booking.getDate().getTime()-currentDate.getTime());
-				if(booking.getDate().getTime()-currentDate.getTime()>3000){
+			if(currentDate.before(booking.getDate())){
+				if((booking.getDate().getTime()+booking.getTime().getTime())-currentDate.getTime()>3000){
 					priority+=1;
+				}
+				else{
+					priority+=3;
 				}
 			}
 			else{
-				priority+=3;
+				priority+=4;
 			}
 			
 			if(booking instanceof BookingDelivery)
-				priority+=3;
-			else if(booking instanceof BookingTakeAway)
 				priority+=2;
-			else if (booking instanceof BookingPizzeriaTable) {
+			else if(booking instanceof BookingTakeAway)
 				priority+=1;
+			else if (booking instanceof BookingPizzeriaTable) {
+				priority+=0;
 			}
 			
 			booking.setPriority(priority);
