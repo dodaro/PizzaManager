@@ -45,7 +45,7 @@ public class PizzaController {
 			if(!relationPizzeriaPizza.isEmpty())
 			{for(int j=0; j<relationPizzeriaPizza.size(); j++)
 			{
-				if((relationPizzeriaPizza.get(j).getPizza().getName()).equals(pizza.getName()))
+				if((relationPizzeriaPizza.get(j).getPizza().getName()).equals(pizza.getName()) && relationPizzeriaPizza.get(j).getAvailable())
 					{
 					result.add(relationPizzeriaPizza.get(j));
 					}
