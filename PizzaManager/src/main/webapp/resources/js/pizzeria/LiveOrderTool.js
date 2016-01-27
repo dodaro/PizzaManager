@@ -48,7 +48,6 @@ var LiveOrderTool = function(){
 			$('#datetimepicker1').focusout(function(){
 				if($("#datetimepicker1").data("DateTimePicker").date()==null)
 					$('#datetimepicker1').data("DateTimePicker").date(moment());
-				console.log($("#datetimepicker1").data("DateTimePicker").date());
 				
 				getAvailableTableAndSetOnSelect();
 			});
@@ -87,7 +86,6 @@ var LiveOrderTool = function(){
 				columnDefs : [ {
 					/* Shows glutenFree as 'Yes' or 'No. */
 					render : function(data, type, row) {
-						console.log(data)
 						if(data=="false")
 							return 'No'
 						else
@@ -139,7 +137,6 @@ var LiveOrderTool = function(){
 					//se la pagina è stata invocata per modificare un booking
 					if(communicator.bookingToEdit!== undefined){
 						
-						console.log(communicator.bookingToEdit);
 						var bookingToEdit=communicator.bookingToEdit;
 						
 						/***********INFO SUL PRECEDENTE BOOKING***************/
@@ -240,7 +237,6 @@ var LiveOrderTool = function(){
 		});
 		
 		$('.switch-radio1').on('switchChange.bootstrapSwitch', function(event, state) {
-			  console.log(this.value); // DOM element
 			  checkTypeBooking(this.value);
 			});
 		
@@ -340,10 +336,6 @@ var LiveOrderTool = function(){
 		booking.date=dateTime.split(" ")[0];
 		booking.time=dateTime.split(" ")[1];
 		
-		console.log(booking);
-		console.log(extractData("user"));
-		console.log(extractData("name"));
-		
 		if(loadedBookingToEditId!=-1){
 			booking.id=loadedBookingToEditId;
 		}
@@ -412,13 +404,9 @@ var LiveOrderTool = function(){
 			var indexToRemove = -1;
 			for (var j = 0; j < pizzaList.length; j++) {
 				if (pizzaList[j].getCode() == code) {
-					console.log("trovato " + pizzaList[j].getCode() + "="+ code)
 					indexToRemove = j;
 				}
 			}
-			//rimuovere dalla lista la pizza vecchia
-			//aggiungere la nuova
-			console.log(pizzaList)
 			if (indexToRemove != -1)
 				pizzaList.splice(indexToRemove, 1);
 			
@@ -479,19 +467,15 @@ var LiveOrderTool = function(){
 		if(booking.type!="takeAway")
 			$("[value='"+booking.type+"']").bootstrapSwitch('toggleState');
 		//set Date
-		console.log(booking.date);
 		var dateConverted=booking.date.split("/");
 		var dateString=dateConverted[2]+"-"+dateConverted[1]+"-"+dateConverted[0];
-		console.log(dateString);
 		var date=new Date(dateString);
-		console.log(date);
 		var time=booking.time.split(":");
 		date.setHours(time[0], time[1], time[2]);
 		$('#datetimepicker1').data("DateTimePicker").date(date);
 		
 		//set User or Name
 		if(booking.user!=undefined){
-			console.log(booking.user);
 			$("#bookingUserInput").val(booking.user);
 			$("#bookingNameInput").prop("disabled",true);
 		}
@@ -512,7 +496,6 @@ var LiveOrderTool = function(){
 			for (var int = 0; int < booking.tables.length; int++) {
 				tablesId.push(booking.tables[int].id);
 			}
-			console.log(tablesId);
 			$("#tables.js-example-basic-multiple").val(tablesId).trigger("change");
 			//DISABILITARE i tavoli non disponibili
 		}
@@ -613,7 +596,6 @@ var LiveOrderTool = function(){
 					});
 				}
 			}	
-			console.log('ho mappato');console.log(pizza);
 		return pizza;
 	}
 	
@@ -639,7 +621,6 @@ var LiveOrderTool = function(){
 
 	//nei casi di EDIT consente di caricare le informazioni sugli strumenti di creazione pizza 
 	var loadInfoForPizzaControls = function(pizza, number) {
-		console.log("STO CARICANDO " + pizza.toString());
 		$("#pizzaList.js-example-basic-single").select2('data', {
 			text : pizza.getName()
 		});
@@ -680,7 +661,6 @@ var LiveOrderTool = function(){
 
 	//carica sui select2 sia gli ingredienti base che quelli aggiungibili ad una pizza
 	var loadIngredientsForPizza = function(pizzaName) {
-		console.log(pizzaName);
 		$("li.select2-search-choice").remove();
 		$("#addIngredients.js-example-basic-multiple > option").remove();
 		$("#removeIngredients.js-example-basic-multiple > option").remove();
@@ -702,7 +682,6 @@ var LiveOrderTool = function(){
 					}
 				}
 				
-				console.log(difference);
 				for (var int2 = 0; int2 < difference.length; int2++) {
 					$("#addIngredients.js-example-basic-multiple").append(
 							"<option value="+difference[int2].id+">"
@@ -735,7 +714,11 @@ var LiveOrderTool = function(){
 				return;
 			}
 			
-			pizzaNumber = $('#counterPizza').val();
+			if($.isNumeric($('#counterPizza').val()) && $('#counterPizza').val()>0)
+				pizzaNumber = $('#counterPizza').val();
+			else
+				pizzaNumber = 1;
+			
 			ingredientsToAdd = $('#addIngredients.js-example-basic-multiple').select2("data");
 			ingredientsToRemove = $('#removeIngredients.js-example-basic-multiple').select2("data");
 			
@@ -762,11 +745,9 @@ var LiveOrderTool = function(){
 		else{//pizzaFromBooking e numberOfItem sono entrambi diversi da undefined
 			pizza=pizzaFromBooking;
 			pizzaNumber=numberOfItem;
-			console.log(pizza);
 		}
 		
 		//se sto modificando un ordine già esistente
-		console.log(editing);
 		if (editing === true) {
 			var code = tablePizza.row($('#resumeTablePizza tbody > tr.odd.selected,tr.even.selected')).data()[columnId];
 			pizza.setCode(code);
@@ -787,12 +768,8 @@ var LiveOrderTool = function(){
 				for (var int = 0; int < tablePizza.rows().count(); int++) {
 					var dataRow = rows[int];
 					if (dataRow[columnId] == code) {
-						console.log("trovato il tr con code:" + dataRow[columnId]+ ", e numero di pizze: " + dataRow[columnNumber]);
 						//rimozione della vecchia riga
-						console.log("sto rimuovendo la riga"+ tablePizza.row(int).data())
-
 						for (var int2 = 0; int2 < tablePizza.rows().count(); int2++) {
-							console.log(tablePizza.row(int2).data()[columnId] + "=="+ rows[int][columnId])
 							if (tablePizza.row(int2).data()[columnId] == rows[int][columnId]) {
 								tablePizza.row(int2).remove().draw(false);
 							}
@@ -808,9 +785,7 @@ var LiveOrderTool = function(){
 		}
 		//se invece sto creando una nuova pizza o se già esisteva la stessa di quella creata allora gli sto aggiungendo numeri al contatore
 		else {
-			console.log(pizzaList);
 			var code = checkPizzaExistence(pizza);
-			console.log(code);
 			//se ritorno -1 la pizza ancora non esiste, per cui ne creo una nuova
 			if (code === -1) {
 				
@@ -837,8 +812,6 @@ var LiveOrderTool = function(){
 			var dataRow = rows[int];
 			if (dataRow[columnId] == code) {
 				found = true;
-				console.log("trovato il tr con idBeverage:" + dataRow[columnId]+ ", e numero di bevande: " + dataRow[columnNumber]);
-
 				var newNumber;
 				if (loaded === false)
 					newNumber = new Number(dataRow[columnNumber]) + new Number(number);
@@ -846,10 +819,8 @@ var LiveOrderTool = function(){
 					newNumber = new Number(number);
 
 				//rimozione della vecchia riga
-				console.log("sto rimuovendo la riga"+ tablePizza.row(int).data())
 				//PEZZA PER RIMUOVERE LA RIGA VECCHIA
 				for (var int2 = 0; int2 < tablePizza.rows().count(); int2++) {
-					console.log(tablePizza.row(int2).data()[columnId] + "=="+ rows[int][columnId])
 					if (tablePizza.row(int2).data()[columnId] == rows[int][columnId]) {
 						tablePizza.row(int2).remove().draw(false);
 					}
@@ -882,7 +853,6 @@ var LiveOrderTool = function(){
 
 	var addResumePizzaItem = function(pizza, number) {
 
-		console.log("STO AGGIUNGENDO:  " + pizza.toString());
 		pizzaList.push(pizza);
 
 		var n=new String(number);
@@ -941,8 +911,7 @@ var LiveOrderTool = function(){
 						if (equal === false)
 							equalRemoved = false;//continue;
 					}
-					if (equalAdded === true && equalRemoved === true) {
-						console.log("stessi ingredienti e stessi nomi")						
+					if (equalAdded === true && equalRemoved === true) {					
 						return pizzaList[i].getCode();
 					}
 
@@ -955,14 +924,9 @@ var LiveOrderTool = function(){
 	function format(d) {
 		//console.log(d[0]);
 		// `d` is the original data object for the row
-		console.log(d);
 		var code = d[columnId];
 		for (var j = 0; j < pizzaList.length; j++) {
 			if (pizzaList[j].getCode() == code) {
-
-				console.log(code);
-				console.log(pizzaList[j].toStringIngredientsAdded());
-				console.log(pizzaList[j].toStringIngredientsRemoved());
 				var added = false;
 				var string = '<table class="attacable" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;font-size:14px;">';
 				if (pizzaList[j].getIngredientsAdded().length > 0) {
@@ -1059,26 +1023,22 @@ var LiveOrderTool = function(){
 				return;
 			}
 			
-			beverageNumber = $('#counterBeverage').val();
+			if($.isNumeric($('#counterBeverage').val()) && $('#counterBeverage').val()>0)
+				beverageNumber = $('#counterBeverage').val();
+			else
+				beverageNumber = 1;
+			
 			beverageSelectedId = $("#beverageList.js-example-basic-single").select2("data");
-			console.log(beverageSelectedId);
-			res= beverageSelectedId.id.split("_");
-			console.log(res[1]);			
+			res= beverageSelectedId.id.split("_");			
 		}
 		else{
-			console.log(beverageFromBooking.number);
-			console.log(beverageFromBooking.id);
 			beverageNumber=beverageFromBooking.number;
-			//pezza
 			res.push("pezza");
 			res.push(beverageFromBooking.id);
-			console.log(res);
 		}
 
 		var code = checkBeverageExistence(res[1]);
 		if (editing === true) {
-			console.log($('#resumeTableBeverage tbody > tr.odd.selected,tr.even.selected'));
-
 			//se sto modificando la bibita, e ne sto mettendo una che già esiste
 			if (code != -1 && code != tableBeverage.row('.selected').data()[columnId]) {
 				removeItem("beverage");//rimuove il selezionato corrente
@@ -1124,8 +1084,6 @@ var LiveOrderTool = function(){
 			var dataRow = rows[int];
 			if (dataRow[columnId] == idBeverage) {
 				found = true;
-				console.log("trovato il tr con idBeverage:" + dataRow[columnId]+ ", e numero di bevande: " + dataRow[columnNumber]);
-
 				var newNumber;
 				if (loaded === false)
 					newNumber = new Number(dataRow[columnNumber]) + new Number(number);
@@ -1133,10 +1091,7 @@ var LiveOrderTool = function(){
 					newNumber = new Number(number);
 
 				//rimozione della vecchia riga
-				console.log("sto rimuovendo la riga"+ tableBeverage.row(int).data())
-				//PEZZA PER RIMUOVERE LA RIGA VECCHIA
 				for (var int2 = 0; int2 < tableBeverage.rows().count(); int2++) {
-					console.log(tableBeverage.row(int2).data()[columnId] + "=="+ rows[int][columnId])
 					if (tableBeverage.row(int2).data()[columnId] == rows[int][columnId]) {
 						tableBeverage.row(int2).remove().draw(false);
 					}
@@ -1182,9 +1137,13 @@ var LiveOrderTool = function(){
 		//resetFormError
 		$("#datetimepicker1").closest("div").parent().removeClass("has-error");
 		$("#bookingNameInput").closest("div").removeClass("has-error");
+		$("#bookingNameInput").tooltip("disable");
 		$("#bookingCityInput").closest("div").removeClass("has-error");
+		$("#bookingCityInput").tooltip("disable");
 		$("#bookingStreetInput").closest("div").removeClass("has-error");
+		$("#bookingStreetInput").tooltip("disable");
 		$("#bookingNumberInput").closest("div").removeClass("has-error");
+		$("#bookingNumberInput").tooltip("disable");
 		$("#tables").closest("div").removeClass("has-error");
 		
 		var pattern=/^([a-zA-Z\xE0\xE8\xE9\xF9\xF2\xEC\x27]\s?)+$/; //caratteri, lettere accentate apostrofo e un solo spazio fra le parole
@@ -1215,10 +1174,19 @@ var LiveOrderTool = function(){
 				}, 1000);
 				return false;
 			}
+			if($("#bookingNameInput").val().length>18){
+				$("#bookingNameInput").closest("div").addClass("has-error");
+				$("#bookingNameInput").tooltip("enable");
+				$("#bookingNameInput").tooltip("show");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
 		}
 		
 		if($("[value='delivery']").is(':checked')){
-			console.log($("#bookingCityInput").val());
+			
 			if (!pattern.test($("#bookingCityInput").val())){
 				//alert("Il campo city non e\' valido!");
 				$("#bookingCityInput").closest("div").addClass("has-error");
@@ -1227,7 +1195,7 @@ var LiveOrderTool = function(){
 				}, 1000);
 				return false;
 			}
-			console.log($("#bookingStreetInput").val());
+			
 			if (!pattern.test($("#bookingStreetInput").val())){
 				//alert("Il campo street non e\' valido!");
 				$("#bookingStreetInput").closest("div").addClass("has-error");
@@ -1236,7 +1204,7 @@ var LiveOrderTool = function(){
 				}, 1000);
 				return false;
 			}
-			console.log($("#bookingNumberInput").val());
+			
 			if (!patternNumber.test($("#bookingNumberInput").val())){
 				//alert("Il campo street non e\' valido!");
 				$("#bookingNumberInput").closest("div").addClass("has-error");
@@ -1246,9 +1214,38 @@ var LiveOrderTool = function(){
 				return false;
 			}
 			
+			if($("#bookingCityInput").val().length>18){
+				$("#bookingCityInput").tooltip("enable");
+				$("#bookingCityInput").tooltip("show");
+				$("#bookingCityInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: 0
+				}, 1000);
+				return false;
+			}
+
+			if($("#bookingStreetInput").val().length>20){
+				$("#bookingStreetInput").tooltip("enable");
+				$("#bookingStreetInput").tooltip("show");
+				$("#bookingStreetInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
+		
+			if($("#bookingNumberInput").val().length>4){
+				$("#bookingNumberInput").tooltip("enable");
+				$("#bookingNumberInput").tooltip("show");
+				$("#bookingNumberInput").closest("div").addClass("has-error");
+				$('html, body').animate({
+					scrollTop: $(".row.booking-data").offset().top
+				}, 1000);
+				return false;
+			}
+			
 		}
 		else if($("[value='table']").is(':checked')){
-			console.log($("#tables").select2("val").length);
 			if($("#tables").select2("val").length==0){
 				//alert("Seleziona un tavolo!");
 				$("#tables").closest("div").addClass("has-error");
@@ -1281,7 +1278,6 @@ var LiveOrderTool = function(){
 		var dateTime=extractData("date");
 		var date=dateTime.split(" ")[0];
 		var time=dateTime.split(" ")[1];
-		console.log(selectedTablesId);
 		$.ajax({
 			url : "/pizzerialiveorderTable",
 			type : 'GET',
@@ -1290,7 +1286,6 @@ var LiveOrderTool = function(){
 				time : time
 			},
 			success : function(data) {
-				console.log(data);
 				//resettare tutti gli option
 				$("#tables > option").each(function(){
 					$(this).prop("disabled",false);

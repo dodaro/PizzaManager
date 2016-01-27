@@ -110,7 +110,6 @@ public class PizzeriaMainViewController {
 					form.getFastness(), form.getHospitality(), form.getComment());
 
 			feedbackDAO.create(feedback);
-			System.out.println("CREATED");
 		}
 
 		return "redirect:/pizzeriamainview?id=" + id;
@@ -134,7 +133,7 @@ public class PizzeriaMainViewController {
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
 		Date d = null;
 		Date t = null;
-
+		
 		try {
 			d = sdfDate.parse(date);
 			t = sdfTime.parse(time);
@@ -152,14 +151,12 @@ public class PizzeriaMainViewController {
 					booking, pizzeriaTables);
 
 			if (tables != null) {
-
+			
 				booking.setDate(d);
 				booking.setTime(t);
-				bookingDAO.create(booking);
 				booking.setTableBooking(tables);
 				BookingUtils.calculateBill(booking, booking.getPizzeria());
 				bookingDAO.update(booking);
-
 				return "booked";
 
 			} else {
@@ -276,6 +273,7 @@ public class PizzeriaMainViewController {
 		booking.setUser(user);
 		bookingDAO.create(booking);
 
+		System.out.println(booking.getId());
 		return booking.getId();
 
 	}

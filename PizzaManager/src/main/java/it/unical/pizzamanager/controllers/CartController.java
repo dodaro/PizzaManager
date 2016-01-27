@@ -58,7 +58,6 @@ public class CartController {
 		if (!SessionUtils.isUser(session)) {
 			return "index";
 		}
-		System.out.println("id " + id);
 		UserDAO userDAO = (UserDAO) context.getBean("userDAO");
 		User user = userDAO.get(SessionUtils.getUserIdFromSessionOrNull(session));
 		CartDAO cartDAO = (CartDAO) context.getBean("cartDAO");
@@ -167,8 +166,6 @@ public class CartController {
 				}
 			}
 		}
-
-		System.out.println("CIAO");
 		BeverageOrderItem item = new BeverageOrderItem();
 		item.setCart(cart);
 		item.setCost(beverage.getPrice());
@@ -209,7 +206,6 @@ public class CartController {
 
 	private void updateCart(String[] itemsToBook, Cart cart, CartDAO cartDAO) {
 
-		System.out.println(itemsToBook.length);
 		for (int j = 0; j < itemsToBook.length; j++) {
 			String[] i = itemsToBook[j].split("-");
 			int id = Integer.valueOf(i[0]);
@@ -218,7 +214,6 @@ public class CartController {
 				if (items.getId() == id) {
 
 					items.setNumber(number);
-					System.out.println(items.getNumber());
 					break;
 				}
 			}

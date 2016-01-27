@@ -34,14 +34,15 @@
 															},
 															success : function(
 																	response) {
-																console
-																		.log(response);
-																if (response == "Failed Creation")
-																	console
-																			.log(response);
-																else if (response == "Failed inizialization")
-																	console
-																			.log(response);
+																
+																if (response == "Failed Creation"){
+																	$("#modalMessage").text("Impossible reach paypal web services. Please check your connection.");
+																	$('#modalAlert').modal('show');
+																}
+																else if (response == "Failed inizialization"){
+																	$("#modalMessage").text("Invalid application Credentials.");
+																	$('#modalAlert').modal('show');
+																}
 																else
 																	window.location = response;
 															}
@@ -79,7 +80,7 @@
 </head>
 <body>
 	<jsp:include page="includes/navbarAccount.jsp"></jsp:include>
-
+	<jsp:include page="includes/modalMessage.jsp" />
 	<div class="container">
 		<div class="row">
 			<jsp:include page="includes/navUserMenu.jsp"></jsp:include>

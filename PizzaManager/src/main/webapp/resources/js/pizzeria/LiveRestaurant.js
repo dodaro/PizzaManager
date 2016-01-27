@@ -46,7 +46,6 @@ var LiveRestaurant = function(){
 			url : "/pizzerialiverestaurantAjax",
 			type : 'GET',
 			success : function(data) {
-				console.log(data);
 				//inizialize table
 				bookingConfermedFromServer=data;
 				initializeLiveRestaurantTable(data);
@@ -85,8 +84,8 @@ var LiveRestaurant = function(){
 		tableLiveRestaurant.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
 			
 			var priority=this.data()[columnPriority];
-			if(priority==6){
-				$(this.node()).css("color","red");
+			if(priority>=5){
+				$(this.node()).css("color","rgb(207,48,45)");
 			}
 		});
 	}
@@ -111,7 +110,6 @@ var LiveRestaurant = function(){
 				loadInfoBooking(function (){
 					var tableString=format(row.data()[columnId]);
 					row.child(tableString).show();
-					console.log("callback");
 				});
 			}
 		});
@@ -168,7 +166,6 @@ var LiveRestaurant = function(){
 	function format(idBookingConfermed) {
 		string="";
 		for (var int = 0; int < bookingConfermedFromServer.length; int++) {
-			console.log("chiamato")
 			if(bookingConfermedFromServer[int].id==idBookingConfermed){
 				var bookingConfermed=bookingConfermedFromServer[int];
 				
@@ -233,7 +230,6 @@ var LiveRestaurant = function(){
 								+"<td>"+bookingConfermed.pizzas[int2].name+"</td>"
 								+"<td>"+bookingConfermed.pizzas[int2].glutenFree+"</td>"
 								+"<td>"+bookingConfermed.pizzas[int2].size+"</td>";
-								console.log(bookingConfermed.pizzas[int2].ingredientsAdded.length);
 								if(bookingConfermed.pizzas[int2].ingredientsAdded.length>0 || bookingConfermed.pizzas[int2].ingredientsRemoved.length>0)
 									string+="<td>yes</td>";	
 								else
@@ -301,7 +297,6 @@ var LiveRestaurant = function(){
 	}
 
 	function loadInfoBooking(loading){
-		console.log("chiamata");
 		setTimeout(function(){loading();},300);
 	}
 	
@@ -316,7 +311,6 @@ var LiveRestaurant = function(){
 				booking: stringB
 			},
 			success : function(response) {
-				console.log(response);
 				onSuccess(response);
 			}
 		});
@@ -336,10 +330,8 @@ var LiveRestaurant = function(){
 		
 		if(booking.type=="delivery"){
 			addressId=booking.address['id'];
-			console.log(addressId);
 			newBooking.address=new Object();
 			newBooking.address.id=addressId;
-			console.log(newBooking)
 		}
 		else if(booking.type=="table"){
 		
@@ -348,8 +340,6 @@ var LiveRestaurant = function(){
 			}
 			newBooking.tables=tables;
 		}
-		console.log(newBooking);
-		console.log(booking);
 		return newBooking;
 	}
 	
