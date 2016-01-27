@@ -17,14 +17,12 @@ public class MailTimerTask {
 	@Scheduled(fixedDelay = 900000)
     public void demoServiceMethod(){
 	
-		System.out.println("Method executed at every 15 minutes. Current time is :: "+ new Date());
+		System.out.println("Task Check Mail executed at every 15 minutes. Current time is :: "+ new Date());
         BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
         List<Booking> bookings=bookingDAO.getAllBookingListFromData(new Date());
         for (Booking booking : bookings) {
         	if(booking.getNotified()==false && booking.getUser()!=null){
-        		//System.out.println(booking.getUser().getEmail() +" "+ booking.getNotified());
         		long diffInMillis = (booking.getTime().getTime() + booking.getDate().getTime()) - new Date().getTime();
-        		System.out.println(diffInMillis);
         		if(diffInMillis<=1800000){
         			Boolean sended=MailSenderUtils.SendMail("Pizza notify", booking.getUser().getEmail(), booking,MailSenderUtils.NOTIFY);
         			if(sended){

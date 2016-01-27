@@ -12,7 +12,7 @@ import javax.mail.internet.MimeMessage;
 import it.unical.pizzamanager.persistence.entities.Booking;
 
 public class MailSenderUtils {
-
+	
 	private static String FROM="PizzeriaManager.no-reply@gmail.com";
 	public static String DELETE="delete";
 	public static String NOTIFY="notify";
@@ -47,11 +47,11 @@ public class MailSenderUtils {
 				message.setText(createNotifyMessageFromBooking(booking));
 			
 			Transport.send(message);
-			System.out.println("mail to "+to+" is SENT");
+			System.out.println("MailerSender, status:OK -> mail "+type+" to "+to+"is sent correctly");
 			return true;
 
 		} catch (MessagingException e) {
-			System.out.println("mail to "+to+" is not sent");
+			System.out.println("MailerSender, status:WARNING -> mail "+type+" to "+to+"is sent correctly");
 			return false;
 			//throw new RuntimeException(e);
 		}

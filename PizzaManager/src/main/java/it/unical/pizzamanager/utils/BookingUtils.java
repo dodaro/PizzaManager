@@ -45,7 +45,6 @@ public class BookingUtils {
 	
 	public static Booking createBookingFromBookingModelAndSave(BookingModel model, Pizzeria pizzeria, WebApplicationContext context) {
 		
-		//Integer idBooking=model.getId();
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		//metodo già mi crea sul database l'oggetto
 		Booking booking=createAndInitInformationBookingAndSave(model,pizzeria,model.getType(),context);
@@ -99,22 +98,17 @@ public class BookingUtils {
 			Address searchedAddress=addressDAO.get(model.getAddress().getCity(), model.getAddress().getStreet(),Integer.parseInt(model.getAddress().getNumber()));
 			
 			if(searchedAddress!=null){
-				System.out.println(searchedAddress.getId());
 				deliveryAddress=searchedAddress;
 			}
 			else{
-				System.out.println("ugualeanull");
 				deliveryAddress=new Address();
 				deliveryAddress.setCity(model.getAddress().getCity());
 				deliveryAddress.setStreet(model.getAddress().getStreet());
 				deliveryAddress.setNumber(Integer.parseInt(model.getAddress().getNumber()));
 				addressDAO.create(deliveryAddress);
 			}
-			//IN QUESTO CASO l'ACCOUNT NELL'ADDRESS COSA CI FACCIO?
-			//deliveryAddress.setAccount(user);
+		
 			BookingDelivery bookingDelivery=new BookingDelivery(date,time,confirmed,Booking.PRIORITY_DEFAULT,deliveryAddress);
-			//if(model.getId()!=-1)
-				//bookingDelivery.setId(model.getId());
 			bookingDelivery.setPizzeria(pizzeria);
 			bookingDelivery.setUser(user);
 			bookingDelivery.setBookerName(underTheNameOf);
@@ -183,15 +177,10 @@ public class BookingUtils {
 			for (int j = 0; j < pizzeria.getPizzasPriceList().size(); j++) {
 				
 				RelationPizzeriaPizza relation=pizzeria.getPizzasPriceList().get(j);
-				System.out.println(relation.getPizza().getName()+" - "+pizzaModel.getName());
-				System.out.println(relation.getGlutenFree() +" - "+pizzaModel.getGlutenFree());
-				System.out.println(relation.getPizzaSize().toString()+" - "+pizzaModel.getSize());
-				System.out.println("*********************************************************");
 				if(relation.getPizza().getName().equalsIgnoreCase(pizzaModel.getName())
 				   && relation.getGlutenFree()==Boolean.parseBoolean(pizzaModel.getGlutenFree())
 				   && relation.getPizzaSize().toString().equalsIgnoreCase(pizzaModel.getSize())){
 					
-					System.out.println("HO trovato la pizza");
 					PizzaOrderItem pizzaOrder = new PizzaOrderItem();
 					pizzaOrder.setPizzeria_pizza(relation);
 					
@@ -203,8 +192,6 @@ public class BookingUtils {
 						pizzaOrder.setModified(false);
 						
 					pizzaOrder.setNumber(pizzaModel.getNumber());
-					//pizzaOrder.setGlutenFree(pizzaModel.getGlutenFree());
-					//pizzaOrder.setSize(pizzaModel.getSize());
 					orderDAO.create(pizzaOrder);
 					
 					

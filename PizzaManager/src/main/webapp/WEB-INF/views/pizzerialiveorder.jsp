@@ -9,7 +9,7 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="bookingNameInput">Name (if it's not a User)</label> <input type="text"
-					class="form-control" id="bookingNameInput" placeholder="Name" data-toggle="tooltip" data-placement="bottom" title="Max character: 18">
+					class="form-control" id="bookingNameInput" placeholder="Name" data-toggle="tooltip" data-placement="bottom" title="Max character: 25">
 			</div>
 			<div class="form-group">
 				<label class="control-label" for="datetimepicker1">Booking date and hour</label>
@@ -28,10 +28,10 @@
 					class="glyphicon form-control-feedback"></span>
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control address" id="bookingCityInput" placeholder="City" data-toggle="tooltip" data-placement="bottom" title="Max character: 18">
+				<input type="text" class="form-control address" id="bookingCityInput" placeholder="City" data-toggle="tooltip" data-placement="bottom" title="Max character: 20">
 			</div>
 			<div class="form-group">
-				<input type="text" class="form-control address" id="bookingStreetInput" placeholder="Street" data-toggle="tooltip" data-placement="bottom" title="Max character: 20">
+				<input type="text" class="form-control address" id="bookingStreetInput" placeholder="Street" data-toggle="tooltip" data-placement="bottom" title="Max character: 25">
 			</div>
 			<div class="form-group">
 				<input type="text" class="form-control address" id="bookingNumberInput" placeholder="Number" data-toggle="tooltip" data-placement="bottom" title="Max character: 4">

@@ -36,7 +36,6 @@ public class PizzeriaSerializer extends JsonSerializer<Pizzeria> {
 		jgen.writeStringField("name", pizzeria.getName());
 		jgen.writeArrayFieldStart("beverages");
 		for (int j = 0; j < pizzeria.getBeveragesPriceList().size(); j++) {
-			//jgen.writeObject(pizzeria.getBeveragesPriceList().get(j).getBeverage());
 			jgen.writeStartObject();
 				jgen.writeStringField("name",pizzeria.getBeveragesPriceList().get(j).getBeverage().getName());
 				jgen.writeStringField("brand",pizzeria.getBeveragesPriceList().get(j).getBeverage().getBrand());

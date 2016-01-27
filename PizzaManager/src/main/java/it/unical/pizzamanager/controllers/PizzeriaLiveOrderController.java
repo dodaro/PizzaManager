@@ -73,7 +73,6 @@ public class PizzeriaLiveOrderController {
 
 	@RequestMapping(value = "/pizzerialiveorderConferme", method = RequestMethod.POST)
 	public @ResponseBody String confermeLiveOrder(Model model, @RequestParam("booking") String jsonBooking,HttpSession session) {
-		logger.info("Live order confermed");
 		if (!SessionUtils.isPizzeria(session)) {
 			return null;
 		}
@@ -81,10 +80,9 @@ public class PizzeriaLiveOrderController {
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 		
 		
-		System.out.println(jsonBooking);
 		String REGEX = "[^&%$#!~]*";
 		if(ValidatorUtils.ValidateString(REGEX, jsonBooking)==false){
-			System.out.println("QUI");
+			logger.info("Pizzeria id:"+pizzeria.getId()+" invalid input for booking!");
 			return null;
 		}
 		
@@ -94,8 +92,6 @@ public class PizzeriaLiveOrderController {
 		String message="error";
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
-			System.out.println("LiveOrderControlled --> id booking:"+book.getId() +";  (se null è un nuovo booking)");
-			System.out.println("LiveOrderControlled --> underTheNameOf:"+book.getUnderTheNameOf());
 			BookingUtils.createBookingFromBookingModelAndSave(book,pizzeria,context);
 			
 			message="complete";
@@ -142,10 +138,7 @@ public class PizzeriaLiveOrderController {
 
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
-		
-		System.out.println(datePicker);
-		System.out.println(timePicker);
-		
+	
 		SimpleDateFormat sdfDate = new SimpleDateFormat("dd/M/yyyy");
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
 		Date date=null;

@@ -19,8 +19,6 @@ public class BookingModel {
 	private Integer priority;
 	
 	
-	
-	
 	public BookingModel() {
 
 	}
@@ -36,7 +34,6 @@ public class BookingModel {
 		this.pizzas=pizzas;
 		this.user=user;
 		this.bill=bill;
-		//TODO  FIX
 		this.underTheNameOf="";
 		this.address=null;
 		this.tables=null;

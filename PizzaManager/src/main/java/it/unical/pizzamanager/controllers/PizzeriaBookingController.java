@@ -18,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import it.unical.pizzamanager.models.BookingModel;
 import it.unical.pizzamanager.persistence.dao.BookingDAO;
 import it.unical.pizzamanager.persistence.dao.PizzeriaDAO;
 import it.unical.pizzamanager.persistence.entities.Booking;
 import it.unical.pizzamanager.persistence.entities.Pizzeria;
-import it.unical.pizzamanager.serializers.BookingSerializer;
 import it.unical.pizzamanager.utils.SessionUtils;
 import it.unical.pizzamanager.utils.ValidatorUtils;
 import it.unical.pizzamanager.utils.mail.MailSenderUtils;
@@ -60,6 +57,8 @@ public class PizzeriaBookingController {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 
+		logger.info("Booking request from Pizzeria with id:"+pizzeria.getId());
+		
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		List<Booking> allBookings = (List<Booking>) bookingDAO.getBookingsFromPizzeria(pizzeria);
 		List<Booking> filteredBookings = new ArrayList<>();
@@ -68,19 +67,19 @@ public class PizzeriaBookingController {
 				filteredBookings.add(booking);
 		}
 
-		ObjectMapper mapper = new ObjectMapper();
+		//SERVE SOLO PER STAMPARE cosa fa la serializzazione
+		/*ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addSerializer(Booking.class, new BookingSerializer());
 		mapper.registerModule(module);
 		try {
 			for (int i = 0; i < filteredBookings.size(); i++) {
 				String serialized = mapper.writeValueAsString(filteredBookings.get(i));
-				System.out.println(serialized);
 			}
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 
 		return filteredBookings;
 	}
@@ -88,9 +87,6 @@ public class PizzeriaBookingController {
 	@RequestMapping(value = "/pizzeriabookingAction", method = RequestMethod.POST)
 	public @ResponseBody String actionOnBooking(HttpServletRequest request, @RequestParam("action") String jsonAction,
 			@RequestParam("booking") String jsonBooking) {
-
-		System.out.println(jsonAction);
-		System.out.println(jsonBooking);
 
 		String REGEX = "[^&%$#!~]*";
 		if (ValidatorUtils.ValidateString(REGEX, jsonAction) == false
@@ -103,15 +99,13 @@ public class PizzeriaBookingController {
 		String message = "error";
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
-			System.out.println(book.getId());
-			// TODO prendere la sessione e solo i booking della pizzeria loggata
 			BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-
 			Booking booking = bookingDAO.getBooking(book.getId());
+			
+			logger.info("Operation"+jsonAction+ "on not confirmed booking with id:"+booking.getId());
 			switch (jsonAction) {
 			case "conferme":
 
-				// IL CAST è necessario?
 				booking.setConfirmed(true);
 				bookingDAO.update(booking);
 				message = "confermed";
@@ -133,8 +127,6 @@ public class PizzeriaBookingController {
 			default:
 				break;
 			}
-
-			System.out.println(book.getId());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

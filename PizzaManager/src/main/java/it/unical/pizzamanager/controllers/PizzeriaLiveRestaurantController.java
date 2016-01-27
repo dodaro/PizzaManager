@@ -38,8 +38,7 @@ import it.unical.pizzamanager.utils.ValidatorUtils;
 @Controller
 public class PizzeriaLiveRestaurantController {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(PizzeriaLiveRestaurantController.class);
+	private static final Logger logger = LoggerFactory.getLogger(PizzeriaLiveRestaurantController.class);
 
 	@Autowired
 	private WebApplicationContext context;
@@ -59,8 +58,10 @@ public class PizzeriaLiveRestaurantController {
 			return null;
 		}
 
+		
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
+		logger.info("Request of live booking from Pizzeria with id: "+ pizzeria.getId());
 
 		BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 		List<Booking> allBookings = (List<Booking>) bookingDAO.getBookingsFromPizzeria(pizzeria);
@@ -78,28 +79,25 @@ public class PizzeriaLiveRestaurantController {
 	@RequestMapping(value = "/pizzerialiverestaurantAction", method = RequestMethod.POST)
 	public @ResponseBody String actionOnBooking(HttpServletRequest request,@RequestParam("action") String jsonAction, @RequestParam("booking") String jsonBooking){
 		
-		System.out.println(jsonAction);
-		System.out.println(jsonBooking);
-		
 		String REGEX = "[^&%$#!~]*";
 		if(ValidatorUtils.ValidateString(REGEX, jsonAction)==false || ValidatorUtils.ValidateString(REGEX, jsonBooking)==false){
 			return null;
 		}
+		
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		BookingModel book;
 		String message="error";
 		try {
 			book = objectMapper.readValue(jsonBooking, BookingModel.class);
-			System.out.println(book.getId());
 			BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
 			PaymentDAO paymentDAO = (PaymentDAO) context.getBean("paymentDAO");
 			
 			Booking booking=bookingDAO.getBooking(book.getId());
+			logger.info("Request of "+jsonAction + "for completed booking with id:"+ booking.getId());
 			switch (jsonAction) {
 			case "collect":
-
-				//TODO set format data per aggiungere ora
+				
 				booking.setCompletionDate(Calendar.getInstance().getTime());
 				Payment payment=new Payment();
 				payment.setPaid(true);
@@ -112,7 +110,6 @@ public class PizzeriaLiveRestaurantController {
 			//IL CASO DI EDIT È GESTITO DIRETTAMENTE DAL LIVEORDERcONTROLLER
 			case "sendBack":
 				
-				//BookingUtils.createBookingFromBookingModel(book, booking.getPizzeria(), context);
 				booking.setConfirmed(false);
 				bookingDAO.update(booking);
 				message="sendBack";
@@ -129,10 +126,7 @@ public class PizzeriaLiveRestaurantController {
 			default:
 				break;
 			}
-			
-			System.out.println(book.getId());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 		return message;
@@ -158,7 +152,7 @@ public class PizzeriaLiveRestaurantController {
 			else{
 				priority+=4;
 			}
-			
+
 			if(booking instanceof BookingDelivery)
 				priority+=2;
 			else if(booking instanceof BookingTakeAway)

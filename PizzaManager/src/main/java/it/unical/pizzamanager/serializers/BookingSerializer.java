@@ -102,7 +102,6 @@ public class BookingSerializer extends JsonSerializer<Booking>{
 				for (int i = 0; i < booking.getOrderItems().size(); i++) {
 					if(booking.getOrderItems().get(i) instanceof PizzaOrderItem){
 						PizzaOrderItem pizzabooking=(PizzaOrderItem)booking.getOrderItems().get(i);
-						//TODO FIX cost Pizza
 						Double singlePrice=pizzabooking.getCost()/pizzabooking.getNumber();
 						jgen.writeStartObject();
 							jgen.writeStringField("priceEach",df.format(singlePrice));

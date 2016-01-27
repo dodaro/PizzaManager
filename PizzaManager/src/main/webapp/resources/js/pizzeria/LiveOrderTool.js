@@ -1174,7 +1174,7 @@ var LiveOrderTool = function(){
 				}, 1000);
 				return false;
 			}
-			if($("#bookingNameInput").val().length>18){
+			if($("#bookingNameInput").val().length>25){
 				$("#bookingNameInput").closest("div").addClass("has-error");
 				$("#bookingNameInput").tooltip("enable");
 				$("#bookingNameInput").tooltip("show");
@@ -1214,7 +1214,7 @@ var LiveOrderTool = function(){
 				return false;
 			}
 			
-			if($("#bookingCityInput").val().length>18){
+			if($("#bookingCityInput").val().length>20){
 				$("#bookingCityInput").tooltip("enable");
 				$("#bookingCityInput").tooltip("show");
 				$("#bookingCityInput").closest("div").addClass("has-error");
@@ -1224,7 +1224,7 @@ var LiveOrderTool = function(){
 				return false;
 			}
 
-			if($("#bookingStreetInput").val().length>20){
+			if($("#bookingStreetInput").val().length>25){
 				$("#bookingStreetInput").tooltip("enable");
 				$("#bookingStreetInput").tooltip("show");
 				$("#bookingStreetInput").closest("div").addClass("has-error");

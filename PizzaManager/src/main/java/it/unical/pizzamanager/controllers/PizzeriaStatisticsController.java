@@ -34,7 +34,7 @@ public class PizzeriaStatisticsController {
 	@Autowired
 	private WebApplicationContext context;
 
-	@SuppressWarnings("deprecation")
+	
 	@RequestMapping(value = "/pizzeriastatistics", method = RequestMethod.GET)
 	public String pizzeriaStatistics(Model model, HttpSession session) throws ParseException {
 		if (!SessionUtils.isPizzeria(session)) {
@@ -43,20 +43,6 @@ public class PizzeriaStatisticsController {
 		PizzeriaDAO pizzeriaDAO = (PizzeriaDAO) context.getBean("pizzeriaDAO");
 		Pizzeria pizzeria = pizzeriaDAO.get(SessionUtils.getPizzeriaIdFromSessionOrNull(session));
 
-		/*BookingDAO bookingDAO = (BookingDAO) context.getBean("bookingDAO");
-
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
-		String dateTakeAway = "31/01/2016";
-		Date date= sdf.parse(dateTakeAway);;
-		System.out.println(new SimpleDateFormat("YYYY/MM").format(date));
-		List<Booking> bookings=bookingDAO.BookingInYear(pizzeria,date);
-		System.out.println("SIZE:" +bookings.size());
-		Pizza pizza=new Pizza();pizza.setName("Cardinale");
-		List<Integer> listMonth=getOrderItemNumberForMonth(bookings,pizza);
-		List<Integer> listDay=getOrderItemNumberForDay(bookings,pizza);
-		//bookings=bookingDAO.BookingInMonths(pizzeria,date);
-		//System.out.println("SIZE:" +bookings.size());*/
 		model.addAttribute("pizzeria", pizzeria);
 		return "pizzeriastatistics";
 	}
@@ -74,9 +60,6 @@ public class PizzeriaStatisticsController {
 		
 		
 		List<HashMap<String, List<Integer>>> list=new ArrayList<HashMap<String,List<Integer>>>();
-		
-		System.out.println(actionString);
-		System.out.println(dateString);
 		SimpleDateFormat sdfDate =null;
 			if(actionString.equals("yearAction")){
 				sdfDate=new SimpleDateFormat("yyyy");
@@ -146,6 +129,7 @@ public class PizzeriaStatisticsController {
 		return list;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private List<Integer> getOrderItemNumberForMonth(List<Booking> bookings,Pizza pizza){
 		List<Integer> numberPerMonth=new ArrayList<>();
 		for (int i = 0; i < 12; i++) {
@@ -163,11 +147,6 @@ public class PizzeriaStatisticsController {
 				}
 			}
 		}
-		
-		for (int i = 0; i < numberPerMonth.size(); i++) {
-			System.out.print(numberPerMonth.get(i)+" ");
-		}
-		System.out.println();
 		
 		return numberPerMonth;
 	}
@@ -192,10 +171,6 @@ public class PizzeriaStatisticsController {
 			}
 		}
 		
-		for (int i = 0; i < numberPerDay.size(); i++) {
-			System.out.print(numberPerDay.get(i)+" ");
-		}
-		System.out.println();
 		return numberPerDay;
 	}
 }
