@@ -86,7 +86,8 @@ public class BookingUserDisplayUtils {
 			if (b.getId() == myId) {
 				break;
 			}
-			completationTime += BookingUserDisplayUtils.evaluatePreparationTime(b.getOrderItems());
+			if (b.getCompletionDate() == null)
+				completationTime += BookingUserDisplayUtils.evaluatePreparationTime(b.getOrderItems());
 		}
 		completationTime += prepTime;
 		return BookingUserDisplayUtils.getPreparationTimeString(completationTime);
@@ -106,7 +107,7 @@ public class BookingUserDisplayUtils {
 	public static Double calculateBill(List<OrderItem> orderItems) {
 		Double bill = 0.0;
 		for (OrderItem orderItem : orderItems) {
-			
+
 			bill += orderItem.getCost();
 		}
 		return bill;
@@ -153,7 +154,7 @@ public class BookingUserDisplayUtils {
 				itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
 				itemToDisplay.setPizzeria(((BeverageOrderItem) item).pizzeriaName());
 			}
-			itemToDisplay.setCost(item.getCost()/item.getNumber());
+			itemToDisplay.setCost(item.getCost() / item.getNumber());
 			itemToDisplay.setNumber(item.getNumber());
 			itemToDisplay.setImageItem("not found");
 			itemsToDisplay.add(itemToDisplay);
@@ -202,7 +203,7 @@ public class BookingUserDisplayUtils {
 			} else if (item instanceof BeverageOrderItem) {
 				itemToDisplay.setItemName(((BeverageOrderItem) item).beverageName());
 			}
-			itemToDisplay.setCost(item.getCost()/item.getNumber());
+			itemToDisplay.setCost(item.getCost() / item.getNumber());
 			itemToDisplay.setNumber(item.getNumber());
 			itemsToDisplay.add(itemToDisplay);
 		}

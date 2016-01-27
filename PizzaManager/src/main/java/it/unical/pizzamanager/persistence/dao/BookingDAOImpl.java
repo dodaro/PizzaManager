@@ -252,7 +252,7 @@ public class BookingDAOImpl implements BookingDAO {
 		session.close();
 		return bookings;
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Booking> getBookingListFromDataAndPizzeria(Pizzeria pizzeria, Date date) {
