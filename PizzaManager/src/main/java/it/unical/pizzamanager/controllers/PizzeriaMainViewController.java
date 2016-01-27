@@ -112,7 +112,9 @@ public class PizzeriaMainViewController {
 		SimpleDateFormat sdfTime = new SimpleDateFormat("hh:mm");
 		Date d=null;
 		Date t=null;
-
+		
+		System.out.println(idbooking);
+		
 		try {
 			d = sdfDate.parse(date);
 			t = sdfTime.parse(time);
@@ -130,14 +132,12 @@ public class PizzeriaMainViewController {
 					pizzeriaTables);
 			
 			if (tables != null) {
-
+			
 				booking.setDate(d);
 				booking.setTime(t);
-				bookingDAO.create(booking);
 				booking.setTableBooking(tables);
 				BookingUtils.calculateBill(booking, booking.getPizzeria());
 				bookingDAO.update(booking);
-
 				return "booked";
 
 			}
@@ -254,6 +254,7 @@ public class PizzeriaMainViewController {
 		booking.setUser(user);
 		bookingDAO.create(booking);
 
+		System.out.println(booking.getId());
 		return booking.getId();
 
 	}
